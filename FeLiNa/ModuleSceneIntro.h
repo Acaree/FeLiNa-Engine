@@ -15,5 +15,5 @@ public:
 	bool CleanUp();
 
 public:
-	Plane* p;
+	Plane* grid_plane;
 };

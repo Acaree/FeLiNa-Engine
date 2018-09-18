@@ -21,8 +21,8 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	//Create Axis Plane 
-	p = new Plane(0, 1, 0, 0);
-	p->axis = true;
+	grid_plane = new Plane(0, 1, 0, 0);
+	grid_plane->axis = true;
 
 	return ret;
 }
@@ -39,7 +39,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	//Render plane
-	p->Render();
+	grid_plane->Render();
 
 	return UPDATE_CONTINUE;
 }
