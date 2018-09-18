@@ -1,8 +1,6 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModulePhysics3D.h"
-#include "PhysBody3D.h"
-#include "Primitive.h"
+
 
 #ifdef _DEBUG
 	#pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
