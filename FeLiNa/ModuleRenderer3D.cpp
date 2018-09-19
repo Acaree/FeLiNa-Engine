@@ -1,4 +1,4 @@
-
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "SDL\include\SDL_opengl.h"

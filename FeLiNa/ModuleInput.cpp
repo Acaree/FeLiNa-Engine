@@ -1,3 +1,4 @@
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
 
@@ -7,7 +8,6 @@ ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, sta
 {
 	keyboard = new KEY_STATE[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
-	memset(mouse_buttons, KEY_IDLE, sizeof(KEY_STATE) * MAX_MOUSE_BUTTONS);
 }
 
 // Destructor

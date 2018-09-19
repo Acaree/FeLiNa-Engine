@@ -1,3 +1,4 @@
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
 
