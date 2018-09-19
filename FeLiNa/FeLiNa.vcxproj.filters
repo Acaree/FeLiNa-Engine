@@ -24,9 +24,6 @@
     <ClCompile Include="ModuleInput.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModulePhysics3D.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleRenderer3D.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -95,9 +92,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleInput.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModulePhysics3D.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleRenderer3D.h">
