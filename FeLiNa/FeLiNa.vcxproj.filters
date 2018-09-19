@@ -67,15 +67,6 @@
     <ClInclude Include="glmath.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="p2DynArray.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2List.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Helpers</Filter>
     </ClInclude>
