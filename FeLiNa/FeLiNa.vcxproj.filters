@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Color.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="glmath.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleAudio.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCamera3D.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModulePhysics3D.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleRenderer3D.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneIntro.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleWindow.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.65\imgui.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.65\imgui_demo.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.65\imgui_draw.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.65\imgui_impl_opengl2.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.65\imgui_impl_sdl.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.65\imgui_widgets.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Color.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="glmath.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2DynArray.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2List.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Point.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleAudio.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamera3D.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleInput.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulePhysics3D.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleRenderer3D.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleSceneIntro.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleWindow.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.65\imconfig.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.65\imgui.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.65\imgui_impl_opengl2.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.65\imgui_impl_sdl.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.65\imgui_internal.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.65\imstb_rectpack.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.65\imstb_textedit.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.65\imstb_truetype.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{18ee8c04-0fd0-4a08-b638-539456a80d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{671da5dd-c99d-4604-a977-0f25f380471e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{937089f1-365d-4409-bfac-51b2eb20a359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{f475bbdc-3001-4139-9030-95cdfff58a15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\ImGui">
+      <UniqueIdentifier>{54534046-ba58-4ec4-b059-510dced2dbfa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
