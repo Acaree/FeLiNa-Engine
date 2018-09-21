@@ -30,5 +30,11 @@ private:
 	bool show_demo_window = true;
 	bool show_another_window = false;
 	bool show_main_menu_bar = true;
+	bool show_random_number_window = true;
+
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+	//Random Number Generator
+	pcg32_random_t random_generator;
+	double float_random_number = 0; 
 };

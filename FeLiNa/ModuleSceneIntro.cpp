@@ -2,6 +2,7 @@
 #include "ModuleSceneIntro.h"
 
 #include <stdio.h>
+#include <time.h>
 
 
 
@@ -107,7 +108,60 @@ update_status ModuleSceneIntro::Update(float dt)
 			ImGui::EndMainMenuBar();
 		}
 	}
-	//--------------------------------------------------------------------------------------
+	//Sito--------------------------------------------------------------------------------------
+
+	//Random number generator with ImGui window-------------------------------------------------
+
+	if (show_random_number_window)
+	{
+		//SetNextWindowSize-> You can define the size of the next window that you create and add this size in Game/imgui.ini
+		// else if you don't define the size ImGui assign lenght {32,35} pixels.
+		ImGui::SetNextWindowSize({300,600});
+
+
+		//ImGuiWindowFlags are the flags when you use Begin() in a new window for customize an say to ImGui how is this window.
+		//If you don't say for example: window_flags |= ImGuiWindowFlags_NoScrollbar the windows create have scrollbar. 
+		//I think that's use to omit execution code in a run process, next class will ask to Ric. 
+		ImGuiWindowFlags window_flags = 0;
+
+		window_flags |= ImGuiWindowFlags_NoResize;
+		window_flags |= ImGuiWindowFlags_NoScrollbar;
+		window_flags |= ImGuiWindowFlags_NoScrollWithMouse;
+		window_flags |= ImGuiWindowFlags_NoCollapse;
+		window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+		
+
+		ImGui::Begin("Random Number Generator",false, window_flags);
+		
+		ImGui::Text("Generate random float between 0.0 and 1.0");
+
+		
+
+		if (ImGui::Button("Generate interger between min/max"))
+		{
+			// See this: http://www.pcg-random.org/using-pcg-c.html for understand. 
+			pcg32_srandom_r(&random_generator, time(NULL), (intptr_t)&random_generator);
+			
+		}
+
+		ImGui::Text("Number: %i", random_generator);
+		
+		ImGui::Text("Generate random float between 0.0 and 1.0");
+
+		if (ImGui::Button("Generate float 0 to 1"))
+		{
+			// See this: http://www.pcg-random.org/using-pcg-c.html and http://mumble.net/~campbell/tmp/random_real.c for understand. 
+			
+			float_random_number = ldexp(pcg32_random_r(&random_generator), -32);
+
+		}
+		
+		ImGui::Text("Number: %d", float_random_number);
+
+		ImGui::End();
+	}
+
+	//Sito--------------------------------------------------------------------------------------
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	if (show_demo_window)
