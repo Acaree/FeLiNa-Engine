@@ -36,5 +36,7 @@ private:
 
 	//Random Number Generator
 	pcg32_random_t random_generator;
-	double float_random_number = 0; 
+	double float_random_number = 0;
+
+	int interger_random_generate = 0;
 };
