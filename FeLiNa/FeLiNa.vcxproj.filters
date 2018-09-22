@@ -6,9 +6,6 @@
     <ClCompile Include="Color.cpp">
       <Filter>Containers</Filter>
     </ClCompile>
-    <ClCompile Include="glmath.cpp">
-      <Filter>Containers</Filter>
-    </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
@@ -152,9 +149,6 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Color.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="glmath.h">
       <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
