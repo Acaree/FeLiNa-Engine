@@ -17,7 +17,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
-	LOG("Loading Intro assets");
+	LOG_GLOBAL("Loading Intro assets");
 	bool ret = true;
 
 
@@ -26,8 +26,8 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	//Create Axis Plane 
-	grid_plane = new Plane(0, 1, 0, 0);
-	grid_plane->axis = true;
+	/*grid_plane = new Plane(0, 1, 0, 0);
+	grid_plane->axis = true;*/
 
 
 	//ImGui
@@ -50,7 +50,7 @@ bool ModuleSceneIntro::Start()
 // Load assets
 bool ModuleSceneIntro::CleanUp()
 {
-	LOG("Unloading Intro scene");
+	LOG_GLOBAL("Unloading Intro scene");
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
@@ -216,7 +216,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 	//Render plane
-	grid_plane->Render();
+	//grid_plane->Render();
 
 
 	// Rendering

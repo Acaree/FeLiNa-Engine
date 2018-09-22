@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Module.h"
-#include "Primitive.h"
+
 #include "imgui-1.65/imgui.h"
 #include "imgui-1.65/imgui_impl_sdl.h"
 #include "imgui-1.65/imgui_impl_opengl2.h"
@@ -22,7 +22,7 @@ public:
 	bool CleanUp();
 
 public:
-	Plane* grid_plane;
+	//Plane* grid_plane;
 
 private:
 
