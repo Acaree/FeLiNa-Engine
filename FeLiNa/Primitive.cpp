@@ -3,10 +3,11 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "Primitive.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 
 // ------------------------------------------------------------
-Primitive::Primitive() : transform(float4x4::identity), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
+Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
 {}
 
 // ------------------------------------------------------------
@@ -19,7 +20,7 @@ PrimitiveTypes Primitive::GetType() const
 void Primitive::Render() const
 {
 	glPushMatrix();
-	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
+	glMultMatrixf(transform.M);
 
 	if(axis == true)
 	{
@@ -82,33 +83,33 @@ void Primitive::InnerRender() const
 // ------------------------------------------------------------
 void Primitive::SetPos(float x, float y, float z)
 {
-	transform = float4x4::Translate(x, y, z).ToFloat4x4() * transform;
+	transform.translate(x, y, z);
 }
 
 // ------------------------------------------------------------
-void Primitive::SetRotation(float angle, const float3 &u)
+void Primitive::SetRotation(float angle, const vec3 &u)
 {
-	transform = float4x4::RotateAxisAngle(u, angle) * transform;
+	transform.rotate(angle, u);
 }
 
 // ------------------------------------------------------------
 void Primitive::Scale(float x, float y, float z)
 {
-	transform = float4x4::Scale(x, y, z).ToFloat4x4() * transform;
+	transform.scale(x, y, z);
 }
 
 // CUBE ============================================
-Cube::Cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
+mCube::mCube() : Primitive(), size(1.0f, 1.0f, 1.0f)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 }
 
-Cube::Cube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
+mCube::mCube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 }
 
-void Cube::InnerRender() const
+void mCube::InnerRender() const
 {	
 	float sx = size.x * 0.5f;
 	float sy = size.y * 0.5f;
@@ -192,7 +193,7 @@ void mCylinder::InnerRender() const
 	
 	for(int i = 360; i >= 0; i -= (360 / n))
 	{
-		float a = i * math::pi / 180; // degrees to radians
+		float a = i * M_PI / 180; // degrees to radians
 		glVertex3f(-height*0.5f, radius * cos(a), radius * sin(a));
 	}
 	glEnd();
@@ -202,7 +203,7 @@ void mCylinder::InnerRender() const
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	for(int i = 0; i <= 360; i += (360 / n))
 	{
-		float a = i * math::pi / 180; // degrees to radians
+		float a = i * M_PI / 180; // degrees to radians
 		glVertex3f(height * 0.5f, radius * cos(a), radius * sin(a));
 	}
 	glEnd();
@@ -211,7 +212,7 @@ void mCylinder::InnerRender() const
 	glBegin(GL_QUAD_STRIP);
 	for(int i = 0; i < 480; i += (360 / n))
 	{
-		float a = i * math::pi / 180; // degrees to radians
+		float a = i * M_PI / 180; // degrees to radians
 
 		glVertex3f(height*0.5f,  radius * cos(a), radius * sin(a) );
 		glVertex3f(-height*0.5f, radius * cos(a), radius * sin(a) );
@@ -245,14 +246,17 @@ void mLine::InnerRender() const
 }
 
 // PLANE ==================================================
-mPlane::mPlane() : Primitive(), normal(0, 1, 0), constant(1)
+mPlane::mPlane() : Primitive()
 {
 	type = PrimitiveTypes::Primitive_Plane;
 }
 
-mPlane::mPlane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
+mPlane::mPlane(float x, float y, float z, float d) : Primitive()
 {
 	type = PrimitiveTypes::Primitive_Plane;
+	float3 plane_pos (x, y, z);
+	float3 normal_vec(0,1,0);
+	matGeo_plane = new Plane(plane_pos, normal_vec);
 }
 
 void mPlane::InnerRender() const

@@ -1,11 +1,8 @@
 
 #pragma once
-
+#include "glmath.h"
 #include "Color.h"
-#include "MathGeoLib/Math/float3.h"
-#include "MathGeoLib/Math/float4x4.h"
-#include "MathGeoLib/Math/MathConstants.h"
-#include "MathGeoLib/Math/TransformOps.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 enum PrimitiveTypes
 {
@@ -26,14 +23,14 @@ public:
 	virtual void	Render() const;
 	virtual void	InnerRender() const;
 	void			SetPos(float x, float y, float z);
-	void			SetRotation(float angle, const float3 &u);
+	void			SetRotation(float angle, const vec3 &u);
 	void			Scale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
 
 public:
 	
 	Color color;
-	float4x4 transform;
+	mat4x4 transform;
 	bool axis,wire;
 
 protected:
@@ -41,14 +38,14 @@ protected:
 };
 
 // ============================================
-class Cube : public Primitive
+class mCube : public Primitive
 {
 public :
-	Cube();
-	Cube(float sizeX, float sizeY, float sizeZ);
+	mCube();
+	mCube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
 public:
-	float3 size;
+	vec3 size;
 };
 
 // ============================================
@@ -72,6 +69,7 @@ public:
 public:
 	float radius;
 	float height;
+	Cylinder* GeoLib_cylinder;
 };
 
 // ============================================
@@ -82,8 +80,8 @@ public:
 	mLine(float x, float y, float z);
 	void InnerRender() const;
 public:
-	float3 origin;
-	float3 destination;
+	vec3 origin;
+	vec3 destination;
 };
 
 // ============================================
@@ -94,6 +92,7 @@ public:
 	mPlane(float x, float y, float z, float d);
 	void InnerRender() const;
 public:
-	float3 normal;
-	float constant;
+	//vec3 normal;
+	//float constant;
+	Plane* matGeo_plane;
 };

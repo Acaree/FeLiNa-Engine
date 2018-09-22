@@ -1,9 +1,8 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "MathGeoLib/Math/float4x4.h"
-#include "MathGeoLib/Math/float3x3.h"
 #include "Light.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #define MAX_LIGHTS 8
 
@@ -17,6 +16,7 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
+	float4x4 perspective(float fovy, float aspect, float n, float f);
 
 	void OnResize(int width, int height);
 

@@ -5,6 +5,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
@@ -144,10 +145,42 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-
-	ProjectionMatrix = float4x4::OpenGLPerspProjRH(0.125f, 512.0f, (float)width, (float)height);
-	glLoadMatrixf((GLfloat*)ProjectionMatrix.Transposed().ptr());
+	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	glLoadMatrixf((GLfloat*)ProjectionMatrix.ptr());
 	
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+}
+
+float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
+{
+	float4x4 Perspective;
+
+	float coty = 1.0f / tan(fovy * (float)M_PI / 360.0f);
+
+	Perspective.v[0][0] = coty / aspect;
+	Perspective.v[0][1] = 0;
+	Perspective.v[0][2] = 0;
+	Perspective.v[0][3] = 0;
+
+	Perspective.v[1][0] = 0;
+	Perspective.v[1][1] = coty;
+	Perspective.v[1][2] = 0;
+	Perspective.v[1][3] = 0;
+
+	Perspective.v[2][0] = 0;
+	Perspective.v[2][1] = 0;
+	Perspective.v[2][2] = (n + f) / (n - f);
+	Perspective.v[2][3] = -1.0f;
+
+	Perspective.v[3][0] = 0;
+	Perspective.v[3][1] = 0;
+	Perspective.v[3][2] = 2.0f * n * f / (n - f);
+	Perspective.v[3][3] = 0.0f;
+
+
+	return Perspective;
+
 }

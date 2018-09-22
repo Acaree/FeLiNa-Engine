@@ -22,13 +22,14 @@ bool ModuleSceneIntro::Start()
 
 
 	//Initial position camera.
-	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(float3(0, 0, 0));
+	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	App->camera->LookAt(vec3(0, 0, 0));
 
 	//Create Axis Plane 
-	/*grid_plane = new Plane(0, 1, 0, 0);
-	grid_plane->axis = true;*/
-
+	grid_plane = new mPlane(0, 1, 0, 0);
+	grid_plane->axis = true;
+	
+	//cylinder = new mCylinder(1.0f, 1.0f);
 
 	//ImGui
 	 // Setup Dear ImGui binding
@@ -216,8 +217,8 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 	//Render plane
-	//grid_plane->Render();
-
+	grid_plane->Render();
+	//cylinder->Render();
 
 	// Rendering
 	ImGui::Render();

@@ -55,94 +55,97 @@
       <Filter>Tools\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\AABB.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Capsule.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Circle.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Frustum.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Line.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\LineSegment.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\OBB.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Plane.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Polygon.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Polyhedron.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Ray.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Sphere.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Triangle.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\TriangleMesh.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\BitOps.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\float2.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\float3.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\float3x3.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\float3x4.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\float4.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\float4x4.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\MathFunc.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\MathLog.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\MathOps.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\Polynomial.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\Quat.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\SSEMath.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\TransformOps.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Time\Clock.cpp">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="glmath.cpp">
+      <Filter>Containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,178 +209,181 @@
       <Filter>Tools\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\AABB.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\AABB2D.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Capsule.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Circle.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Frustum.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\GeometryAll.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\GeomType.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\HitInfo.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\KDTree.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Line.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\LineSegment.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\OBB.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\PBVolume.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Plane.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Polygon.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Polyhedron.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\QuadTree.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Ray.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Sphere.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\Triangle.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Geometry\TriangleMesh.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\assume.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\BitOps.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\Complex.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\CoordinateAxisConvention.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\FixedPoint.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float2.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float3.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float3x3.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float3x4.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float4.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float4x4.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float4x4_neon.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float4x4_sse.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float4_neon.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float4_sse.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\FloatCmp.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\MathAll.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\MathConstants.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\MathFunc.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\MathLog.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\MathNamespace.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\MathTypes.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\MatrixProxy.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\myassert.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\Polynomial.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\Quat.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\quat_simd.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\Rect.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\Reinterpret.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\SSEMath.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\sse_mathfun.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\TransformOps.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\MathBuildConfig.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\MathGeoLib.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\MathGeoLibFwd.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Time\Clock.h">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="glmath.h">
+      <Filter>Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -396,28 +402,25 @@
     <Filter Include="Tools\ImGui">
       <UniqueIdentifier>{54534046-ba58-4ec4-b059-510dced2dbfa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\MathGeoLib">
-      <UniqueIdentifier>{5d43e5a3-9e7a-4039-b4a6-6a175092102b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Geometry\KDTree.inl">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </None>
     <None Include="MathGeoLib\Geometry\QuadTree.inl">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </None>
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_AVX.inl">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </None>
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_CPP.inl">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </None>
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_SSE.inl">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </None>
     <None Include="MathGeoLib\Math\Matrix.inl">
-      <Filter>Tools\MathGeoLib</Filter>
+      <Filter>Tools</Filter>
     </None>
   </ItemGroup>
 </Project>
