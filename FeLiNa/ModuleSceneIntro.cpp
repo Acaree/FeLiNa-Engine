@@ -133,19 +133,34 @@ update_status ModuleSceneIntro::Update(float dt)
 
 		ImGui::Begin("Random Number Generator",false, window_flags);
 		
-		ImGui::Text("Generate random int between 0 to 100");
+		ImGui::Text("Generate random int between min to max");
 
-		if (ImGui::Button("Generate"))
+		ImGui::InputInt("Min value", &min_value);
+		ImGui::InputInt("Max value", &max_value);
+		
+
+		if (ImGui::Button("Generate int"))
 		{
+			if (min_value > max_value)
+			{
+				int tmp = min_value; 
+
+				min_value = max_value;
+				max_value = tmp;
+			}
+
+			uint32_t bound;
+			bound = max_value - min_value + 1;
 			// See this: http://www.pcg-random.org/using-pcg-c.html for understand. 
-			interger_random_generate = pcg32_boundedrand_r(&random_generator,100);
+			interger_random_generate = pcg32_boundedrand_r(&random_generator,bound);
+			interger_random_generate -= abs(min_value);
 		}
 		ImGui::SameLine();
 		ImGui::Text("Number: %i", interger_random_generate);
 		
 		ImGui::Text("Generate random float between 0.0 and 1.0");
 
-		if (ImGui::Button("Generate"))
+		if (ImGui::Button("Generate float"))
 		{
 			// See this: http://www.pcg-random.org/using-pcg-c.html and http://mumble.net/~campbell/tmp/random_real.c for understand. 
 			
