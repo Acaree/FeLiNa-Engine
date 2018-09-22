@@ -116,7 +116,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 		//SetNextWindowSize-> You can define the size of the next window that you create and add this size in Game/imgui.ini
 		// else if you don't define the size ImGui assign lenght {32,35} pixels.
-		ImGui::SetNextWindowSize({300,600});
+		ImGui::SetNextWindowSize({300,200});
 
 
 		//ImGuiWindowFlags are the flags when you use Begin() in a new window for customize an say to ImGui how is this window.
@@ -168,8 +168,8 @@ update_status ModuleSceneIntro::Update(float dt)
 
 		}
 
-		ImGui::SameLine();
-		ImGui::Text("Number: %d", float_random_number);
+ 		ImGui::SameLine();
+		ImGui::Text("Number: %f", float_random_number);
 
 		ImGui::End();
 	}
