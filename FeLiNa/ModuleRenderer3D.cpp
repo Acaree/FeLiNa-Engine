@@ -145,9 +145,9 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	ProjectionMatrix = float4x4::OpenGLPerspProjRH(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf((GLfloat*)ProjectionMatrix.ptr());
-
+	ProjectionMatrix = float4x4::OpenGLPerspProjRH(0.125f, 512.0f, (float)width, (float)height);
+	glLoadMatrixf((GLfloat*)ProjectionMatrix.Transposed().ptr());
+	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }

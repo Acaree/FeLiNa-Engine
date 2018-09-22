@@ -92,7 +92,8 @@ update_status ModuleCamera3D::Update(float dt)
 			if(Y.y < 0.0f)
 			{
 				Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-				Y = Z.Cross(X);
+				Y = Cross(Z,X);
+				
 			}
 		}
 
@@ -113,13 +114,10 @@ void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool 
 	
 	float3 normalize_aux = Position - Reference;
 
-	Z = normalize_aux.Normalized();
+	Z = (Position - Reference).Normalized();
+	X = Cross(math::float3(0.0f, 1.0f, 0.0f), Z).Normalized();
+	Y = Cross(Z, X);
 
-	normalize_aux = { 0.0f, 1.0f, 0.0f };
-	normalize_aux.Cross(Z);
-	X = normalize_aux.Normalized();
-
-	Y = Z.Cross(X);
 
 	if(!RotateAroundReference)
 	{
@@ -135,15 +133,9 @@ void ModuleCamera3D::LookAt( const float3 &Spot)
 {
 	Reference = Spot;
 
-	float3 normalize_aux = Position - Reference;
-
-	Z = normalize_aux.Normalized();
-
-	normalize_aux = { 0.0f, 1.0f, 0.0f };
-	normalize_aux.Cross(Z);
-	X = normalize_aux.Normalized();
-
-	Y = Z.Cross(X);
+	Z = (Position - Reference).Normalized();
+	X = Cross(math::float3(0.0f, 1.0f, 0.0f), Z).Normalized();
+	Y = Cross(Z, X);
 
 	CalculateViewMatrix();
 }
@@ -161,7 +153,7 @@ void ModuleCamera3D::Move(const float3 &Movement)
 // -----------------------------------------------------------------
 float* ModuleCamera3D::GetViewMatrix()
 {
-	return ViewMatrix.ptr();
+	return ViewMatrix.Transposed().ptr();
 }
 
 // -----------------------------------------------------------------
