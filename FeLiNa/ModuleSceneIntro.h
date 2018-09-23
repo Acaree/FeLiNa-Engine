@@ -36,7 +36,9 @@ public:
 	LineSegment line1, line2;
 	AABB* aabb1;
 	OBB* obb;
-	
+	Plane* plane;
+	Ray* ray;
+	Triangle* tri;
 private:
 
 	//ImGui

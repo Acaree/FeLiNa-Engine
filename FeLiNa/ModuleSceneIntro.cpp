@@ -41,8 +41,9 @@ bool ModuleSceneIntro::Start()
 	aabb1 = new AABB({ 0,0,0 }, {10,10,10});
 
 	obb = new OBB(AABB({ 0,0,0 }, { 10,10,10 }));
-
-	
+	plane = new Plane({ 0,1,0 }, 1);
+	ray = new Ray({ 0,0,0 }, { 1,1,1 });
+	tri = new Triangle({ 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 });
 	//SITO------------------------------------------------
 	
 	
@@ -294,8 +295,44 @@ void ModuleSceneIntro::ShowMatGeoLibWindow()
 	ImGui::SliderFloat("OBB Pos y", &obb->pos.y, -100.0, 100.0);
 	ImGui::SliderFloat("AABB Pos z", &obb->pos.z, -100.0, 100.0);
 
+	ImGui::Text("Plane");
+
+	ImGui::SliderFloat("Plane normal X", &plane->normal.x, 0, 1);
+	ImGui::SliderFloat("Plane normal Y", &plane->normal.y, 0, 1);
+	ImGui::SliderFloat("Plane normal Z", &plane->normal.z, 0, 1);
+
+	ImGui::SliderFloat("Plane Distance", &plane->normal.x, -100, 100);
+
+	ImGui::Text("Ray");
+
+	ImGui::SliderFloat("Ray Position X", &ray->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("Ray Position Y", &ray->pos.y, -100.0, 100.0);
+	ImGui::SliderFloat("Ray Position Z", &ray->pos.z, -100.0, 100.0);
+
+	ImGui::SliderFloat("Ray Normalized X", &ray->dir.x, 0,1);
+	ImGui::SliderFloat("Ray Normalized Y", &ray->pos.y, 0,1);
+	ImGui::SliderFloat("Ray Normalized Z", &ray->pos.z, 0,1);
+	
+	ImGui::Text("Triangle");
+
+	ImGui::SliderFloat("Traingle A.x", &tri->a.x, -100.0, 100.0);
+	ImGui::SliderFloat("Traingle A.y", &tri->a.y, -100.0, 100.0);
+	ImGui::SliderFloat("Traingle A.z", &tri->a.z, -100.0, 100.0);
+
+	ImGui::SliderFloat("Traingle B.x", &tri->b.x, -100.0, 100.0);
+	ImGui::SliderFloat("Traingle B.y", &tri->b.y, -100.0, 100.0);
+	ImGui::SliderFloat("Traingle B.z", &tri->b.z, -100.0, 100.0);
+
+	ImGui::SliderFloat("Traingle C.x", &tri->c.x, -100.0, 100.0);
+	ImGui::SliderFloat("Traingle C.y", &tri->c.y, -100.0, 100.0);
+	ImGui::SliderFloat("Traingle C.z", &tri->c.z, -100.0, 100.0);
+
+
+	ImGui::SetNextWindowSize({ 200,300 });
+	ImGui::Begin("Results");
 
 	ImGui::Text("Sphere 1 collision with: ");
+	ImGui::Spacing();
 	if(sphere1->Contains(*sphere2))
 		ImGui::Text("Sphere 2");
 	else
@@ -320,8 +357,9 @@ void ModuleSceneIntro::ShowMatGeoLibWindow()
 		ImGui::Text("OBB");
 	else
 		ImGui::Text("Not OBB");
-
+	ImGui::Spacing();
 	ImGui::Text("Sphere 1 intersect with: ");
+	ImGui::Spacing();
 	if (sphere1->Intersects(*sphere2))
 		ImGui::Text("Sphere 2");
 	else
@@ -346,7 +384,21 @@ void ModuleSceneIntro::ShowMatGeoLibWindow()
 		ImGui::Text("OBB");
 	else
 		ImGui::Text("Not OBB");
-	
+	if (sphere1->Intersects(*plane))
+		ImGui::Text("Plane");
+	else
+		ImGui::Text("Not Plane");
+	if (sphere1->Intersects(*ray))
+		ImGui::Text("Ray");
+	else
+		ImGui::Text("Not Ray");
+	if (sphere1->Intersects(*tri))
+		ImGui::Text("Triangle");
+	else
+		ImGui::Text("Not triangle");
+
+	ImGui::End();
+
 
 	ImGui::End();
 }
