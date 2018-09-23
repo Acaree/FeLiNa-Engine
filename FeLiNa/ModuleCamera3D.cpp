@@ -153,12 +153,15 @@ void ModuleCamera3D::Move(const float3 &Movement)
 // -----------------------------------------------------------------
 float* ModuleCamera3D::GetViewMatrix()
 {
-	return &ViewMatrix;
+	return (float*)&ViewMatrix;
 }
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::CalculateViewMatrix()
 {
-	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0f);
-	ViewMatrixInverse = inverse(ViewMatrix);
+	ViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0f);
+
+	float4x4 inverse = ViewMatrix;
+	inverse.Inverse();
+	ViewMatrixInverse = inverse;
 }

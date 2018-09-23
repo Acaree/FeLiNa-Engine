@@ -29,5 +29,5 @@ public:
 
 private:
 
-	mat4x4 ViewMatrix, ViewMatrixInverse;
+	float4x4 ViewMatrix, ViewMatrixInverse;
 };
