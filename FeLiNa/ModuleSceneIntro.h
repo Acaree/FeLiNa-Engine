@@ -25,15 +25,19 @@ public:
 
 	void ShowMainMenuBar();
 	void ShowRandomNumberWindow();
+	void ShowMatGeoLibWindow();
 
 public:
 	mPlane* grid_plane;
 	mCylinder* cylinder;
+
+	Sphere* sphere1, *sphere2;
+	Capsule* capsule1, *capsule2;
+	LineSegment line1, line2;
 private:
 
 	//ImGui
-
-	bool show_another_window = false;
+	bool show_MatGeo_window = true;
 	bool show_random_number_window = true;
 
 	bool close_program = false;
@@ -47,4 +51,5 @@ private:
 
 	int interger_random_generate = 0;
 	int min_value = 0, max_value = 0;
+	
 };

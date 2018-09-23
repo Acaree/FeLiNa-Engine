@@ -29,6 +29,16 @@ bool ModuleSceneIntro::Start()
 	grid_plane = new mPlane(0, 1, 0, 0);
 	grid_plane->axis = true;
 	grid_plane->is_grid = true;
+
+	//TEST MATGEOLIB WINDOW GUI
+
+	sphere1 = new Sphere({ 0,0,0 }, 10);
+	sphere2 = new Sphere({ 0,0,0 }, 10);
+
+	capsule1 = new Capsule(LineSegment({ 0,0,0 }, {10,10,10}),10);
+	capsule2 = new Capsule(LineSegment({ 0,0,0 }, { 10,10,10 }), 10);
+	
+	//SITO------------------------------------------------
 	
 	
 	//ImGui
@@ -80,12 +90,18 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
+	ImGui::ShowDemoWindow();
 
 	ShowMainMenuBar();
 
 	if (show_random_number_window)
 	{
 		ShowRandomNumberWindow();
+	}
+
+	if (show_MatGeo_window)
+	{
+		ShowMatGeoLibWindow();
 	}
 
 
@@ -128,6 +144,12 @@ void ModuleSceneIntro::ShowMainMenuBar()
 			{
 					show_random_number_window = !show_random_number_window;
 			}
+
+			if (ImGui::MenuItem("MathGeo window", NULL, false, true))
+			{
+				show_MatGeo_window = !show_MatGeo_window;
+			}
+
 			ImGui::EndMenu();
 		}
 
@@ -195,6 +217,79 @@ void ModuleSceneIntro::ShowRandomNumberWindow()
 
 	ImGui::SameLine();
 	ImGui::Text("Number: %f", float_random_number);
+
+	ImGui::End();
+}
+
+
+void ModuleSceneIntro::ShowMatGeoLibWindow()
+{
+	ImGui::SetNextWindowSize({ 500,800 });
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_NoScrollWithMouse;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+	ImGui::Begin("MatGeolib Test collision", false, window_flags);
+
+	ImGui::Text("Sphere 1");
+
+	ImGui::SliderFloat("S1 X",&sphere1->pos.x, -100.0,100.0);
+	ImGui::SliderFloat("S1 Y", &sphere1->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("S1 Z", &sphere1->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("S1 Radius", &sphere1->r, -100.0, 100.0);
+
+	ImGui::Text("Sphere 2");
+
+	ImGui::SliderFloat("S2 X", &sphere1->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("S2 Y", &sphere1->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("S2 Z", &sphere1->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("S2 Radius", &sphere1->r, -100.0, 100.0);
+
+	ImGui::Text("Capsule 1");
+
+	ImGui::SliderFloat("C1 A.x", &capsule1->l.b.x, -100.0, 100.0);
+	ImGui::SliderFloat("C1 A.y", &capsule1->l.b.y, -100.0, 100.0);
+	ImGui::SliderFloat("C1 A.z", &capsule1->l.b.z, -100.0, 100.0);
+
+	ImGui::SliderFloat("C1 B.x", &capsule1->l.b.x, -100.0, 100.0);
+	ImGui::SliderFloat("C1 B.y", &capsule1->l.b.y, -100.0, 100.0);
+	ImGui::SliderFloat("C1 B.z", &capsule1->l.b.z, -100.0, 100.0);
+
+	ImGui::SliderFloat("C1 Radius", &capsule1->r, -100.0, 100.0);
+
+	ImGui::Text("Capsule 2");
+
+	ImGui::SliderFloat("C2 A.x", &capsule1->l.b.x, -100.0, 100.0);
+	ImGui::SliderFloat("C2 A.y", &capsule1->l.b.y, -100.0, 100.0);
+	ImGui::SliderFloat("C2 A.z", &capsule1->l.b.z, -100.0, 100.0);
+
+	ImGui::SliderFloat("C2 B.x", &capsule1->l.b.x, -100.0, 100.0);
+	ImGui::SliderFloat("C2 B.y", &capsule1->l.b.y, -100.0, 100.0);
+	ImGui::SliderFloat("C2 B.z", &capsule1->l.b.z, -100.0, 100.0);
+
+	ImGui::SliderFloat("C2 Radius", &capsule1->r, -100.0, 100.0);
+
+	ImGui::Text("Sphere 1 collision with: ");
+	if(sphere1->Contains(*sphere2))
+		ImGui::Text("Sphere 2");
+	else
+		ImGui::Text("Not Sphere 2");
+
+	if (sphere1->Contains(*capsule1))
+		ImGui::Text("Capsule 1");
+	else
+		ImGui::Text("Not Capsule 1");
+
+	if (sphere1->Contains(*capsule2))
+		ImGui::Text("Capsule 2");
+	else
+		ImGui::Text("Not Sphere 2");
+
+
 
 	ImGui::End();
 }
