@@ -65,34 +65,32 @@ update_status ModuleCamera3D::Update(float dt)
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
 
-		float Sensitivity = 0.25f;
+		float Sensitivity = 0.01f;
 
 		Position -= Reference;
 
-		if(dx != 0)
+		if (dx != 0)
 		{
 			float DeltaX = (float)dx * Sensitivity;
 
-			float3x3 rotation_matrix = float3x3::RotateY(DeltaX);
-
-			X = rotation_matrix * X;
-			Y = rotation_matrix * Y;
-			Z = rotation_matrix * Z;
+			math::float3x3 rotationMatrix = math::float3x3::RotateY(DeltaX);
+			X = rotationMatrix * X;
+			Y = rotationMatrix * Y;
+			Z = rotationMatrix * Z;
 		}
 
-		if(dy != 0)
+		if (dy != 0)
 		{
 			float DeltaY = (float)dy * Sensitivity;
 
-			float3x3 rotation_matrix = float3x3::RotateAxisAngle(X, DeltaY);
+			math::float3x3 rotationMatrix = math::float3x3::RotateAxisAngle(X, DeltaY);
+			Y = rotationMatrix * Y;
+			Z = rotationMatrix * Z;
 
-			Y = rotation_matrix * Y;
-			Z = rotation_matrix * Z;
-
-			if(Y.y < 0.0f)
+			if (Y.y < 0.0f)
 			{
-				Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-				Y = Z.Cross(X);
+				Z = math::float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+				Y = math::Cross(Z, X);
 			}
 		}
 
