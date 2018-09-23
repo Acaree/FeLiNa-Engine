@@ -94,5 +94,6 @@ public:
 public:
 	//vec3 normal;
 	//float constant;
+	bool is_grid = false;
 	Plane* matGeo_plane;
 };

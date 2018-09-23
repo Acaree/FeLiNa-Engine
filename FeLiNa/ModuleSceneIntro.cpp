@@ -28,6 +28,7 @@ bool ModuleSceneIntro::Start()
 	//Create Axis Plane 
 	grid_plane = new mPlane(0, 1, 0, 0);
 	grid_plane->axis = true;
+	grid_plane->is_grid = true;
 	
 	//cylinder = new mCylinder(1.0f, 1.0f);
 

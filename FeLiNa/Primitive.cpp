@@ -255,15 +255,18 @@ mPlane::mPlane(float x, float y, float z, float d) : Primitive()
 {
 	type = PrimitiveTypes::Primitive_Plane;
 	float3 plane_pos (x, y, z);
-	float3 normal_vec(0,1,0);
-	matGeo_plane = new Plane(plane_pos, normal_vec);
+	
+	matGeo_plane = new Plane(plane_pos, d);
 }
 
 void mPlane::InnerRender() const
 {
 	glLineWidth(1.0f);
 
-	glBegin(GL_LINES);
+	if (is_grid)
+		glBegin(GL_LINES);
+	else
+		glBegin(GL_TRIANGLE_STRIP);
 
 	float d = 200.0f;
 
