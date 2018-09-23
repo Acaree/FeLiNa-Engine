@@ -7,7 +7,7 @@
 
 
 // ------------------------------------------------------------
-Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
+Primitive::Primitive() : transform(float4x4::identity), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
 {}
 
 // ------------------------------------------------------------
@@ -20,7 +20,7 @@ PrimitiveTypes Primitive::GetType() const
 void Primitive::Render() const
 {
 	glPushMatrix();
-	glMultMatrixf(transform.M);
+	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
 
 	if(axis == true)
 	{
@@ -83,19 +83,19 @@ void Primitive::InnerRender() const
 // ------------------------------------------------------------
 void Primitive::SetPos(float x, float y, float z)
 {
-	transform.translate(x, y, z);
+	transform = float4x4::Translate(x, y, z).ToFloat4x4() * transform;
 }
 
 // ------------------------------------------------------------
-void Primitive::SetRotation(float angle, const vec3 &u)
+void Primitive::SetRotation(float angle, const float3 &u)
 {
-	transform.rotate(angle, u);
+	transform = float4x4::RotateAxisAngle(u, angle) * transform;
 }
 
 // ------------------------------------------------------------
 void Primitive::Scale(float x, float y, float z)
 {
-	transform.scale(x, y, z);
+	transform = float4x4::Scale(x, y, z).ToFloat4x4() * transform;
 }
 
 // CUBE ============================================
@@ -193,7 +193,7 @@ void mCylinder::InnerRender() const
 	
 	for(int i = 360; i >= 0; i -= (360 / n))
 	{
-		float a = i * M_PI / 180; // degrees to radians
+		float a = i * math::pi / 180; // degrees to radians
 		glVertex3f(-height*0.5f, radius * cos(a), radius * sin(a));
 	}
 	glEnd();
@@ -203,7 +203,7 @@ void mCylinder::InnerRender() const
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	for(int i = 0; i <= 360; i += (360 / n))
 	{
-		float a = i * M_PI / 180; // degrees to radians
+		float a = i * math::pi / 180; // degrees to radians
 		glVertex3f(height * 0.5f, radius * cos(a), radius * sin(a));
 	}
 	glEnd();
@@ -212,7 +212,7 @@ void mCylinder::InnerRender() const
 	glBegin(GL_QUAD_STRIP);
 	for(int i = 0; i < 480; i += (360 / n))
 	{
-		float a = i * M_PI / 180; // degrees to radians
+		float a = i * math::pi / 180; // degrees to radians
 
 		glVertex3f(height*0.5f,  radius * cos(a), radius * sin(a) );
 		glVertex3f(-height*0.5f, radius * cos(a), radius * sin(a) );

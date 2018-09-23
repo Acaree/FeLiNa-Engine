@@ -1,6 +1,6 @@
 
 #pragma once
-#include "glmath.h"
+
 #include "Color.h"
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -23,14 +23,14 @@ public:
 	virtual void	Render() const;
 	virtual void	InnerRender() const;
 	void			SetPos(float x, float y, float z);
-	void			SetRotation(float angle, const vec3 &u);
+	void			SetRotation(float angle, const float3 &u);
 	void			Scale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
 
 public:
 	
 	Color color;
-	mat4x4 transform;
+	float4x4 transform;
 	bool axis,wire;
 
 protected:
@@ -45,7 +45,7 @@ public :
 	mCube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
 public:
-	vec3 size;
+	float3 size;
 };
 
 // ============================================
@@ -80,8 +80,8 @@ public:
 	mLine(float x, float y, float z);
 	void InnerRender() const;
 public:
-	vec3 origin;
-	vec3 destination;
+	float3 origin;
+	float3 destination;
 };
 
 // ============================================

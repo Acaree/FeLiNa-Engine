@@ -144,9 +144,6 @@
     <ClCompile Include="MathGeoLib\Time\Clock.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="glmath.cpp">
-      <Filter>Containers</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -381,9 +378,6 @@
     </ClInclude>
     <ClInclude Include="MathGeoLib\Time\Clock.h">
       <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="glmath.h">
-      <Filter>Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
