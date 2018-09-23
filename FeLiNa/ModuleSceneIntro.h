@@ -34,6 +34,9 @@ public:
 	Sphere* sphere1, *sphere2;
 	Capsule* capsule1, *capsule2;
 	LineSegment line1, line2;
+	AABB* aabb1;
+	OBB* obb;
+	
 private:
 
 	//ImGui

@@ -37,6 +37,11 @@ bool ModuleSceneIntro::Start()
 
 	capsule1 = new Capsule(LineSegment({ 0,0,0 }, {10,10,10}),10);
 	capsule2 = new Capsule(LineSegment({ 0,0,0 }, { 10,10,10 }), 10);
+
+	aabb1 = new AABB({ 0,0,0 }, {10,10,10});
+
+	obb = new OBB(AABB({ 0,0,0 }, { 10,10,10 }));
+
 	
 	//SITO------------------------------------------------
 	
@@ -224,11 +229,11 @@ void ModuleSceneIntro::ShowRandomNumberWindow()
 
 void ModuleSceneIntro::ShowMatGeoLibWindow()
 {
-	ImGui::SetNextWindowSize({ 500,800 });
+	ImGui::SetNextWindowSize({ 500,900 });
 	ImGuiWindowFlags window_flags = 0;
 
 	window_flags |= ImGuiWindowFlags_NoResize;
-	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	//window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_NoScrollWithMouse;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
@@ -238,22 +243,22 @@ void ModuleSceneIntro::ShowMatGeoLibWindow()
 	ImGui::Text("Sphere 1");
 
 	ImGui::SliderFloat("S1 X",&sphere1->pos.x, -100.0,100.0);
-	ImGui::SliderFloat("S1 Y", &sphere1->pos.x, -100.0, 100.0);
-	ImGui::SliderFloat("S1 Z", &sphere1->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("S1 Y", &sphere1->pos.y, -100.0, 100.0);
+	ImGui::SliderFloat("S1 Z", &sphere1->pos.z, -100.0, 100.0);
 	ImGui::SliderFloat("S1 Radius", &sphere1->r, -100.0, 100.0);
 
 	ImGui::Text("Sphere 2");
 
-	ImGui::SliderFloat("S2 X", &sphere1->pos.x, -100.0, 100.0);
-	ImGui::SliderFloat("S2 Y", &sphere1->pos.x, -100.0, 100.0);
-	ImGui::SliderFloat("S2 Z", &sphere1->pos.x, -100.0, 100.0);
-	ImGui::SliderFloat("S2 Radius", &sphere1->r, -100.0, 100.0);
+	ImGui::SliderFloat("S2 X", &sphere2->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("S2 Y", &sphere2->pos.y, -100.0, 100.0);
+	ImGui::SliderFloat("S2 Z", &sphere2->pos.z, -100.0, 100.0);
+	ImGui::SliderFloat("S2 Radius", &sphere2->r, -100.0, 100.0);
 
 	ImGui::Text("Capsule 1");
 
-	ImGui::SliderFloat("C1 A.x", &capsule1->l.b.x, -100.0, 100.0);
-	ImGui::SliderFloat("C1 A.y", &capsule1->l.b.y, -100.0, 100.0);
-	ImGui::SliderFloat("C1 A.z", &capsule1->l.b.z, -100.0, 100.0);
+	ImGui::SliderFloat("C1 A.x", &capsule1->l.a.x, -100.0, 100.0);
+	ImGui::SliderFloat("C1 A.y", &capsule1->l.a.y, -100.0, 100.0);
+	ImGui::SliderFloat("C1 A.z", &capsule1->l.a.z, -100.0, 100.0);
 
 	ImGui::SliderFloat("C1 B.x", &capsule1->l.b.x, -100.0, 100.0);
 	ImGui::SliderFloat("C1 B.y", &capsule1->l.b.y, -100.0, 100.0);
@@ -263,15 +268,32 @@ void ModuleSceneIntro::ShowMatGeoLibWindow()
 
 	ImGui::Text("Capsule 2");
 
-	ImGui::SliderFloat("C2 A.x", &capsule1->l.b.x, -100.0, 100.0);
-	ImGui::SliderFloat("C2 A.y", &capsule1->l.b.y, -100.0, 100.0);
-	ImGui::SliderFloat("C2 A.z", &capsule1->l.b.z, -100.0, 100.0);
+	ImGui::SliderFloat("C2 A.x", &capsule2->l.a.x, -100.0, 100.0);
+	ImGui::SliderFloat("C2 A.y", &capsule2->l.a.y, -100.0, 100.0);
+	ImGui::SliderFloat("C2 A.z", &capsule2->l.a.z, -100.0, 100.0);
 
-	ImGui::SliderFloat("C2 B.x", &capsule1->l.b.x, -100.0, 100.0);
-	ImGui::SliderFloat("C2 B.y", &capsule1->l.b.y, -100.0, 100.0);
-	ImGui::SliderFloat("C2 B.z", &capsule1->l.b.z, -100.0, 100.0);
+	ImGui::SliderFloat("C2 B.x", &capsule2->l.b.x, -100.0, 100.0);
+	ImGui::SliderFloat("C2 B.y", &capsule2->l.b.y, -100.0, 100.0);
+	ImGui::SliderFloat("C2 B.z", &capsule2->l.b.z, -100.0, 100.0);
 
-	ImGui::SliderFloat("C2 Radius", &capsule1->r, -100.0, 100.0);
+	ImGui::SliderFloat("C2 Radius", &capsule2->r, -100.0, 100.0);
+
+	ImGui::Text("AABB");
+
+	ImGui::SliderFloat("AABB A.x", &aabb1->minPoint.x, -100.0, 100.0);
+	ImGui::SliderFloat("AABB A.y", &aabb1->minPoint.y, -100.0, 100.0);
+	ImGui::SliderFloat("AABB A.z", &aabb1->minPoint.z, -100.0, 100.0);
+
+	ImGui::SliderFloat("AABB B.x", &aabb1->maxPoint.x, -100.0, 100.0);
+	ImGui::SliderFloat("AABB B.y", &aabb1->maxPoint.y, -100.0, 100.0);
+	ImGui::SliderFloat("AABB B.z", &aabb1->maxPoint.z, -100.0, 100.0);
+
+	ImGui::Text("OBB");
+
+	ImGui::SliderFloat("OBB Pos x", &obb->pos.x, -100.0, 100.0);
+	ImGui::SliderFloat("OBB Pos y", &obb->pos.y, -100.0, 100.0);
+	ImGui::SliderFloat("AABB Pos z", &obb->pos.z, -100.0, 100.0);
+
 
 	ImGui::Text("Sphere 1 collision with: ");
 	if(sphere1->Contains(*sphere2))
@@ -289,7 +311,42 @@ void ModuleSceneIntro::ShowMatGeoLibWindow()
 	else
 		ImGui::Text("Not Sphere 2");
 
+	if (sphere1->Contains(*aabb1))
+		ImGui::Text("AABB");
+	else
+		ImGui::Text("Not AABB");
 
+	if (sphere1->Contains(*obb))
+		ImGui::Text("OBB");
+	else
+		ImGui::Text("Not OBB");
+
+	ImGui::Text("Sphere 1 intersect with: ");
+	if (sphere1->Intersects(*sphere2))
+		ImGui::Text("Sphere 2");
+	else
+		ImGui::Text("Not Sphere 2");
+
+	if (sphere1->Intersects(*capsule1))
+		ImGui::Text("Capsule 1");
+	else
+		ImGui::Text("Not Capsule 1");
+
+	if (sphere1->Intersects(*capsule2))
+		ImGui::Text("Capsule 2");
+	else
+		ImGui::Text("Not Sphere 2");
+
+	if (sphere1->Intersects(*aabb1))
+		ImGui::Text("AABB");
+	else
+		ImGui::Text("Not AABB");
+
+	if (sphere1->Intersects(*obb))
+		ImGui::Text("OBB");
+	else
+		ImGui::Text("Not OBB");
+	
 
 	ImGui::End();
 }
