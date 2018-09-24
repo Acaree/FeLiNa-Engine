@@ -43,8 +43,8 @@ update_status ModuleGui::Update(float dt)
 	ImGui::ShowDemoWindow();
 
 	ShowMainMenuBar();
-
-
+	
+	ShowConfigurationWindow();
 
 	return update_return;
 }
@@ -105,3 +105,54 @@ void ModuleGui::ShowMainMenuBar()
 	}
 }
 
+
+void ModuleGui::ShowConfigurationWindow()
+{
+	ImGui::SetNextWindowSize({400,800});
+	
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+	ImGui::Begin("Configuration", false, window_flags);
+
+	if (ImGui::CollapsingHeader("Application"))
+	{
+		ImGui::InputText("App name",App->app_name,20);
+		ImGui::InputText("Organization", App->organization, 20);
+		if (vector_fps.size() != 100)
+		{
+			vector_fps.push_back(App->GetFPS());
+			vector_ms.push_back(App->GetMS());
+		}
+		else
+		{
+			vector_fps.erase(vector_fps.begin());
+			vector_fps.push_back(App->GetFPS());
+
+			vector_ms.erase(vector_ms.begin());
+			vector_ms.push_back(App->GetMS());
+		}
+		char title[25];
+
+		sprintf_s(title, 25, "Framerate %.1f", vector_fps[vector_fps.size() - 1]);
+		ImGui::PlotHistogram("##framerate", &vector_fps[0], vector_fps.size(),0,title,0.0f,100.0f,ImVec2(310,100));
+
+		sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
+		ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+	}
+
+	if (ImGui::CollapsingHeader("Window"))
+	{
+
+	}
+	if (ImGui::CollapsingHeader("Hardware Detection"))
+	{
+
+	}
+
+	ImGui::End();
+}

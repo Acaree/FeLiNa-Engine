@@ -40,6 +40,8 @@ bool Application::Init()
 {
 	bool ret = true;
 
+	app_name = "FeLiNa Engine";
+	organization = "UPC CITM";
 	// Call Init() in all modules
 	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
 	{
@@ -67,6 +69,8 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	last_FPS = 1.0f / dt;
+	last_ms = (float)ms_timer.Read();
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -118,4 +122,14 @@ bool Application::CleanUp()
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
+}
+
+float Application::GetMS()
+{
+	return last_ms;
+}
+
+float Application::GetFPS()
+{
+	return last_FPS;
 }

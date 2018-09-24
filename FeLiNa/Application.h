@@ -23,10 +23,14 @@ public:
 	ModuleCamera3D* camera;
 	ModuleGui* gui;
 
+	char* app_name;
+	char* organization;
 private:
 
 	Timer	ms_timer;
-	float	dt;
+	float	dt = 0.0f;
+	float last_FPS = 0.0f;
+	float last_ms = 0.0f;
 	std::list<Module*>list_modules;
 
 public:
@@ -37,6 +41,9 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+
+	float GetMS();
+	float GetFPS();
 
 private:
 

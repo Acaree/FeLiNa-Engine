@@ -8,6 +8,8 @@
 #include "imgui-1.65/imgui_impl_sdl.h"
 #include "imgui-1.65/imgui_impl_opengl2.h"
 
+#include <vector>
+
 class ModuleGui : public Module
 {
 public:
@@ -23,6 +25,7 @@ public:
 
 private:
 	void ShowMainMenuBar();
+	void ShowConfigurationWindow();
 
 public:
 	//Variables to main menu bar
@@ -31,6 +34,9 @@ public:
 
 	//Variables to open windows
 
+private:
+	std::vector<float> vector_ms;
+	std::vector<float> vector_fps;
 	
 };
 
