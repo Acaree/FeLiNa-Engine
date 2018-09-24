@@ -160,6 +160,17 @@ void ModuleSceneIntro::ShowMainMenuBar()
 		}
 
 
+		if (ImGui::BeginMenu("Links"))
+		{
+			
+			if (ImGui::MenuItem("Github repository", NULL, false, true))
+			{
+				ShellExecute(NULL, "open", "https://github.com/Acaree/FeLiNa-Engine", NULL, NULL, SW_SHOWNORMAL);
+			}
+
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndMainMenuBar();
 	}
 }
