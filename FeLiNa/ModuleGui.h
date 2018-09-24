@@ -24,8 +24,10 @@ public:
 	bool CleanUp();
 
 private:
+	bool About_active = false;
 	void ShowMainMenuBar();
 	void ShowConfigurationWindow();
+	void ShowAboutWindow();
 
 public:
 	//Variables to main menu bar

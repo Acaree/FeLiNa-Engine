@@ -43,8 +43,12 @@ update_status ModuleGui::Update(float dt)
 	ImGui::ShowDemoWindow();
 
 	ShowMainMenuBar();
-	
+
 	ShowConfigurationWindow();
+
+	if (About_active) {
+		ShowAboutWindow();
+	}
 
 	return update_return;
 }
@@ -90,13 +94,29 @@ void ModuleGui::ShowMainMenuBar()
 		}
 
 
-		if (ImGui::BeginMenu("Links"))
+		if (ImGui::BeginMenu("Help"))
 		{
 
-			if (ImGui::MenuItem("Github repository", NULL, false, true))
+			if (ImGui::MenuItem("Documentation", NULL, false, true))
 			{
 				ShellExecute(NULL, "open", "https://github.com/Acaree/FeLiNa-Engine", NULL, NULL, SW_SHOWNORMAL);
 			}
+
+			if (ImGui::MenuItem("Download", NULL, false, true))
+			{
+				ShellExecute(NULL, "open", "https://github.com/Acaree/FeLiNa-Engine/releases", NULL, NULL, SW_SHOWNORMAL);
+			}
+
+			if (ImGui::MenuItem("Report a bug", NULL, false, true))
+			{
+				ShellExecute(NULL, "open", "https://github.com/Acaree/FeLiNa-Engine/issues", NULL, NULL, SW_SHOWNORMAL);
+			}
+
+			if (ImGui::MenuItem("About", NULL, false, true))
+			{
+				About_active = true;	//maybe guarrada
+			}
+
 
 			ImGui::EndMenu();
 		}
@@ -180,7 +200,7 @@ void ModuleGui::ShowConfigurationWindow()
 		}
 		ImGui::SameLine();
 		//NEES SAVE/LOAD TO JSON
-		if (ImGui::Checkbox("Reasizable", &App->window->reasizable))
+		if (ImGui::Checkbox("Resizable", &App->window->reasizable))
 		{
 		
 		}
@@ -204,4 +224,25 @@ void ModuleGui::ShowConfigurationWindow()
 	}
 
 	ImGui::End();
+}
+
+
+void ModuleGui::ShowAboutWindow() {
+
+	ImGui::SetNextWindowSize({ 400,100 });
+
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+	ImGui::Begin("About", false, window_flags);
+
+	ImGui::Text("This engine is made by two students in CITM.");
+	ImGui::Text("This software is licensed under MIT license.");
+
+	ImGui::End();
+
 }
