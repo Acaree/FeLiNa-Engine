@@ -230,7 +230,6 @@ void ModuleGui::ShowConfigurationWindow()
 void ModuleGui::ShowAboutWindow() {
 
 	ImGui::SetNextWindowSize({ 400,100 });
-
 	ImGuiWindowFlags window_flags = 0;
 
 	window_flags |= ImGuiWindowFlags_NoResize;
@@ -238,7 +237,7 @@ void ModuleGui::ShowAboutWindow() {
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
 
-	ImGui::Begin("About", false, window_flags);
+	ImGui::Begin("About",&About_active, window_flags);
 
 	ImGui::Text("This engine is made by two students in CITM.");
 	ImGui::Text("This software is licensed under MIT license.");
