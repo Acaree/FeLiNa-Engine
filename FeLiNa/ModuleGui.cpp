@@ -147,7 +147,56 @@ void ModuleGui::ShowConfigurationWindow()
 
 	if (ImGui::CollapsingHeader("Window"))
 	{
+		
+		
+		if (ImGui::SliderFloat("Brightness", &App->window->brightness,0.0f,1.0f))
+		{
+			int ll = SDL_SetWindowBrightness(App->window->window, App->window->brightness);
+			SDL_UpdateWindowSurface(App->window->window);
+			
+		}
 
+		if (ImGui::SliderInt("Width", &App->window->width, 1, 2000)  || ImGui::SliderInt("Height", &App->window->height, 1, 2000))
+		{
+			SDL_SetWindowSize(App->window->window, App->window->width, App->window->height);
+			SDL_UpdateWindowSurface(App->window->window);
+		}
+
+		//¿Refresh rate?
+		/*SDL_DisplayMode* display;
+
+		int t = SDL_GetWindowDisplayIndex(App->window->window);
+		int c = SDL_GetWindowDisplayMode(App->window->window, display);
+		//int l = SDL_GetDisplayMode(0);
+		SDL_REFRES
+		ImGui::Text("Refresh Rate", t);*/
+		//FULLSCREEN; REASIZABLE; BORDELESS; FULL DESKTOP
+		if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
+		{
+			if (App->window->fullscreen)
+				SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
+			else
+				SDL_SetWindowFullscreen(App->window->window, App->window->flags);
+		}
+
+		//NEES SAVE/LOAD TO JSON
+		if (ImGui::Checkbox("Reasizable", &App->window->reasizable))
+		{
+		
+		}
+
+		if (ImGui::Checkbox("Bordeless", &App->window->bordeless))
+		{
+				SDL_SetWindowBordered(App->window->window,(SDL_bool)!App->window->bordeless);
+		}
+
+		if (ImGui::Checkbox("Fullscreen Desktop", &App->window->fullscreen_desktop))
+		{
+			if (App->window->fullscreen_desktop)
+				SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			else
+				SDL_SetWindowFullscreen(App->window->window, App->window->flags);
+		}
 	}
 	if (ImGui::CollapsingHeader("Hardware Detection"))
 	{

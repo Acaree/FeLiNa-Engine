@@ -27,9 +27,9 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
-		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+		width = SCREEN_WIDTH * SCREEN_SIZE;
+		height = SCREEN_HEIGHT * SCREEN_SIZE;
+		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -69,6 +69,7 @@ bool ModuleWindow::Init()
 		}
 	}
 
+	brightness = SDL_GetWindowBrightness(App->window->window);
 	return ret;
 }
 
@@ -76,7 +77,8 @@ bool ModuleWindow::Init()
 bool ModuleWindow::CleanUp()
 {
 	LOG_GLOBAL("Destroying SDL window and quitting all SDL systems");
-
+	SDL_SetWindowBrightness(window, 1.0);
+	SDL_UpdateWindowSurface(App->window->window);
 	//Destroy window
 	if(window != NULL)
 	{

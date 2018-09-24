@@ -37,7 +37,7 @@ public:
 private:
 	std::vector<float> vector_ms;
 	std::vector<float> vector_fps;
-	
+	float f = 0.0f;
 };
 
 
