@@ -161,7 +161,7 @@ void ModuleGui::ShowConfigurationWindow()
 			SDL_SetWindowSize(App->window->window, App->window->width, App->window->height);
 			SDL_UpdateWindowSurface(App->window->window);
 		}
-
+		ImGui::Spacing();
 		//¿Refresh rate?
 		/*SDL_DisplayMode* display;
 
@@ -178,7 +178,7 @@ void ModuleGui::ShowConfigurationWindow()
 			else
 				SDL_SetWindowFullscreen(App->window->window, App->window->flags);
 		}
-
+		ImGui::SameLine();
 		//NEES SAVE/LOAD TO JSON
 		if (ImGui::Checkbox("Reasizable", &App->window->reasizable))
 		{
@@ -189,7 +189,7 @@ void ModuleGui::ShowConfigurationWindow()
 		{
 				SDL_SetWindowBordered(App->window->window,(SDL_bool)!App->window->bordeless);
 		}
-
+		ImGui::SameLine();
 		if (ImGui::Checkbox("Fullscreen Desktop", &App->window->fullscreen_desktop))
 		{
 			if (App->window->fullscreen_desktop)
