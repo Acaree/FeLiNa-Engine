@@ -23,8 +23,8 @@ public:
 	ModuleCamera3D* camera;
 	ModuleGui* gui;
 
-	char* app_name;
-	char* organization;
+	char app_name[20];
+	char organization[20];
 private:
 
 	Timer	ms_timer;

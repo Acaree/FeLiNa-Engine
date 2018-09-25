@@ -40,8 +40,9 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	app_name = "FeLiNa Engine";
-	organization = "UPC CITM";
+	
+	strcpy_s(app_name, "FeLina Engine");
+	strcpy_s(organization, "UPC CITM");
 	// Call Init() in all modules
 	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
 	{
