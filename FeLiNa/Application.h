@@ -28,10 +28,12 @@ public:
 
 	char app_name[20];
 	char organization[20];
+
+	Uint32 FPS_cap = 120;
+
 private:
 
 	PerfTimer	ms_timer;
-	Uint32 FPS_cap = 120;
 	float	dt = 0.0f;
 	double last_FPS = 0.0f;
 	double last_ms = 0.0f;
