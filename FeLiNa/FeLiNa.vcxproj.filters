@@ -147,6 +147,12 @@
     <ClCompile Include="ModuleGui.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Tools\mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\stdafx.cpp">
+      <Filter>Tools\mmgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -385,6 +391,18 @@
     <ClInclude Include="ModuleGui.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Tools\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>Tools\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\stdafx.h">
+      <Filter>Tools\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\targetver.h">
+      <Filter>Tools\mmgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -401,6 +419,9 @@
     </Filter>
     <Filter Include="Tools\ImGui">
       <UniqueIdentifier>{54534046-ba58-4ec4-b059-510dced2dbfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\mmgr">
+      <UniqueIdentifier>{fbd09ffc-3fde-4156-b66d-eea2a83bf993}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -41,7 +41,7 @@ bool ModuleAudio::Init()
 		ret = false;
 	}
 
-	return ret;
+	return true;
 }
 
 // Called before quitting

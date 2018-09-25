@@ -1,5 +1,6 @@
 #include "ModuleGui.h"
 #include "Application.h"
+#include "mmgr/mmgr.h"
 
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -163,6 +164,46 @@ void ModuleGui::ShowConfigurationWindow()
 
 		sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
 		ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+
+		sMStats stats = m_getMemoryStatistics();
+
+		ImGui::Text("Total Reported Mem:");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.totalReportedMemory);
+
+		ImGui::Text("Total Actual Mem:");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.accumulatedActualMemory);
+
+		ImGui::Text("Peak Reported Mem:");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.peakReportedMemory);
+
+		ImGui::Text("Peak Actual Mem:");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.peakActualMemory );
+
+		ImGui::Text("Accumulated Reported Mem:");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.accumulatedReportedMemory);
+
+		ImGui::Text("Accumulated Actual Mem:");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.accumulatedActualMemory);
+
+		ImGui::Text("Accumulated Alloc Unit Count:");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.accumulatedAllocUnitCount);
+
+		ImGui::Text("Total Alloc Unit Count:");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.totalAllocUnitCount);
+
+		ImGui::Text("Peak Alloc Unit Count");
+		ImGui::SameLine();
+		ImGui::Text("%i", stats.peakAllocUnitCount);
+		
+		
 	}
 
 	if (ImGui::CollapsingHeader("Window"))
@@ -220,7 +261,35 @@ void ModuleGui::ShowConfigurationWindow()
 	}
 	if (ImGui::CollapsingHeader("Hardware Detection"))
 	{
+		ImGui::Text("SDL Version: ");
+		ImGui::SameLine();
+		//To change-------------------------
+		SDL_version curren_version;
+		SDL_VERSION(&curren_version);
+		char sdlVer[38];
+		sprintf_s(sdlVer, sizeof(sdlVer), "%d.%d.%d", curren_version.major, curren_version.minor, curren_version.patch);
+		ImGui::TextColored(ImVec4(0,1,0,100),sdlVer);
+		//--------------------------------
+		ImGui::Separator();
 
+		ImGui::Text("CPUs: ");
+		ImGui::SameLine();
+		//To change--------------------
+		int cpu = SDL_GetCPUCount();
+		char cpuVer[38];
+		sprintf_s(cpuVer, sizeof(sdlVer), "%i", cpu);
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), cpuVer);
+		//--------------------------
+
+		ImGui::Text("System RAM: ");
+		ImGui::Text("Caps: ");
+		ImGui::Separator();
+		ImGui::Text("GPU: ");
+		ImGui::Text("Brand: ");
+		ImGui::Text("VRAM Budget: ");
+		ImGui::Text("VRAM Usage: ");
+		ImGui::Text("VRAM Avaliable: ");
+		ImGui::Text("VRAM Reserved: ");
 	}
 
 	ImGui::End();
