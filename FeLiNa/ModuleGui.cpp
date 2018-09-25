@@ -167,6 +167,10 @@ void ModuleGui::ShowConfigurationWindow()
 		}
 		char title[30];
 
+		ImGui::SliderInt("FPS", &App->FPS_cap, 0, 120);
+		
+		ImGui::Checkbox("Vsync", &App->vsync);
+
 		sprintf_s(title, 25, "Framerate %.1f", vector_fps[vector_fps.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &vector_fps[0], vector_fps.size(),0,title,0.0f,100.0f,ImVec2(310,100));
 

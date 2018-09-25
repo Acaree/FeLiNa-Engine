@@ -29,7 +29,9 @@ public:
 	char app_name[20];
 	char organization[20];
 
-	Uint32 FPS_cap = 120;
+	int FPS_cap = 60;
+
+	bool vsync = false;
 
 private:
 
