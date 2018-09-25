@@ -2,6 +2,7 @@
 
 Application::Application()
 {
+	hardware = new ModuleHardware(this,false);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
@@ -14,11 +15,12 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
+	
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	
+	AddModule(hardware);
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(gui);

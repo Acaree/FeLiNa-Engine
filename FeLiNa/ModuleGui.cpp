@@ -1,7 +1,7 @@
 #include "ModuleGui.h"
 #include "Application.h"
 #include "mmgr/mmgr.h"
-
+#include "ModuleHardware.h"
 //XD need module hardware-------------------------------------
 #define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX			0x9047
 #define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX		0x9048
@@ -57,7 +57,7 @@ update_status ModuleGui::Update(float dt)
 	if (About_active) {
 		ShowAboutWindow();
 	}
-
+	
 	return update_return;
 }
 
@@ -141,7 +141,6 @@ void ModuleGui::ShowConfigurationWindow()
 	ImGuiWindowFlags window_flags = 0;
 
 	window_flags |= ImGuiWindowFlags_NoResize;
-	window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
 
@@ -281,128 +280,95 @@ void ModuleGui::ShowConfigurationWindow()
 	}
 	if (ImGui::CollapsingHeader("Hardware Detection"))
 	{
+		App->hardware->FillHardwareInfo();
 		ImGui::Text("SDL Version: ");
 		ImGui::SameLine();
-		//To change-------------------------
-		SDL_version curren_version;
-		SDL_VERSION(&curren_version);
-		char sdlVer[38];
-		sprintf_s(sdlVer, sizeof(sdlVer), "%d.%d.%d", curren_version.major, curren_version.minor, curren_version.patch);
-		ImGui::TextColored(ImVec4(0,1,0,100),sdlVer);
-		//--------------------------------
+		ImGui::TextColored(ImVec4(0,1,0,100), App->hardware->hardware_info.sdl_current_version);
+
 		ImGui::Separator();
 
 		ImGui::Text("CPUs: ");
 		ImGui::SameLine();
-		//To change--------------------
-		int cpu = SDL_GetCPUCount();
-		char cpuVer[38];
-		sprintf_s(cpuVer, sizeof(sdlVer), "%i", cpu);
-		ImGui::TextColored(ImVec4(0, 1, 0, 100), cpuVer);
-		//--------------------------
-
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), App->hardware->hardware_info.cpu_version_count);
+		
 		ImGui::Text("System RAM: ");
 		ImGui::SameLine();
-		//To change--------------------
-		cpu = SDL_GetSystemRAM()/1000;
-		sprintf_s(cpuVer, sizeof(sdlVer), "%i Gb", cpu);
-		ImGui::TextColored(ImVec4(0, 1, 0, 100), cpuVer);
-		//--------------------------
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), App->hardware->hardware_info.total_ram_count);
+		
 		ImGui::Text("Caps: ");
 		ImGui::SameLine();
 		
-		if (SDL_HasRDTSC())
+		if (App->hardware->hardware_info.RDTSC)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "RDTSC");
 			ImGui::SameLine();
 		}
-		if (SDL_HasMMX())
+		if (App->hardware->hardware_info.MMX)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "MMX");
 			ImGui::SameLine();
 		}
-		if (SDL_HasAVX())
+		if (App->hardware->hardware_info.AVX)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "AVX");
 			ImGui::SameLine();
 		}
-		if (SDL_HasAVX2())
+		if (App->hardware->hardware_info.AVX2)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "AVX2");
 			ImGui::SameLine();
 		}
-		if (SDL_HasSSE())
+		if (App->hardware->hardware_info.SSE)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE");
 			ImGui::SameLine();
 		}
-		if (SDL_HasSSE2())
+		if (App->hardware->hardware_info.SSE2)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE2");
 			ImGui::SameLine();
 		}
-		if (SDL_HasSSE3())
+		if (App->hardware->hardware_info.SSE3)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE3");
 			ImGui::SameLine();
 		}
-		if (SDL_HasSSE41())
+		if (App->hardware->hardware_info.SSE41)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE41");
 			ImGui::SameLine();
 		}
-		if (SDL_HasSSE42())
+		if (App->hardware->hardware_info.SSE42)
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE42");
 
 		}
-		//TO CHANGE--------------------------
-		///START 
-		const GLubyte* vendor = glGetString(GL_VENDOR);
-		//brand
-		const GLubyte* gpuName = glGetString(GL_RENDERER);
-		//VRAM Budget
-		GLint totalMemory;
-		glGetIntegerv(GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &totalMemory);
-
-		///UPDATE
-		GLint memoryUsage = 0;
-		GLint dedicatedMemory = 0;
-		GLint availableMemory = 0;
-
-		//VRAM Available
-		glGetIntegerv(GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &availableMemory);
-		//VRAM Reserved
-		glGetIntegerv(GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &dedicatedMemory);
-		//VRAM Usage
-		memoryUsage = totalMemory - availableMemory;
-		
 		ImGui::Separator();
 		//GPU
 		ImGui::Text("GPU: ");
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%s", vendor);
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%s", App->hardware->hardware_info.vendor);
 		ImGui::Separator();
 		//Brand
 		ImGui::Text("Brand: ");
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%s", gpuName);
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%s", App->hardware->hardware_info.gpu_name);
 		//VRAM Budget
 		ImGui::Text("VRAM Budget: ");
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (totalMemory * 0.001));
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (App->hardware->hardware_info.total_memory * 0.001));
 		//VRAM Usage
 		ImGui::Text("VRAM Usage: ");
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (memoryUsage * 0.001));
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (App->hardware->hardware_info.memory_usage * 0.001));
 		//VRAM Available
 		ImGui::Text("VRAM Available: ");
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (availableMemory * 0.001));
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (App->hardware->hardware_info.available_memory * 0.001));
 		//VRAM Reserved
 		ImGui::Text("VRAM Reserved: ");
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (dedicatedMemory * 0.001));
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (App->hardware->hardware_info.dedicated_memory * 0.001));
 		//----------------------------------- SEE AND CHANGE
 	}
 
