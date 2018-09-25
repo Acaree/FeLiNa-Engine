@@ -3,6 +3,7 @@
 #include <list>
 #include "Globals.h"
 #include "Timer.h"
+#include "PerfTimer.h"
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
@@ -29,10 +30,11 @@ public:
 	char organization[20];
 private:
 
-	Timer	ms_timer;
+	PerfTimer	ms_timer;
+	Uint32 FPS_cap = 120;
 	float	dt = 0.0f;
-	float last_FPS = 0.0f;
-	float last_ms = 0.0f;
+	double last_FPS = 0.0f;
+	double last_ms = 0.0f;
 	std::list<Module*>list_modules;
 
 public:

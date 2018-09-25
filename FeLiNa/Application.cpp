@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 
 Application::Application()
 {
@@ -58,22 +59,32 @@ bool Application::Init()
 		ret = (*it)->Start();
 	}
 	
-	ms_timer.Start();
 	return ret;
 }
 
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	last_FPS = 1.0f / dt;
-	last_ms = (float)ms_timer.Read();
+	last_ms = ms_timer.ReadMs();
+
+	if (!VSYNC) {
+		double ms_cap = 1000 / FPS_cap;
+
+		if (last_ms < ms_cap) {
+			SDL_Delay(ms_cap - last_ms);
+		}
+
+	}
+
+	last_ms = ms_timer.ReadMs();
+	last_FPS = 1000.0 / last_ms;
+	dt = 1 / last_FPS;
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
