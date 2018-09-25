@@ -54,6 +54,8 @@ update_status ModuleGui::Update(float dt)
 
 	ShowConfigurationWindow();
 
+	ShowLogWindow();
+
 	if (About_active) {
 		ShowAboutWindow();
 	}
@@ -427,4 +429,26 @@ void ModuleGui::ShowAboutWindow() {
 
 	ImGui::End();
 
+}
+
+void ModuleGui::Print_Log(const char* text) {
+
+	LOG_GLOBAL(text);
+	log_list.push_back(text);
+
+}
+
+void ModuleGui::ShowLogWindow() {
+
+	ImGui::SetNextWindowSize({ 200,400 });
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+	ImGui::Begin("Output Console", &Log_active, window_flags);
+	for (int i = 0; i < log_list.size(); i++) {
+		ImGui::Text(log_list.at(i));
+	}
+	ImGui::End();
 }
