@@ -2,6 +2,13 @@
 #include "Application.h"
 #include "mmgr/mmgr.h"
 
+//XD need module hardware-------------------------------------
+#define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX			0x9047
+#define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX		0x9048
+#define GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX    0x9049
+#define GPU_MEMORY_INFO_EVICTION_COUNT_NVX				0x904A
+#define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX				0x904B
+//-------------------------------------------------------------
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -157,7 +164,7 @@ void ModuleGui::ShowConfigurationWindow()
 			vector_ms.erase(vector_ms.begin());
 			vector_ms.push_back(App->GetMS());
 		}
-		char title[25];
+		char title[30];
 
 		sprintf_s(title, 25, "Framerate %.1f", vector_fps[vector_fps.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &vector_fps[0], vector_fps.size(),0,title,0.0f,100.0f,ImVec2(310,100));
@@ -170,6 +177,19 @@ void ModuleGui::ShowConfigurationWindow()
 		ImGui::Text("Total Reported Mem:");
 		ImGui::SameLine();
 		ImGui::Text("%i", stats.totalReportedMemory);
+
+		if (vector_memory.size() != 100)
+		{
+			vector_memory.push_back((int)stats.accumulatedActualMemory);
+		}
+		else
+		{
+			vector_memory.erase(vector_memory.begin());
+			vector_memory.push_back((int)stats.accumulatedActualMemory);
+		}
+
+		sprintf_s(title, 25, "Memory Consumption ");
+		ImGui::PlotHistogram("##Memory Consumption", &vector_memory[0], vector_memory.size(), 0, title, 0.0f, 1000000, ImVec2(310, 100));
 
 		ImGui::Text("Total Actual Mem:");
 		ImGui::SameLine();
@@ -282,14 +302,108 @@ void ModuleGui::ShowConfigurationWindow()
 		//--------------------------
 
 		ImGui::Text("System RAM: ");
+		ImGui::SameLine();
+		//To change--------------------
+		cpu = SDL_GetSystemRAM()/1000;
+		sprintf_s(cpuVer, sizeof(sdlVer), "%i Gb", cpu);
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), cpuVer);
+		//--------------------------
 		ImGui::Text("Caps: ");
+		ImGui::SameLine();
+		
+		if (SDL_HasRDTSC())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "RDTSC");
+			ImGui::SameLine();
+		}
+		if (SDL_HasMMX())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "MMX");
+			ImGui::SameLine();
+		}
+		if (SDL_HasAVX())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "AVX");
+			ImGui::SameLine();
+		}
+		if (SDL_HasAVX2())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "AVX2");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE2())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE2");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE3())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE3");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE41())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE41");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE42())
+		{
+			ImGui::TextColored(ImVec4(0, 1, 0, 100), "SSE42");
+
+		}
+		//TO CHANGE--------------------------
+		///START 
+		const GLubyte* vendor = glGetString(GL_VENDOR);
+		//brand
+		const GLubyte* gpuName = glGetString(GL_RENDERER);
+		//VRAM Budget
+		GLint totalMemory;
+		glGetIntegerv(GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &totalMemory);
+
+		///UPDATE
+		GLint memoryUsage = 0;
+		GLint dedicatedMemory = 0;
+		GLint availableMemory = 0;
+
+		//VRAM Available
+		glGetIntegerv(GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &availableMemory);
+		//VRAM Reserved
+		glGetIntegerv(GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &dedicatedMemory);
+		//VRAM Usage
+		memoryUsage = totalMemory - availableMemory;
+		
 		ImGui::Separator();
+		//GPU
 		ImGui::Text("GPU: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%s", vendor);
+		ImGui::Separator();
+		//Brand
 		ImGui::Text("Brand: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%s", gpuName);
+		//VRAM Budget
 		ImGui::Text("VRAM Budget: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (totalMemory * 0.001));
+		//VRAM Usage
 		ImGui::Text("VRAM Usage: ");
-		ImGui::Text("VRAM Avaliable: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (memoryUsage * 0.001));
+		//VRAM Available
+		ImGui::Text("VRAM Available: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (availableMemory * 0.001));
+		//VRAM Reserved
 		ImGui::Text("VRAM Reserved: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (dedicatedMemory * 0.001));
+		//----------------------------------- SEE AND CHANGE
 	}
 
 	ImGui::End();

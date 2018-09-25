@@ -39,6 +39,7 @@ public:
 private:
 	std::vector<float> vector_ms;
 	std::vector<float> vector_fps;
+	std::vector<float> vector_memory;
 	float f = 0.0f;
 };
 
