@@ -1,3 +1,7 @@
+#include "Glew/glew.h"
+#pragma comment (lib, "Glew/glew32.lib")
+
+
 #include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"

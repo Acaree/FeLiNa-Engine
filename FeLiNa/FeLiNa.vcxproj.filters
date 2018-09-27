@@ -159,6 +159,9 @@
     <ClCompile Include="PerfTimer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Glew\glew.c">
+      <Filter>Tools\Glew</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -415,6 +418,12 @@
     <ClInclude Include="PerfTimer.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Glew\wglew.h">
+      <Filter>Tools\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Glew\glew.h">
+      <Filter>Tools\Glew</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -437,6 +446,9 @@
     </Filter>
     <Filter Include="Tools\MatGeoLib">
       <UniqueIdentifier>{67865592-8375-458f-ab97-9d09b02ced9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Glew">
+      <UniqueIdentifier>{df8c7ae6-1906-4d8f-b863-95c63dc1a148}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
