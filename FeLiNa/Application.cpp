@@ -155,3 +155,85 @@ float Application::GetFPS()
 {
 	return last_FPS;
 }
+
+void Application::DrawApplicationInformationPanel()
+{
+	ImGui::InputText("App name", app_name, 20);
+		
+	ImGui::InputText("Organization", organization, 20);
+	if (vector_fps.size() != 100)
+	{
+		vector_fps.push_back(GetFPS());
+		vector_ms.push_back(GetMS());
+	}
+	else
+	{
+		vector_fps.erase(vector_fps.begin());
+		vector_fps.push_back(GetFPS());
+
+		vector_ms.erase(vector_ms.begin());
+		vector_ms.push_back(GetMS());
+	}
+	char title[30];
+
+	ImGui::SliderInt("FPS", &FPS_cap, 0, 120);
+
+	ImGui::Checkbox("Vsync", &vsync);
+
+	sprintf_s(title, 25, "Framerate %.1f", vector_fps[vector_fps.size() - 1]);
+	ImGui::PlotHistogram("##framerate", &vector_fps[0], vector_fps.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+
+	sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
+	ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+
+	sMStats stats = m_getMemoryStatistics();
+
+	if (vector_memory.size() != 100)
+	{
+		vector_memory.push_back((int)stats.accumulatedActualMemory);
+	}
+	else
+	{
+		vector_memory.erase(vector_memory.begin());
+		vector_memory.push_back((int)stats.accumulatedActualMemory);
+	}
+
+	sprintf_s(title, 25, "Memory Consumption ");
+	ImGui::PlotHistogram("##Memory Consumption", &vector_memory[0], vector_memory.size(), 0, title, 0.0f, 1000000, ImVec2(310, 100));
+
+	ImGui::Text("Total Reported Mem:");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.totalReportedMemory);
+
+	ImGui::Text("Total Actual Mem:");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.accumulatedActualMemory);
+
+	ImGui::Text("Peak Reported Mem:");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.peakReportedMemory);
+
+	ImGui::Text("Peak Actual Mem:");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.peakActualMemory);
+
+	ImGui::Text("Accumulated Reported Mem:");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.accumulatedReportedMemory);
+
+	ImGui::Text("Accumulated Actual Mem:");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.accumulatedActualMemory);
+
+	ImGui::Text("Accumulated Alloc Unit Count:");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.accumulatedAllocUnitCount);
+
+	ImGui::Text("Total Alloc Unit Count:");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.totalAllocUnitCount);
+
+	ImGui::Text("Peak Alloc Unit Count");
+	ImGui::SameLine();
+	ImGui::Text("%i", stats.peakAllocUnitCount);
+}

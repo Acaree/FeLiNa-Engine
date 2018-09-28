@@ -41,6 +41,10 @@ private:
 	double last_ms = 0.0f;
 	std::list<Module*>list_modules;
 
+	std::vector<float> vector_ms;
+	std::vector<float> vector_fps;
+	std::vector<float> vector_memory;
+
 public:
 
 	Application();
@@ -52,6 +56,8 @@ public:
 
 	float GetMS();
 	float GetFPS();
+
+	void DrawApplicationInformationPanel();
 
 private:
 

@@ -69,7 +69,7 @@ bool ModuleWindow::Init()
 		}
 	}
 
-	brightness = SDL_GetWindowBrightness(App->window->window);
+	brightness = SDL_GetWindowBrightness(window);
 	return ret;
 }
 
@@ -78,7 +78,7 @@ bool ModuleWindow::CleanUp()
 {
 	LOG_GLOBAL("Destroying SDL window and quitting all SDL systems");
 	SDL_SetWindowBrightness(window, 1.0);
-	SDL_UpdateWindowSurface(App->window->window);
+	SDL_UpdateWindowSurface(window);
 	//Destroy window
 	if(window != NULL)
 	{
@@ -93,4 +93,50 @@ bool ModuleWindow::CleanUp()
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+}
+
+void ModuleWindow::DrawWindowInformationPanel()
+{
+	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
+	{
+		SDL_SetWindowBrightness(window, brightness);
+		SDL_UpdateWindowSurface(window);
+	}
+
+	if (ImGui::SliderInt("Width", &width, 1, 2000) || ImGui::SliderInt("Height", &height, 1, 2000))
+	{
+		SDL_SetWindowSize(window, width, height);
+		SDL_UpdateWindowSurface(window);
+	}
+	ImGui::Spacing();
+
+	//¿Refresh rate?
+
+	if (ImGui::Checkbox("Fullscreen", &fullscreen))
+	{
+		if (fullscreen)
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+		else
+			SDL_SetWindowFullscreen(window, flags);
+	}
+	ImGui::SameLine();
+
+	//¿Reasizable?
+
+	if (ImGui::Checkbox("Bordeless", &bordeless))
+	{
+		SDL_SetWindowBordered(window, (SDL_bool)!bordeless);
+	}
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Fullscreen Desktop", &fullscreen_desktop))
+	{
+		if (fullscreen_desktop)
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		else
+			SDL_SetWindowFullscreen(window, flags);
+	}
+
+
+
+
 }
