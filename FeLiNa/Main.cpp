@@ -1,14 +1,16 @@
-#include "Glew/glew.h"
-#pragma comment (lib, "Glew/glew32.lib")
-
 
 #include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
 
-#include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
+
+
+
+
+#include "SDL/include/SDL_opengl.h"
+
 
 enum main_states
 {

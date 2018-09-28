@@ -78,8 +78,10 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="Glew\glew.h" />
-    <ClInclude Include="Glew\wglew.h" />
+    <ClInclude Include="Glew\include\eglew.h" />
+    <ClInclude Include="Glew\include\glew.h" />
+    <ClInclude Include="Glew\include\glxew.h" />
+    <ClInclude Include="Glew\include\wglew.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="imgui-1.65\imconfig.h" />
     <ClInclude Include="imgui-1.65\imgui.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleSceneIntro.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="OpenGL.h" />
     <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Timer.h" />
@@ -168,7 +171,6 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Glew\glew.c" />
     <ClCompile Include="imgui-1.65\imgui.cpp" />
     <ClCompile Include="imgui-1.65\imgui_demo.cpp" />
     <ClCompile Include="imgui-1.65\imgui_draw.cpp" />

@@ -159,9 +159,6 @@
     <ClCompile Include="PerfTimer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Glew\glew.c">
-      <Filter>Tools\Glew</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -418,11 +415,20 @@
     <ClInclude Include="PerfTimer.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Glew\wglew.h">
+    <ClInclude Include="Glew\include\glew.h">
       <Filter>Tools\Glew</Filter>
     </ClInclude>
-    <ClInclude Include="Glew\glew.h">
+    <ClInclude Include="Glew\include\glxew.h">
       <Filter>Tools\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Glew\include\wglew.h">
+      <Filter>Tools\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Glew\include\eglew.h">
+      <Filter>Tools\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 #pragma once
+#include "OpenGL.h"
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"

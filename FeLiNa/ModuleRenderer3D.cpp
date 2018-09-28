@@ -3,7 +3,7 @@
 #include "ModuleRenderer3D.h"
 #include "SDL\include\SDL_opengl.h"
 
-
+#pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
@@ -18,6 +18,17 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
+
+	GLenum err = glewInit(); // … check for errors 
+	LOG_GLOBAL("Using Glew %s", glewGetString(GLEW_VERSION)); // Should be 2.0
+
+
+	LOG_GLOBAL("Vendor: %s", glGetString(GL_VENDOR)); 
+	LOG_GLOBAL("Renderer: %s", glGetString(GL_RENDERER)); 
+	LOG_GLOBAL("OpenGL version supported %s", glGetString(GL_VERSION)); 
+	LOG_GLOBAL("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+
 	LOG_GLOBAL("Creating 3D Renderer context");
 	bool ret = true;
 	
@@ -100,6 +111,11 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_COLOR_MATERIAL);
 	}
 
+
+	LOG_GLOBAL("Vendor: %s", glGetString(GL_VENDOR));
+	LOG_GLOBAL("Renderer: %s", glGetString(GL_RENDERER)); 
+	LOG_GLOBAL("OpenGL version supported %s", glGetString(GL_VERSION)); 
+	LOG_GLOBAL("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -170,7 +186,7 @@ float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float 
 	Perspective.v[2][2] = (n + f) / (n - f);
 	Perspective.v[2][3] = -1.0f;
 	Perspective.v[3][2] = 2.0f * n * f / (n - f);
-
+	
 	return Perspective;
 
 }
