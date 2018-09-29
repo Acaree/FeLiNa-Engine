@@ -41,6 +41,7 @@ public:
 	
 	bool close_program = false;
 	bool open_configuration = true;
+	bool open_render_configuration = false;
 };
 
 

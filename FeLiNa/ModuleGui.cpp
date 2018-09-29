@@ -49,6 +49,9 @@ update_status ModuleGui::Update(float dt)
 	if(open_configuration)
 		ShowConfigurationWindow();
 
+	if (open_render_configuration)
+		App->renderer3D->DrawCheckBoxEdgeGLPanel();
+
 	ShowLogWindow();
 
 	if (About_active) {
@@ -98,6 +101,12 @@ void ModuleGui::ShowMainMenuBar()
 			{
 				App->scene_intro->grid_plane->wire = !App->scene_intro->grid_plane->wire;
 			}
+
+			if (ImGui::MenuItem("GL Options", NULL, open_render_configuration, true))
+			{
+				open_render_configuration = !open_render_configuration;
+			}
+
 			ImGui::EndMenu();
 		}
 
@@ -168,6 +177,7 @@ void ModuleGui::ShowConfigurationWindow()
 	{
 		App->hardware->DrawHardwareInformationPanel();
 	}
+
 
 	ImGui::End();
 }

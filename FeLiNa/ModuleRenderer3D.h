@@ -21,10 +21,22 @@ public:
 
 	void OnResize(int width, int height);
 
+	void DrawCheckBoxEdgeGLPanel();
+
 public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+
+private:
+	bool depth_test = false;
+	bool cull_face = false;
+	bool lighting = false;
+	bool color_material = false;;
+	bool texture2D = false;
+	bool line_smooth = false;
+	bool polygon_smooth = false;
+	
 };

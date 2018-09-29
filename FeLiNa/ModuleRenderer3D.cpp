@@ -112,6 +112,7 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE_2D);
 	}
 
 
@@ -121,6 +122,15 @@ bool ModuleRenderer3D::Init()
 	LOG_GLOBAL("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	depth_test = glIsEnabled(GL_DEPTH_TEST);
+	cull_face = glIsEnabled(GL_CULL_FACE);
+	lighting = glIsEnabled(GL_LIGHTING);
+	color_material = glIsEnabled(GL_COLOR_MATERIAL);
+	texture2D = glIsEnabled(GL_TEXTURE_2D);
+	line_smooth = glIsEnabled(GL_LINE_SMOOTH);
+	polygon_smooth = glIsEnabled(GL_POLYGON_SMOOTH);
+
 
 	return ret;
 }
@@ -192,4 +202,82 @@ float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float 
 	
 	return Perspective;
 
+}
+
+void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
+{
+
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_NoTitleBar;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	
+
+	if (ImGui::Begin("GL Options", &App->gui->open_render_configuration, window_flags))
+	{
+
+		if (ImGui::Checkbox("DEPTH_TEST", &depth_test))
+		{
+			if (!depth_test)
+				glDisable(GL_DEPTH_TEST);
+			else
+				glEnable(GL_DEPTH_TEST);
+			
+		}
+		if (ImGui::Checkbox("CULL FACE", &cull_face))
+		{
+			if (!cull_face)
+				glDisable(GL_CULL_FACE);
+			else
+				glEnable(GL_CULL_FACE);
+		
+		}
+		if (ImGui::Checkbox("LIGHTING", &lighting))
+		{
+		
+			if (!lighting)
+				glDisable(GL_LIGHTING);
+			else
+				glEnable(GL_LIGHTING);
+
+			
+		}
+		if (ImGui::Checkbox("COLOR MATERIAL", &color_material))
+		{
+			if (!color_material)
+				glDisable(GL_COLOR_MATERIAL);
+			else
+				glEnable(GL_COLOR_MATERIAL);
+			
+		}
+		if (ImGui::Checkbox("TEXTURE 2D", &texture2D))
+		{
+			if (!texture2D)
+				glDisable(GL_TEXTURE_2D);
+			else
+				glEnable(GL_TEXTURE_2D);
+			
+		}
+		if (ImGui::Checkbox("LINE SMOOTH", &line_smooth))
+		{
+			if (!line_smooth)
+				glDisable(GL_LINE_SMOOTH);
+			else
+				glEnable(GL_LINE_SMOOTH);
+			
+		}
+		if (ImGui::Checkbox("POLYGON SMOOTH", &polygon_smooth))
+		{
+			if (!polygon_smooth)
+				glDisable(GL_POLYGON_SMOOTH);
+			else
+				glEnable(GL_POLYGON_SMOOTH);
+
+		}
+
+		
+		ImGui::End();
+	}
+	
 }
