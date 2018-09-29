@@ -76,7 +76,7 @@ update_status ModuleGui::PostUpdate(float dt)
 
 bool ModuleGui::CleanUp()
 {
-
+	Log_active = false;
 	return true;
 }
 
@@ -202,24 +202,20 @@ void ModuleGui::ShowAboutWindow() {
 
 }
 
-void ModuleGui::Print_Log(const char* text) {
+void ModuleGui::Log_console(const char* text) {
 
-	LOG_GLOBAL(text);
-	log_list.push_back(text);
-
+	if (console_buffer.empty()) {
+		console_buffer.appendf(text);
+		console_scroll = true;
+	}
 }
 
 void ModuleGui::ShowLogWindow() {
 
-	ImGui::SetNextWindowSize({ 200,400 });
-	ImGuiWindowFlags window_flags = 0;
-
-	window_flags |= ImGuiWindowFlags_NoResize;
-	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
-
-	ImGui::Begin("Output Console", &Log_active, window_flags);
-	for (int i = 0; i < log_list.size(); i++) {
-		ImGui::Text(log_list.at(i));
-	}
+	ImGui::Begin("Console", &Log_active);
+	ImGui::TextUnformatted(console_buffer.begin());
+	if (console_scroll)
+		ImGui::SetScrollHere(1.0f);
+	console_scroll = false;
 	ImGui::End();
 }

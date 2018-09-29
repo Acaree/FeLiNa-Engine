@@ -59,9 +59,13 @@ public:
 
 	void DrawApplicationInformationPanel();
 
+	void Log_app(const char* text);
+
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
 };
+
+extern Application* App;

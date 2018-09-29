@@ -237,3 +237,8 @@ void Application::DrawApplicationInformationPanel()
 	ImGui::SameLine();
 	ImGui::Text("%i", stats.peakAllocUnitCount);
 }
+
+void Application::Log_app(const char * text)
+{
+	gui->Log_console(text);
+}

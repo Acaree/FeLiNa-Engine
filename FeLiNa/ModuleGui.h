@@ -23,14 +23,17 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void Print_Log(const char* text);
+	void Log_console(const char* text);
 
 private:
 	bool About_active = false;
 	
 	//Log console
 	bool Log_active = false;
-	std::vector<const char*> log_list;
+	ImGuiTextBuffer console_buffer;
+	bool console_scroll = false;
+
+	
 
 	void ShowMainMenuBar();
 	void ShowConfigurationWindow();

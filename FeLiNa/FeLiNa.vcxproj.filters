@@ -159,6 +159,7 @@
     <ClCompile Include="PerfTimer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Globals.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
