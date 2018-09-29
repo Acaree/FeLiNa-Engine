@@ -2,13 +2,7 @@
 #include "Application.h"
 #include "mmgr/mmgr.h"
 #include "ModuleHardware.h"
-//XD need module hardware-------------------------------------
-#define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX			0x9047
-#define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX		0x9048
-#define GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX    0x9049
-#define GPU_MEMORY_INFO_EVICTION_COUNT_NVX				0x904A
-#define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX				0x904B
-//-------------------------------------------------------------
+#include "ModuleSceneIntro.h"
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -97,9 +91,19 @@ void ModuleGui::ShowMainMenuBar()
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Mode"))
+		{
+
+			if (ImGui::MenuItem("Wireframe", NULL, App->scene_intro->grid_plane->wire, true))
+			{
+				App->scene_intro->grid_plane->wire = !App->scene_intro->grid_plane->wire;
+			}
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Window"))
 		{
-			if (ImGui::MenuItem("Configuration", NULL, false, true))
+			if (ImGui::MenuItem("Configuration", NULL, open_configuration, true))
 			{
 				open_configuration = !open_configuration;
 			}

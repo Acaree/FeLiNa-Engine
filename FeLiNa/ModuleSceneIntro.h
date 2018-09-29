@@ -17,7 +17,6 @@ public:
 	bool CleanUp();
 
 
-private:
 	mPlane* grid_plane;
 
 
