@@ -19,29 +19,33 @@ ModuleRenderer3D::~ModuleRenderer3D()
 bool ModuleRenderer3D::Init()
 {
 
-	GLenum err = glewInit(); // … check for errors 
-	LOG_GLOBAL("Using Glew %s", glewGetString(GLEW_VERSION)); // Should be 2.0
-
-
-	LOG_GLOBAL("Vendor: %s", glGetString(GL_VENDOR)); 
-	LOG_GLOBAL("Renderer: %s", glGetString(GL_RENDERER)); 
-	LOG_GLOBAL("OpenGL version supported %s", glGetString(GL_VERSION)); 
-	LOG_GLOBAL("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-
-
 	LOG_GLOBAL("Creating 3D Renderer context");
 	bool ret = true;
-	
+
 	//Create context
 	context = SDL_GL_CreateContext(App->window->window);
-	if(context == NULL)
+	if (context == NULL)
 	{
 		LOG_GLOBAL("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+
+	GLenum err = glewInit(); // … check for errors 
 	
-	if(ret == true)
+	if (err != GLEW_OK)
 	{
+		LOG_GLOBAL("Glew library could not init %s\n", glewGetErrorString(err));
+		ret = false;
+	}
+
+	if (ret == true)
+	{
+
+		LOG_GLOBAL("Vendor: %s", glGetString(GL_VENDOR));
+		LOG_GLOBAL("Renderer: %s", glGetString(GL_RENDERER));
+		LOG_GLOBAL("OpenGL version supported %s", glGetString(GL_VERSION));
+		LOG_GLOBAL("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		
 		//Use Vsync
 		if (App->vsync) {
 			SDL_GL_SetSwapInterval(1);
