@@ -2,10 +2,6 @@
 
 #include "Module.h"
 #include "Primitive.h"
-#include "SDL/include/SDL_opengl.h"
-#include "Pcg/pcg_variants.h"
-
-
 
 
 class ModuleSceneIntro : public Module

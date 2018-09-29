@@ -1,9 +1,7 @@
 
 #include "Globals.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 #include "Primitive.h"
-#include "MathGeoLib/MathGeoLib.h"
+#include "OpenGL.h"
 
 
 // ------------------------------------------------------------
@@ -19,9 +17,10 @@ PrimitiveTypes Primitive::GetType() const
 // ------------------------------------------------------------
 void Primitive::Render() const
 {
+	
 	glPushMatrix();
-	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
-
+	glMultMatrixf((GLfloat*)transform.ptr());
+	
 	if(axis == true)
 	{
 		// Draw Axis Grid
