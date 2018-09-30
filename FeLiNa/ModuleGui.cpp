@@ -42,7 +42,7 @@ update_status ModuleGui::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	ShowMainMenuBar();
 
@@ -52,7 +52,9 @@ update_status ModuleGui::Update(float dt)
 	if (open_render_configuration)
 		App->renderer3D->DrawCheckBoxEdgeGLPanel();
 
-	ShowLogWindow();
+	if (open_console)
+		App->console->DrawConsole();
+	
 
 	if (About_active) {
 		ShowAboutWindow();
@@ -76,7 +78,9 @@ update_status ModuleGui::PostUpdate(float dt)
 
 bool ModuleGui::CleanUp()
 {
-	Log_active = false;
+	
+
+
 	return true;
 }
 
@@ -116,6 +120,12 @@ void ModuleGui::ShowMainMenuBar()
 			{
 				open_configuration = !open_configuration;
 			}
+
+			if (ImGui::MenuItem("Console", NULL, open_console, true))
+			{
+				open_console = !open_console;
+			}
+
 			ImGui::EndMenu();
 		}
 
@@ -202,20 +212,5 @@ void ModuleGui::ShowAboutWindow() {
 
 }
 
-void ModuleGui::Log_console(const char* text) {
 
-	if (console_buffer.empty()) {
-		console_buffer.appendf(text);
-		console_scroll = true;
-	}
-}
 
-void ModuleGui::ShowLogWindow() {
-
-	ImGui::Begin("Console", &Log_active);
-	ImGui::TextUnformatted(console_buffer.begin());
-	if (console_scroll)
-		ImGui::SetScrollHere(1.0f);
-	console_scroll = false;
-	ImGui::End();
-}

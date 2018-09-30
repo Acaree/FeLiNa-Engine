@@ -11,6 +11,7 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	gui = new ModuleGui(this);
+	console = new ModuleConsole(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -22,6 +23,7 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(hardware);
+	AddModule(console);
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(gui);
@@ -58,7 +60,7 @@ bool Application::Init()
 	{
 		ret = (*it)->Start();
 	}
-	
+
 	return ret;
 }
 
@@ -124,8 +126,9 @@ update_status Application::Update()
 		ret = (*it)->PostUpdate(dt);
 		++it;
 	}
-
+	
 	FinishUpdate();
+
 	return ret;
 }
 
@@ -240,5 +243,5 @@ void Application::DrawApplicationInformationPanel()
 
 void Application::Log_app(const char * text)
 {
-	gui->Log_console(text);
+	console->Log_console(text);
 }

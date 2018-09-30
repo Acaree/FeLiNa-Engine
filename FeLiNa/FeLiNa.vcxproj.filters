@@ -160,6 +160,9 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="ModuleConsole.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -430,6 +433,9 @@
     </ClInclude>
     <ClInclude Include="OpenGL.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleConsole.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -155,6 +155,7 @@
     <ClInclude Include="mmgr\stdafx.h" />
     <ClInclude Include="mmgr\targetver.h" />
     <ClInclude Include="ModuleCamera3D.h" />
+    <ClInclude Include="ModuleConsole.h" />
     <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModuleHardware.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="mmgr\stdafx.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
+    <ClCompile Include="ModuleConsole.cpp" />
     <ClCompile Include="ModuleGui.cpp" />
     <ClCompile Include="ModuleHardware.cpp" />
     <ClCompile Include="ModuleInput.cpp" />

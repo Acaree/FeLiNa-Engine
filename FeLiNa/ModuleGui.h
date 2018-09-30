@@ -23,28 +23,19 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void Log_console(const char* text);
-
 private:
 	bool About_active = false;
 	
-	//Log console
-	bool Log_active = false;
-	ImGuiTextBuffer console_buffer;
-	bool console_scroll = false;
-
-	
-
 	void ShowMainMenuBar();
 	void ShowConfigurationWindow();
 	void ShowAboutWindow();
-	void ShowLogWindow();
-
+	
 public:
 	
 	bool close_program = false;
-	bool open_configuration = true;
+	bool open_configuration = false;
 	bool open_render_configuration = false;
+	bool open_console = false;
 };
 
 

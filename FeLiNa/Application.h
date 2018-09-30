@@ -13,6 +13,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleGui.h"
 #include "ModuleHardware.h"
+#include "ModuleConsole.h"
 
 class Application
 {
@@ -25,6 +26,7 @@ public:
 	ModuleCamera3D* camera;
 	ModuleGui* gui;
 	ModuleHardware* hardware;
+	ModuleConsole* console;
 
 	char app_name[20];
 	char organization[20];
