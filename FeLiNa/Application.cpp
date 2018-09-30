@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 
+
 Application::Application()
 {
 	hardware = new ModuleHardware(this,false);

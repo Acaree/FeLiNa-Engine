@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="FreeImage\Dist\x32\FreeImage.h" />
     <ClInclude Include="Glew\include\eglew.h" />
     <ClInclude Include="Glew\include\glew.h" />
     <ClInclude Include="Glew\include\glxew.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="ModuleConsole.h" />
     <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModuleHardware.h" />
+    <ClInclude Include="ModuleImage.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleAudio.h" />
@@ -220,6 +222,7 @@
     <ClCompile Include="ModuleConsole.cpp" />
     <ClCompile Include="ModuleGui.cpp" />
     <ClCompile Include="ModuleHardware.cpp" />
+    <ClCompile Include="ModuleImage.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleSceneIntro.cpp" />

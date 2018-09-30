@@ -8,6 +8,9 @@
 #include "imgui-1.65/imgui_impl_sdl.h"
 #include "imgui-1.65/imgui_impl_opengl2.h"
 
+//TEST
+#include "ModuleImage.h"
+
 #include <vector>
 
 class ModuleGui : public Module
@@ -29,13 +32,18 @@ private:
 	void ShowMainMenuBar();
 	void ShowConfigurationWindow();
 	void ShowAboutWindow();
+
+	//TEST
+	
+	bool need_screenshoot = false;
 	
 public:
-	
+	ModuleImage* img;
 	bool close_program = false;
 	bool open_configuration = false;
 	bool open_render_configuration = false;
 	bool open_console = false;
+
 };
 
 

@@ -4,6 +4,8 @@
 #include "ModuleHardware.h"
 #include "ModuleSceneIntro.h"
 
+
+
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Gui";
@@ -25,6 +27,8 @@ bool ModuleGui::Start()
 
 	ImGui::StyleColorsDark();
 
+	img = new ModuleImage(App->window->screen_surface->w,App->window->screen_surface->h);
+
 	return true;
 }
 
@@ -42,8 +46,6 @@ update_status ModuleGui::PreUpdate(float dt)
 update_status ModuleGui::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
-
-	//ImGui::ShowDemoWindow();
 
 	ShowMainMenuBar();
 
@@ -71,6 +73,13 @@ update_status ModuleGui::PostUpdate(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
+	if (need_screenshoot)
+	{
+		img->TakeScreenshoot();
+		need_screenshoot = false;
+	}
+
+
 	if (close_program)
 		update_return = UPDATE_STOP;
 
@@ -80,7 +89,7 @@ update_status ModuleGui::PostUpdate(float dt)
 bool ModuleGui::CleanUp()
 {
 	
-
+	img->~ModuleImage();
 
 	return true;
 }
@@ -91,11 +100,17 @@ void ModuleGui::ShowMainMenuBar()
 	{
 		if (ImGui::BeginMenu("Menu"))
 		{
-			
+
+			if (ImGui::MenuItem("Take Screenshot", NULL, false, true))
+			{
+				need_screenshoot = true;
+			}
+
 			if (ImGui::MenuItem("Close FeLiNa", NULL, false, true))
 			{
 				close_program = true;
 			}
+
 			ImGui::EndMenu();
 		}
 
