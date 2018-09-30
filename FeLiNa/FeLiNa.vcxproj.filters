@@ -163,6 +163,9 @@
     <ClCompile Include="ModuleConsole.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Parson\parson.c">
+      <Filter>Tools\Parson</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -437,6 +440,9 @@
     <ClInclude Include="ModuleConsole.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Parson\parson.h">
+      <Filter>Tools\Parson</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -462,6 +468,9 @@
     </Filter>
     <Filter Include="Tools\Glew">
       <UniqueIdentifier>{df8c7ae6-1906-4d8f-b863-95c63dc1a148}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Parson">
+      <UniqueIdentifier>{416f90f9-c1b7-4adb-a1ce-565a6b028a7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

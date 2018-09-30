@@ -129,6 +129,12 @@ update_status Application::Update()
 	
 	FinishUpdate();
 
+	if (need_save)
+		Save();
+
+	if (need_load)
+		Load();
+
 	return ret;
 }
 
@@ -158,6 +164,60 @@ float Application::GetFPS()
 {
 	return last_FPS;
 }
+
+void Application::Save()
+{
+	Log_app("Saving State....");
+
+	JSON_Value* root = json_parse_file("data.json");
+
+	if (root != nullptr)
+	{
+		JSON_Object* data = json_value_get_object(root);
+
+		for (std::list<Module*>::const_iterator item = list_modules.begin(); item != list_modules.end(); ++item)
+		{
+			JSON_Object* module_to_save = json_object_get_object(data, (*item)->GetName());
+			(*item)->SaveState(module_to_save);
+		}
+
+		json_serialize_to_file_pretty(root, "data.json");
+		json_value_free(root);
+
+		Log_app("Saving succesful");
+	}
+	else
+		Log_app("Save failed: can't find root");
+
+	need_save = false;
+}
+
+void Application::Load()
+{
+	Log_app("Loading State....");
+
+	JSON_Value* root = json_parse_file("data.json");
+
+	if (root != nullptr)
+	{
+		JSON_Object* data = json_value_get_object(root);
+
+		for (std::list<Module*>::const_iterator item = list_modules.begin(); item != list_modules.end(); ++item)
+		{
+			JSON_Object* module_to_save = json_object_get_object(data, (*item)->GetName());
+			(*item)->LoadState(module_to_save);
+		}
+
+		json_value_free(root);
+
+		Log_app("Load succesful");
+	}
+	else
+		Log_app("Load failed: can't find root");
+
+	need_load = false;
+}
+
 
 void Application::DrawApplicationInformationPanel()
 {
@@ -244,4 +304,14 @@ void Application::DrawApplicationInformationPanel()
 void Application::Log_app(const char * text)
 {
 	console->Log_console(text);
+}
+
+void Application::NeedSave()
+{
+	need_save = true;
+}
+
+void Application::NeedLoad()
+{
+	need_load = true;
 }

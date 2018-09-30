@@ -1,13 +1,17 @@
 #pragma once
 
 #include "Globals.h"
-
+#include "Parson/parson.h"
 class Application;
 
 class Module
 {
 private :
 	bool enabled;
+
+protected:
+
+	char* name = "";
 
 public:
 	Application* App;
@@ -47,4 +51,9 @@ public:
 	{ 
 		return true; 
 	}
+
+	virtual void SaveState(JSON_Object*) { };
+	virtual void LoadState(JSON_Object*) { };
+	inline char* GetName() const { return name; }
+
 };

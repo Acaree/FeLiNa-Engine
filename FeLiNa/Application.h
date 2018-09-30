@@ -14,6 +14,7 @@
 #include "ModuleGui.h"
 #include "ModuleHardware.h"
 #include "ModuleConsole.h"
+#include "Parson/parson.h"
 
 class Application
 {
@@ -47,6 +48,8 @@ private:
 	std::vector<float> vector_fps;
 	std::vector<float> vector_memory;
 
+	bool need_save = false;
+	bool need_load = false;
 public:
 
 	Application();
@@ -60,10 +63,14 @@ public:
 	float GetFPS();
 
 	void DrawApplicationInformationPanel();
-
 	void Log_app(const char* text);
 
+	void NeedSave();
+	void NeedLoad();
 private:
+
+	void Save();
+	void Load();
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
