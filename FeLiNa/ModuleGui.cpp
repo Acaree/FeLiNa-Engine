@@ -150,7 +150,7 @@ void ModuleGui::ShowMainMenuBar()
 
 			if (ImGui::MenuItem("About", NULL, false, true))
 			{
-				About_active = true;	//maybe guarrada
+				About_active = !About_active;	
 			}
 
 
@@ -195,18 +195,51 @@ void ModuleGui::ShowConfigurationWindow()
 
 void ModuleGui::ShowAboutWindow() {
 
-	ImGui::SetNextWindowSize({ 400,100 });
+	
 	ImGuiWindowFlags window_flags = 0;
 
+	
 	window_flags |= ImGuiWindowFlags_NoResize;
-	window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	window_flags |= ImGuiWindowFlags_NoMove;
 
 	ImGui::Begin("About",&About_active, window_flags);
 
-	ImGui::Text("This engine is made by two students in CITM.");
-	ImGui::Text("This software is licensed under MIT license.");
+	ImGui::Text("FeLiNa Engine.");
+	ImGui::Separator();
+	ImGui::Text("This is a 3D game engine developed by two students\n from CITM-UPC Terrasa.");
+	ImGui::Spacing();
+	ImGui::Text("Authors:");
+	if(ImGui::Button("Alfonso Sanchez-Cortes"))
+		ShellExecute(NULL, "open", "https://github.com/Siitoo", NULL, NULL, SW_SHOWNORMAL);
+	if (ImGui::Button("Alex Campamar"))
+		ShellExecute(NULL, "open", "https://github.com/Acaree", NULL, NULL, SW_SHOWNORMAL);
+	ImGui::Separator();
+	ImGui::Text("Libraries:");
+
+	SDL_version version;
+	SDL_GetVersion(&version);
+
+	ImGui::Text("ImGuI, OpenGL %s, \nSDL %i.%i.%i, MathGeoLib, PCG, Parson, MMGR", glGetString(GL_VERSION), version.major, version.minor, version.patch);
+	ImGui::Separator();
+
+	ImGui::Text("MIT License Copyright(c) 2018 FeLiNa \n");
+	ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining a copy");
+	ImGui::Text("of this software and associated documentation files(the %cSoftware%c), to deal", 34, 34);
+	ImGui::Text("in the Software without restriction, including without limitation the rights");
+	ImGui::Text("to use, copy, modify, merge, publish, distribute, sublicense, and/or sell");
+	ImGui::Text("copies of the Software, and to permit persons to whom the Software is");
+	ImGui::Text("furnished to do so, subject to the following conditions :");
+	ImGui::Text("The above copyright notice and this permission notice shall be included in all");
+	ImGui::Text("copies or substantial portions of the Software.");
+	ImGui::Text("THE SOFTWARE IS PROVIDED %cAS IS%c, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR", 34, 34);
+	ImGui::Text("IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,");
+	ImGui::Text("FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE");
+	ImGui::Text("AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER");
+	ImGui::Text("LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,");
+	ImGui::Text("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE");
+	ImGui::Text("SOFTWARE.");
 
 	ImGui::End();
 
