@@ -18,7 +18,7 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 	
 	
-	vertexs[0] = 1.0f;
+	/*vertexs[0] = 1.0f;
 	vertexs[1] = 1.0f;
 	vertexs[2] = 0.0f;
 
@@ -33,7 +33,7 @@ bool ModuleSceneIntro::Start()
 	
 	glGenBuffers(1, (GLuint*) &(my_id)); 
 	glBindBuffer(GL_ARRAY_BUFFER, my_id); 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*180 * 3, vertexs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*180 * 3, vertexs, GL_STATIC_DRAW);*/
 	
 
 
@@ -81,11 +81,11 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 	
-	glEnableClientState(GL_VERTEX_ARRAY); 
+/*	glEnableClientState(GL_VERTEX_ARRAY); 
 	glBindBuffer(GL_ARRAY_BUFFER, my_id); 
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, 9); 
-	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);*/
 	
 
 

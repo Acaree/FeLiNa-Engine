@@ -3,7 +3,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
-
+#include "ModuleImage.h"
 
 #define MAX_LIGHTS 8
 
@@ -38,5 +38,5 @@ private:
 	bool texture2D = false;
 	bool line_smooth = false;
 	bool polygon_smooth = false;
-	
+	ModuleImage* img;
 };

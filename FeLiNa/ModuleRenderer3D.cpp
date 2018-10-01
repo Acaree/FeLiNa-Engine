@@ -18,7 +18,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-
+	img = new ModuleImage(App->window->screen_surface->w, App->window->screen_surface->h);
 	LOG_GLOBAL("Creating 3D Renderer context");
 	bool ret = true;
 
@@ -132,6 +132,7 @@ bool ModuleRenderer3D::Init()
 	line_smooth = glIsEnabled(GL_LINE_SMOOTH);
 	polygon_smooth = glIsEnabled(GL_POLYGON_SMOOTH);
 
+	
 
 	return ret;
 }
@@ -157,6 +158,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	img->TakeScreenGif(dt);
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }

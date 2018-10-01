@@ -79,6 +79,7 @@ update_status ModuleGui::PostUpdate(float dt)
 		need_screenshoot = false;
 	}
 
+	
 
 	if (close_program)
 		update_return = UPDATE_STOP;
