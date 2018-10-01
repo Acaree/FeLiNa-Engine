@@ -16,6 +16,9 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
+	float vertexs[36];
+	uint my_id = 0;
+	uint my_indices = 0;
 
 	mPlane* grid_plane;
 
