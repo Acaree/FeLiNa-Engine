@@ -7,6 +7,23 @@
 #include "FreeImage/FreeImage.h"
 
 
+#include <time.h>
+#include <corecrt_wtime.h>
+
+//test
+#include "MathGeoLib/Math/float2.h"
+
+#include "SDL/include/SDL_scancode.h"
+//-----------
+
+
+
+enum Gif_State
+{
+	GIF_START,
+	GIF_RUNING
+};
+
 class ModuleImage
 {
 public:
@@ -15,13 +32,21 @@ public:
 
 	bool TakeScreenshoot();
 
+	void TakeScreenGif(float dt);
+
 private:
 	BYTE * pixels;
 	int width;
 	int height;
 	char* filename;
-	int number_filename = 0; 
+
+	int FullScreenKey = SDL_Scancode::SDL_SCANCODE_Q;
+	bool start_gif = false;
+	Gif_State state = Gif_State::GIF_START;
+	
 };
+
+
 
 
 

@@ -452,6 +452,9 @@
     <ClInclude Include="FreeImage\Dist\x32\FreeImage.h">
       <Filter>Tools\FreeImage</Filter>
     </ClInclude>
+    <ClInclude Include="Gif\gif.h">
+      <Filter>Tools\Gif</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -483,6 +486,9 @@
     </Filter>
     <Filter Include="Tools\FreeImage">
       <UniqueIdentifier>{1833118f-b01e-45e1-993d-39c5d5ba370a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Gif">
+      <UniqueIdentifier>{b80e695f-ff73-456e-b74f-9c6bf20b1c65}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

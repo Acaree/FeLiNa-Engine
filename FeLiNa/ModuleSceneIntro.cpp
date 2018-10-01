@@ -16,6 +16,7 @@ bool ModuleSceneIntro::Start()
 {
 	LOG_GLOBAL("Loading Intro assets");
 	bool ret = true;
+
 	/* vertex array
 	vertexs[0] = 1.0f;
 	vertexs[1] = 1.0f;
@@ -34,6 +35,10 @@ bool ModuleSceneIntro::Start()
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 180 * 3, vertexs, GL_STATIC_DRAW);
 	*/
+
+	
+	
+	
 	vertexs[0] = 1.0f;
 	vertexs[1] = 1.0f;
 	vertexs[2] = 0.0f;
@@ -50,6 +55,8 @@ bool ModuleSceneIntro::Start()
 	glGenBuffers(1, (GLuint*) &(my_id)); 
 	glBindBuffer(GL_ARRAY_BUFFER, my_id); 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*180 * 3, vertexs, GL_STATIC_DRAW);
+	
 
 	
 	glGenBuffers(1, (GLuint*) &(my_indices)); 
@@ -97,10 +104,10 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
-	
 
 	/* vertex array
 	glEnableClientState(GL_VERTEX_ARRAY); 
+	glBindBuffer(GL_ARRAY_BUFFER, my_id); 
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, 9); 
 	glDisableClientState(GL_VERTEX_ARRAY);*/
@@ -110,7 +117,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL);
-	//glDrawArrays(GL_TRIANGLES, 0, 9);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 
