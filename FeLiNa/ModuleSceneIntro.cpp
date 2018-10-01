@@ -224,8 +224,6 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 
 	grid_plane->Render();
 
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 	return update_return;
 }
