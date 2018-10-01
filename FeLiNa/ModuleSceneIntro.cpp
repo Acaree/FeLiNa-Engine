@@ -56,12 +56,12 @@ bool ModuleSceneIntro::Start()
 	glBindBuffer(GL_ARRAY_BUFFER, my_id); 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*180 * 3, vertexs, GL_STATIC_DRAW);
-	
 
 	
 	glGenBuffers(1, (GLuint*) &(my_indices)); 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices); 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)* 8, indices, GL_STATIC_DRAW);
+
 	
 	//Initial position camera.
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
@@ -115,8 +115,11 @@ update_status ModuleSceneIntro::Update(float dt)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 
