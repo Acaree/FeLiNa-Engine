@@ -124,7 +124,71 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 	glBegin(GL_TRIANGLES);
+
+
+
+	//Cylindre
+
 	float3 origin(0, 0, 0);
+	float h = 5.0F;
+	float r = 1.F;
+	origin.y += h / 2;
+
+	
+	for (float angle = 0, angle2 = 0; angle <= 360; angle++, angle2++)
+	{
+
+		glVertex3f(origin.x,origin.y,origin.z);
+
+
+		if (angle == 0)
+		{
+			angle++;
+			
+			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+			angle++;
+			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+		}
+		else
+		{
+			glVertex3f(origin.x + cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r);
+			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+		}
+
+
+
+		glVertex3f(origin.x, -origin.y, origin.z);
+
+
+		if (angle2 == 0)
+		{
+			angle2++;
+			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
+			angle2++;
+			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
+		}
+		else
+		{
+			glVertex3f(origin.x - cos((angle2 - 3)*DEGTORAD)*r, -origin.y, origin.z + sin((angle2 - 3)*DEGTORAD)*r);
+			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
+		}
+
+
+	}
+
+	origin.y -= h / 2;
+	for (float angle = 0; angle <= 360; angle++)
+	{
+
+
+		
+
+	}
+
+	
+
+
+	/*float3 origin(0, 0, 0);
 
 	float r = 1.F;
 
@@ -176,14 +240,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	for (float angle = 0; angle <= 360; angle++)
 	{
 
-		/*if (angle == 0 || (int)angle % 3)
-		{
-			glVertex3f(0, 0, 0);
-		}*/
-		
-
-		//glVertex3f(origin.x + cos(angle) *r, origin.y, origin.z + sin(angle)*r);
-
 		glVertex3f(0, 0, 0);
 		
 
@@ -227,7 +283,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		glVertex3f(origin.x - cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
 		}
 		
-	}
+	}*/
 
 	glEnd();
 	/*Direct mode
