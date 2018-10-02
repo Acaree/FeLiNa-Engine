@@ -24,7 +24,7 @@ Cube_ArraysandIndex::Cube_ArraysandIndex(float3 position, int size, GeometryType
 
 void Cube_ArraysandIndex::Render() {
 
-	
+	glColor3f(1.0f, 0.0f, 0.0f);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);

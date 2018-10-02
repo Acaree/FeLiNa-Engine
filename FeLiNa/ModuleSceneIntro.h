@@ -3,6 +3,10 @@
 #include "Module.h"
 #include "Primitive.h"
 
+#include "Cube_Arrays.h"
+#include "Cube_ArraysandIndex.h"
+#include "Cube_DirectMode.h"
+
 #include "MathGeoLib/MathGeoLib.h"
 
 class ModuleSceneIntro : public Module
@@ -23,6 +27,10 @@ public:
 	uint my_indices = 0;
 
 	mPlane* grid_plane;
+
+	Cube_Arrays* cube_array;
+	Cube_ArraysandIndex* cube_arrayandindex;
+	Cube_DirectMode* cube_direct;
 
 	//Sito Geometry
 	

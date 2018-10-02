@@ -19,6 +19,7 @@ Cube_Arrays::Cube_Arrays(float3 position, int size, GeometryType type) : Geometr
 void Cube_Arrays::Render() {
 
 	
+	glColor3f(0.0f, 0.0f, 1.0f);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);

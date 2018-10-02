@@ -26,30 +26,21 @@ bool ModuleSceneIntro::Start()
 	grid_plane->axis = true;
 	grid_plane->is_grid = true;
 
-	/* vertex array
-	vertexs[0] = 1.0f;
-	vertexs[1] = 1.0f;
-	vertexs[2] = 0.0f;
 
-	vertexs[3] = 0.0f;
-	vertexs[4] = 1.0f;
-	vertexs[5] = 0.0f;
+	// Cubes
 
-	vertexs[6] = 1.0f;
-	vertexs[7] = 1.0f;
-	vertexs[8] = 1.0f;
+	cube_direct = new Cube_DirectMode{ {0,0,0},1,CubeDirectMode };
+	cube_array = new Cube_Arrays{ {1.5f,0,0},1,CubeArrays };
+	cube_arrayandindex = new Cube_ArraysandIndex{ {-1.5f,0,0},1,CubeArraysandIndex };
+	
 
 
-	glGenBuffers(1, (GLuint*) &(my_id));
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 180 * 3, vertexs, GL_STATIC_DRAW);
-	*/
+	
 
+	// Circle-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	// Sito Circle-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-	/*uint index = 0;
+	origin = { 4.0f,0.0f,0.0f };
+	uint index = 0;
 	uint sindices = 1;
 	vertex_circle[index] = origin;
 
@@ -133,14 +124,16 @@ bool ModuleSceneIntro::Start()
 
 	glGenBuffers(1, (GLuint*) &(sphere_indices_id));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indices_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 72, indices_circle, GL_STATIC_DRAW);*/
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 72, indices_circle, GL_STATIC_DRAW);
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	//Sito: Cylinder -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Cylinder -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	/*uint index = 0;
-	uint sindices = 1;
+	origin = { -3.0f,0.0f,0.0f };
+
+	index = 0;
+	sindices = 1;
 	origin.y += latitude;
 	vertex_cylinder[index] = origin;
 
@@ -286,15 +279,16 @@ bool ModuleSceneIntro::Start()
 
 	glGenBuffers(1, (GLuint*) &(cylinder_indices_id));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cylinder_indices_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 145, indices_cylinder, GL_STATIC_DRAW);*/
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 145, indices_cylinder, GL_STATIC_DRAW);
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 	//Sito: Capsule -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	uint index = 0;
-	uint sindices = 1;
+	origin = { 0.0f,0.0f,3.0f };
+	index = 0;
+	sindices = 1;
 	origin.y += latitude_capsule;
 	vertex_capsule[index] = origin;
 
@@ -339,7 +333,7 @@ bool ModuleSceneIntro::Start()
 
 	origin.y = -latitude_capsule;
 	vertex_capsule[sindices] = origin;
-	int new_index_origin = sindices;
+	new_index_origin = sindices;
 	sindices++;
 	for (uint angle = 0; angle <= 360; angle += capsule_angle)
 	{
@@ -380,8 +374,8 @@ bool ModuleSceneIntro::Start()
 
 	}
 
-	int medium_lenght = index / 2;
-	int j = index;
+	medium_lenght = index / 2;
+	 j = index;
 
 	for (int i = 1; i < j / 2; i += 3)
 	{
@@ -444,32 +438,8 @@ bool ModuleSceneIntro::Start()
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	//Campa triangles
-	/*vertexs[0] = 1.0f;
-	vertexs[1] = 1.0f;
-	vertexs[2] = 0.0f;
-
-	vertexs[3] = 0.0f;
-	vertexs[4] = 1.0f;
-	vertexs[5] = 0.0f;
-
-	vertexs[6] = 1.0f;
-	vertexs[7] = 1.0f;
-	vertexs[8] = 1.0f;*/
 	
 	
-	glGenBuffers(1, (GLuint*) &(my_id)); 
-	glBindBuffer(GL_ARRAY_BUFFER, my_id); 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
-	
-
-	
-	glGenBuffers(1, (GLuint*) &(my_indices)); 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices); 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)* 8, indices, GL_STATIC_DRAW);
-
-	
-
 
 	return ret;
 }
@@ -504,25 +474,13 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	/* vertex array
-	glEnableClientState(GL_VERTEX_ARRAY); 
-	glBindBuffer(GL_ARRAY_BUFFER, my_id); 
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glDrawArrays(GL_TRIANGLES, 0, 9); 
-	glDisableClientState(GL_VERTEX_ARRAY);*/
-	
-	/*glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glDisableClientState(GL_VERTEX_ARRAY);*/
+	cube_array->Render();
+	cube_arrayandindex->Render();
+	cube_direct->Render();
 
 
-	//Sito Sphere Draw-------------------------------------------------
+	glColor3f(1.0f, 1.0f, 1.0f);
+	//Sito capsule Draw-------------------------------------------------
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, capsule_id);
@@ -537,250 +495,35 @@ update_status ModuleSceneIntro::Update(float dt)
 	//----------------------------------------------------------------
 
 
+	// Sphere
 
-	glBegin(GL_TRIANGLES);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, sphere_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indices_id);
+	glDrawElements(GL_TRIANGLES, 72, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
 
-
-
-
-
-
-	//Cylindre
-
-	/*float3 origin(0, 0, 0);
-	float h = 3.0F;
-	float r = 1.F;
-	origin.y += h / 2;
-
-	
-	for (float angle = 0, angle2 = 0; angle <= 360; angle++, angle2++)
-	{
-
-		float3 Up_first;
-		float3 Up_second;
-
-		float3 Down_first;
-		float3 Down_second;
-
-		glVertex3f(origin.x,origin.y,origin.z);
-		
-		
-		if (angle == 0)
-		{
-			angle++;
-			
-			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
-			Up_first = { origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r };
-			angle++;
-			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
-			Up_second = { origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r };
-		}
-		else
-		{
-			glVertex3f(origin.x + cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r);
-			Up_first = { origin.x + cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r };
-			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
-			Up_second = { origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r };
-		}
-		*/
+	//-------------------------------------------------------------------
 
 
-	/*	glVertex3f(origin.x, -origin.y, origin.z);
+	// cylinder
 
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, cylinder_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		if (angle2 == 0)
-		{
-			angle2++;
-			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
-			Down_first = { origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r };
-			angle2++;
-			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
-			Down_second = { origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r };
-		}
-		else
-		{
-			glVertex3f(origin.x - cos((angle2 - 3)*DEGTORAD)*r, -origin.y, origin.z + sin((angle2 - 3)*DEGTORAD)*r);
-			Down_first = { origin.x - cos((angle2 - 3)*DEGTORAD)*r, -origin.y, origin.z + sin((angle2 - 3)*DEGTORAD)*r };
-			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
-			Down_second = { origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r };
-		}*/
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cylinder_indices_id);
+	glDrawElements(GL_TRIANGLES, 145, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
 
-		
-		/*glVertex3f(Down_first.x, Down_first.y, Down_first.z);
-		glVertex3f(Up_first.x, Up_first.y, Up_first.z);
-		glVertex3f(Down_second.x, Down_second.y, Down_second.z);
+	//-------------------------------------------------------------------
 
-		glVertex3f(Down_second.x, Down_second.y, Down_second.z);
-		glVertex3f(Up_first.x, Up_first.y, Up_first.z);
-		glVertex3f(Up_second.x, Up_second.y, Up_second.z);
-	}*/
-
-	
-
-	
-
-
-	/*float3 origin(0, 0, 0);
-
-	float r = 1.F;
-
-	for (int angle = 0; angle <= 360; angle+=9)
-	{
-		glVertex3f(0, 0, 0);
-
-
-		if (angle == 0)
-		{
-			angle+=9;
-			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
-			angle+=9;
-			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
-		}
-		else
-		{
-			glVertex3f(origin.x + sin((angle - 27)*DEGTORAD)*r, origin.y + cos((angle - 27)*DEGTORAD)*r, origin.z * sin((angle - 27)*DEGTORAD)*r);
-			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
-		}
-
-
-	}*/
-
-	/*float3 origin(0, 0, 0);
-	
-	float r = 1.F;
-
-	for (float angle = 0; angle <= 360; angle++)
-	{
-
-		glVertex3f(0, 0, 0);
-
-
-		if (angle == 0)
-		{
-			angle++;
-			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y - cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
-			angle++;
-			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y - cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
-		}
-		else
-		{
-			glVertex3f(origin.x + sin((angle - 3)*DEGTORAD)*r, origin.y - cos((angle - 3)*DEGTORAD)*r, origin.z * sin((angle - 3)*DEGTORAD)*r);
-			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y - cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
-		}
-
-
-		
-
-	}*/
-
-	/*for (float angle = 0; angle <= 360; angle++)
-	{
-
-		glVertex3f(0, 0, 0);
-		
-
-		if (angle == 0)
-		{
-			angle++;
-			float3 x(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
-			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
-			angle++;
-			float3 y(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
-			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
-		}
-		else
-		{
-			glVertex3f(origin.x + cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r);
-			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
-		}
-
-
-	}
-
-	for (float angle = 0; angle <= 360; angle++)
-	{
-		
-
-		glVertex3f(0, 0, 0);
-
-
-		if (angle == 0)
-		{
-		angle++;
-		float3 x(origin.x - cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
-		glVertex3f(origin.x - cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
-		angle++;
-		float3 y(origin.x - cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
-		glVertex3f(origin.x - cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
-		}
-		else
-		{
-		glVertex3f(origin.x - cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r);
-		glVertex3f(origin.x - cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
-		}
-		
-	}*/
-
-	
-	/*Direct mode
-	glLineWidth(2.0f);
-	glBegin(GL_TRIANGLES);
-
-	glColor3f(1.0f, 0.5f, 0.0f);
-	
-	glVertex3f(1.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-
-	glColor3f(1.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-
-	glColor3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
 
 	/*glVertex3f(1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
@@ -815,7 +558,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	glVertex3f(1.0f, -1.0f, 1.0f);    
 	glVertex3f(1.0f, -1.0f, -1.0f);    
 	*/
-	glEnd();
+	
 
 
 	return update_return;
