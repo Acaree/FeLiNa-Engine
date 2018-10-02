@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-
-
+#include "MathGeoLib/MathBuildConfig.h"
+#include <math.h>
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Scene";
@@ -36,10 +36,10 @@ bool ModuleSceneIntro::Start()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 180 * 3, vertexs, GL_STATIC_DRAW);
 	*/
 
-	
-	
-	
-	vertexs[0] = 1.0f;
+	//Sito Test circles
+
+
+	/*vertexs[0] = 1.0f;
 	vertexs[1] = 1.0f;
 	vertexs[2] = 0.0f;
 
@@ -49,7 +49,7 @@ bool ModuleSceneIntro::Start()
 
 	vertexs[6] = 1.0f;
 	vertexs[7] = 1.0f;
-	vertexs[8] = 1.0f;
+	vertexs[8] = 1.0f;*/
 	
 	
 	glGenBuffers(1, (GLuint*) &(my_id)); 
@@ -123,6 +123,70 @@ update_status ModuleSceneIntro::Update(float dt)
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 
+	glBegin(GL_TRIANGLES);
+	float3 origin(0, 0, 0);
+
+	float r = 1.F;
+
+	for (int angle = 0; angle <= 360; angle++)
+	{
+		//Test precision
+		
+		if (angle == 0 || angle % 3 == 0)
+		{
+			glVertex3f(0,0,0);
+			
+		}
+		else if (angle >2 && angle %2 == 0)
+		{
+			glVertex3f(origin.x + sin(angle)*r, origin.y + cos(angle)*r, origin.z * sin(angle)*r);
+		}
+		else
+		{
+			glVertex3f(origin.x + sin(angle)*r, origin.y + cos(angle)*r, origin.z * sin(angle)*r);
+		}
+
+		//glVertex3f(origin.x + sin(angle)*r, origin.y + cos(angle)*r, origin.z * sin(angle)*r);
+	}
+	
+
+	/*for (float angle = 0; angle < 360; angle++)
+	{
+		if (angle == 0 || (int)angle % 3)
+		{
+			glVertex3f(0, 0, 0);
+		}
+	
+		glVertex3f(origin.x + sin(angle)*r, origin.y - cos(angle)*r, origin.z * sin(angle)*r);
+		
+
+	}
+
+	for (float angle = 0; angle <= 360; angle++)
+	{
+
+		if (angle == 0 || (int)angle % 3)
+		{
+			glVertex3f(0, 0, 0);
+		}
+		
+
+		glVertex3f(origin.x + cos(angle) *r, origin.y, origin.z + sin(angle)*r);
+	}
+
+	for (float angle = 0; angle < 360; angle++)
+	{
+		if (angle == 0 || (int)angle % 3)
+		{
+			glVertex3f(0, 0, 0);
+		}
+
+		glVertex3f(origin.x - cos(angle) *r, origin.y, origin.z + sin(angle)*r);
+
+		
+	}*/
+
+	glEnd();
 	/*Direct mode
 	glLineWidth(2.0f);
 	glBegin(GL_TRIANGLES);
