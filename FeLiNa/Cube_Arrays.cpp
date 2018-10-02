@@ -24,7 +24,8 @@ void Cube_Arrays::Render() {
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, 9);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glEnd();
+	//glEnd();
 
 }
