@@ -78,7 +78,9 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Cube_DirectMode.h" />
     <ClInclude Include="FreeImage\Dist\x32\FreeImage.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Gif\gif.h" />
     <ClInclude Include="Glew\include\eglew.h" />
     <ClInclude Include="Glew\include\glew.h" />
@@ -176,6 +178,8 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Cube_DirectMode.cpp" />
+    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="imgui-1.65\imgui.cpp" />
     <ClCompile Include="imgui-1.65\imgui_demo.cpp" />

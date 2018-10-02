@@ -169,6 +169,12 @@
     <ClCompile Include="ModuleImage.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube_DirectMode.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -455,6 +461,12 @@
     <ClInclude Include="Gif\gif.h">
       <Filter>Tools\Gif</Filter>
     </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube_DirectMode.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -489,6 +501,9 @@
     </Filter>
     <Filter Include="Tools\Gif">
       <UniqueIdentifier>{b80e695f-ff73-456e-b74f-9c6bf20b1c65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{93d4c818-f118-4ada-949c-077905541d1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
