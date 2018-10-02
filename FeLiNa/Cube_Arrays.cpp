@@ -2,6 +2,13 @@
 
 Cube_Arrays::Cube_Arrays(float3 position, int size, GeometryType type) : Geometry(position, size, type) {
 
+
+	for (int i = 0; i < 108; i += 3) {
+
+		vertexs[i] += position.x;
+		vertexs[i + 1] += position.y;
+		vertexs[i + 2] += position.z;
+	}
 	
 	glGenBuffers(1, (GLuint*) &(my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
