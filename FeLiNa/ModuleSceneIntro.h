@@ -26,14 +26,23 @@ public:
 
 	//Sito Geometry
 	
-	float3 origin = { 0.0F, 0.0F, 0.0F };
+	float3 origin = {0.0F, 1.0F, 0.0F };
 
 	/// Sphere: 2 circles
 	uint sphere_id = 0;
 	uint sphere_indices_id = 0;
 	float radius_circle = 1.0F;
 	float circle_angle = 30.0F;
-	float3 vertex_circle[27]; // 1 center + 12 angles
-	uint indices_circle[72]; // 1 center + 12 angles
+	float3 vertex_circle[27]; 
+	uint indices_circle[72];
 
+	///Cylindre
+	float cylinder_angle = 30.F;
+	uint cylinder_id = 0;
+	uint cylinder_indices_id = 0;
+	float3 vertex_cylinder[28];
+	uint indices_cylinder[145];
+	
+	float radius_cylinder = 1.0F;
+	float latitude = 0.5F;
 };
