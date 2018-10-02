@@ -1,9 +1,8 @@
 #ifndef _GEOMETRY_
 #define _GEOMETRY_
 
-
-
 #include "OpenGL.h"
+#include "Globals.h"
 #include "Color.h"
 #include "MathGeoLib/MathGeoLib.h"
 
