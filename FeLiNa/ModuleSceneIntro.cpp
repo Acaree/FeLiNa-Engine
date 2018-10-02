@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-#include "MathGeoLib/MathBuildConfig.h"
+#include "MathGeoLib/MathGeoLib.h"
 #include <math.h>
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -130,34 +130,45 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	for (int angle = 0; angle <= 360; angle++)
 	{
-		//Test precision
-		
-		if (angle == 0 || angle % 3 == 0)
+		glVertex3f(0, 0, 0);
+
+
+		if (angle == 0)
 		{
-			glVertex3f(0,0,0);
-			
-		}
-		else if (angle >2 && angle %2 == 0)
-		{
-			glVertex3f(origin.x + sin(angle)*r, origin.y + cos(angle)*r, origin.z * sin(angle)*r);
+			angle++;
+			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
+			angle++;
+			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
 		}
 		else
 		{
-			glVertex3f(origin.x + sin(angle)*r, origin.y + cos(angle)*r, origin.z * sin(angle)*r);
+			glVertex3f(origin.x + sin((angle - 3)*DEGTORAD)*r, origin.y + cos((angle - 3)*DEGTORAD)*r, origin.z * sin((angle - 3)*DEGTORAD)*r);
+			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
 		}
 
-		//glVertex3f(origin.x + sin(angle)*r, origin.y + cos(angle)*r, origin.z * sin(angle)*r);
+
 	}
-	
 
-	/*for (float angle = 0; angle < 360; angle++)
+	for (float angle = 0; angle <= 360; angle++)
 	{
-		if (angle == 0 || (int)angle % 3)
+
+		glVertex3f(0, 0, 0);
+
+
+		if (angle == 0)
 		{
-			glVertex3f(0, 0, 0);
+			angle++;
+			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y - cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
+			angle++;
+			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y - cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
 		}
-	
-		glVertex3f(origin.x + sin(angle)*r, origin.y - cos(angle)*r, origin.z * sin(angle)*r);
+		else
+		{
+			glVertex3f(origin.x + sin((angle - 3)*DEGTORAD)*r, origin.y - cos((angle - 3)*DEGTORAD)*r, origin.z * sin((angle - 3)*DEGTORAD)*r);
+			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y - cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
+		}
+
+
 		
 
 	}
@@ -165,26 +176,58 @@ update_status ModuleSceneIntro::Update(float dt)
 	for (float angle = 0; angle <= 360; angle++)
 	{
 
-		if (angle == 0 || (int)angle % 3)
+		/*if (angle == 0 || (int)angle % 3)
 		{
 			glVertex3f(0, 0, 0);
-		}
+		}*/
 		
 
-		glVertex3f(origin.x + cos(angle) *r, origin.y, origin.z + sin(angle)*r);
+		//glVertex3f(origin.x + cos(angle) *r, origin.y, origin.z + sin(angle)*r);
+
+		glVertex3f(0, 0, 0);
+		
+
+		if (angle == 0)
+		{
+			angle++;
+			float3 x(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
+			angle++;
+			float3 y(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
+		}
+		else
+		{
+			glVertex3f(origin.x + cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r);
+			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
+		}
+
+
 	}
 
-	for (float angle = 0; angle < 360; angle++)
+	for (float angle = 0; angle <= 360; angle++)
 	{
-		if (angle == 0 || (int)angle % 3)
-		{
-			glVertex3f(0, 0, 0);
-		}
-
-		glVertex3f(origin.x - cos(angle) *r, origin.y, origin.z + sin(angle)*r);
-
 		
-	}*/
+
+		glVertex3f(0, 0, 0);
+
+
+		if (angle == 0)
+		{
+		angle++;
+		float3 x(origin.x - cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+		glVertex3f(origin.x - cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
+		angle++;
+		float3 y(origin.x - cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+		glVertex3f(origin.x - cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
+		}
+		else
+		{
+		glVertex3f(origin.x - cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r);
+		glVertex3f(origin.x - cos(angle*DEGTORAD)*r, origin.y , origin.z + sin(angle*DEGTORAD)*r);
+		}
+		
+	}
 
 	glEnd();
 	/*Direct mode
