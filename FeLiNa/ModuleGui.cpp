@@ -27,7 +27,7 @@ bool ModuleGui::Start()
 
 	ImGui::StyleColorsDark();
 
-	img = new ModuleImage(App->window->screen_surface->w,App->window->screen_surface->h);
+	//img = new ModuleImage(App->window->screen_surface->w,App->window->screen_surface->h);
 
 	return true;
 }

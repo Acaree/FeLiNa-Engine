@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-#include "MathGeoLib/MathGeoLib.h"
+
 #include <math.h>
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -16,6 +16,15 @@ bool ModuleSceneIntro::Start()
 {
 	LOG_GLOBAL("Loading Intro assets");
 	bool ret = true;
+
+	//Initial position camera.
+	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
+	App->camera->LookAt(float3(0, 0, 0));
+
+	//Create Axis Plane 
+	grid_plane = new mPlane(0, 1, 0, 0);
+	grid_plane->axis = true;
+	grid_plane->is_grid = true;
 
 	/* vertex array
 	vertexs[0] = 1.0f;
@@ -36,9 +45,99 @@ bool ModuleSceneIntro::Start()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 180 * 3, vertexs, GL_STATIC_DRAW);
 	*/
 
-	//Sito Test circles
+	
+	// Sito Circle-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	
+	uint index = 0;
+	uint sindices = 1;
+	vertex_circle[index] = origin;
+
+	for (uint angle = 0; angle <= 360; angle += circle_angle)
+	{
+		
+		indices_circle[index] = 0;
+		index++;
+		
+
+		if (angle == 0)
+		{
+	
+			vertex_circle[index] = { origin.x + sin(angle*DEGTORAD)*radius_circle, origin.y - cos(angle*DEGTORAD)*radius_circle, origin.z * sin(angle*DEGTORAD)*radius_circle };
+			indices_circle[index] = sindices;
+			angle += circle_angle;
+			sindices++;
+			index++;
+
+			vertex_circle[index] = { origin.x + sin(angle*DEGTORAD)*radius_circle, origin.y - cos(angle*DEGTORAD)*radius_circle, origin.z * sin(angle*DEGTORAD)*radius_circle };
+			indices_circle[index] = sindices;
+			sindices++;
+		}
+		else
+		{
+			
+			indices_circle[index] = indices_circle[index - 2];
+			index++;
+			
+			vertex_circle[sindices] = { origin.x + sin(angle*DEGTORAD)*radius_circle, origin.y - cos(angle*DEGTORAD)*radius_circle, origin.z * sin(angle*DEGTORAD)*radius_circle };
+			
+			indices_circle[index] = sindices;
+			sindices++;
+		}
+
+		index++;
+
+	}
+	
+	for (uint angle = 0; angle <= 360; angle += circle_angle)
+	{
+
+		indices_circle[index] = 0;
+		index++;
 
 
+		if (angle == 0)
+		{
+			//origin.x - cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r
+			vertex_circle[sindices] = { origin.x - cos(angle*DEGTORAD)*radius_circle, origin.y , origin.z + sin(angle*DEGTORAD)*radius_circle };
+			indices_circle[index] = sindices;
+			angle += circle_angle;
+			sindices++;
+			index++;
+
+			vertex_circle[sindices] = { origin.x - cos(angle*DEGTORAD)*radius_circle, origin.y , origin.z + sin(angle*DEGTORAD)*radius_circle };
+			indices_circle[index] = sindices;
+			sindices++;
+		}
+		else
+		{
+
+			indices_circle[index] = indices_circle[index - 2];
+			index++;
+
+			vertex_circle[sindices] = { origin.x - cos(angle*DEGTORAD)*radius_circle, origin.y , origin.z + sin(angle*DEGTORAD)*radius_circle };
+
+			indices_circle[index] = sindices;
+			sindices++;
+		}
+
+		index++;
+
+	}
+
+	
+	glGenBuffers(1, (GLuint*) &(sphere_id));
+	glBindBuffer(GL_ARRAY_BUFFER,sphere_id);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 27 * 3, vertex_circle, GL_STATIC_DRAW);
+
+
+	glGenBuffers(1, (GLuint*) &(sphere_indices_id));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indices_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 72, indices_circle, GL_STATIC_DRAW);
+
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	//Campa triangles
 	/*vertexs[0] = 1.0f;
 	vertexs[1] = 1.0f;
 	vertexs[2] = 0.0f;
@@ -52,25 +151,18 @@ bool ModuleSceneIntro::Start()
 	vertexs[8] = 1.0f;*/
 	
 	
-	glGenBuffers(1, (GLuint*) &(my_id)); 
+	/*glGenBuffers(1, (GLuint*) &(my_id)); 
 	glBindBuffer(GL_ARRAY_BUFFER, my_id); 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*180 * 3, vertexs, GL_STATIC_DRAW);
+	
 
 	
 	glGenBuffers(1, (GLuint*) &(my_indices)); 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices); 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)* 8, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)* 8, indices, GL_STATIC_DRAW);*/
 
 	
-	//Initial position camera.
-	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(float3(0, 0, 0));
 
-	//Create Axis Plane 
-	grid_plane = new mPlane(0, 1, 0, 0);
-	grid_plane->axis = true;
-	grid_plane->is_grid = true;
 
 	return ret;
 }
@@ -112,24 +204,44 @@ update_status ModuleSceneIntro::Update(float dt)
 	glDrawArrays(GL_TRIANGLES, 0, 9); 
 	glDisableClientState(GL_VERTEX_ARRAY);*/
 	
-	glEnableClientState(GL_VERTEX_ARRAY);
+	/*glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);*/
+
+
+	//Sito Sphere Draw-------------------------------------------------
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, sphere_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_indices_id);
+	glDrawElements(GL_TRIANGLES, 72, GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	//----------------------------------------------------------------
+
 
 
 	glBegin(GL_TRIANGLES);
 
 
 
+
+
+
+
 	//Cylindre
 
-	float3 origin(0, 0, 0);
+	/*float3 origin(0, 0, 0);
 	float h = 3.0F;
 	float r = 1.F;
 	origin.y += h / 2;
@@ -164,7 +276,7 @@ update_status ModuleSceneIntro::Update(float dt)
 			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
 			Up_second = { origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r };
 		}
-
+		*/
 
 
 	/*	glVertex3f(origin.x, -origin.y, origin.z);
@@ -194,8 +306,8 @@ update_status ModuleSceneIntro::Update(float dt)
 
 		glVertex3f(Down_second.x, Down_second.y, Down_second.z);
 		glVertex3f(Up_first.x, Up_first.y, Up_first.z);
-		glVertex3f(Up_second.x, Up_second.y, Up_second.z);*/
-	}
+		glVertex3f(Up_second.x, Up_second.y, Up_second.z);
+	}*/
 
 	
 
@@ -206,26 +318,30 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	float r = 1.F;
 
-	for (int angle = 0; angle <= 360; angle++)
+	for (int angle = 0; angle <= 360; angle+=9)
 	{
 		glVertex3f(0, 0, 0);
 
 
 		if (angle == 0)
 		{
-			angle++;
+			angle+=9;
 			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
-			angle++;
+			angle+=9;
 			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
 		}
 		else
 		{
-			glVertex3f(origin.x + sin((angle - 3)*DEGTORAD)*r, origin.y + cos((angle - 3)*DEGTORAD)*r, origin.z * sin((angle - 3)*DEGTORAD)*r);
+			glVertex3f(origin.x + sin((angle - 27)*DEGTORAD)*r, origin.y + cos((angle - 27)*DEGTORAD)*r, origin.z * sin((angle - 27)*DEGTORAD)*r);
 			glVertex3f(origin.x + sin(angle*DEGTORAD)*r, origin.y + cos(angle*DEGTORAD)*r, origin.z * sin(angle*DEGTORAD)*r);
 		}
 
 
-	}
+	}*/
+
+	/*float3 origin(0, 0, 0);
+	
+	float r = 1.F;
 
 	for (float angle = 0; angle <= 360; angle++)
 	{
@@ -249,9 +365,9 @@ update_status ModuleSceneIntro::Update(float dt)
 
 		
 
-	}
+	}*/
 
-	for (float angle = 0; angle <= 360; angle++)
+	/*for (float angle = 0; angle <= 360; angle++)
 	{
 
 		glVertex3f(0, 0, 0);
@@ -299,7 +415,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		
 	}*/
 
-	glEnd();
+	
 	/*Direct mode
 	glLineWidth(2.0f);
 	glBegin(GL_TRIANGLES);
