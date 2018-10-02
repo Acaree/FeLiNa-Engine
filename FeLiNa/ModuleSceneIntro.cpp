@@ -130,7 +130,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	//Cylindre
 
 	float3 origin(0, 0, 0);
-	float h = 5.0F;
+	float h = 3.0F;
 	float r = 1.F;
 	origin.y += h / 2;
 
@@ -138,52 +138,66 @@ update_status ModuleSceneIntro::Update(float dt)
 	for (float angle = 0, angle2 = 0; angle <= 360; angle++, angle2++)
 	{
 
+		float3 Up_first;
+		float3 Up_second;
+
+		float3 Down_first;
+		float3 Down_second;
+
 		glVertex3f(origin.x,origin.y,origin.z);
-
-
+		
+		
 		if (angle == 0)
 		{
 			angle++;
 			
 			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+			Up_first = { origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r };
 			angle++;
 			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+			Up_second = { origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r };
 		}
 		else
 		{
 			glVertex3f(origin.x + cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r);
+			Up_first = { origin.x + cos((angle - 3)*DEGTORAD)*r, origin.y, origin.z + sin((angle - 3)*DEGTORAD)*r };
 			glVertex3f(origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r);
+			Up_second = { origin.x + cos(angle*DEGTORAD)*r, origin.y, origin.z + sin(angle*DEGTORAD)*r };
 		}
 
 
 
-		glVertex3f(origin.x, -origin.y, origin.z);
+	/*	glVertex3f(origin.x, -origin.y, origin.z);
 
 
 		if (angle2 == 0)
 		{
 			angle2++;
 			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
+			Down_first = { origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r };
 			angle2++;
 			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
+			Down_second = { origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r };
 		}
 		else
 		{
 			glVertex3f(origin.x - cos((angle2 - 3)*DEGTORAD)*r, -origin.y, origin.z + sin((angle2 - 3)*DEGTORAD)*r);
+			Down_first = { origin.x - cos((angle2 - 3)*DEGTORAD)*r, -origin.y, origin.z + sin((angle2 - 3)*DEGTORAD)*r };
 			glVertex3f(origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r);
-		}
-
-
-	}
-
-	origin.y -= h / 2;
-	for (float angle = 0; angle <= 360; angle++)
-	{
-
+			Down_second = { origin.x - cos(angle2*DEGTORAD)*r, -origin.y, origin.z + sin(angle2*DEGTORAD)*r };
+		}*/
 
 		
+		/*glVertex3f(Down_first.x, Down_first.y, Down_first.z);
+		glVertex3f(Up_first.x, Up_first.y, Up_first.z);
+		glVertex3f(Down_second.x, Down_second.y, Down_second.z);
 
+		glVertex3f(Down_second.x, Down_second.y, Down_second.z);
+		glVertex3f(Up_first.x, Up_first.y, Up_first.z);
+		glVertex3f(Up_second.x, Up_second.y, Up_second.z);*/
 	}
+
+	
 
 	
 
