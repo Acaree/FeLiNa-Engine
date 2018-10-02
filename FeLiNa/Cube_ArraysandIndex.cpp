@@ -3,6 +3,13 @@
 Cube_ArraysandIndex::Cube_ArraysandIndex(float3 position, int size, GeometryType type) : Geometry(position, size, type) {
 
 	
+	for (int i = 0; i < 24; i+=3) {
+
+		vertexs[i] += position.x;
+		vertexs[i+1] += position.y;
+		vertexs[i+2] += position.z;
+	}
+
 	glGenBuffers(1, (GLuint*) &(my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, vertexs, GL_STATIC_DRAW);
