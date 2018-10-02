@@ -476,7 +476,7 @@
     <ClInclude Include="Cube_Arrays.h">
       <Filter>Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Cube_ArraysandIndices.h">
+    <ClInclude Include="Cube_ArraysandIndex.h">
       <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
