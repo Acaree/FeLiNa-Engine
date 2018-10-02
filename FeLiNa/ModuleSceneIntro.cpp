@@ -232,15 +232,6 @@ bool ModuleSceneIntro::Start()
 	for (int i = 1; i <  j/2; i +=3)
 	{
 
-		/*indices_cylinder[index] = indices_cylinder[i];
-
-		index++;
-
-		indices_cylinder[index] = indices_cylinder[1+i + medium_lenght];
-		
-		index++;
-		indices_cylinder[index] = indices_cylinder[1 + i ];*/
-
 		indices_cylinder[index] = indices_cylinder[i+1];
 
 		index++;
@@ -249,16 +240,6 @@ bool ModuleSceneIntro::Start()
 		index++;
 
 		indices_cylinder[index] = indices_cylinder[ i];
-
-
-		/*indices_cylinder[index] = indices_cylinder[i + 1];
-
-
-		index++;
-		
-		indices_cylinder[index] = indices_cylinder[i + medium_lenght];
-		index++;
-		indices_cylinder[index] = indices_cylinder[1 + i + medium_lenght];*/
 		
 
 	}
@@ -266,7 +247,7 @@ bool ModuleSceneIntro::Start()
 	for (int i = 1; i <= j / 2; i += 3)
 	{
 
-		/*indices_cylinder[index] = indices_cylinder[1 + i + medium_lenght];
+		indices_cylinder[index] = indices_cylinder[ i + medium_lenght];
 
 		index++;
 
@@ -274,7 +255,7 @@ bool ModuleSceneIntro::Start()
 		
 		index++;
 
-		indices_cylinder[index] = indices_cylinder[i + medium_lenght];*/
+		indices_cylinder[index] = indices_cylinder[1+i + medium_lenght];
 		
 	}
 
