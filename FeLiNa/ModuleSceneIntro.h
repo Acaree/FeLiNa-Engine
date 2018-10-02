@@ -45,4 +45,14 @@ public:
 	
 	float radius_cylinder = 1.0F;
 	float latitude = 0.5F;
+
+	///Capsule
+	float capsule_angle = 30.F;
+	uint capsule_id = 0;
+	uint capsule_indices_id = 0;
+	float3 vertex_capsule[28];
+	uint indices_capsule[145];
+
+	float radius_capsule = 1.0F;
+	float latitude_capsule = 1.0F;
 };
