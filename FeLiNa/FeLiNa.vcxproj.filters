@@ -535,6 +535,9 @@
     <Filter Include="Geometry">
       <UniqueIdentifier>{93d4c818-f118-4ada-949c-077905541d1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tools\Assimp">
+      <UniqueIdentifier>{9d1f0aca-a325-492a-9433-ac8125779800}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Geometry\TriangleMesh_IntersectRay_CPP.inl">
