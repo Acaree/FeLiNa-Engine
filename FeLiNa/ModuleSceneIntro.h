@@ -6,6 +6,8 @@
 #include "Cube_Arrays.h"
 #include "Cube_ArraysandIndex.h"
 #include "Cube_DirectMode.h"
+#include "GLLine.h"
+#include "Arrow.h"
 
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -26,11 +28,8 @@ public:
 	uint my_id = 0;
 	uint my_indices = 0;
 
+	Arrow* arrow;
 	mPlane* grid_plane;
-
-	Cube_Arrays* cube_array;
-	Cube_ArraysandIndex* cube_arrayandindex;
-	Cube_DirectMode* cube_direct;
 
 	//Sito Geometry
 	

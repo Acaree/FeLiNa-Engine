@@ -29,13 +29,11 @@ bool ModuleSceneIntro::Start()
 
 	// Cubes
 
-	cube_direct = new Cube_DirectMode{ {0,0,0},1,CubeDirectMode };
-	cube_array = new Cube_Arrays{ {1.5f,0,0},1,CubeArrays };
-	cube_arrayandindex = new Cube_ArraysandIndex{ {-1.5f,0,0},1,CubeArraysandIndex };
-	
 
 
-	
+
+
+
 
 	// Circle-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -118,7 +116,7 @@ bool ModuleSceneIntro::Start()
 
 
 	glGenBuffers(1, (GLuint*) &(sphere_id));
-	glBindBuffer(GL_ARRAY_BUFFER,sphere_id);
+	glBindBuffer(GL_ARRAY_BUFFER, sphere_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 27 * 3, vertex_circle, GL_STATIC_DRAW);
 
 
@@ -173,14 +171,14 @@ bool ModuleSceneIntro::Start()
 
 		index++;
 
-		
+
 	}
 
 	origin.y = -latitude;
 	vertex_cylinder[sindices] = origin;
 	int new_index_origin = sindices;
 	sindices++;
-	for (uint angle = 0; angle <=360; angle += circle_angle)
+	for (uint angle = 0; angle <= 360; angle += circle_angle)
 	{
 
 		indices_cylinder[index] = new_index_origin;
@@ -222,34 +220,34 @@ bool ModuleSceneIntro::Start()
 	int medium_lenght = index / 2;
 	int j = index;
 
-	for (int i = 1; i <  j/2; i +=3)
+	for (int i = 1; i < j / 2; i += 3)
 	{
 
-		indices_cylinder[index] = indices_cylinder[i+1];
+		indices_cylinder[index] = indices_cylinder[i + 1];
 
 		index++;
-		indices_cylinder[index] = indices_cylinder[1+i + medium_lenght];
+		indices_cylinder[index] = indices_cylinder[1 + i + medium_lenght];
 
 		index++;
 
-		indices_cylinder[index] = indices_cylinder[ i];
-		
+		indices_cylinder[index] = indices_cylinder[i];
+
 
 	}
 
 	for (int i = 1; i <= j / 2; i += 3)
 	{
 
-		indices_cylinder[index] = indices_cylinder[ i + medium_lenght];
+		indices_cylinder[index] = indices_cylinder[i + medium_lenght];
 
 		index++;
 
-		indices_cylinder[index] = indices_cylinder[i+1];
-		
+		indices_cylinder[index] = indices_cylinder[i + 1];
+
 		index++;
 
-		indices_cylinder[index] = indices_cylinder[1+i + medium_lenght];
-		
+		indices_cylinder[index] = indices_cylinder[1 + i + medium_lenght];
+
 	}
 
 	for (int i = 1; i < j / 2; i += 3)
@@ -259,15 +257,15 @@ bool ModuleSceneIntro::Start()
 
 		index++;
 
-		indices_cylinder[index] = indices_cylinder[ i + medium_lenght];
+		indices_cylinder[index] = indices_cylinder[i + medium_lenght];
 
 		index++;
 
-		indices_cylinder[index] = indices_cylinder[1+i +medium_lenght];
+		indices_cylinder[index] = indices_cylinder[1 + i + medium_lenght];
 
 
 
-		
+
 
 	}
 
@@ -302,7 +300,7 @@ bool ModuleSceneIntro::Start()
 		if (angle == 0)
 		{
 
-			vertex_capsule[sindices] = { origin.x - cos(angle*DEGTORAD)*radius_capsule, origin.y -latitude_capsule, origin.z + sin(angle*DEGTORAD)*radius_capsule };
+			vertex_capsule[sindices] = { origin.x - cos(angle*DEGTORAD)*radius_capsule, origin.y - latitude_capsule, origin.z + sin(angle*DEGTORAD)*radius_capsule };
 			indices_capsule[index] = sindices;
 			sindices++;
 			index++;
@@ -345,7 +343,7 @@ bool ModuleSceneIntro::Start()
 		if (angle == 0)
 		{
 
-			vertex_capsule[sindices] = { origin.x - cos(angle*DEGTORAD)*radius_capsule, origin.y  +latitude_capsule, origin.z + sin(angle*DEGTORAD)*radius_capsule };
+			vertex_capsule[sindices] = { origin.x - cos(angle*DEGTORAD)*radius_capsule, origin.y + latitude_capsule, origin.z + sin(angle*DEGTORAD)*radius_capsule };
 			indices_capsule[index] = sindices;
 			sindices++;
 			index++;
@@ -375,7 +373,7 @@ bool ModuleSceneIntro::Start()
 	}
 
 	medium_lenght = index / 2;
-	 j = index;
+	j = index;
 
 	for (int i = 1; i < j / 2; i += 3)
 	{
@@ -438,8 +436,8 @@ bool ModuleSceneIntro::Start()
 
 	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	
-	
+
+	arrow = new Arrow({ 0,0,0 }, { 1,1,1 }, Type_Line);
 
 	return ret;
 }
@@ -474,10 +472,7 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	cube_array->Render();
-	cube_arrayandindex->Render();
-	cube_direct->Render();
-
+	arrow->Render();
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 	//Sito capsule Draw-------------------------------------------------

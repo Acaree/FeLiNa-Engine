@@ -80,6 +80,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Arrow.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Cube_Arrays.h" />
     <ClInclude Include="Cube_ArraysandIndex.h" />
@@ -184,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Cube_Arrays.cpp" />
     <ClCompile Include="Cube_ArraysandIndex.cpp" />
