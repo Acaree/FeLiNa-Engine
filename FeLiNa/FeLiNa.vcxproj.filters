@@ -190,6 +190,9 @@
     <ClCompile Include="Arrow.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="GLPlane.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -495,6 +498,9 @@
       <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Arrow.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="GLPlane.h">
       <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
