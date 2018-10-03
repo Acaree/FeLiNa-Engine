@@ -3,11 +3,10 @@
 
 #include "Module.h"
 
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
+
+class aiScene;
+struct aiLogStream;
 
 struct ModelData
 {
@@ -29,13 +28,12 @@ public:
 	bool CleanUp();
 
 	void LoadFbx(const char* path);
-
+	
 public:
 
 	ModelData data;
 
-private:
-	aiLogStream stream;
+
 };
 
 

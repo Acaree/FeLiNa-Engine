@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-
+#include "ModuleFBX.h"
 #include <math.h>
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -30,6 +30,8 @@ bool ModuleSceneIntro::Start()
 	// Cubes
 
 
+	//CHARGE FBX
+	App->fbx->LoadFbx("FBX/warrior.FBX");
 
 
 
