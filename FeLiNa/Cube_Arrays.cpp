@@ -1,6 +1,6 @@
 #include "Cube_Arrays.h"
 
-Cube_Arrays::Cube_Arrays(float3 position, int size, GeometryType type) : Geometry(position, size, type) {
+Cube_Arrays::Cube_Arrays(float3 position, float3 size, GeometryType type) : Geometry(position, size, type) {
 
 
 	for (int i = 0; i < 108; i += 3) {

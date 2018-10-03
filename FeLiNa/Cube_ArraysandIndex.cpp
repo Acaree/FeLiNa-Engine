@@ -1,6 +1,6 @@
 #include "Cube_ArraysandIndex.h"
 
-Cube_ArraysandIndex::Cube_ArraysandIndex(float3 position, int size, GeometryType type) : Geometry(position, size, type) {
+Cube_ArraysandIndex::Cube_ArraysandIndex(float3 position, float3 size, GeometryType type) : Geometry(position, size, type) {
 
 	
 	for (int i = 0; i < 24; i+=3) {

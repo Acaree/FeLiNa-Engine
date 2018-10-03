@@ -8,16 +8,17 @@
 
 enum GeometryType
 {
-CubeDirectMode,
-CubeArrays,
-CubeArraysandIndex
+Type_CubeDirectMode,
+Type_CubeArrays,
+Type_CubeArraysandIndex,
+Type_Line
 };
 
 class Geometry
 {
 public:
 
-	Geometry(float3 position, int size,GeometryType type);
+	Geometry(float3 position, float3 size,GeometryType type);
 
 	virtual void	Render();
 	GeometryType	GetType();
@@ -30,7 +31,7 @@ public:
 	float3 position;
 
 protected:
-	int size;
+	float3 size;
 	GeometryType type;
 };
 

@@ -8,7 +8,7 @@ class Cube_Arrays : public Geometry
 {
 public:
 
-	Cube_Arrays(float3 position, int size, GeometryType type);
+	Cube_Arrays(float3 position, float3 size, GeometryType type);
 
 	void Render();
 

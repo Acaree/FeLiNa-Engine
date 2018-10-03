@@ -1,6 +1,6 @@
 #include "Cube_DirectMode.h"
 
-Cube_DirectMode::Cube_DirectMode(float3 position, int size, GeometryType type):Geometry(position, size, type){}
+Cube_DirectMode::Cube_DirectMode(float3 position, float3 size, GeometryType type):Geometry(position, size, type){}
 
 void Cube_DirectMode::Render() {
 

@@ -8,7 +8,7 @@ class Cube_DirectMode : public Geometry
 {
 public:
 
-	Cube_DirectMode(float3 position, int size, GeometryType type);
+	Cube_DirectMode(float3 position, float3 size, GeometryType type);
 
 	void Render();
 

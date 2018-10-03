@@ -184,6 +184,9 @@
     <ClCompile Include="ModuleFBX.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="GLLine.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -484,6 +487,9 @@
     </ClInclude>
     <ClInclude Include="ModuleFBX.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="GLLine.h">
+      <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
