@@ -14,6 +14,7 @@
 #include "ModuleGui.h"
 #include "ModuleHardware.h"
 #include "ModuleConsole.h"
+#include "ModuleFBX.h"
 #include "Parson/parson.h"
 
 class Application
@@ -28,6 +29,7 @@ public:
 	ModuleGui* gui;
 	ModuleHardware* hardware;
 	ModuleConsole* console;
+	ModuleFBX * fbx;
 
 	char app_name[20];
 	char organization[20];

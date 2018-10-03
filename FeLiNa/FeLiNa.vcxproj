@@ -162,6 +162,7 @@
     <ClInclude Include="mmgr\targetver.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleConsole.h" />
+    <ClInclude Include="ModuleFBX.h" />
     <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModuleHardware.h" />
     <ClInclude Include="ModuleImage.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleConsole.cpp" />
+    <ClCompile Include="ModuleFBX.cpp" />
     <ClCompile Include="ModuleGui.cpp" />
     <ClCompile Include="ModuleHardware.cpp" />
     <ClCompile Include="ModuleImage.cpp" />

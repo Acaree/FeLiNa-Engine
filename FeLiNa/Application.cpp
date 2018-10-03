@@ -13,6 +13,7 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	gui = new ModuleGui(this);
 	console = new ModuleConsole(this);
+	fbx = new ModuleFBX(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -25,8 +26,10 @@ Application::Application()
 	AddModule(audio);
 	AddModule(hardware);
 	AddModule(console);
+	AddModule(fbx);
 	// Scenes
 	AddModule(scene_intro);
+	
 	AddModule(gui);
 	// Renderer last!
 	AddModule(renderer3D);

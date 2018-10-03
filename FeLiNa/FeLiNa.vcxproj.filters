@@ -181,6 +181,9 @@
     <ClCompile Include="Cube_ArraysandIndex.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleFBX.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -478,6 +481,9 @@
     </ClInclude>
     <ClInclude Include="Cube_ArraysandIndex.h">
       <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFBX.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
