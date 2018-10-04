@@ -84,6 +84,19 @@ void ModuleFBX::LoadFbx(const char* path)
 
 				}
 
+				//Need revision when draw geometry with color
+				if (new_mesh->HasVertexColors(data.id_color))
+				{
+
+					data.num_color = new_mesh->GetNumColorChannels();
+					data.colors = new float[data.num_color * 4];
+
+					for (int num_colors = 0; num_colors < new_mesh->GetNumColorChannels(); ++num_colors)
+					{
+						memcpy(&data.colors[num_colors*4], &new_mesh->mColors[num_colors], 4 * sizeof(float));
+					}
+				}
+
 			}
 	}
 	else

@@ -21,6 +21,10 @@ struct ModelData
 	uint id_texture = 0;
 	uint num_texture = 0;
 	float* texture = nullptr;
+
+	uint id_color = 0;
+	uint num_color = 0;
+	float* colors = nullptr;
 };
 
 class ModuleFBX : public Module
