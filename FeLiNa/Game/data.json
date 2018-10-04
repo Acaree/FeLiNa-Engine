@@ -1,0 +1,56 @@
+{
+	"Application":
+	{
+		"Title": "FeLiNa Engine",
+		"Organization": "UPC CITM",
+		"Cap frames": true,
+		"Max frames" 60
+	},
+
+	"Window":
+	{
+		"Widtd": 1280,
+		"Height": 1024,
+		"Screen size" 1,
+		"Brightness": 0,
+		"Fullscreen": false,
+		"Reasizable": false,
+		"Bordeless": false,
+		"Fullscreen desktop": false
+	},
+
+	"Camera 3D":
+	{
+	},
+
+	"Input":
+	{
+	},
+
+	"Audio":
+	{
+	},
+
+	"Scene":
+	{
+	},
+
+	"Gui":
+	{
+		"Configuration": false,
+		"Render": false,
+		"Console": false
+	},
+
+	"Render":
+	{
+		"VSYNC": false,
+		"Depth test": false,
+		"Cull face": false,
+		"Lighting": false,
+		"Color material": false,
+		"Texture 2D": false,
+		"Line smooth": false,
+		"Polygon smooth": false
+	}
+}
