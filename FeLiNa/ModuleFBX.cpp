@@ -70,6 +70,19 @@ void ModuleFBX::LoadFbx(const char* path)
 
 					}
 				}
+				
+				//Need revision when draw a geometry with texture.
+				if (new_mesh->HasTextureCoords(data.id_texture))
+				{
+					data.num_texture = new_mesh->mNumVertices;
+					data.texture = new float[data.num_texture*2];
+
+					for (int num_textures = 0; num_textures < new_mesh->mNumVertices; ++num_textures)
+					{
+						memcpy(&data.texture[num_textures * 2], &new_mesh->mTextureCoords[num_textures],2* sizeof(float));
+					}
+
+				}
 
 			}
 	}

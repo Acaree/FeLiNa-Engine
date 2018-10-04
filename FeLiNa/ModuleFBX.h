@@ -17,6 +17,10 @@ struct ModelData
 	uint id_vertices = 0;
 	uint num_vertices = 0;
 	float* vertices = nullptr;
+
+	uint id_texture = 0;
+	uint num_texture = 0;
+	float* texture = nullptr;
 };
 
 class ModuleFBX : public Module
