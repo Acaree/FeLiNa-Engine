@@ -27,8 +27,6 @@ bool ModuleGui::Start()
 
 	ImGui::StyleColorsDark();
 
-	//img = new ModuleImage(App->window->screen_surface->w,App->window->screen_surface->h);
-
 	return true;
 }
 
@@ -73,14 +71,6 @@ update_status ModuleGui::PostUpdate(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
-	if (need_screenshoot)
-	{
-		img->TakeScreenshoot();
-		need_screenshoot = false;
-	}
-
-	
-
 	if (close_program)
 		update_return = UPDATE_STOP;
 
@@ -90,7 +80,6 @@ update_status ModuleGui::PostUpdate(float dt)
 bool ModuleGui::CleanUp()
 {
 	
-	img->~ModuleImage();
 
 	return true;
 }

@@ -145,21 +145,28 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());
-
+	
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
-
+	
 	return UPDATE_CONTINUE;
 }
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	if (App->gui->need_screenshoot)
+	{
+		img->TakeScreenshoot();
+		App->gui->need_screenshoot = false;
+	}
+
 	img->TakeScreenGif(dt);
 	SDL_GL_SwapWindow(App->window->window);
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -167,7 +174,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG_GLOBAL("Destroying 3D Renderer");
-
+	img->~ModuleImage();
 	SDL_GL_DeleteContext(context);
 
 	return true;

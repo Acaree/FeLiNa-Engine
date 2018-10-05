@@ -4,7 +4,7 @@
 #include "Globals.h"
 #include "Light.h"
 #include "ModuleImage.h"
-
+#include "ModuleGui.h"
 #define MAX_LIGHTS 8
 
 class ModuleRenderer3D : public Module
@@ -38,5 +38,7 @@ private:
 	bool texture2D = false;
 	bool line_smooth = false;
 	bool polygon_smooth = false;
+	
 	ModuleImage* img;
+	
 };

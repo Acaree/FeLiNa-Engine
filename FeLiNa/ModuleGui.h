@@ -33,16 +33,13 @@ private:
 	void ShowConfigurationWindow();
 	void ShowAboutWindow();
 
-	//TEST
-	
-	bool need_screenshoot = false;
-	
 public:
-	ModuleImage* img;
+
 	bool close_program = false;
 	bool open_configuration = false;
 	bool open_render_configuration = false;
 	bool open_console = false;
+	bool need_screenshoot = false;
 
 };
 
