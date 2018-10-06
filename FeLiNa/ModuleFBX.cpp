@@ -39,7 +39,7 @@ bool ModuleFBX::CleanUp()
 void ModuleFBX::LoadFbx(const char* path)
 {
     LOG_GLOBAL("Inicialization load FBX")
-	const aiScene* scene = aiImportFile("Game/FBX/box.FBX",aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile("FBX/warrior.FBX",aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -54,12 +54,12 @@ void ModuleFBX::LoadFbx(const char* path)
 
 				//Geometry
 
-				if (new_mesh->HasNormals())
+				if (new_mesh->HasFaces())
 				{
 					data.num_indices = new_mesh->mNumFaces * 3;
 					data.indices = new uint[data.num_indices];
 
-					for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; num_faces++)
+					for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
 					{
 						if (new_mesh->mFaces[num_faces].mNumIndices != 3)
 						{
@@ -101,18 +101,18 @@ void ModuleFBX::LoadFbx(const char* path)
 
 			glGenBuffers(1, (GLuint*) &(data.id_vertices));
 			glBindBuffer(GL_ARRAY_BUFFER, data.id_vertices);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.num_vertices, data.vertices, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3 * data.num_vertices, data.vertices, GL_STATIC_DRAW);
 
 
 
 			glGenBuffers(1, (GLuint*) &(data.id_indices));
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.id_indices);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data.num_indices, data.indices, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data.num_indices, data.indices, GL_STATIC_DRAW); 
 
 			
 			glGenBuffers(1, (GLuint*) &(data.id_texture));
 			glBindBuffer(GL_ARRAY_BUFFER, data.id_texture);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.num_texture, data.texture, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) *2* data.num_texture, data.texture, GL_STATIC_DRAW);
 
 
 
