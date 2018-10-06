@@ -25,6 +25,7 @@ bool ModuleInput::Init()
 	bool ret = true;
 	SDL_Init(0);
 
+
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
 		LOG_GLOBAL("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -86,6 +87,9 @@ update_status ModuleInput::PreUpdate(float dt)
 	mouse_x_motion = mouse_y_motion = 0;
 
 	bool quit = false;
+
+	
+
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
@@ -113,6 +117,30 @@ update_status ModuleInput::PreUpdate(float dt)
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
 			}
+
+			break;
+
+			
+
+			case SDL_DROPFILE:
+			{
+
+				char* dropped_filedir;
+				dropped_filedir = e.drop.file;
+				// Shows directory of dropped file
+				SDL_ShowSimpleMessageBox(
+					SDL_MESSAGEBOX_INFORMATION,
+					"File dropped on window",
+					dropped_filedir,
+					App->window->window
+				);
+
+				App->fbx->LoadFbx(dropped_filedir);
+
+				SDL_free(dropped_filedir);
+			}
+
+			break;
 		}
 	}
 
