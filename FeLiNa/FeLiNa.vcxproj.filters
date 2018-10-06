@@ -193,6 +193,9 @@
     <ClCompile Include="GLPlane.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Frustrum.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -501,6 +504,9 @@
       <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="GLPlane.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustrum.h">
       <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>

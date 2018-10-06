@@ -8,6 +8,7 @@
 #include "Cube_DirectMode.h"
 #include "GLLine.h"
 #include "Arrow.h"
+#include "Frustrum.h"
 
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -28,7 +29,7 @@ public:
 	uint my_id = 0;
 	uint my_indices = 0;
 
-	Arrow* arrow;
+	Frustrum* frust;
 	mPlane* grid_plane;
 
 	//Sito Geometry
