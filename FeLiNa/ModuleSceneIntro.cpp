@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleFBX.h"
+#include "ModuleRenderer3D.h"
 #include <math.h>
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -474,9 +475,11 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	arrow->Render();
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+	
+	
+	/*
+	
 	//Sito capsule Draw-------------------------------------------------
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -556,7 +559,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	glVertex3f(1.0f, -1.0f, -1.0f);    
 	*/
 	
-
+	App->renderer3D->DrawMesh(App->fbx->data);
 
 	return update_return;
 }

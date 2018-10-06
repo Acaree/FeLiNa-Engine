@@ -2,6 +2,7 @@
 #define _MODULE_FBX_
 
 #include "Module.h"
+#include "OpenGL.h"
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
@@ -10,19 +11,19 @@ struct aiLogStream;
 
 struct ModelData
 {
-	uint id_indices = 0;
+	GLuint id_indices = 0;
 	uint num_indices = 0;
 	uint* indices = nullptr;
 
-	uint id_vertices = 0;
+	GLuint id_vertices = 0;
 	uint num_vertices = 0;
 	float* vertices = nullptr;
 
-	uint id_texture = 0;
+	GLuint id_texture = 0;
 	uint num_texture = 0;
 	float* texture = nullptr;
 
-	uint id_color = 0;
+	GLuint id_color = 0;
 	uint num_color = 0;
 	float* colors = nullptr;
 };

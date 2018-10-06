@@ -158,6 +158,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+
+	DrawMesh(App->fbx->data);
+
 	if (App->gui->need_screenshoot)
 	{
 		img->TakeScreenshoot();
@@ -290,4 +293,20 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 		ImGui::End();
 	}
 	
+}
+
+
+void ModuleRenderer3D :: DrawMesh(ModelData mesh) {
+
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
+	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
 }

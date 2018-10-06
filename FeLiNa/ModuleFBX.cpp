@@ -39,7 +39,7 @@ bool ModuleFBX::CleanUp()
 void ModuleFBX::LoadFbx(const char* path)
 {
     LOG_GLOBAL("Inicialization load FBX")
-	const aiScene* scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile("Game/FBX/box.FBX",aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -98,7 +98,33 @@ void ModuleFBX::LoadFbx(const char* path)
 				}
 
 			}
+
+			glGenBuffers(1, (GLuint*) &(data.id_vertices));
+			glBindBuffer(GL_ARRAY_BUFFER, data.id_vertices);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.num_vertices, data.vertices, GL_STATIC_DRAW);
+
+
+
+			glGenBuffers(1, (GLuint*) &(data.id_indices));
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.id_indices);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data.num_indices, data.indices, GL_STATIC_DRAW);
+
+			
+			glGenBuffers(1, (GLuint*) &(data.id_texture));
+			glBindBuffer(GL_ARRAY_BUFFER, data.id_texture);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.num_texture, data.texture, GL_STATIC_DRAW);
+
+
+
+			glGenBuffers(1, (GLuint*) &(data.id_color));
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.id_color);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data.num_color, data.colors, GL_STATIC_DRAW);
+
+			
 	}
+
+	
+
 	else
 		LOG_GLOBAL("Error loading Scene %s",path);
 }

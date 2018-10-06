@@ -5,6 +5,7 @@
 #include "Light.h"
 #include "ModuleImage.h"
 #include "ModuleGui.h"
+#include "ModuleFBX.h"
 #define MAX_LIGHTS 8
 
 class ModuleRenderer3D : public Module
@@ -22,6 +23,8 @@ public:
 	void OnResize(int width, int height);
 
 	void DrawCheckBoxEdgeGLPanel();
+
+	void DrawMesh(ModelData mesh);
 
 public:
 
