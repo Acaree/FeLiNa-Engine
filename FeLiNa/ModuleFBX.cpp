@@ -39,7 +39,7 @@ bool ModuleFBX::CleanUp()
 void ModuleFBX::LoadFbx(const char* path)
 {
     LOG_GLOBAL("Inicialization load FBX")
-	const aiScene* scene = aiImportFile("FBX/warrior.FBX",aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
