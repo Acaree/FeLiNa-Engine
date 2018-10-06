@@ -3,7 +3,7 @@
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
-
+#include "Assimp/include/cfileio.h"
 ModuleFBX::ModuleFBX(Application*app, bool start_enabled) : Module(app, start_enabled)
 {
 
@@ -85,7 +85,7 @@ void ModuleFBX::LoadFbx(const char* path)
 				}
 
 				//Need revision when draw geometry with color
-				if (new_mesh->HasVertexColors(data.id_color))
+				/*if (new_mesh->HasVertexColors(data.id_color))
 				{
 
 					data.num_color = new_mesh->GetNumColorChannels();
@@ -95,8 +95,32 @@ void ModuleFBX::LoadFbx(const char* path)
 					{
 						memcpy(&data.colors[num_colors*4], &new_mesh->mColors[num_colors], 4 * sizeof(float));
 					}
-				}
+				}*/
 
+				
+				//data.color_4D = { 0.0f,0.0f,0.0f,0.0f };
+
+				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
+				
+				//TO REVISION--------------------------------------------------------
+
+				// if the object don't have color material, we set the color to white 
+				//because if not, the object take the last material
+				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data.color_4D) == aiReturn_FAILURE)
+				{
+					data.color_4D = { 255.0f,255.0f,255.0f,255.0f }; 
+				}
+				aiColor4D* colors_mesh = *new_mesh->mColors;
+
+				if (colors_mesh != nullptr)
+				{
+					data.colors = new float[data.num_vertices * 3];
+					for (int num_color = 0; num_color < data.num_vertices; ++num_color)
+					{
+						memcpy(data.colors, &colors_mesh[num_color], sizeof(float)*data.num_vertices * 3);
+					}
+				}
+				//--------------------------------------------------------------------------------
 			}
 
 			glGenBuffers(1, (GLuint*) &(data.id_vertices));

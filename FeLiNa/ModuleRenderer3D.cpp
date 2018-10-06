@@ -300,6 +300,9 @@ void ModuleRenderer3D :: DrawMesh(ModelData mesh) {
 
 
 	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glColor4f(mesh.color_4D.r, mesh.color_4D.g, mesh.color_4D.b, mesh.color_4D.a); //COLOR MATERIAL: AMBIENT
+
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
