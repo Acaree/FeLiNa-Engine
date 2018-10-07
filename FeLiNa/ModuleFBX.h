@@ -37,6 +37,9 @@ public:
 	bool Start();
 	bool CleanUp();
 
+	update_status PreUpdate(float dt);
+	update_status PostUpdate(float dt);
+
 	void LoadFbx(const char* path);
 	
 public:

@@ -14,6 +14,24 @@ ModuleAudio::ModuleAudio(Application* app, bool start_enabled) : Module(app, sta
 ModuleAudio::~ModuleAudio()
 {}
 
+
+update_status ModuleAudio::PreUpdate(float dt) {
+	update_status update_return = UPDATE_CONTINUE;
+	module_timer.Start();
+	return update_return;
+}
+
+update_status ModuleAudio::PostUpdate(float dt) {
+
+	update_status update_return = UPDATE_CONTINUE;
+
+	last_update_ms = module_timer.ReadMs();
+	module_timer.Start();
+
+	return update_return;
+
+}
+
 // Called before render is available
 bool ModuleAudio::Init()
 {

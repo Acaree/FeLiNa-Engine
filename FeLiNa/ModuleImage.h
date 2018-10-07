@@ -35,6 +35,7 @@ public:
 	void TakeScreenGif(float dt);
 
 private:
+
 	BYTE * pixels, *pixel_full;
 	int width;
 	int height;

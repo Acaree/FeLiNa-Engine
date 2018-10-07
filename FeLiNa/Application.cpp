@@ -310,9 +310,41 @@ void Application::DrawApplicationInformationPanel()
 
 void Application::DrawModulesTime() {
 
+	ImGui::Text("Module Audio");
+	ImGui::SameLine();
+	ImGui::Text("%f ms", audio->last_update_ms);
+
+	ImGui::Text("Module Camera 3D");
+	ImGui::SameLine();
+	ImGui::Text("%f ms", camera->last_update_ms);
+
+	ImGui::Text("Module Console");
+	ImGui::SameLine();
+	ImGui::Text("%f ms", console->last_update_ms);
+
+	ImGui::Text("Module FBX");
+	ImGui::SameLine();
+	ImGui::Text("%f ms",fbx->last_update_ms);
+
 	ImGui::Text("Module GUI");
 	ImGui::SameLine();
 	ImGui::Text("%f ms", gui->last_update_ms);
+
+	ImGui::Text("Module Hardware");
+	ImGui::SameLine();
+	ImGui::Text("%f ms", hardware->last_update_ms);
+
+	ImGui::Text("Module Input");
+	ImGui::SameLine();
+	ImGui::Text("%f ms", input->last_update_ms);
+
+	ImGui::Text("Module Renderer");
+	ImGui::SameLine();
+	ImGui::Text("%f ms", renderer3D->last_update_ms);
+
+	ImGui::Text("Module Scene Intro");
+	ImGui::SameLine();
+	ImGui::Text("%f ms", scene_intro->last_update_ms);
 
 }
 

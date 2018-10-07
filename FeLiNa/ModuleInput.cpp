@@ -35,9 +35,13 @@ bool ModuleInput::Init()
 	return ret;
 }
 
+
 // Called every draw update
 update_status ModuleInput::PreUpdate(float dt)
 {
+
+	module_timer.Start();
+
 	SDL_PumpEvents();
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -156,4 +160,15 @@ bool ModuleInput::CleanUp()
 	LOG_GLOBAL("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+update_status ModuleInput::PostUpdate(float dt) {
+
+	update_status update_return = UPDATE_CONTINUE;
+
+	last_update_ms = module_timer.ReadMs();
+	module_timer.Start();
+
+	return update_return;
+
 }

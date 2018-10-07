@@ -140,6 +140,8 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	module_timer.Start();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -169,6 +171,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	img->TakeScreenGif(dt);
 	SDL_GL_SwapWindow(App->window->window);
+
+	last_update_ms = module_timer.ReadMs();
+	module_timer.Start();
 	
 	return UPDATE_CONTINUE;
 }

@@ -152,3 +152,20 @@ void ModuleFBX::LoadFbx(const char* path)
 	else
 		LOG_GLOBAL("Error loading Scene %s",path);
 }
+
+update_status ModuleFBX::PreUpdate(float dt) {
+	update_status update_return = UPDATE_CONTINUE;
+	module_timer.Start();
+	return update_return;
+}
+
+update_status ModuleFBX::PostUpdate(float dt) {
+
+	update_status update_return = UPDATE_CONTINUE;
+
+	last_update_ms = module_timer.ReadMs();
+	module_timer.Start();
+
+	return update_return;
+
+}

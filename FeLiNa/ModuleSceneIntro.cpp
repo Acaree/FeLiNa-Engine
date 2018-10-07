@@ -50,7 +50,7 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-
+	module_timer.Start();
 
 	return update_return;
 }
@@ -71,7 +71,10 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 
 	grid_plane->Render();
 
+	last_update_ms = module_timer.ReadMs();
+	module_timer.Start();
 
 	return update_return;
 }
+
 

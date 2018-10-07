@@ -142,3 +142,20 @@ void ModuleHardware::DrawHardwareInformationPanel()
 	ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (dedicated_memory * 0.001));
 	
 }
+
+update_status ModuleHardware::PreUpdate(float dt) {
+	update_status update_return = UPDATE_CONTINUE;
+	module_timer.Start();
+	return update_return;
+}
+
+update_status ModuleHardware::PostUpdate(float dt) {
+
+	update_status update_return = UPDATE_CONTINUE;
+
+	last_update_ms = module_timer.ReadMs();
+	module_timer.Start();
+
+	return update_return;
+
+}

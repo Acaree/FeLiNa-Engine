@@ -17,6 +17,10 @@ public:
 	bool Init();
 	bool CleanUp();
 
+
+	update_status PreUpdate(float dt);
+	update_status PostUpdate(float dt);
+
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
