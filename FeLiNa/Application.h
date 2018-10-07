@@ -65,6 +65,8 @@ public:
 	float GetFPS();
 
 	void DrawApplicationInformationPanel();
+	void DrawModulesTime();
+
 	void Log_app(const char* text);
 
 	void NeedSave();

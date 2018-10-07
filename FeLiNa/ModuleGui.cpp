@@ -33,6 +33,7 @@ bool ModuleGui::Start()
 update_status ModuleGui::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
+	module_timer.Start();
 
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
@@ -67,6 +68,9 @@ update_status ModuleGui::Update(float dt)
 update_status ModuleGui::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
+	
+	last_update_ms = module_timer.ReadMs();
+	module_timer.Start();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -192,6 +196,11 @@ void ModuleGui::ShowConfigurationWindow()
 	if (ImGui::CollapsingHeader("Hardware Detection"))
 	{
 		App->hardware->DrawHardwareInformationPanel();
+	}
+
+	if (ImGui::CollapsingHeader("Modules Update Time"))
+	{
+		App->DrawModulesTime();
 	}
 
 

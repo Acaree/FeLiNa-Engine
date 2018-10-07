@@ -303,7 +303,19 @@ void Application::DrawApplicationInformationPanel()
 	ImGui::Text("Peak Alloc Unit Count");
 	ImGui::SameLine();
 	ImGui::Text("%i", stats.peakAllocUnitCount);
+
+	
 }
+
+
+void Application::DrawModulesTime() {
+
+	ImGui::Text("Module GUI");
+	ImGui::SameLine();
+	ImGui::Text("%f ms", gui->last_update_ms);
+
+}
+
 
 void Application::Log_app(const char * text)
 {
