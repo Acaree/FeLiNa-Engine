@@ -81,10 +81,12 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Arrow.h" />
+    <ClInclude Include="GLCapsule.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Cube_Arrays.h" />
     <ClInclude Include="Cube_ArraysandIndex.h" />
     <ClInclude Include="Cube_DirectMode.h" />
+    <ClInclude Include="Cylindre.h" />
     <ClInclude Include="FreeImage\Dist\x32\FreeImage.h" />
     <ClInclude Include="Frustrum.h" />
     <ClInclude Include="Geometry.h" />
@@ -183,15 +185,18 @@
     <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="GLPlane.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="GLSphere.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="GLCapsule.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Cube_Arrays.cpp" />
     <ClCompile Include="Cube_ArraysandIndex.cpp" />
     <ClCompile Include="Cube_DirectMode.cpp" />
+    <ClCompile Include="Cylindre.cpp" />
     <ClCompile Include="Frustrum.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Globals.cpp" />
@@ -252,6 +257,7 @@
     <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="GLPlane.cpp" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="GLSphere.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>

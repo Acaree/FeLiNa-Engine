@@ -196,6 +196,15 @@
     <ClCompile Include="Frustrum.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Cylindre.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="GLCapsule.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="GLSphere.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -507,6 +516,15 @@
       <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Frustrum.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylindre.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="GLCapsule.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="GLSphere.h">
       <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
