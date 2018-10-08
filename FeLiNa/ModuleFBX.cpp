@@ -106,7 +106,7 @@ void ModuleFBX::LoadFbx(const char* path)
 
 				// if the object don't have color material, we set the color to white 
 				//because if not, the object take the last material
-				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data.color_4D) == aiReturn_FAILURE)
+				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data.color_4D) == aiReturn_FAILURE || data.color_4D == aiColor4D(0,0,0,1))
 				{
 					data.color_4D = { 255.0f,255.0f,255.0f,255.0f }; 
 				}
