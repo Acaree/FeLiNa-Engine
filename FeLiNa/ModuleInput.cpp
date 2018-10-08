@@ -128,6 +128,8 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_DROPFILE:
 			{
+				App->renderer3D->DeleteAllDataMesh();
+
 
 				char* dropped_filedir;
 				dropped_filedir = e.drop.file;
@@ -142,6 +144,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				App->fbx->LoadFbx(dropped_filedir);
 
 				SDL_free(dropped_filedir);
+				
 			}
 
 			break;

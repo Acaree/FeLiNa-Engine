@@ -60,7 +60,7 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 	
-	App->renderer3D->DrawMesh(App->fbx->data);
+	
 
 	return update_return;
 }

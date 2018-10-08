@@ -161,7 +161,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 
-	DrawMesh(App->fbx->data);
+	for (std::list<ModelData*>::const_iterator it = data.begin(); it != data.end(); ++it)
+	{
+		DrawMesh(*it);
+	}
 
 	if (App->gui->need_screenshoot)
 	{
@@ -170,6 +173,10 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	}
 
 	img->TakeScreenGif(dt);
+
+	ImGui::Render();
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
 	SDL_GL_SwapWindow(App->window->window);
 
 	last_update_ms = module_timer.ReadMs();
@@ -301,20 +308,34 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 }
 
 
-void ModuleRenderer3D :: DrawMesh(ModelData mesh) {
+void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glColor4f(mesh.color_4D.r, mesh.color_4D.g, mesh.color_4D.b, mesh.color_4D.a); //COLOR MATERIAL: AMBIENT
+	glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a); //COLOR MATERIAL: AMBIENT
 
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
-	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
+}
+
+void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh)
+{
+
+	data.push_back(data_mesh);
+
+}
+
+void ModuleRenderer3D::DeleteAllDataMesh()
+{
+	
+	data.clear();
+	
 }

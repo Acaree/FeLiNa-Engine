@@ -4,6 +4,10 @@
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
+#include "Application.h"
+#include "ModuleRenderer3D.h"
+
+
 ModuleFBX::ModuleFBX(Application*app, bool start_enabled) : Module(app, start_enabled)
 {
 
@@ -27,11 +31,12 @@ bool ModuleFBX::CleanUp()
 {
 	aiDetachAllLogStreams();
 
-	if (data.indices != nullptr)
-		delete[]data.indices;
+	//TO CHANGE
+	/*if (data->indices != nullptr)
+		delete[]data->indices;
 
-	if (data.vertices != nullptr)
-		delete[]data.vertices;
+	if (data->vertices != nullptr)
+		delete[]data->vertices;*/
 
 	return true;
 }
@@ -46,18 +51,20 @@ void ModuleFBX::LoadFbx(const char* path)
 		
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
 			{
+				ModelData* data = new ModelData();
+
 				aiMesh* new_mesh = scene->mMeshes[num_meshes];
-				data.num_vertices = new_mesh->mNumVertices;
-				data.vertices = new float[data.num_vertices * 3];
-				memcpy(data.vertices, new_mesh->mVertices, sizeof(float)*data.num_vertices * 3);
-				LOG_GLOBAL("New mesh with %d verices", data.num_vertices);
+				data->num_vertices = new_mesh->mNumVertices;
+				data->vertices = new float[data->num_vertices * 3];
+				memcpy(data->vertices, new_mesh->mVertices, sizeof(float)*data->num_vertices * 3);
+				LOG_GLOBAL("New mesh with %d verices", data->num_vertices);
 
 				//Geometry
 
 				if (new_mesh->HasFaces())
 				{
-					data.num_indices = new_mesh->mNumFaces * 3;
-					data.indices = new uint[data.num_indices];
+					data->num_indices = new_mesh->mNumFaces * 3;
+					data->indices = new uint[data->num_indices];
 
 					for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
 					{
@@ -66,39 +73,39 @@ void ModuleFBX::LoadFbx(const char* path)
 							LOG_GLOBAL("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
 						}
 						else
-							memcpy(&data.indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
+							memcpy(&data->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
 
 					}
 				}
 				
 				//Need revision when draw a geometry with texture.
-				if (new_mesh->HasTextureCoords(data.id_texture))
+				if (new_mesh->HasTextureCoords(data->id_texture))
 				{
-					data.num_texture = new_mesh->mNumVertices;
-					data.texture = new float[data.num_texture*2];
+					data->num_texture = new_mesh->mNumVertices;
+					data->texture = new float[data->num_texture*2];
 
 					for (int num_textures = 0; num_textures < new_mesh->mNumVertices; ++num_textures)
 					{
-						memcpy(&data.texture[num_textures * 2], &new_mesh->mTextureCoords[num_textures],2* sizeof(float));
+						memcpy(&data->texture[num_textures * 2], &new_mesh->mTextureCoords[num_textures],2* sizeof(float));
 					}
 
 				}
 
 				//Need revision when draw geometry with color
-				/*if (new_mesh->HasVertexColors(data.id_color))
+				/*if (new_mesh->HasVertexColors(data->id_color))
 				{
 
-					data.num_color = new_mesh->GetNumColorChannels();
-					data.colors = new float[data.num_color * 4];
+					data->num_color = new_mesh->GetNumColorChannels();
+					data->colors = new float[data->num_color * 4];
 
 					for (int num_colors = 0; num_colors < new_mesh->GetNumColorChannels(); ++num_colors)
 					{
-						memcpy(&data.colors[num_colors*4], &new_mesh->mColors[num_colors], 4 * sizeof(float));
+						memcpy(&data->colors[num_colors*4], &new_mesh->mColors[num_colors], 4 * sizeof(float));
 					}
 				}*/
 
 				
-				//data.color_4D = { 0.0f,0.0f,0.0f,0.0f };
+				//data->color_4D = { 0.0f,0.0f,0.0f,0.0f };
 
 				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
 				
@@ -106,43 +113,47 @@ void ModuleFBX::LoadFbx(const char* path)
 
 				// if the object don't have color material, we set the color to white 
 				//because if not, the object take the last material
-				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data.color_4D) == aiReturn_FAILURE || data.color_4D == aiColor4D(0,0,0,1))
+				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data->color_4D) == aiReturn_FAILURE || data->color_4D == aiColor4D(0,0,0,1))
 				{
-					data.color_4D = { 255.0f,255.0f,255.0f,255.0f }; 
+					data->color_4D = { 255.0f,255.0f,255.0f,255.0f }; 
 				}
 				aiColor4D* colors_mesh = *new_mesh->mColors;
 
 				if (colors_mesh != nullptr)
 				{
-					data.colors = new float[data.num_vertices * 3];
-					for (int num_color = 0; num_color < data.num_vertices; ++num_color)
+					data->colors = new float[data->num_vertices * 3];
+					for (int num_color = 0; num_color < data->num_vertices; ++num_color)
 					{
-						memcpy(data.colors, &colors_mesh[num_color], sizeof(float)*data.num_vertices * 3);
+						memcpy(data->colors, &colors_mesh[num_color], sizeof(float)*data->num_vertices * 3);
 					}
 				}
 				//--------------------------------------------------------------------------------
+
+
+				glGenBuffers(1, (GLuint*) &(data->id_vertices));
+				glBindBuffer(GL_ARRAY_BUFFER, data->id_vertices);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * data->num_vertices, data->vertices, GL_STATIC_DRAW);
+
+
+
+				glGenBuffers(1, (GLuint*) &(data->id_indices));
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_indices);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_indices, data->indices, GL_STATIC_DRAW);
+
+
+				glGenBuffers(1, (GLuint*) &(data->id_texture));
+				glBindBuffer(GL_ARRAY_BUFFER, data->id_texture);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * data->num_texture, data->texture, GL_STATIC_DRAW);
+
+
+
+				glGenBuffers(1, (GLuint*) &(data->id_color));
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_color);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
+
+				App->renderer3D->AddDataMesh(data);
 			}
 
-			glGenBuffers(1, (GLuint*) &(data.id_vertices));
-			glBindBuffer(GL_ARRAY_BUFFER, data.id_vertices);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3 * data.num_vertices, data.vertices, GL_STATIC_DRAW);
-
-
-
-			glGenBuffers(1, (GLuint*) &(data.id_indices));
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.id_indices);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data.num_indices, data.indices, GL_STATIC_DRAW); 
-
-			
-			glGenBuffers(1, (GLuint*) &(data.id_texture));
-			glBindBuffer(GL_ARRAY_BUFFER, data.id_texture);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) *2* data.num_texture, data.texture, GL_STATIC_DRAW);
-
-
-
-			glGenBuffers(1, (GLuint*) &(data.id_color));
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.id_color);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data.num_color, data.colors, GL_STATIC_DRAW);
 
 			
 	}

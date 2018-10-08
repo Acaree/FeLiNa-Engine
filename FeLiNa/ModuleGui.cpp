@@ -71,8 +71,8 @@ update_status ModuleGui::PostUpdate(float dt)
 	
 	
 
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+	//ImGui::Render();
+	//ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 	if (close_program)
 		update_return = UPDATE_STOP;
