@@ -8,6 +8,7 @@
 #include "ModuleFBX.h"
 #include "Assimp/include/cfileio.h"
 #include <list>
+#include "Cube_ArraysandIndex.h"
 #define MAX_LIGHTS 8
 
 
@@ -71,4 +72,9 @@ private:
 	
 	ModuleImage* img;
 	std::list<ModelData*> data;
+
+
+	//TEST TO CENTER CAMERA
+	AABB* test_box = nullptr;
+	Cube_ArraysandIndex* cube_test = nullptr;
 };

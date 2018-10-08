@@ -53,6 +53,10 @@ bool ModuleCamera3D::CleanUp()
 {
 	LOG_GLOBAL("Cleaning camera");
 
+
+	if (focus_box != nullptr)
+		delete focus_box;
+
 	return true;
 }
 
@@ -68,7 +72,7 @@ update_status ModuleCamera3D::Update(float dt)
 		speed = 8.0f * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) App->camera->FocusToCenterObject();//newPos.y -= speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
@@ -184,4 +188,29 @@ void ModuleCamera3D::CalculateViewMatrix()
 	float4x4 inverse = ViewMatrix;
 	inverse.Inverse();
 	ViewMatrixInverse = inverse;
+}
+
+void ModuleCamera3D::CreateFocusObject(float3 min, float3 max)
+{
+	if (focus_box != nullptr)
+	{
+		focus_box->minPoint = min;
+		focus_box->maxPoint = max;
+	}
+	else
+	{
+		focus_box = new AABB(min, max);
+	}
+}
+
+void ModuleCamera3D::FocusToCenterObject()
+{
+	if (focus_box != nullptr)
+	{
+		float3 focus_center = focus_box->Centroid();
+
+		float3 focus_size = focus_box->Size();
+
+		Look(focus_center + focus_size,focus_center);
+	}
 }

@@ -174,6 +174,10 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	img->TakeScreenGif(dt);
 
+	if (cube_test != nullptr)
+		cube_test->Render();
+	
+
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
@@ -331,11 +335,48 @@ void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh)
 
 	data.push_back(data_mesh);
 
+	float3 min = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
+	float3 max = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
+	
+	for (uint i = 3; i < data_mesh->num_vertices; i+=3)
+	{
+		if (data_mesh->vertices[i] < min.x)
+		{
+			min.x = data_mesh->vertices[i];
+		}
+		if (data_mesh->vertices[i] > max.x)
+		{
+			max.x = data_mesh->vertices[i];
+		}
+
+		if (data_mesh->vertices[i+1] < min.y)
+		{
+			min.y = data_mesh->vertices[i+1];
+		}
+		if (data_mesh->vertices[i+1] > max.y)
+		{
+			max.y = data_mesh->vertices[i+1];
+		}
+
+		if (data_mesh->vertices[i + 2] < min.z)
+		{
+			min.z = data_mesh->vertices[i + 2];
+		}
+		if (data_mesh->vertices[i + 2] > max.z)
+		{
+			max.z = data_mesh->vertices[i + 2];
+		}
+	}
+	
+	App->camera->CreateFocusObject(min, max);
+	cube_test = new Cube_ArraysandIndex(min, max-min,Type_CubeArraysandIndex);
 }
 
 void ModuleRenderer3D::DeleteAllDataMesh()
 {
 	
 	data.clear();
+	
+
 	
 }

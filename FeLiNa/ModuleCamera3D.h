@@ -21,6 +21,8 @@ public:
 	void Move(const float3 &Movement);
 	float* GetViewMatrix();
 
+	void CreateFocusObject(float3 min,float3 max);
+	void FocusToCenterObject();
 private:
 
 	void CalculateViewMatrix();
@@ -29,7 +31,13 @@ public:
 	
 	float3 X, Y, Z, Position, Reference;
 
+	AABB* focus_box = nullptr;
+
 private:
 
 	float4x4 ViewMatrix, ViewMatrixInverse;
+
+	// TO REVISION to center camera in object
+	
+
 };
