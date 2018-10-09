@@ -26,14 +26,13 @@ ModuleFBX::~ModuleFBX()
 }
 
 void myCallback(const char *msg, char *userData) {
-	LOG_GLOBAL(msg);
+	LOG_GLOBAL("%s" ,msg);
 }
 
 bool ModuleFBX::Start()
 {
 	aiLogStream stream = aiLogStream();
 	stream.callback = myCallback;
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 	ilInit();
 
