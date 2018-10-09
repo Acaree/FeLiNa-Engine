@@ -54,7 +54,7 @@ bool ModuleSceneIntro::Start()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 36, 36, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 
-
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 
 	return ret;
@@ -203,10 +203,13 @@ update_status ModuleSceneIntro::Update(float dt)
 	
 	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	
 
 	glDisable(GL_TEXTURE_2D);
 	*/
+
+	
+
 	return update_return;
 }
 

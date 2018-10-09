@@ -333,7 +333,7 @@ void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
