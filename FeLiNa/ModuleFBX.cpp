@@ -13,7 +13,7 @@
 #pragma comment (lib, "Devil/libx86/DevIL.lib")
 #pragma comment ( lib, "Devil/libx86/ILU.lib" )
 #pragma comment ( lib, "Devil/libx86/ILUT.lib" )
-
+#include <string>
 
 ModuleFBX::ModuleFBX(Application*app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -85,38 +85,52 @@ void ModuleFBX::LoadFbx(const char* path)
 					}
 				}
 				
-				//Need revision when draw a geometry with texture.
-				if (new_mesh->HasTextureCoords(data->id_texture))
+				//TO REVISION -> ALL WITH TEXTURE---------------------------------------------
+				///Only 1 material for now
+				aiMaterial* material = scene->mMaterials[0];
+
+				if (material != nullptr)
 				{
-					data->num_texture = new_mesh->mNumVertices;
-					data->texture = new float[data->num_texture*2];
+					aiString path;
+					material->GetTexture(aiTextureType_DIFFUSE,0,&path);
 
-					for (int num_textures = 0; num_textures < new_mesh->mNumVertices; ++num_textures)
+					if (path.length > 0)
 					{
-						memcpy(&data->texture[num_textures * 2], &new_mesh->mTextureCoords[num_textures],2* sizeof(float));
-					}
+						std::string path_location = path.data;
+						path_location.erase(0, path_location.find_last_of("\\") + 1);
 
+						std::string folder = "Textures/";
+						folder += path_location;
+
+						ILuint id;
+						ilGenImages(1, &id);
+						ilBindImage(id);
+						ilLoadImage(folder.c_str());
+
+						data->texture_id = ilutGLBindTexImage();
+
+						folder.clear();
+						path_location.clear();
+						path.Clear();
+					}
 				}
-
-				//Need revision when draw geometry with color
-				/*if (new_mesh->HasVertexColors(data->id_color))
+				///Only 1 material for now
+				if (new_mesh->HasTextureCoords(0))
 				{
+					data->num_uv = new_mesh->mNumVertices;
+					data->uv = new float[data->num_uv * 2];
 
-					data->num_color = new_mesh->GetNumColorChannels();
-					data->colors = new float[data->num_color * 4];
-
-					for (int num_colors = 0; num_colors < new_mesh->GetNumColorChannels(); ++num_colors)
+					for (uint coords = 0; coords < new_mesh->mNumVertices; ++coords)
 					{
-						memcpy(&data->colors[num_colors*4], &new_mesh->mColors[num_colors], 4 * sizeof(float));
+						memcpy(&data->uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
+						memcpy(&data->uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
 					}
-				}*/
-
-				
-				//data->color_4D = { 0.0f,0.0f,0.0f,0.0f };
-
-				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
+				}
+				//------------------------------------------------------------------------------
 				
 				//TO REVISION--------------------------------------------------------
+
+				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
 
 				// if the object don't have color material, we set the color to white 
 				//because if not, the object take the last material
@@ -148,9 +162,9 @@ void ModuleFBX::LoadFbx(const char* path)
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_indices, data->indices, GL_STATIC_DRAW);
 
 
-				glGenBuffers(1, (GLuint*) &(data->id_texture));
-				glBindBuffer(GL_ARRAY_BUFFER, data->id_texture);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * data->num_texture, data->texture, GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*) &(data->id_uv));
+				glBindBuffer(GL_ARRAY_BUFFER, data->id_uv);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * data->num_uv, data->uv, GL_STATIC_DRAW);
 
 
 

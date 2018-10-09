@@ -15,6 +15,7 @@
 
 struct ModelData
 {
+
 	GLuint id_indices = 0;
 	uint num_indices = 0;
 	uint* indices = nullptr;
@@ -23,14 +24,19 @@ struct ModelData
 	uint num_vertices = 0;
 	float* vertices = nullptr;
 
-	GLuint id_texture = 0;
-	uint num_texture = 0;
-	float* texture = nullptr;
+	uint texture_id = 0;
+
+	GLuint id_uv = 0;
+	uint num_uv = 0;
+	float* uv = nullptr;
 
 	GLuint id_color = 0;
 	uint num_color = 0;
 	float* colors = nullptr;
 	aiColor4D color_4D;
+
+
+
 };
 
 
