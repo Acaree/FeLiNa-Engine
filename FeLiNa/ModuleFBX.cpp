@@ -25,9 +25,14 @@ ModuleFBX::~ModuleFBX()
 
 }
 
+void myCallback(const char *msg, char *userData) {
+	LOG_GLOBAL(msg);
+}
+
 bool ModuleFBX::Start()
 {
 	aiLogStream stream = aiLogStream();
+	stream.callback = myCallback;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 	ilInit();
@@ -215,3 +220,4 @@ update_status ModuleFBX::PostUpdate(float dt) {
 	return update_return;
 
 }
+
