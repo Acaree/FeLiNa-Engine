@@ -90,7 +90,7 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 	
-	
+	/*
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, ImageName);
 
@@ -206,7 +206,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glDisable(GL_TEXTURE_2D);
-
+	*/
 	return update_return;
 }
 

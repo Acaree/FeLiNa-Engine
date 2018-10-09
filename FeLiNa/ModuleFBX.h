@@ -20,6 +20,7 @@ public:
 
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
+	GLuint LoadTexture(const char* theFileName);
 
 	void LoadFbx(const char* path);
 	

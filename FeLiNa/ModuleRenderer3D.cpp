@@ -316,26 +316,24 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+	
+	mesh->texture_id = App->fbx->LoadTexture("Game/lenna.png");
 
-	//TEST
-	/*glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
-
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 	glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
-	*/
-	//glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a); //COLOR MATERIAL: AMBIENT
-	//----------------------------------------------------------------------------------------------------------------
+	glEnableClientState(GL_VERTEX_ARRAY);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glTexCoordPointer(2,GL_FLOAT,0 , NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
 	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -443,3 +441,5 @@ void ModuleRenderer3D::DrawMeshInformation()
 	ImGui::End();
 
 }
+
+
