@@ -28,6 +28,6 @@ public:
 	bool CleanUp();
 
 	mPlane* grid_plane;
-
+	GLuint ImageName;
 
 };
