@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include "OpenGL.h"
-#pragma comment (lib,"Assimp/libx86/assimp.lib")
 
 
 
