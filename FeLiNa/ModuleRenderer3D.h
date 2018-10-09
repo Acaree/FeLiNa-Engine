@@ -77,6 +77,10 @@ public:
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
+
+	std::list<ModelData*> data;
+	void assigntex(const char* path);
+
 private:
 	bool depth_test = false;
 	bool cull_face = false;
@@ -88,7 +92,7 @@ private:
 	
 	ModuleImage* img;
 
-	std::list<ModelData*> data;
+	
 	
 
 	//TEST TO CENTER CAMERA

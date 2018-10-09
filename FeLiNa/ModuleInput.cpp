@@ -128,20 +128,35 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case SDL_DROPFILE:
 			{
-				App->renderer3D->DeleteAllDataMesh();
+				
 
 
 				char* dropped_filedir;
 				dropped_filedir = e.drop.file;
 				// Shows directory of dropped file
-				SDL_ShowSimpleMessageBox(
-					SDL_MESSAGEBOX_INFORMATION,
-					"File dropped on window",
-					dropped_filedir,
-					App->window->window
-				);
+				//SDL_ShowSimpleMessageBox(
+					//SDL_MESSAGEBOX_INFORMATION,
+					//"File dropped on window",
+					//dropped_filedir,
+					//App->window->window
+				//);
 
-				App->fbx->LoadFbx(dropped_filedir);
+				std::string path(dropped_filedir);
+
+				
+
+				if (path.substr(path.find_last_of(".")) == ".png" || path.substr(path.find_last_of(".")) == ".PNG" || path.substr(path.find_last_of(".")) == ".jpg" || path.substr(path.find_last_of(".")) == ".JPG") {
+
+					if (App->renderer3D->data.size() > 0) {
+						App->renderer3D->assigntex(dropped_filedir);
+					}
+
+				}
+
+				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX") {
+					App->renderer3D->DeleteAllDataMesh();
+					App->fbx->LoadFbx(dropped_filedir);
+				}
 
 				SDL_free(dropped_filedir);
 				

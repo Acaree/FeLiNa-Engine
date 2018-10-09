@@ -312,11 +312,14 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 	
 }
 
+void ModuleRenderer3D::assigntex(const char* path) {
+
+	data.begin()._Ptr->_Myval->texture_id = App->fbx->LoadTexture(path);
+
+}
 
 void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
-
-	mesh->texture_id = App->fbx->LoadTexture("FBX/Baker_house.png");
 
 	glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
 	glEnableClientState(GL_VERTEX_ARRAY);
