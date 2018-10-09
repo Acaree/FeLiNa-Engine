@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
-
+#include "MathGeoLib/MathGeoLib.h"
+#include "MathGeoLib/Math/TransformOps.h"
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Camera";
@@ -122,6 +123,44 @@ update_status ModuleCamera3D::Update(float dt)
 
 		Position = Reference + Z * Position.Length();
 	}
+
+	//TO TEST ROTATE NOT FINISH
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+	{
+		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		{
+			int dx = App->input->GetMouseXMotion();
+			int dy = App->input->GetMouseYMotion();
+
+			float Sensitivity = 0.01f;
+
+			if (dx != 0)
+			{
+				float DeltaX = (float)dx * Sensitivity;
+
+				//math::float3x3 rotationMatrix = math::float3x3::RotateY(DeltaX);
+
+				float4x4 matrixX = math::float4x4::RotateAxisAngle(float3(0, 1, 0), DeltaX);
+				float4 resultX = matrixX * float4(X.x, X.y, X.z, 1);
+				float3 vectorX = float3(resultX.x, resultX.y,resultX.z);
+
+				resultX = matrixX * float4(Y.x,Y.y, Y.z, 1);
+				float3 vectorY = float3(resultX.x, resultX.y, resultX.z);
+
+				resultX = matrixX * float4(Z.x, Z.y, Z.z, 1);
+				float3 vectorZ = float3(resultX.x, resultX.y, resultX.z);
+
+
+				X = vectorX ;
+				Y =  vectorY;
+				Z = vectorZ ;
+			
+
+			}
+
+		}
+	}
+
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
