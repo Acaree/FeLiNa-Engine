@@ -316,21 +316,25 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
 
-	
-	mesh->texture_id = App->fbx->LoadTexture("Game/lenna.png");
+	mesh->texture_id = App->fbx->LoadTexture("FBX/Baker_house.png");
 
 	glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
 	glEnableClientState(GL_VERTEX_ARRAY);
-	
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 	glTexCoordPointer(2,GL_FLOAT,0 , NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+
 	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glBindTexture(GL_TEXTURE_2D, 0);

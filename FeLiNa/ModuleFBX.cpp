@@ -100,7 +100,7 @@ void ModuleFBX::LoadFbx(const char* path)
 				
 				//TO REVISION -> ALL WITH TEXTURE---------------------------------------------
 				///Only 1 material for now
-				aiMaterial* material = scene->mMaterials[0];
+				/*aiMaterial* material = scene->mMaterials[0];
 
 				if (material != nullptr)
 				{
@@ -131,7 +131,7 @@ void ModuleFBX::LoadFbx(const char* path)
 						path.Clear();
 						//----------------------------------
 					}
-				}
+				}*/
 				///Only 1 material for now
 				if (new_mesh->HasTextureCoords(0))
 				{
@@ -148,7 +148,7 @@ void ModuleFBX::LoadFbx(const char* path)
 				
 				//TO REVISION--------------------------------------------------------
 
-				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
+				/*aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
 
 				// if the object don't have color material, we set the color to white 
 				//because if not, the object take the last material
@@ -165,7 +165,7 @@ void ModuleFBX::LoadFbx(const char* path)
 					{
 						memcpy(data->colors, &colors_mesh[num_color], sizeof(float)*data->num_vertices * 3);
 					}
-				}
+				}*/
 				//--------------------------------------------------------------------------------
 
 
@@ -186,9 +186,9 @@ void ModuleFBX::LoadFbx(const char* path)
 
 
 
-				glGenBuffers(1, (GLuint*) &(data->id_color));
+				/*glGenBuffers(1, (GLuint*) &(data->id_color));
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_color);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);*/
 
 				App->renderer3D->AddDataMesh(data);
 			}
