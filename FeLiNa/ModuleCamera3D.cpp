@@ -87,7 +87,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Mouse motion ----------------
 
-	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 	{
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
@@ -125,20 +125,19 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 
 	//TO TEST ROTATE NOT FINISH
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		{
-			int dx = App->input->GetMouseXMotion();
-			int dy = App->input->GetMouseYMotion();
+		
+			int dx = -App->input->GetMouseXMotion();
+			int dy = -App->input->GetMouseYMotion();
 
 			float Sensitivity = 0.01f;
-
+			
 			if (dx != 0)
 			{
 				float DeltaX = (float)dx * Sensitivity;
 
-				//math::float3x3 rotationMatrix = math::float3x3::RotateY(DeltaX);
+				
 
 				float4x4 matrixX = math::float4x4::RotateAxisAngle(float3(0, 1, 0), DeltaX);
 				float4 resultX = matrixX * float4(X.x, X.y, X.z, 1);
@@ -157,8 +156,28 @@ update_status ModuleCamera3D::Update(float dt)
 			
 
 			}
+			if (dy != 0)
+			{
+				float DeltaY = (float)dy * Sensitivity;
 
-		}
+				float4x4 matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
+				float4 resultY= matrixY * float4(Y.x, Y.y, Y.z, 1);
+				float3 vectorY = float3(resultY.x, resultY.y, resultY.z);
+
+				matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
+				resultY = matrixY * float4(Z.x, Z.y, Z.z, 1);
+				float3 vectorZ = float3(resultY.x, resultY.y, resultY.z);
+
+				Y = vectorY;
+				
+				Z = vectorZ;
+
+				if (Y.y < 0.0f)
+				{
+					Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+					Y = math::Cross(Z, X);
+				}
+			}
 	}
 
 
@@ -246,10 +265,9 @@ void ModuleCamera3D::FocusToCenterObject()
 {
 	if (focus_box != nullptr)
 	{
-		float3 focus_center = focus_box->Centroid();
 
-		float3 focus_size = focus_box->Size();
-
-		Look(focus_center + focus_size,focus_center);
+		Reference = focus_box->CenterPoint();
+		Position = focus_box->CenterPoint() + focus_box->Size();
+		LookAt(Reference);
 	}
 }
