@@ -56,6 +56,9 @@ update_status ModuleGui::Update(float dt)
 
 	if (open_console)
 		App->console->DrawConsole();
+
+	if (inspector_open)
+		App->renderer3D->DrawMeshInformation();
 	
 
 	if (About_active) {
@@ -70,9 +73,6 @@ update_status ModuleGui::PostUpdate(float dt)
 	update_status update_return = UPDATE_CONTINUE;
 	
 	
-
-	//ImGui::Render();
-	//ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 	if (close_program)
 		update_return = UPDATE_STOP;
@@ -131,6 +131,11 @@ void ModuleGui::ShowMainMenuBar()
 			if (ImGui::MenuItem("Configuration", NULL, open_configuration, true))
 			{
 				open_configuration = !open_configuration;
+			}
+
+			if (ImGui::MenuItem("Inspector", NULL, inspector_open, true))
+			{
+				inspector_open = !inspector_open;
 			}
 
 			if (ImGui::MenuItem("Console", NULL, open_console, true))

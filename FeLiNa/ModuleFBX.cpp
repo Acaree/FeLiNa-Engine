@@ -52,14 +52,22 @@ bool ModuleFBX::CleanUp()
 void ModuleFBX::LoadFbx(const char* path)
 {
     LOG_GLOBAL("Inicialization load FBX")
-	const aiScene* scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
 
+	ModelData* data = new ModelData();
+
+	//TO REVISION
+	data->path = path;
+	std::string tmp = path;
+	data->name = tmp.erase(0,tmp.find_last_of("\\") + 1);
+
+
+	const aiScene* scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
 			{
-				ModelData* data = new ModelData();
+				
 
 				aiMesh* new_mesh = scene->mMeshes[num_meshes];
 				data->num_vertices = new_mesh->mNumVertices;
@@ -97,22 +105,27 @@ void ModuleFBX::LoadFbx(const char* path)
 
 					if (path.length > 0)
 					{
-						std::string path_location = path.data;
-						path_location.erase(0, path_location.find_last_of("\\") + 1);
+						//TO TEST WHEN WE DRAW TEXTURE
+						std::string path_location = "FBX/";
+						std::string folder = path.data;
 
-						std::string folder = "Textures/";
-						folder += path_location;
+						folder.erase(0, folder.find_last_of("\\")+1);
+						
+						path_location += folder;
+					
 
 						ILuint id;
 						ilGenImages(1, &id);
 						ilBindImage(id);
-						ilLoadImage(folder.c_str());
+						ILboolean b = ilLoadImage(path_location.c_str());
+						
 
 						data->texture_id = ilutGLBindTexImage();
-
+						
 						folder.clear();
 						path_location.clear();
 						path.Clear();
+						//----------------------------------
 					}
 				}
 				///Only 1 material for now

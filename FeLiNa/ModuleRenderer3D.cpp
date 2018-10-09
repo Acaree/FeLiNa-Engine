@@ -1,6 +1,7 @@
 
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "imgui-1.65/imgui.h"
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -317,8 +318,16 @@ void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a); //COLOR MATERIAL: AMBIENT
+	//TEST
+	/*glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnable(GL_TEXTURE_2D);
 
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+	glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
+	*/
+	//glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a); //COLOR MATERIAL: AMBIENT
+	//----------------------------------------------------------------------------------------------------------------
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -379,4 +388,58 @@ void ModuleRenderer3D::DeleteAllDataMesh()
 	
 
 	
+}
+
+void ModuleRenderer3D::DrawMeshInformation()
+{
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_AlwaysAutoResize;//ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+
+	ImGui::Begin("Inspector",false,window_flags);
+
+	if (data.size() != 0)
+	{
+		ModelData * it = data.begin()._Ptr->_Myval;
+
+
+		ImGui::Text("File name: %s", it->name.c_str());
+		ImGui::Text("Path: %s", it->path.c_str());
+		ImGui::Text("All the information is just for reading.");
+
+		if (ImGui::CollapsingHeader("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::Text("Position:");
+			ImGui::Text("x: %f  y: %f  z: %f", it->position.x, it->position.y, it->position.z);
+
+			ImGui::Text("Rotation:");
+			ImGui::Text("x: %f  y: %f  z: %f", it->rotation.x, it->rotation.y, it->rotation.z);
+
+			ImGui::Text("Scale:");
+			ImGui::Text("x: %f  y: %f  z: %f", it->scale.x, it->scale.y, it->scale.z);
+		}
+
+		if (ImGui::CollapsingHeader("Mesh Information", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::Text("Indices: %i", it->num_indices);
+
+			ImGui::Text("Vertices: %i", it->num_vertices);
+
+			ImGui::Text("Uv's: %i", it->num_uv);
+
+			ImGui::Text("Triangles: %i", it->num_vertices / 3);
+		}
+
+		if (ImGui::CollapsingHeader("Material Information", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::Image((ImTextureID)(it->texture_id), ImVec2(250, 250));
+		}
+	}
+	
+
+	ImGui::End();
+
 }

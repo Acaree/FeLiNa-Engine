@@ -5,6 +5,7 @@
 #include "Light.h"
 #include "ModuleImage.h"
 #include "ModuleGui.h"
+
 #include "ModuleFBX.h"
 #include "Assimp/include/cfileio.h"
 #include <list>
@@ -15,6 +16,13 @@
 
 struct ModelData
 {
+
+	std::string name ="";
+	std::string path = "";
+
+	float3 position = { 0,0,0 };
+	float3 rotation = { 0,0,0 };
+	float3 scale = { 1,1,1 };
 
 	GLuint id_indices = 0;
 	uint num_indices = 0;
@@ -60,6 +68,8 @@ public:
 
 	void AddDataMesh(ModelData* data_mesh);
 	void DeleteAllDataMesh();
+
+	void DrawMeshInformation();
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -77,8 +87,9 @@ private:
 	bool polygon_smooth = false;
 	
 	ModuleImage* img;
-	std::list<ModelData*> data;
 
+	std::list<ModelData*> data;
+	
 
 	//TEST TO CENTER CAMERA
 	AABB* test_box = nullptr;
