@@ -4,8 +4,15 @@
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
+#include "Devil/include/il.h"
+#include "Devil/include/ilut.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+
+#pragma comment (lib,"Assimp/libx86/assimp.lib")
+#pragma comment (lib, "Devil/libx86/DevIL.lib")
+#pragma comment ( lib, "Devil/libx86/ILU.lib" )
+#pragma comment ( lib, "Devil/libx86/ILUT.lib" )
 
 
 ModuleFBX::ModuleFBX(Application*app, bool start_enabled) : Module(app, start_enabled)
