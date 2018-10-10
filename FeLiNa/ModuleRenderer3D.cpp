@@ -175,8 +175,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	img->TakeScreenGif(dt);
 
-	if (cube_test != nullptr)
-		cube_test->Render();
 	
 
 	ImGui::Render();
@@ -383,7 +381,7 @@ void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh)
 	}
 	
 	App->camera->CreateFocusObject(min, max);
-	cube_test = new Cube_ArraysandIndex(min, max-min,Type_CubeArraysandIndex);
+	
 }
 
 void ModuleRenderer3D::DeleteAllDataMesh()

@@ -93,9 +93,5 @@ private:
 	ModuleImage* img;
 
 	
-	
 
-	//TEST TO CENTER CAMERA
-	AABB* test_box = nullptr;
-	Cube_ArraysandIndex* cube_test = nullptr;
 };
