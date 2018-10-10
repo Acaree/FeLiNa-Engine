@@ -13,6 +13,7 @@ Application::Application()
 	gui = new ModuleGui(this);
 	console = new ModuleConsole(this);
 	mesh_import = new ModuleImport(this);
+	texture = new ModuleTexture(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -20,6 +21,7 @@ Application::Application()
 	// Main Modules
 	
 	AddModule(window);
+	AddModule(texture);
 	AddModule(camera);
 	AddModule(input);
 	AddModule(hardware);

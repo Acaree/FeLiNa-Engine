@@ -15,6 +15,7 @@
 #include "ModuleHardware.h"
 #include "ModuleConsole.h"
 #include "ModuleImport.h"
+#include "ModuleTexture.h"
 #include "Parson/parson.h"
 
 class Application
@@ -29,6 +30,7 @@ public:
 	ModuleHardware* hardware;
 	ModuleConsole* console;
 	ModuleImport * mesh_import;
+	ModuleTexture* texture;
 
 	char app_name[20];
 	char organization[20];
