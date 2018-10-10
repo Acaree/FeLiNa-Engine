@@ -7,7 +7,6 @@ Application::Application()
 	hardware = new ModuleHardware(this,false);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
-	audio = new ModuleAudio(this, true);
 	scene_intro = new ModuleSceneIntro(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
@@ -23,7 +22,6 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(audio);
 	AddModule(hardware);
 	AddModule(console);
 	AddModule(fbx);
@@ -309,10 +307,6 @@ void Application::DrawApplicationInformationPanel()
 
 
 void Application::DrawModulesTime() {
-
-	ImGui::Text("Module Audio");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", audio->last_update_ms);
 
 	ImGui::Text("Module Camera 3D");
 	ImGui::SameLine();
