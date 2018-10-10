@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "mmgr/mmgr.h"
 #include "ModuleHardware.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleScene.h"
 
 
 
@@ -113,9 +113,9 @@ void ModuleGui::ShowMainMenuBar()
 		if (ImGui::BeginMenu("Mode"))
 		{
 
-			if (ImGui::MenuItem("Wireframe", NULL, App->scene_intro->grid_plane->wire, true))
+			if (ImGui::MenuItem("Wireframe", NULL, App->scene->grid_plane->wire, true))
 			{
-				App->scene_intro->grid_plane->wire = !App->scene_intro->grid_plane->wire;
+				App->scene->grid_plane->wire = !App->scene->grid_plane->wire;
 			}
 
 			if (ImGui::MenuItem("GL Options", NULL, open_render_configuration, true))

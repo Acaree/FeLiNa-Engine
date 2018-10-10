@@ -1,19 +1,19 @@
 #include "Application.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleScene.h"
 #include "ModuleImport.h"
 #include "ModuleRenderer3D.h"
 #include <math.h>
-ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Scene";
 }
 
-ModuleSceneIntro::~ModuleSceneIntro()
+ModuleScene::~ModuleScene()
 {
 }
 
 // Load assets
-bool ModuleSceneIntro::Start()
+bool ModuleScene::Start()
 {
 	LOG_GLOBAL("Loading Intro assets");
 	bool ret = true;
@@ -61,7 +61,7 @@ bool ModuleSceneIntro::Start()
 }
 
 // Load assets
-bool ModuleSceneIntro::CleanUp()
+bool ModuleScene::CleanUp()
 {
 	LOG_GLOBAL("Unloading Intro scene");
 
@@ -76,7 +76,7 @@ bool ModuleSceneIntro::CleanUp()
 	return true;
 }
 
-update_status ModuleSceneIntro::PreUpdate(float dt)
+update_status ModuleScene::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
@@ -86,7 +86,7 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 }
 
 // Update
-update_status ModuleSceneIntro::Update(float dt)
+update_status ModuleScene::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 	
@@ -213,7 +213,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	return update_return;
 }
 
-update_status ModuleSceneIntro::PostUpdate(float dt)
+update_status ModuleScene::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 

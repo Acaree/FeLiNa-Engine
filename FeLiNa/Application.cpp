@@ -7,7 +7,7 @@ Application::Application()
 	hardware = new ModuleHardware(this,false);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
-	scene_intro = new ModuleSceneIntro(this);
+	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	gui = new ModuleGui(this);
@@ -26,7 +26,7 @@ Application::Application()
 	AddModule(console);
 	AddModule(mesh_import);
 	// Scenes
-	AddModule(scene_intro);
+	AddModule(scene);
 	
 	AddModule(gui);
 	// Renderer last!
@@ -338,7 +338,7 @@ void Application::DrawModulesTime() {
 
 	ImGui::Text("Module Scene Intro");
 	ImGui::SameLine();
-	ImGui::Text("%f ms", scene_intro->last_update_ms);
+	ImGui::Text("%f ms", scene->last_update_ms);
 
 }
 
