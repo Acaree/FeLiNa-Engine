@@ -1,21 +1,22 @@
-
 #include "Globals.h"
-#include "Primitive.h"
+#include "mPlane.h"
 #include "OpenGL.h"
 
 
-// ------------------------------------------------------------
-Primitive::Primitive() : transform(float4x4::identity), color(White), wire(false), axis(false)
-{}
-
-// ------------------------------------------------------------
-void Primitive::Render() const
+mPlane::mPlane(float x, float y, float z, float d) : transform(float4x4::identity), color(White), wire(false), axis(false)
 {
-	
+	float3 plane_pos(x, y, z);
+
+	matGeo_plane = new Plane(plane_pos, d);
+}
+
+void mPlane::Render() const
+{
+
 	glPushMatrix();
 	glMultMatrixf((GLfloat*)transform.ptr());
-	
-	if(axis == true)
+
+	if (axis == true)
 	{
 		// Draw Axis Grid
 		glLineWidth(2.0f);
@@ -49,7 +50,7 @@ void Primitive::Render() const
 
 	glColor3f(color.r, color.g, color.b);
 
-	if(wire)
+	if (wire)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -59,45 +60,25 @@ void Primitive::Render() const
 	glPopMatrix();
 }
 
-// ------------------------------------------------------------
-void Primitive::InnerRender() const
-{
-	glPointSize(5.0f);
-
-	glBegin(GL_POINTS);
-
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glEnd();
-
-	glPointSize(1.0f);
-}
 
 // ------------------------------------------------------------
-void Primitive::SetPos(float x, float y, float z)
+void mPlane::SetPos(float x, float y, float z)
 {
 	transform = float4x4::Translate(x, y, z).ToFloat4x4() * transform;
 }
 
 // ------------------------------------------------------------
-void Primitive::SetRotation(float angle, const float3 &u)
+void mPlane::SetRotation(float angle, const float3 &u)
 {
 	transform = float4x4::RotateAxisAngle(u, angle) * transform;
 }
 
 // ------------------------------------------------------------
-void Primitive::Scale(float x, float y, float z)
+void mPlane::Scale(float x, float y, float z)
 {
 	transform = float4x4::Scale(x, y, z).ToFloat4x4() * transform;
 }
 
-
-mPlane::mPlane(float x, float y, float z, float d) : Primitive()
-{
-	float3 plane_pos (x, y, z);
-	
-	matGeo_plane = new Plane(plane_pos, d);
-}
 
 void mPlane::InnerRender() const
 {
@@ -110,7 +91,7 @@ void mPlane::InnerRender() const
 
 	float d = 200.0f;
 
-	for(float i = -d; i <= d; i += 1.0f)
+	for (float i = -d; i <= d; i += 1.0f)
 	{
 		glVertex3f(i, 0.0f, -d);
 		glVertex3f(i, 0.0f, d);

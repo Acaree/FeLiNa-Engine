@@ -2,7 +2,7 @@
 #define _MODULE_SCENE_
 
 #include "Module.h"
-#include "Primitive.h"
+#include "mPlane.h"
 #include "MathGeoLib/MathGeoLib.h"
 
 class ModuleScene : public Module

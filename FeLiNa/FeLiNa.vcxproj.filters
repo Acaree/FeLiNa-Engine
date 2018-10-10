@@ -9,9 +9,6 @@
     <ClCompile Include="Light.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="Primitive.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleCamera3D.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -169,6 +166,9 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="mPlane.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -177,9 +177,6 @@
       <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Primitive.h">
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Module.h">
@@ -451,6 +448,9 @@
     </ClInclude>
     <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="mPlane.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
