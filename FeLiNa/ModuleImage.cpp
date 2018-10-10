@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "Gif/gif.h"
-
 #include "Devil\include\ilut.h"
 
 

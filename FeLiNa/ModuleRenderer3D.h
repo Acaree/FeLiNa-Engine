@@ -8,7 +8,7 @@
 
 #include "ModuleFBX.h"
 #include "Assimp/include/cfileio.h"
-#include <list>
+#include <vector>
 #include "Cube_ArraysandIndex.h"
 #define MAX_LIGHTS 8
 
@@ -78,7 +78,7 @@ public:
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 
-	std::list<ModelData*> data;
+	std::vector<ModelData*> data;
 	void assigntex(const char* path);
 
 private:

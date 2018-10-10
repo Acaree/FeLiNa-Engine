@@ -1,6 +1,5 @@
 #pragma once
 
-#include <list>
 #include "Globals.h"
 #include "Timer.h"
 #include "PerfTimer.h"

@@ -87,7 +87,6 @@
     <ClInclude Include="Cube_ArraysandIndex.h" />
     <ClInclude Include="Cube_DirectMode.h" />
     <ClInclude Include="Cylindre.h" />
-    <ClInclude Include="FreeImage\Dist\x32\FreeImage.h" />
     <ClInclude Include="Frustrum.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Gif\gif.h" />

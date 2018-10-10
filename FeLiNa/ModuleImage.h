@@ -2,17 +2,13 @@
 #define _MODULE_IMAGE_
 
 
-#pragma comment (lib, "FreeImage/FreeImage.lib")
+
 #include "OpenGL.h"
-#include "FreeImage/FreeImage.h"
-
-
 #include <time.h>
 #include <corecrt_wtime.h>
 
 //test
 #include "MathGeoLib/Math/float2.h"
-
 #include "SDL/include/SDL_scancode.h"
 //-----------
 

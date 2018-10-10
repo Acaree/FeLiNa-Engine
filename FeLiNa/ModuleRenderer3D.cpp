@@ -162,7 +162,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 
-	for (std::list<ModelData*>::const_iterator it = data.begin(); it != data.end(); ++it)
+	for (std::vector<ModelData*>::const_iterator it = data.begin(); it != data.end(); ++it)
 	{
 		DrawMesh(*it);
 	}
@@ -312,7 +312,7 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 
 void ModuleRenderer3D::assigntex(const char* path) {
 
-	data.begin()._Ptr->_Myval->texture_id = App->fbx->LoadTexture(path);
+	data[0]->texture_id = App->fbx->LoadTexture(path);
 
 }
 
@@ -406,7 +406,7 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 	if (data.size() != 0)
 	{
-		ModelData * it = data.begin()._Ptr->_Myval;
+		ModelData * it = data[0];
 
 
 		ImGui::Text("File name: %s", it->name.c_str());
