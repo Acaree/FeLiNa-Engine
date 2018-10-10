@@ -1,4 +1,4 @@
-#include "ModuleFBX.h"
+#include "ModuleImport.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -15,12 +15,12 @@
 #pragma comment ( lib, "Devil/libx86/ILUT.lib" )
 #include <string>
 
-ModuleFBX::ModuleFBX(Application*app, bool start_enabled) : Module(app, start_enabled)
+ModuleImport::ModuleImport(Application*app, bool start_enabled) : Module(app, start_enabled)
 {
 
 }
 
-ModuleFBX::~ModuleFBX()
+ModuleImport::~ModuleImport()
 {
 
 }
@@ -29,7 +29,7 @@ void myCallback(const char *msg, char *userData) {
 	LOG_GLOBAL("%s" ,msg);
 }
 
-bool ModuleFBX::Start()
+bool ModuleImport::Start()
 {
 	aiLogStream stream = aiLogStream();
 	stream.callback = myCallback;
@@ -39,7 +39,7 @@ bool ModuleFBX::Start()
 	return true;
 }
 
-bool ModuleFBX::CleanUp()
+bool ModuleImport::CleanUp()
 {
 	aiDetachAllLogStreams();
 
@@ -53,9 +53,9 @@ bool ModuleFBX::CleanUp()
 	return true;
 }
 
-void ModuleFBX::LoadFbx(const char* path)
+void ModuleImport::LoadData(const char* path)
 {
-    LOG_GLOBAL("Inicialization load FBX")
+    LOG_GLOBAL("Inicialization load data model")
 
 	ModelData* data = new ModelData();
 
@@ -203,13 +203,13 @@ void ModuleFBX::LoadFbx(const char* path)
 		LOG_GLOBAL("Error loading Scene %s",path);
 }
 
-update_status ModuleFBX::PreUpdate(float dt) {
+update_status ModuleImport::PreUpdate(float dt) {
 	update_status update_return = UPDATE_CONTINUE;
 	module_timer.Start();
 	return update_return;
 }
 
-update_status ModuleFBX::PostUpdate(float dt) {
+update_status ModuleImport::PostUpdate(float dt) {
 
 	update_status update_return = UPDATE_CONTINUE;
 
@@ -220,7 +220,7 @@ update_status ModuleFBX::PostUpdate(float dt) {
 
 }
 
-GLuint ModuleFBX::LoadTexture(const char* theFileName)
+GLuint ModuleImport::LoadTexture(const char* theFileName)
 {
 	ILuint imageID;				// Create an image ID as a ULuint
 

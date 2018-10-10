@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _PRIMITIVE_
+#define _PRIMITIVE_
 
 #include "Color.h"
 #include "MathGeoLib/MathGeoLib.h"
@@ -40,3 +41,5 @@ public:
 	bool is_grid = false;
 	Plane* matGeo_plane;
 };
+
+#endif

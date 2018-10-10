@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _APPLICATION_
+#define _APPLICATION_
 
 #include <list>
 #include "Globals.h"
@@ -13,7 +14,7 @@
 #include "ModuleGui.h"
 #include "ModuleHardware.h"
 #include "ModuleConsole.h"
-#include "ModuleFBX.h"
+#include "ModuleImport.h"
 #include "Parson/parson.h"
 
 class Application
@@ -27,7 +28,7 @@ public:
 	ModuleGui* gui;
 	ModuleHardware* hardware;
 	ModuleConsole* console;
-	ModuleFBX * fbx;
+	ModuleImport * mesh_import;
 
 	char app_name[20];
 	char organization[20];
@@ -80,3 +81,5 @@ private:
 };
 
 extern Application* App;
+
+#endif

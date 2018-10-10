@@ -148,9 +148,6 @@
     <ClCompile Include="ModuleImage.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFBX.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Tools\ImGui</Filter>
     </ClCompile>
@@ -168,6 +165,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImport.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -425,9 +425,6 @@
     <ClInclude Include="Gif\gif.h">
       <Filter>Tools\Gif</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFBX.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>Tools\ImGui</Filter>
     </ClInclude>
@@ -452,7 +449,9 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Tools\ImGui</Filter>
     </ClInclude>
-
+    <ClInclude Include="ModuleImport.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">

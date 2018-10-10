@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULE_H_
+#define _MODULE_H_
+
 
 #include "Globals.h"
 #include "Parson/parson.h"
@@ -61,3 +63,5 @@ public:
 	float last_update_ms=0;
 
 };
+
+#endif

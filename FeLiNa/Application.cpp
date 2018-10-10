@@ -12,7 +12,7 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	gui = new ModuleGui(this);
 	console = new ModuleConsole(this);
-	fbx = new ModuleFBX(this);
+	mesh_import = new ModuleImport(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -24,7 +24,7 @@ Application::Application()
 	AddModule(input);
 	AddModule(hardware);
 	AddModule(console);
-	AddModule(fbx);
+	AddModule(mesh_import);
 	// Scenes
 	AddModule(scene_intro);
 	
@@ -316,9 +316,9 @@ void Application::DrawModulesTime() {
 	ImGui::SameLine();
 	ImGui::Text("%f ms", console->last_update_ms);
 
-	ImGui::Text("Module FBX");
+	ImGui::Text("Module Import");
 	ImGui::SameLine();
-	ImGui::Text("%f ms",fbx->last_update_ms);
+	ImGui::Text("%f ms", mesh_import->last_update_ms);
 
 	ImGui::Text("Module GUI");
 	ImGui::SameLine();

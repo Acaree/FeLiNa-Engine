@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _MODULE_SCENE_
+#define _MODULE_SCENE_
 
 #include "Module.h"
 #include "Primitive.h"
@@ -20,3 +21,5 @@ public:
 	GLuint ImageName;
 
 };
+
+#endif

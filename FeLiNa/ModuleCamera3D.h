@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULE_CAMERA_3D
+#define _MODULE_CAMERA_3D
+
 #include "Module.h"
 #include "Globals.h"
 
@@ -41,3 +43,5 @@ private:
 	
 
 };
+
+#endif

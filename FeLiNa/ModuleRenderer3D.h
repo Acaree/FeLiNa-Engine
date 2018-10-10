@@ -1,4 +1,7 @@
-#pragma once
+#ifndef _MODULE_RENDER_3D_
+#define _MODULE_RENDER_3D_
+
+
 #include "OpenGL.h"
 #include "Module.h"
 #include "Globals.h"
@@ -6,7 +9,7 @@
 #include "ModuleImage.h"
 #include "ModuleGui.h"
 
-#include "ModuleFBX.h"
+#include "ModuleImport.h"
 #include "Assimp/include/cfileio.h"
 #include <vector>
 #include "Cube_ArraysandIndex.h"
@@ -95,3 +98,5 @@ private:
 	
 
 };
+
+#endif

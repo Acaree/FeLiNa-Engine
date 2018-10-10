@@ -155,7 +155,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX") {
 					App->renderer3D->DeleteAllDataMesh();
-					App->fbx->LoadFbx(dropped_filedir);
+					App->mesh_import->LoadData(dropped_filedir);
 					App->camera->FocusToCenterObject();
 				}
 
