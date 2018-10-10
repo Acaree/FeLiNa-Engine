@@ -428,28 +428,6 @@
     <ClInclude Include="ModuleFBX.h">
       <Filter>Modules</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="GLLine.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Arrow.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="GLPlane.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Frustrum.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Cylindre.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="GLCapsule.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="GLSphere.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>Tools\ImGui</Filter>
     </ClInclude>
@@ -474,8 +452,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Tools\ImGui</Filter>
     </ClInclude>
-=======
->>>>>>> c0de2611727f8675ccb21ed24d570fe2a80dcadc
+
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
