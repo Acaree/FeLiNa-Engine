@@ -166,41 +166,8 @@
     <ClCompile Include="ModuleImage.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Geometry.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube_DirectMode.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube_Arrays.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube_ArraysandIndex.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleFBX.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="GLLine.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Arrow.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="GLPlane.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Frustrum.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Cylindre.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="GLCapsule.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="GLSphere.cpp">
-      <Filter>Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -482,41 +449,8 @@
     <ClInclude Include="Gif\gif.h">
       <Filter>Tools\Gif</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube_DirectMode.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube_Arrays.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube_ArraysandIndex.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleFBX.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="GLLine.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Arrow.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="GLPlane.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Frustrum.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Cylindre.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="GLCapsule.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="GLSphere.h">
-      <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -549,9 +483,6 @@
     </Filter>
     <Filter Include="Tools\Gif">
       <UniqueIdentifier>{b80e695f-ff73-456e-b74f-9c6bf20b1c65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Geometry">
-      <UniqueIdentifier>{93d4c818-f118-4ada-949c-077905541d1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

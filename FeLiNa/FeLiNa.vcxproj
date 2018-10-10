@@ -80,15 +80,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Arrow.h" />
-    <ClInclude Include="GLCapsule.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="Cube_Arrays.h" />
-    <ClInclude Include="Cube_ArraysandIndex.h" />
-    <ClInclude Include="Cube_DirectMode.h" />
-    <ClInclude Include="Cylindre.h" />
-    <ClInclude Include="Frustrum.h" />
-    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Gif\gif.h" />
     <ClInclude Include="Glew\include\eglew.h" />
     <ClInclude Include="Glew\include\glew.h" />
@@ -104,7 +96,6 @@
     <ClInclude Include="imgui-1.65\imstb_textedit.h" />
     <ClInclude Include="imgui-1.65\imstb_truetype.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="GLLine.h" />
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\Geometry\AABB.h" />
     <ClInclude Include="MathGeoLib\Geometry\AABB2D.h" />
@@ -181,22 +172,12 @@
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="PerfTimer.h" />
-    <ClInclude Include="GLPlane.h" />
     <ClInclude Include="Primitive.h" />
-    <ClInclude Include="GLSphere.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Arrow.cpp" />
-    <ClCompile Include="GLCapsule.cpp" />
     <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Cube_Arrays.cpp" />
-    <ClCompile Include="Cube_ArraysandIndex.cpp" />
-    <ClCompile Include="Cube_DirectMode.cpp" />
-    <ClCompile Include="Cylindre.cpp" />
-    <ClCompile Include="Frustrum.cpp" />
-    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="imgui-1.65\imgui.cpp" />
     <ClCompile Include="imgui-1.65\imgui_demo.cpp" />
@@ -205,7 +186,6 @@
     <ClCompile Include="imgui-1.65\imgui_impl_sdl.cpp" />
     <ClCompile Include="imgui-1.65\imgui_widgets.cpp" />
     <ClCompile Include="Light.cpp" />
-    <ClCompile Include="GLLine.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp" />
@@ -252,9 +232,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="PerfTimer.cpp" />
-    <ClCompile Include="GLPlane.cpp" />
     <ClCompile Include="Primitive.cpp" />
-    <ClCompile Include="GLSphere.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
