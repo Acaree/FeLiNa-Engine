@@ -75,12 +75,47 @@ update_status ModuleCamera3D::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) App->camera->FocusToCenterObject();//newPos.y -= speed;
 
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 
 
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+	}
+	//Pan we need this?
+	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+	{
+		if (App->input->GetMouseXMotion() > 0)
+		{
+			newPos -= X * (App->input->GetMouseXMotion() * dt) * speed;
+		}
+		if (App->input->GetMouseXMotion() < 0)
+		{
+			newPos -= X * (App->input->GetMouseXMotion() * dt) * speed;
+		}
+		if (App->input->GetMouseYMotion() > 0)
+		{
+			newPos += Y * (App->input->GetMouseYMotion() * dt) * speed;
+		}
+		if (App->input->GetMouseYMotion() < 0)
+		{
+			newPos += Y * (App->input->GetMouseYMotion() * dt) * speed;
+		}
+	}
+
+	//TO REVISION ZOOM
+	if (App->input->GetMouseZ() == 1)
+	{
+		newPos -= Z *10* dt;
+	}
+	if (App->input->GetMouseZ() == -1)
+	{
+		newPos += Z *10* dt;
+	}
 
 	Position += newPos;
 	Reference += newPos;

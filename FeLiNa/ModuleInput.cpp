@@ -145,7 +145,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				
 
-				if (path.substr(path.find_last_of(".")) == ".png" || path.substr(path.find_last_of(".")) == ".PNG" || path.substr(path.find_last_of(".")) == ".jpg" || path.substr(path.find_last_of(".")) == ".JPG") {
+				if (path.substr(path.find_last_of(".")) == ".png" || path.substr(path.find_last_of(".")) == ".PNG" || path.substr(path.find_last_of(".")) == ".jpg" || path.substr(path.find_last_of(".")) == ".JPG" || path.substr(path.find_last_of(".")) == ".dds"  || path.substr(path.find_last_of(".")) == ".DDS") {
 
 					if (App->renderer3D->data.size() > 0) {
 						App->renderer3D->assigntex(dropped_filedir);
