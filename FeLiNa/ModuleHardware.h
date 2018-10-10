@@ -3,7 +3,7 @@
 
 #include "Module.h"
 
-#include "imgui-1.65/imgui.h"
+#include "ImGui/imgui.h"
 
 #include "SDL/include/SDL_version.h"
 #include "SDL/include/SDL_opengl.h"

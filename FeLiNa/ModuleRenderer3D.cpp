@@ -1,7 +1,7 @@
 
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-#include "imgui-1.65/imgui.h"
+#include "ImGui/imgui.h"
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */

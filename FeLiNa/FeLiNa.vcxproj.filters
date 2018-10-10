@@ -27,24 +27,6 @@
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="imgui-1.65\imgui.cpp">
-      <Filter>Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.65\imgui_demo.cpp">
-      <Filter>Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.65\imgui_draw.cpp">
-      <Filter>Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.65\imgui_impl_opengl2.cpp">
-      <Filter>Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.65\imgui_impl_sdl.cpp">
-      <Filter>Tools\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.65\imgui_widgets.cpp">
-      <Filter>Tools\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleGui.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -202,6 +184,24 @@
     <ClCompile Include="GLSphere.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_opengl2.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_sdl.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <Filter>Tools\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -232,30 +232,6 @@
     </ClInclude>
     <ClInclude Include="ModuleWindow.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.65\imconfig.h">
-      <Filter>Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.65\imgui.h">
-      <Filter>Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.65\imgui_impl_opengl2.h">
-      <Filter>Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.65\imgui_impl_sdl.h">
-      <Filter>Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.65\imgui_internal.h">
-      <Filter>Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.65\imstb_rectpack.h">
-      <Filter>Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.65\imstb_textedit.h">
-      <Filter>Tools\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.65\imstb_truetype.h">
-      <Filter>Tools\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ModuleGui.h">
       <Filter>Modules</Filter>
@@ -517,6 +493,30 @@
     </ClInclude>
     <ClInclude Include="GLSphere.h">
       <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_opengl2.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_sdl.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_rectpack.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_textedit.h">
+      <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_truetype.h">
+      <Filter>Tools\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

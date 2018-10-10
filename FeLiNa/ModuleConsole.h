@@ -2,7 +2,7 @@
 #define _MODULE_CONSOLE_
 
 #include "Module.h"
-#include "imgui-1.65/imgui.h"
+#include "ImGui/imgui.h"
 
 class ModuleConsole : public Module
 {

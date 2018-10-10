@@ -4,9 +4,9 @@
 #include "Module.h"
 #include "Globals.h"
 
-#include "imgui-1.65/imgui.h"
-#include "imgui-1.65/imgui_impl_sdl.h"
-#include "imgui-1.65/imgui_impl_opengl2.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl.h"
+#include "ImGui/imgui_impl_opengl2.h"
 
 //TEST
 #include "ModuleImage.h"
