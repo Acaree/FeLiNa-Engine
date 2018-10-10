@@ -73,7 +73,7 @@ update_status ModuleCamera3D::Update(float dt)
 		speed = 8.0f * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) App->camera->FocusToCenterObject();//newPos.y -= speed;
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) FocusToCenterObject();//newPos.y -= speed;
 
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
@@ -160,7 +160,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 
 	//TO TEST ROTATE NOT FINISH
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		
 			int dx = -App->input->GetMouseXMotion();
