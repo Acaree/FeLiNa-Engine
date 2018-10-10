@@ -160,7 +160,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 
 	//TO TEST ROTATE NOT FINISH
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		
 			int dx = -App->input->GetMouseXMotion();
