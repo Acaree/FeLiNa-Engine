@@ -18,11 +18,11 @@ ModuleTexture::~ModuleTexture()
 }
 
 
-uint ModuleTexture::LoadImageFromFile(const char* path) const
+uint ModuleTexture::LoadTexture(const char* path) 
 {
 	ILuint imageID;				// Create an image ID as a ULuint
 
-	uint textureID;			// Create a texture ID as a GLuint
+	uint textureID = 0;			// Create a texture ID as a GLuint
 
 	ILboolean success;			// Create a flag to keep track of success/failure
 
@@ -71,6 +71,10 @@ uint ModuleTexture::LoadImageFromFile(const char* path) const
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+
+		width = ilGetInteger(IL_IMAGE_WIDTH);
+		height = ilGetInteger(IL_IMAGE_HEIGHT);
+
 		// Specify the texture specification
 		glTexImage2D(GL_TEXTURE_2D, 				// Type of texture
 			0,				// Pyramid level (for mip-mapping) - 0 is the top level
@@ -81,13 +85,10 @@ uint ModuleTexture::LoadImageFromFile(const char* path) const
 			ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
 			GL_UNSIGNED_BYTE,		// Image data type
 			ilGetData());			// The actual image data itself
-	}
-	else // If we failed to open the image file in the first place...
-	{
-		error = ilGetError();
-		LOG_GLOBAL( "Image load failed - IL reports error: %i %s ",error, iluErrorString(error));
 
+		
 	}
+
 
 	ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 

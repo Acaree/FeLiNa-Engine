@@ -312,7 +312,7 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 
 void ModuleRenderer3D::AssignTexture(const char* path) {
 
-	data[0]->texture_id = App->mesh_import->LoadTexture(path);
+	data[0]->texture_id = App->texture->LoadTexture(path);
 
 }
 
@@ -438,6 +438,9 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 		if (ImGui::CollapsingHeader("Material Information", ImGuiTreeNodeFlags_DefaultOpen))
 		{
+			ImGui::Text("Width: %i", App->texture->width);
+			ImGui::SameLine();
+			ImGui::Text("Height: %i", App->texture->height);
 			ImGui::Image((ImTextureID)(it->texture_id), ImVec2(250, 250));
 		}
 	}
