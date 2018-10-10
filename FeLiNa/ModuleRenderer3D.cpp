@@ -310,7 +310,7 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 	
 }
 
-void ModuleRenderer3D::assigntex(const char* path) {
+void ModuleRenderer3D::AssignTexture(const char* path) {
 
 	data[0]->texture_id = App->mesh_import->LoadTexture(path);
 

@@ -82,7 +82,7 @@ public:
 
 
 	std::vector<ModelData*> data;
-	void assigntex(const char* path);
+	void AssignTexture(const char* path);
 
 private:
 	bool depth_test = false;
