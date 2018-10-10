@@ -148,41 +148,8 @@
     <ClCompile Include="ModuleImage.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Geometry.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube_DirectMode.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube_Arrays.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube_ArraysandIndex.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleFBX.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="GLLine.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Arrow.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="GLPlane.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Frustrum.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Cylindre.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="GLCapsule.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="GLSphere.cpp">
-      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Tools\ImGui</Filter>
@@ -458,21 +425,10 @@
     <ClInclude Include="Gif\gif.h">
       <Filter>Tools\Gif</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube_DirectMode.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube_Arrays.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube_ArraysandIndex.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleFBX.h">
       <Filter>Modules</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="GLLine.h">
       <Filter>Geometry</Filter>
     </ClInclude>
@@ -518,6 +474,8 @@
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Tools\ImGui</Filter>
     </ClInclude>
+=======
+>>>>>>> c0de2611727f8675ccb21ed24d570fe2a80dcadc
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -549,9 +507,6 @@
     </Filter>
     <Filter Include="Tools\Gif">
       <UniqueIdentifier>{b80e695f-ff73-456e-b74f-9c6bf20b1c65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Geometry">
-      <UniqueIdentifier>{93d4c818-f118-4ada-949c-077905541d1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

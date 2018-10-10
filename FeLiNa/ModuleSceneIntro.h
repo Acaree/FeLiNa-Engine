@@ -2,17 +2,6 @@
 
 #include "Module.h"
 #include "Primitive.h"
-
-#include "Cube_Arrays.h"
-#include "Cube_ArraysandIndex.h"
-#include "Cube_DirectMode.h"
-#include "GLLine.h"
-#include "Arrow.h"
-#include "Frustrum.h"
-#include "Cylindre.h"
-#include "GLSphere.h"
-#include "GLCapsule.h"
-
 #include "MathGeoLib/MathGeoLib.h"
 
 class ModuleSceneIntro : public Module
