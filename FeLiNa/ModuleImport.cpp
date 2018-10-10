@@ -100,38 +100,43 @@ void ModuleImport::LoadData(const char* path)
 				
 				//TO REVISION -> ALL WITH TEXTURE---------------------------------------------
 				///Only 1 material for now
-				/*aiMaterial* material = scene->mMaterials[0];
+				aiMaterial* material = scene->mMaterials[0];
 
 				if (material != nullptr)
 				{
-					aiString path;
-					material->GetTexture(aiTextureType_DIFFUSE,0,&path);
+					//TO REVISION
+					aiString texture_name;
+					material->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
 
-					if (path.length > 0)
-					{
-						//TO TEST WHEN WE DRAW TEXTURE
-						std::string path_location = "FBX/";
-						std::string folder = path.data;
+					std::string fbx_path = path;
 
-						folder.erase(0, folder.find_last_of("\\")+1);
-						
-						path_location += folder;
+					std::string fbx_folder = fbx_path.substr(0,fbx_path.find_last_of("\\")+1)+ texture_name.data;
+					std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\")+5) + texture_name.data; // 5 = Game/
+					std::string felina_folder = fbx_path.substr(0,fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
 					
+					uint tex_id = 0;
+					tex_id = LoadTexture(fbx_folder.c_str());
 
-						ILuint id;
-						ilGenImages(1, &id);
-						ilBindImage(id);
-						ILboolean b = ilLoadImage(path_location.c_str());
-						
+					if (tex_id == 0)
+					{
+						tex_id = LoadTexture(game_folder.c_str());
 
-						data->texture_id = ilutGLBindTexImage();
-						
-						folder.clear();
-						path_location.clear();
-						path.Clear();
-						//----------------------------------
+						if (tex_id == 0)
+						{
+							tex_id = LoadTexture(felina_folder.c_str());
+
+						}
 					}
-				}*/
+
+					if (tex_id != 0)
+					{
+						data->texture_id = tex_id;
+
+					}
+					
+				}
+
+
 				///Only 1 material for now
 				if (new_mesh->HasTextureCoords(0))
 				{
@@ -224,7 +229,7 @@ GLuint ModuleImport::LoadTexture(const char* theFileName)
 {
 	ILuint imageID;				// Create an image ID as a ULuint
 
-	GLuint textureID;			// Create a texture ID as a GLuint
+	GLuint textureID = 0;			// Create a texture ID as a GLuint
 
 	ILboolean success;			// Create a flag to keep track of success/failure
 
@@ -284,12 +289,7 @@ GLuint ModuleImport::LoadTexture(const char* theFileName)
 			GL_UNSIGNED_BYTE,		// Image data type
 			ilGetData());			// The actual image data itself
 	}
-	else // If we failed to open the image file in the first place...
-	{
-		error = ilGetError();
-		std::cout << "Image load failed - IL reports error: " << error << " - " << iluErrorString(error) << std::endl;
-		
-	}
+	
 
 	ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 
