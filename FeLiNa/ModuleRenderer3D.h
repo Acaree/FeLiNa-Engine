@@ -27,21 +27,21 @@ struct ModelData
 	float3 rotation = { 0,0,0 };
 	float3 scale = { 1,1,1 };
 
-	GLuint id_indices = 0;
+	uint id_indices = 0;
 	uint num_indices = 0;
 	uint* indices = nullptr;
 
-	GLuint id_vertices = 0;
+	uint id_vertices = 0;
 	uint num_vertices = 0;
 	float* vertices = nullptr;
 
 	uint texture_id = 0;
 
-	GLuint id_uv = 0;
+	uint id_uv = 0;
 	uint num_uv = 0;
 	float* uv = nullptr;
 
-	GLuint id_color = 0;
+	uint id_color = 0;
 	uint num_color = 0;
 	float* colors = nullptr;
 	aiColor4D color_4D;
