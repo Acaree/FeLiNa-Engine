@@ -19,10 +19,17 @@ void Timer::Start()
 }
 
 // ---------------------------------------------
-void Timer::Stop()
+void Timer::Pause()
 {
 	running = false;
-	stopped_at = SDL_GetTicks();
+	paused_at = SDL_GetTicks();
+}
+
+void Timer::Play() {
+
+	running = true;
+	started_at += SDL_GetTicks() - paused_at;
+
 }
 
 // ---------------------------------------------
@@ -34,7 +41,7 @@ Uint32 Timer::Read()
 	}
 	else
 	{
-		return stopped_at - started_at;
+		return paused_at - started_at;
 	}
 }
 
@@ -46,7 +53,7 @@ float Timer::ReadSec()
 	}
 	else
 	{
-		return float (stopped_at - started_at)/1000;
+		return float (paused_at - started_at)/1000;
 	}
 }
 
@@ -68,12 +75,28 @@ void PerfTimer::Start()
 
 double PerfTimer::ReadMs() const
 {
-	return 1000.0 * (double(SDL_GetPerformanceCounter() - started_at) / double(frequency));
+	if (running) {
+		return 1000.0 * (double(SDL_GetPerformanceCounter() - started_at) / double(frequency));
+	}
+
+	else {
+		return paused_at - started_at;
+	}
 }
 
-Uint64 PerfTimer::ReadTicks() const
-{
-	return SDL_GetPerformanceCounter() - started_at;
+
+void PerfTimer::Pause() {
+
+	running = false;
+	paused_at = SDL_GetPerformanceCounter();
+
+}
+
+void PerfTimer::Play() {
+	
+	running = true;
+	started_at += SDL_GetPerformanceCounter() - paused_at;
+
 }
 
 
