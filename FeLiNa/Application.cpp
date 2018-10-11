@@ -200,7 +200,8 @@ void Application::Load()
 {
 	Log_app("Loading State....");
 
-	JSON_Value* root = json_parse_file("data.json");
+	JSON_Value* root = nullptr;
+	root = json_parse_file("data.json");
 
 	if (root != nullptr)
 	{

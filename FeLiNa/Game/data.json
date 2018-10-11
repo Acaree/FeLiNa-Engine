@@ -4,14 +4,14 @@
 		"Title": "FeLiNa Engine",
 		"Organization": "UPC CITM",
 		"Cap frames": true,
-		"Max frames" 60
+		"Max frames": 60
 	},
 
 	"Window":
 	{
 		"Widtd": 1280,
 		"Height": 1024,
-		"Screen size" 1,
+		"Screen size": 1,
 		"Brightness": 0,
 		"Fullscreen": false,
 		"Reasizable": false,
