@@ -53,7 +53,7 @@ uint ModuleTexture::LoadTexture(const char* path)
 		if (!success)
 		{
 			error = ilGetError();
-			LOG_GLOBAL( "Image conversion failed - IL reports error: %i %s ", error, iluErrorString(error));
+			LOG( "Image conversion failed - IL reports error: %i %s ", error, iluErrorString(error));
 			exit(-1);
 		}
 
@@ -92,7 +92,7 @@ uint ModuleTexture::LoadTexture(const char* path)
 
 	ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 
-	LOG_GLOBAL("Texture creation successful.");
+	LOG("Texture creation successful.");
 
 	return textureID; // Return the GLuint to the texture so you can use it!
 }

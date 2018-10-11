@@ -25,7 +25,7 @@ Application* App = nullptr;
 
 int main(int argc, char ** argv)
 {
-	LOG_GLOBAL("Starting game '%s'...", TITLE);
+	LOG("Starting game '%s'...", TITLE);
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
@@ -37,23 +37,23 @@ int main(int argc, char ** argv)
 		{
 		case MAIN_CREATION:
 
-			LOG_GLOBAL("-------------- Application Creation --------------");
+			LOG("-------------- Application Creation --------------");
 			App = new Application();
 			state = MAIN_START;
 			break;
 
 		case MAIN_START:
 
-			LOG_GLOBAL("-------------- Application Init --------------");
+			LOG("-------------- Application Init --------------");
 			if (App->Init() == false)
 			{
-				LOG_GLOBAL("Application Init exits with ERROR");
+				LOG("Application Init exits with ERROR");
 				state = MAIN_EXIT;
 			}
 			else
 			{
 				state = MAIN_UPDATE;
-				LOG_GLOBAL("-------------- Application Update --------------");
+				LOG("-------------- Application Update --------------");
 			}
 
 			break;
@@ -64,7 +64,7 @@ int main(int argc, char ** argv)
 
 			if (update_return == UPDATE_ERROR)
 			{
-				LOG_GLOBAL("Application Update exits with ERROR");
+				LOG("Application Update exits with ERROR");
 				state = MAIN_EXIT;
 			}
 
@@ -75,10 +75,10 @@ int main(int argc, char ** argv)
 
 		case MAIN_FINISH:
 
-			LOG_GLOBAL("-------------- Application CleanUp --------------");
+			LOG("-------------- Application CleanUp --------------");
 			if (App->CleanUp() == false)
 			{
-				LOG_GLOBAL("Application CleanUp exits with ERROR");
+				LOG("Application CleanUp exits with ERROR");
 			}
 			else
 				main_return = EXIT_SUCCESS;

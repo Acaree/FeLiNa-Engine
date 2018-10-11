@@ -21,7 +21,7 @@ void ModuleConsole::Log_console(const char* text) {
 void ModuleConsole::DrawConsole() {
 
 	ImGui::SetNextWindowSize({ 522,300 });
-	ImGui::SetNextWindowBgAlpha(0.2);
+	ImGui::SetNextWindowBgAlpha(1.0f);
 
 	ImGuiWindowFlags window_flags = 0;
 

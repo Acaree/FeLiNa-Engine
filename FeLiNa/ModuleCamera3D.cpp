@@ -23,7 +23,7 @@ ModuleCamera3D::~ModuleCamera3D()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
-	LOG_GLOBAL("Setting up the camera");
+	LOG("Setting up the camera");
 	bool ret = true;
 
 	return ret;
@@ -52,7 +52,7 @@ update_status ModuleCamera3D::PostUpdate(float dt) {
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	LOG_GLOBAL("Cleaning camera");
+	LOG("Cleaning camera");
 
 
 	if (focus_box != nullptr)

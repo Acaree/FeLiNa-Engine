@@ -59,7 +59,7 @@ bool Application::Init()
 	}
 
 	// After all Init calls we call Start() in all modules
-	LOG_GLOBAL("Application Start --------------");
+	LOG("Application Start --------------");
 	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
 	{
 		ret = (*it)->Start();

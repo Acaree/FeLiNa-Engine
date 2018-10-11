@@ -26,7 +26,7 @@ ModuleImport::~ModuleImport()
 }
 
 void myCallback(const char *msg, char *userData) {
-	LOG_GLOBAL("%s" ,msg);
+	LOG("%s" ,msg);
 }
 
 bool ModuleImport::Start()
@@ -55,7 +55,7 @@ bool ModuleImport::CleanUp()
 
 void ModuleImport::LoadData(const char* path)
 {
-    LOG_GLOBAL("Inicialization load data model")
+    LOG("Inicialization load data model")
 
 	ModelData* data = new ModelData();
 
@@ -77,7 +77,7 @@ void ModuleImport::LoadData(const char* path)
 				data->num_vertices = new_mesh->mNumVertices;
 				data->vertices = new float[data->num_vertices * 3];
 				memcpy(data->vertices, new_mesh->mVertices, sizeof(float)*data->num_vertices * 3);
-				LOG_GLOBAL("New mesh with %d verices", data->num_vertices);
+				LOG("New mesh with %d verices", data->num_vertices);
 
 				//Geometry
 
@@ -90,7 +90,7 @@ void ModuleImport::LoadData(const char* path)
 					{
 						if (new_mesh->mFaces[num_faces].mNumIndices != 3)
 						{
-							LOG_GLOBAL("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
+							LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
 						}
 						else
 							memcpy(&data->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
@@ -205,7 +205,7 @@ void ModuleImport::LoadData(const char* path)
 	
 
 	else
-		LOG_GLOBAL("Error loading Scene %s",path);
+		LOG("Error loading Scene %s",path);
 }
 
 update_status ModuleImport::PreUpdate(float dt) {

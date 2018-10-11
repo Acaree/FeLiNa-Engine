@@ -15,7 +15,7 @@ ModuleScene::~ModuleScene()
 // Load assets
 bool ModuleScene::Start()
 {
-	LOG_GLOBAL("Loading Intro assets");
+	LOG("Loading Intro assets");
 	bool ret = true;
 
 	//Initial position camera.
@@ -63,7 +63,7 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	LOG_GLOBAL("Unloading Intro scene");
+	LOG("Unloading Intro scene");
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
