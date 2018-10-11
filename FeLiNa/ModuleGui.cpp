@@ -33,7 +33,6 @@ bool ModuleGui::Start()
 update_status ModuleGui::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
-	module_timer.Start();
 
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
@@ -76,9 +75,6 @@ update_status ModuleGui::PostUpdate(float dt)
 
 	if (close_program)
 		update_return = UPDATE_STOP;
-
-	last_update_ms = module_timer.ReadMs();
-	module_timer.Start();
 
 	return update_return;
 }

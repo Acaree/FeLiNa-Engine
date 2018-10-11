@@ -76,15 +76,6 @@ bool ModuleScene::CleanUp()
 	return true;
 }
 
-update_status ModuleScene::PreUpdate(float dt)
-{
-	update_status update_return = UPDATE_CONTINUE;
-
-	module_timer.Start();
-
-	return update_return;
-}
-
 // Update
 update_status ModuleScene::Update(float dt)
 {
@@ -219,8 +210,6 @@ update_status ModuleScene::PostUpdate(float dt)
 
 	grid_plane->Render();
 
-	last_update_ms = module_timer.ReadMs();
-	module_timer.Start();
 
 	return update_return;
 }
