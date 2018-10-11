@@ -32,21 +32,6 @@ bool ModuleInput::Init()
 		ret = false;
 	}
 
-	//TO REVISE SET DEFAULT SHORTCUT
-	shortcut_screenshot = '1';
-	shortcut_gif = 'Q';
-	shortcut_close_felina = '0';
-
-	shortcut_wireframe = '2';
-	shortcut_configuration = '3';
-	shortcut_inspector = '4';
-	shortcut_console = '5';
-
-	shortcut_documentation = '6';
-	shortcut_download = '7';
-	shortcut_report_bug = '8';
-	shortcut_about = '9';
-
 	return ret;
 }
 
@@ -208,86 +193,14 @@ update_status ModuleInput::PostUpdate(float dt) {
 
 void ModuleInput::DrawInputConfiguration()
 {
-	ImGui::Text("Shortcuts Menu: ");
+	ImGui::Text("Mouse Position: ");
+	ImGui::Text("x: %i", mouse_x);
+	ImGui::SameLine();
+	ImGui::Text("y: %i", mouse_y);
 	ImGui::Separator();
+	ImGui::Text("Mouse Motion: ");
+	ImGui::Text("x: %i", mouse_x_motion);
+	ImGui::SameLine();
+	ImGui::Text("y: %i", mouse_y_motion);
 
-	if (ImGui::InputText("Screenshot ##1", &shortcut_screenshot, 2))
-	{
-	
-	  SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_screenshot));
-
-	}
-	
-	if (ImGui::InputText("Gif", &shortcut_gif, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_gif));
-
-	}
-	/*if (ImGui::InputText("Close FeLiNa", &shortcut_close_felina, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_close_felina));
-
-	}
-
-	ImGui::Text("Shortcuts Mode: ");
-	ImGui::Separator();
-
-	if (ImGui::InputText("Wireframe", &shortcut_wireframe, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_wireframe));
-
-	}
-
-	ImGui::Text("Shortcuts Windows: ");
-	ImGui::Separator();
-
-	if (ImGui::InputText("Configuration", &shortcut_configuration, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_configuration));
-
-	}
-	if (ImGui::InputText("Inspector", &shortcut_inspector, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_inspector));
-
-	}
-	if (ImGui::InputText("Console", &shortcut_console, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_console));
-
-	}
-
-	ImGui::Text("Shortcuts Help: ");
-	ImGui::Separator();
-
-	if (ImGui::InputText("Documentation",&shortcut_documentation, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_documentation));
-
-	}
-	if (ImGui::InputText("Download", &shortcut_download, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_download));
-
-	}
-	if (ImGui::InputText("Report a bug", &shortcut_report_bug, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_report_bug));
-
-	}
-	if (ImGui::InputText("About", &shortcut_about, 2))
-	{
-
-		SDL_GetScancodeFromKey(SDL_GetKeyFromName(&shortcut_about));
-
-	}*/
 }

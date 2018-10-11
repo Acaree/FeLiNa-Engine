@@ -71,38 +71,6 @@ private:
 	int mouse_x_motion;
 	int mouse_y_motion;
 
-	char shortcut_screenshot;
-	char shortcut_gif;
-	char shortcut_close_felina;
-
-	char shortcut_wireframe;
-
-	char shortcut_configuration;
-	char shortcut_inspector;
-	char shortcut_console;
-	
-	char shortcut_documentation;
-	char shortcut_download;
-	char shortcut_report_bug;
-	char shortcut_about;
-	
-public:
-
-	uint scancode_screenshot = 0;
-	uint scancode_gif = 0;
-	uint scancode_close_felina = 0;
-
-	uint scancode_wireframe = 0;
-
-	uint scancode_configuration = 0;
-	uint scancode_inspector = 0;
-	uint scancode_console = 0;
-
-	uint scancode_documentation = 0;
-	uint scancode_download = 0;
-	uint scancode_report_bug = 0;
-	uint scancode_about = 0;
-	
 };
 
 #endif
