@@ -58,6 +58,7 @@ public:
 	~Application();
 
 	bool Init();
+	bool Awake();
 	update_status Update();
 	bool CleanUp();
 

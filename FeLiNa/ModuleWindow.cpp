@@ -6,12 +6,13 @@ ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, s
 {
 	window = NULL;
 	screen_surface = NULL;
+	name = "Window";
 }
 
 // Destructor
 ModuleWindow::~ModuleWindow()
 {
-	name = "Window";
+	
 }
 
 // Called before render is available
@@ -40,27 +41,30 @@ bool ModuleWindow::Init()
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-		if(WIN_FULLSCREEN == true)
+		if(fullscreen == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		if(WIN_RESIZABLE == true)
+		if(reasizable == true)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		if(WIN_BORDERLESS == true)
+		if(bordeless == true)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if(WIN_FULLSCREEN_DESKTOP == true)
+		if(fullscreen_desktop == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
 		window = SDL_CreateWindow(App->app_name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+
+		SDL_SetWindowBrightness(window, brightness);
+		SDL_UpdateWindowSurface(window);
 
 		if(window == NULL)
 		{
@@ -74,9 +78,33 @@ bool ModuleWindow::Init()
 		}
 	}
 
-	brightness = SDL_GetWindowBrightness(window);
+	
 	return ret;
 }
+
+bool ModuleWindow::Awake(JSON_Object* config)
+{
+	bool ret = true;
+
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		ret = false;
+	else
+	{
+		width = json_object_get_number(config, "Width");
+		height = json_object_get_number(config, "Height");
+		brightness = json_object_get_number(config, "Brightness");
+		fullscreen = json_object_get_boolean(config, "Fullscreen");
+		reasizable = json_object_get_boolean(config, "Reasizable");
+		bordeless = json_object_get_boolean(config, "Bordeless");
+		fullscreen_desktop = json_object_get_boolean(config, "Bordeless");
+
+		ret = true;
+	}
+
+	return ret;
+}
+
+
 
 // Called before quitting
 bool ModuleWindow::CleanUp()
@@ -133,6 +161,7 @@ void ModuleWindow::DrawWindowInformationPanel()
 		SDL_SetWindowBordered(window, (SDL_bool)!bordeless);
 	}
 	ImGui::SameLine();
+
 	if (ImGui::Checkbox("Fullscreen Desktop", &fullscreen_desktop))
 	{
 		if (fullscreen_desktop)
@@ -140,8 +169,5 @@ void ModuleWindow::DrawWindowInformationPanel()
 		else
 			SDL_SetWindowFullscreen(window, flags);
 	}
-
-
-
 
 }

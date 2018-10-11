@@ -9,10 +9,9 @@
 
 	"Window":
 	{
-		"Widtd": 1280,
+		"Width": 1280,
 		"Height": 1024,
-		"Screen size": 1,
-		"Brightness": 0,
+		"Brightness": 1,
 		"Fullscreen": false,
 		"Reasizable": false,
 		"Bordeless": false,

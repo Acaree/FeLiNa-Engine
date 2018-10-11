@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "Globals.h"
+
 
 
 Application::Application()
@@ -66,6 +66,33 @@ bool Application::Init()
 	}
 
 	return ret;
+}
+
+
+bool Application::Awake()
+{
+	bool ret = true;
+
+	JSON_Value* root = json_parse_file("data.json");
+
+	//NEED CHARGE APP
+
+	if (root != nullptr)
+	{
+		JSON_Object* node = json_value_get_object(root);
+
+		for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret == true; it++)
+		{
+			JSON_Object* module_obj = json_object_get_object(node, (*it)->GetName());
+
+			ret = (*it)->Awake(module_obj);	
+		}
+
+		json_value_free(root);
+
+	}
+
+	return true;
 }
 
 // ---------------------------------------------
@@ -232,7 +259,10 @@ void Application::Load()
 
 void Application::DrawApplicationInformationPanel()
 {
-	ImGui::InputText("App name", app_name, 20);
+	if (ImGui::InputText("App name", app_name, 20))
+	{
+		window->SetTitle(app_name);
+	}
 		
 	ImGui::InputText("Organization", organization, 20);
 

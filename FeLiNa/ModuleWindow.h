@@ -17,6 +17,7 @@ public:
 	virtual ~ModuleWindow();
 
 	bool Init();
+	bool Awake(JSON_Object* config);
 	bool CleanUp();
 
 	void SetTitle(const char* title);

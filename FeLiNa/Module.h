@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Parson/parson.h"
 #include "Timer.h"
+#include "Parson/parson.h"
 
 class Application;
 
@@ -29,6 +30,11 @@ public:
 	virtual bool Init() 
 	{
 		return true; 
+	}
+
+	virtual bool Awake(JSON_Object* config = nullptr)
+	{
+		return true;
 	}
 
 	virtual bool Start()
