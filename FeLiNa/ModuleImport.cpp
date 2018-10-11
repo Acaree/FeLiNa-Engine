@@ -1,5 +1,6 @@
 #include "ModuleImport.h"
 
+#include "MathGeoLib/MathGeoLib.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -66,13 +67,24 @@ void ModuleImport::LoadData(const char* path)
 
 
 	const aiScene* scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
+	
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		
+		const aiNode* node = scene->mRootNode;
+
+		if (node != nullptr)
+		{
+			aiQuaternion q;
+			aiVector3D scale, position;
+			node->mTransformation.Decompose(scale,q,position);
+
+			data->position = { position.x,position.y,position.z };
+			data->scale = { scale.x,scale.y,scale.z };
+			data->rotation = { q.GetEuler().x, q.GetEuler().y, q.GetEuler().z };
+
+			
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
 			{
-				
-
 				aiMesh* new_mesh = scene->mMeshes[num_meshes];
 				data->num_vertices = new_mesh->mNumVertices;
 				data->vertices = new float[data->num_vertices * 3];
@@ -97,7 +109,7 @@ void ModuleImport::LoadData(const char* path)
 
 					}
 				}
-				
+
 				//TO REVISION -> ALL WITH TEXTURE---------------------------------------------
 				///Only 1 material for now
 				aiMaterial* material = scene->mMaterials[0];
@@ -110,10 +122,10 @@ void ModuleImport::LoadData(const char* path)
 
 					std::string fbx_path = path;
 
-					std::string fbx_folder = fbx_path.substr(0,fbx_path.find_last_of("\\")+1)+ texture_name.data;
-					std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\")+5) + texture_name.data; // 5 = Game/
-					std::string felina_folder = fbx_path.substr(0,fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
-					
+					std::string fbx_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1) + texture_name.data;
+					std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data; // 5 = Game/
+					std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
+
 					uint tex_id = 0;
 					tex_id = App->texture->LoadTexture(fbx_folder.c_str());
 
@@ -150,16 +162,16 @@ void ModuleImport::LoadData(const char* path)
 					}
 				}
 				//------------------------------------------------------------------------------
-				
+
 				//TO REVISION--------------------------------------------------------
 
 				/*aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
 
-				// if the object don't have color material, we set the color to white 
+				// if the object don't have color material, we set the color to white
 				//because if not, the object take the last material
 				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data->color_4D) == aiReturn_FAILURE || data->color_4D == aiColor4D(0,0,0,1))
 				{
-					data->color_4D = { 255.0f,255.0f,255.0f,255.0f }; 
+					data->color_4D = { 255.0f,255.0f,255.0f,255.0f };
 				}
 				aiColor4D* colors_mesh = *new_mesh->mColors;
 
@@ -198,7 +210,7 @@ void ModuleImport::LoadData(const char* path)
 				App->renderer3D->AddDataMesh(data);
 			}
 
-
+		}
 			
 	}
 
