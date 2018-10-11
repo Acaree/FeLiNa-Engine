@@ -129,9 +129,6 @@
     <ClCompile Include="ModuleHardware.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="PerfTimer.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ModuleConsole.cpp">
       <Filter>Modules</Filter>
@@ -391,9 +388,6 @@
     </ClInclude>
     <ClInclude Include="ModuleHardware.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="PerfTimer.h">
-      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Glew\include\glew.h">
       <Filter>Tools\Glew</Filter>

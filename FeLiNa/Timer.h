@@ -24,4 +24,22 @@ private:
 	Uint32	stopped_at;
 };
 
+class PerfTimer
+{
+public:
+
+	PerfTimer();
+
+	void Start();
+
+	double ReadMs() const;
+	Uint64 ReadTicks() const;
+
+private:
+
+	double started_at;
+	static Uint64 frequency;
+};
+
+
 #endif //__TIMER_H__

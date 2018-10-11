@@ -4,7 +4,8 @@
 
 #include "Globals.h"
 #include "Parson/parson.h"
-#include "PerfTimer.h"
+#include "Timer.h"
+
 class Application;
 
 class Module

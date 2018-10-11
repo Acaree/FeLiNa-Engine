@@ -4,7 +4,6 @@
 #include <list>
 #include "Globals.h"
 #include "Timer.h"
-#include "PerfTimer.h"
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
