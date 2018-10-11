@@ -180,16 +180,6 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
-update_status ModuleInput::PostUpdate(float dt) {
-
-	update_status update_return = UPDATE_CONTINUE;
-
-	last_update_ms = module_timer.ReadMs();
-	module_timer.Start();
-
-	return update_return;
-
-}
 
 void ModuleInput::DrawInputConfiguration()
 {

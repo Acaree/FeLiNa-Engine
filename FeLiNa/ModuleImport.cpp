@@ -220,20 +220,4 @@ void ModuleImport::LoadData(const char* path)
 		LOG("Error loading Scene %s",path);
 }
 
-update_status ModuleImport::PreUpdate(float dt) {
-	update_status update_return = UPDATE_CONTINUE;
-	module_timer.Start();
-	return update_return;
-}
-
-update_status ModuleImport::PostUpdate(float dt) {
-
-	update_status update_return = UPDATE_CONTINUE;
-
-	last_update_ms = module_timer.ReadMs();
-	module_timer.Start();
-
-	return update_return;
-
-}
 

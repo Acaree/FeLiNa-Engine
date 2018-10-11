@@ -17,9 +17,6 @@ public:
 	~ModuleImport();
 	bool Start();
 	bool CleanUp();
-
-	update_status PreUpdate(float dt);
-	update_status PostUpdate(float dt);
 	
 
 	void LoadData(const char* path);

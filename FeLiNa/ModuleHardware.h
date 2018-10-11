@@ -26,10 +26,6 @@ public:
 	void DrawHardwareInformationPanel();
 private:
 
-
-	update_status PreUpdate(float dt);
-	update_status PostUpdate(float dt);
-
 	char sdl_current_version[10];
 	//CPU
 	int cpu_count = 0;

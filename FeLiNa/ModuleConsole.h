@@ -18,8 +18,6 @@ private:
 	ImGuiTextBuffer console_buffer;
 	bool console_scroll = false;
 
-	update_status PreUpdate(float dt);
-	update_status PostUpdate(float dt);
 
 };
 

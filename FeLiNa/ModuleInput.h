@@ -23,7 +23,6 @@ public:
 
 	bool Init();
 	update_status PreUpdate(float dt);
-	update_status PostUpdate(float dt);
 	bool CleanUp();
 
 	KEY_STATE GetKey(int id) const

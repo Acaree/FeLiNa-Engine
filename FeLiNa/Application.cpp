@@ -111,7 +111,9 @@ update_status Application::Update()
 	
 	while(it != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
+		(*it)->module_timer.Start();
 		ret = (*it)->PreUpdate(dt);
+		(*it)->module_timer.Pause();
 		++it;
 	}
 
@@ -119,7 +121,9 @@ update_status Application::Update()
 
 	while(it != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
+		(*it)->module_timer.Play();
 		ret = (*it)->Update(dt);
+		(*it)->module_timer.Pause();
 		++it;
 	}
 
@@ -127,7 +131,9 @@ update_status Application::Update()
 
 	while(it != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
+		(*it)->module_timer.Play();
 		ret = (*it)->PostUpdate(dt);
+		(*it)->last_update_ms = (*it)->module_timer.ReadMs();
 		++it;
 	}
 	
