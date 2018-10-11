@@ -51,8 +51,8 @@ update_status ModuleGui::Update(float dt)
 	if(open_configuration)
 		ShowConfigurationWindow();
 
-	if (open_render_configuration)
-		App->renderer3D->DrawCheckBoxEdgeGLPanel();
+	/*if (open_render_configuration)
+		App->renderer3D->DrawCheckBoxEdgeGLPanel();*/
 
 	if (open_console)
 		App->console->DrawConsole();
@@ -203,6 +203,14 @@ void ModuleGui::ShowConfigurationWindow()
 	if (ImGui::CollapsingHeader("Hardware Detection"))
 	{
 		App->hardware->DrawHardwareInformationPanel();
+	}
+	if (ImGui::CollapsingHeader("Render"))
+	{
+		App->renderer3D->DrawCheckBoxEdgeGLPanel();
+	}
+	if (ImGui::CollapsingHeader("Input"))
+	{
+		App->input->DrawInputConfiguration();
 	}
 
 	if (ImGui::CollapsingHeader("Modules Update Time"))

@@ -234,79 +234,68 @@ float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float 
 
 void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 {
+	if (ImGui::Checkbox("DEPTH_TEST", &depth_test))
+	{
+		if (!depth_test)
+			glDisable(GL_DEPTH_TEST);
+		else
+			glEnable(GL_DEPTH_TEST);
 
-	ImGuiWindowFlags window_flags = 0;
+	}
+	if (ImGui::Checkbox("CULL FACE", &cull_face))
+	{
+		if (!cull_face)
+			glDisable(GL_CULL_FACE);
+		else
+			glEnable(GL_CULL_FACE);
 
-	window_flags |= ImGuiWindowFlags_NoTitleBar;
-	window_flags |= ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoResize;
-	
-
-	if (ImGui::Begin("GL Options", &App->gui->open_render_configuration, window_flags))
+	}
+	if (ImGui::Checkbox("LIGHTING", &lighting))
 	{
 
-		if (ImGui::Checkbox("DEPTH_TEST", &depth_test))
-		{
-			if (!depth_test)
-				glDisable(GL_DEPTH_TEST);
-			else
-				glEnable(GL_DEPTH_TEST);
-			
-		}
-		if (ImGui::Checkbox("CULL FACE", &cull_face))
-		{
-			if (!cull_face)
-				glDisable(GL_CULL_FACE);
-			else
-				glEnable(GL_CULL_FACE);
-		
-		}
-		if (ImGui::Checkbox("LIGHTING", &lighting))
-		{
-		
-			if (!lighting)
-				glDisable(GL_LIGHTING);
-			else
-				glEnable(GL_LIGHTING);
+		if (!lighting)
+			glDisable(GL_LIGHTING);
+		else
+			glEnable(GL_LIGHTING);
 
-			
-		}
-		if (ImGui::Checkbox("COLOR MATERIAL", &color_material))
-		{
-			if (!color_material)
-				glDisable(GL_COLOR_MATERIAL);
-			else
-				glEnable(GL_COLOR_MATERIAL);
-			
-		}
-		if (ImGui::Checkbox("TEXTURE 2D", &texture2D))
-		{
-			if (!texture2D)
-				glDisable(GL_TEXTURE_2D);
-			else
-				glEnable(GL_TEXTURE_2D);
-			
-		}
-		if (ImGui::Checkbox("LINE SMOOTH", &line_smooth))
-		{
-			if (!line_smooth)
-				glDisable(GL_LINE_SMOOTH);
-			else
-				glEnable(GL_LINE_SMOOTH);
-			
-		}
-		if (ImGui::Checkbox("POLYGON SMOOTH", &polygon_smooth))
-		{
-			if (!polygon_smooth)
-				glDisable(GL_POLYGON_SMOOTH);
-			else
-				glEnable(GL_POLYGON_SMOOTH);
 
-		}
-
-		
-		ImGui::End();
 	}
+	if (ImGui::Checkbox("COLOR MATERIAL", &color_material))
+	{
+		if (!color_material)
+			glDisable(GL_COLOR_MATERIAL);
+		else
+			glEnable(GL_COLOR_MATERIAL);
+
+	}
+	if (ImGui::Checkbox("TEXTURE 2D", &texture2D))
+	{
+		if (!texture2D)
+			glDisable(GL_TEXTURE_2D);
+		else
+			glEnable(GL_TEXTURE_2D);
+
+	}
+	if (ImGui::Checkbox("LINE SMOOTH", &line_smooth))
+	{
+		if (!line_smooth)
+			glDisable(GL_LINE_SMOOTH);
+		else
+			glEnable(GL_LINE_SMOOTH);
+
+	}
+	if (ImGui::Checkbox("POLYGON SMOOTH", &polygon_smooth))
+	{
+		if (!polygon_smooth)
+			glDisable(GL_POLYGON_SMOOTH);
+		else
+			glEnable(GL_POLYGON_SMOOTH);
+
+	}
+
+
+
+
 	
 }
 

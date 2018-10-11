@@ -228,6 +228,8 @@ void Application::DrawApplicationInformationPanel()
 	ImGui::InputText("App name", app_name, 20);
 		
 	ImGui::InputText("Organization", organization, 20);
+
+
 	if (vector_fps.size() != 100)
 	{
 		vector_fps.push_back(GetFPS());
