@@ -152,11 +152,12 @@ update_status ModuleInput::PreUpdate(float dt)
 					}
 
 				}
-
+				// TO REVISION
 				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX") {
 					App->renderer3D->DeleteAllDataMesh();
 					App->mesh_import->LoadData(dropped_filedir);
 					App->camera->FocusToCenterObject();
+					App->gui->inspector_open = true;
 				}
 
 				SDL_free(dropped_filedir);

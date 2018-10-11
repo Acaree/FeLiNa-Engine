@@ -40,7 +40,7 @@ public:
 	bool open_render_configuration = false;
 	bool open_console = false;
 	bool need_screenshoot = false; //TO REVISION
-	bool inspector_open = true;
+	bool inspector_open = false;
 };
 
 
