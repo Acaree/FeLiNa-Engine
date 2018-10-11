@@ -12,7 +12,8 @@ public:
 	Timer();
 
 	void Start();
-	void Stop();
+	void Pause();
+	void Play();
 
 	Uint32 Read(); //const?
 	float ReadSec();
@@ -21,7 +22,7 @@ private:
 
 	bool	running;
 	Uint32	started_at;
-	Uint32	stopped_at;
+	Uint32	paused_at;
 };
 
 class PerfTimer
@@ -33,11 +34,16 @@ public:
 	void Start();
 
 	double ReadMs() const;
-	Uint64 ReadTicks() const;
+
+	void Pause();
+
+	void Play();
 
 private:
 
-	double started_at;
+	double paused_at = 0;
+	double started_at = 0;
+	bool running;
 	static Uint64 frequency;
 };
 
