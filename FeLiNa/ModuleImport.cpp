@@ -1,19 +1,13 @@
 #include "ModuleImport.h"
 
-#include "MathGeoLib/MathGeoLib.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
-#include "Assimp/include/cfileio.h"
-#include "Devil/include/il.h"
 #include "Devil/include/ilut.h"
 #include "Application.h"
-#include "ModuleRenderer3D.h"
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
-#pragma comment (lib, "Devil/libx86/DevIL.lib")
-#pragma comment ( lib, "Devil/libx86/ILU.lib" )
-#pragma comment ( lib, "Devil/libx86/ILUT.lib" )
+
 #include <string>
 
 ModuleImport::ModuleImport(Application*app, bool start_enabled) : Module(app, start_enabled)
@@ -72,7 +66,7 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 				//TO REVISION
 				data->path = path;
 				std::string tmp = path;
-				data->name = tmp.substr(0, tmp.find_last_of("\\") + 1);
+				data->name = tmp.erase(0, tmp.find_last_of("\\") + 1);
 
 				data->position = { pos.x,pos.y,pos.z };
 				data->scale = { scale.x,scale.y,scale.z };
@@ -160,7 +154,7 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
 
 				App->renderer3D->AddDataMesh(data); 
-
+				//TO revision best wave?
 				FindTexturePath(material, path, num_meshes);
 			}
 
