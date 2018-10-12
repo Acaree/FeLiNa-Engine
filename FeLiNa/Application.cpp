@@ -116,14 +116,14 @@ void Application::FinishUpdate()
 
 	if (!vsync) {
 
-		double ms_cap = 0;
+		double ms_cap = 0.0f;
 
 		if (FPS_cap > 0) {
-			ms_cap = 1000 / FPS_cap;
+			ms_cap = 1000.0f / FPS_cap;
 		}
 
 		else {
-			ms_cap = 1000 / 60;
+			ms_cap = 1000.0f / 60;
 		}
 		if (last_ms < ms_cap) {
 			SDL_Delay(ms_cap - last_ms);
