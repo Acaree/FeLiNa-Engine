@@ -52,6 +52,8 @@ private:
 
 	bool need_save = false;
 	bool need_load = false;
+
+	bool pause_diagram = false;
 public:
 
 	Application();

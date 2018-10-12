@@ -168,7 +168,9 @@ update_status Application::Update()
 	{
 		(*it)->module_timer.Play();
 		ret = (*it)->PostUpdate(dt);
-		(*it)->last_update_ms = (*it)->module_timer.ReadMs();
+		if (!pause_diagram) {
+			(*it)->last_update_ms = (*it)->module_timer.ReadMs();
+		}
 		++it;
 	}
 	
@@ -284,19 +286,21 @@ void Application::DrawApplicationInformationPanel()
 		
 	ImGui::InputText("Organization", organization, 20);
 
+	if (!pause_diagram) {
+		if (vector_fps.size() != 100)
+		{
 
-	if (vector_fps.size() != 100)
-	{
-		vector_fps.push_back(GetFPS());
-		vector_ms.push_back(GetMS());
-	}
-	else
-	{
-		vector_fps.erase(vector_fps.begin());
-		vector_fps.push_back(GetFPS());
+			vector_fps.push_back(GetFPS());
+			vector_ms.push_back(GetMS());
+		}
+		else
+		{
+			vector_fps.erase(vector_fps.begin());
+			vector_fps.push_back(GetFPS());
 
-		vector_ms.erase(vector_ms.begin());
-		vector_ms.push_back(GetMS());
+			vector_ms.erase(vector_ms.begin());
+			vector_ms.push_back(GetMS());
+		}
 	}
 	char title[30];
 
@@ -304,8 +308,14 @@ void Application::DrawApplicationInformationPanel()
 
 	ImGui::Checkbox("Vsync", &vsync);
 
+	ImGui::Checkbox("Pause", &pause_diagram);
+	
 	sprintf_s(title, 25, "Framerate %.1f", vector_fps[vector_fps.size() - 1]);
 	ImGui::PlotHistogram("##framerate", &vector_fps[0], vector_fps.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+	
+
+	
+	
 
 	sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
 	ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
