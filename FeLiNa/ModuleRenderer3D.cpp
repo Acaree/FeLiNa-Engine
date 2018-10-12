@@ -155,11 +155,14 @@ bool ModuleRenderer3D::Init()
 	else
 		glDisable(GL_POLYGON_SMOOTH);
 
+	CreateCheckers();
+
 	return ret;
 }
 
 bool ModuleRenderer3D::Awake(JSON_Object* config)
 {
+	material_cheker = json_object_get_boolean(config, "Checker");
 	depth_test = json_object_get_boolean(config, "Depth test");
 	cull_face = json_object_get_boolean(config, "Cull face");
 	lighting = json_object_get_boolean(config, "Lighting");
@@ -330,7 +333,19 @@ void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
 	glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a);
 
-	glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
+	if (no_texture)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	else if (material_cheker)
+	{
+		glBindTexture(GL_TEXTURE_2D, checker_id);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
+	}
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -464,12 +479,27 @@ void ModuleRenderer3D::DrawMeshInformation()
 			ImGui::Text("Triangles: %i", it->num_vertices / 3);
 		}
 
-		if (ImGui::CollapsingHeader("Material Information", ImGuiTreeNodeFlags_DefaultOpen))
+		if (ImGui::CollapsingHeader("Material Material", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::Text("Width: %i", it->texture_width);
-			ImGui::SameLine();
-			ImGui::Text("Height: %i", it->texture_height);
-			ImGui::Image((ImTextureID)(it->texture_id), ImVec2(250, 250));
+			ImGui::Checkbox("Checker Material", &material_cheker);
+			ImGui::Checkbox("No Texture", &no_texture);
+
+			if (!no_texture)
+			{
+				if (material_cheker)
+				{
+					ImGui::Image((ImTextureID)(checker_id), ImVec2(250, 250));
+
+					ImGui::Text("Associate Texture");
+				}
+				else
+				{
+					ImGui::Text("Width: %i", it->texture_width);
+					ImGui::SameLine();
+					ImGui::Text("Height: %i", it->texture_height);
+					ImGui::Image((ImTextureID)(it->texture_id), ImVec2(250, 250));
+				}
+			}
 		}
 	}
 	
@@ -478,5 +508,29 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 }
 
+void ModuleRenderer3D::CreateCheckers()
+{
+	GLubyte checkImage[36][36][4];
+	for (int i = 0; i < 36; i++) {
+		for (int j = 0; j < 36; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &checker_id);
+	glBindTexture(GL_TEXTURE_2D, checker_id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 36, 36, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
 
 

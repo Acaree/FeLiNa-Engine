@@ -75,6 +75,7 @@ public:
 	void AddTextureData(uint id_texture,uint width, uint height, int index);
 	void DeleteAllDataMesh();
 	void DrawMeshInformation();
+	void CreateCheckers();
 
 public:
 
@@ -95,7 +96,10 @@ private:
 	
 	ModuleImage* img;
 
-	
+	//Checkers
+	uint checker_id;
+	bool material_cheker = false;
+	bool no_texture = false;
 
 };
 

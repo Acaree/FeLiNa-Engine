@@ -38,9 +38,10 @@
 
 	"Render":
 	{
+		"Checker": false,
 		"Depth test": true,
 		"Cull face": true,
-		"Lighting": false,
+		"Lighting": true,
 		"Color material": true,
 		"Texture 2D": true,
 		"Line smooth": false,

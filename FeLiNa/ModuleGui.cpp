@@ -79,7 +79,7 @@ update_status ModuleGui::PostUpdate(float dt)
 	
 
 	if (close_program)
-		update_return = UPDATE_STOP;
+		update_return = UPDATE_ERROR;
 
 	return update_return;
 }
