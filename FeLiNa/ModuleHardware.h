@@ -24,7 +24,9 @@ public:
 	~ModuleHardware();
 	
 	void DrawHardwareInformationPanel();
+
 private:
+	void FillHardwareInfo();
 
 	char sdl_current_version[10];
 	//CPU
@@ -49,7 +51,6 @@ private:
 	GLint dedicated_memory = 0;
 	GLint available_memory = 0;
 	
-	void FillHardwareInfo();
 	bool fill_hardware = false;
 };
 

@@ -11,17 +11,18 @@ ModuleConsole::~ModuleConsole()
 
 }
 
-void ModuleConsole::Log_console(const char* text) {
+void ModuleConsole::Log_console(const char* text)
+{
 
 	console_buffer.appendf(text);
 	console_scroll = true;
 	
 }
 
-void ModuleConsole::DrawConsole() {
-
+void ModuleConsole::DrawConsole() 
+{
 	ImGui::SetNextWindowSize({ 522,300 });
-	ImGui::SetNextWindowBgAlpha(1.0f);
+	ImGui::SetNextWindowBgAlpha(1.0F);
 
 	ImGuiWindowFlags window_flags = 0;
 
@@ -34,7 +35,7 @@ void ModuleConsole::DrawConsole() {
 	ImGui::Begin("Console", &Log_active, window_flags);
 	ImGui::TextUnformatted(console_buffer.begin());
 	if (console_scroll)
-		ImGui::SetScrollHere(1.0f);
+		ImGui::SetScrollHere(1.0F);
 	console_scroll = false;
 	ImGui::End();
 }

@@ -26,7 +26,8 @@ ModuleImport::~ModuleImport()
 
 }
 
-void myCallback(const char *msg, char *userData) {
+void myCallback(const char *msg, char *userData)
+{
 	LOG("%s" ,msg);
 }
 
@@ -44,28 +45,14 @@ bool ModuleImport::CleanUp()
 {
 	aiDetachAllLogStreams();
 
-	//TO CHANGE
-	/*if (data->indices != nullptr)
-		delete[]data->indices;
-
-	if (data->vertices != nullptr)
-		delete[]data->vertices;*/
-
 	return true;
 }
 
-void ModuleImport::LoadData(const char* path)
+void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or not because we have streams to all errors?
 {
     LOG("Inicialization load data model")
 
-	ModelData* data = new ModelData();
-
-	//TO REVISION
-	data->path = path;
-	std::string tmp = path;
-	data->name = tmp.erase(0,tmp.find_last_of("\\") + 1);
-
-
+	
 	const aiScene* scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
 	
 	if (scene != nullptr && scene->HasMeshes())
@@ -75,21 +62,29 @@ void ModuleImport::LoadData(const char* path)
 		if (node != nullptr)
 		{
 			aiQuaternion q;
-			aiVector3D scale, position;
-			node->mTransformation.Decompose(scale,q,position);
+			aiVector3D scale, pos;
+			node->mTransformation.Decompose(scale,q,pos);
 
-			data->position = { position.x,position.y,position.z };
-			data->scale = { scale.x,scale.y,scale.z };
-			data->rotation = { q.GetEuler().x, q.GetEuler().y, q.GetEuler().z };
-
-			
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
 			{
+				ModelData* data = new ModelData(); //TO REVISE PASS &DATA and not create one?  
+
+				//TO REVISION
+				data->path = path;
+				std::string tmp = path;
+				data->name = tmp.substr(0, tmp.find_last_of("\\") + 1);
+
+				data->position = { pos.x,pos.y,pos.z };
+				data->scale = { scale.x,scale.y,scale.z };
+				data->rotation = { q.GetEuler().x, q.GetEuler().y, q.GetEuler().z };
+
+
 				aiMesh* new_mesh = scene->mMeshes[num_meshes];
+
 				data->num_vertices = new_mesh->mNumVertices;
 				data->vertices = new float[data->num_vertices * 3];
 				memcpy(data->vertices, new_mesh->mVertices, sizeof(float)*data->num_vertices * 3);
-				LOG("New mesh with %d verices", data->num_vertices);
+				LOG("New mesh with %d vertices", data->num_vertices);
 
 				//Geometry
 
@@ -110,40 +105,7 @@ void ModuleImport::LoadData(const char* path)
 					}
 				}
 
-				//TO REVISION -> ALL WITH TEXTURE---------------------------------------------
-				///Only 1 material for now
-				aiMaterial* material = scene->mMaterials[0];
-
-				if (material != nullptr)
-				{
-					//TO REVISION------------------------------------------------------------------------------------------
-					aiString texture_name;
-					material->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
-
-					std::string fbx_path = path;
-
-					std::string fbx_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1) + texture_name.data;
-					std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data; // 5 = Game/
-					std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
-
-					bool success = false;
-					success = App->texture->LoadTexture(fbx_folder.c_str());
-
-					if (!success)
-					{
-						success= App->texture->LoadTexture(game_folder.c_str());
-
-						if (!success)
-						{
-							success = App->texture->LoadTexture(felina_folder.c_str());
-
-						}
-					}
-					//-----------------------------------------------------------------------------------------------
-				}
-
-
-				///Only 1 material for now
+				aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
 				if (new_mesh->HasTextureCoords(0))
 				{
 					data->num_uv = new_mesh->mNumVertices;
@@ -157,12 +119,8 @@ void ModuleImport::LoadData(const char* path)
 				}
 				//------------------------------------------------------------------------------
 
-				//TO REVISION--------------------------------------------------------
+				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
 
-				/*aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
-
-				// if the object don't have color material, we set the color to white
-				//because if not, the object take the last material
 				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data->color_4D) == aiReturn_FAILURE || data->color_4D == aiColor4D(0,0,0,1))
 				{
 					data->color_4D = { 255.0f,255.0f,255.0f,255.0f };
@@ -176,8 +134,8 @@ void ModuleImport::LoadData(const char* path)
 					{
 						memcpy(data->colors, &colors_mesh[num_color], sizeof(float)*data->num_vertices * 3);
 					}
-				}*/
-				//--------------------------------------------------------------------------------
+				}
+
 
 
 				glGenBuffers(1, (GLuint*) &(data->id_vertices));
@@ -197,21 +155,51 @@ void ModuleImport::LoadData(const char* path)
 
 
 
-				/*glGenBuffers(1, (GLuint*) &(data->id_color));
+				glGenBuffers(1, (GLuint*) &(data->id_color));
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_color);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);*/
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
 
-				App->renderer3D->AddDataMesh(data);
+				App->renderer3D->AddDataMesh(data); 
+
+				FindTexturePath(material, path, num_meshes);
 			}
 
 		}
 			
 	}
-
-	
-
 	else
 		LOG("Error loading Scene %s",path);
 }
 
+//TO REVISION LOGS 
+void ModuleImport::FindTexturePath(aiMaterial* material, const char *path, int index)
+{
+	if (material != nullptr)
+	{
+		
+		aiString texture_name;
+		material->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
 
+		std::string fbx_path = path;
+
+		//THIS MAGICAL NUMBER HAVE ONE REASEON IF path//Game//test.fbx and want Game// are 5
+		std::string fbx_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1) + texture_name.data;
+		std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data;
+		std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
+
+		bool success = false;
+		success = App->texture->LoadTexture(fbx_folder.c_str(),index);
+
+		if (!success)
+		{
+			success = App->texture->LoadTexture(game_folder.c_str(),index);
+
+			if (!success)
+			{
+				success = App->texture->LoadTexture(felina_folder.c_str(),index);
+
+			}
+		}
+	}
+
+}

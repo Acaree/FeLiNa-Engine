@@ -49,8 +49,6 @@ struct ModelData
 	float* colors = nullptr;
 	aiColor4D color_4D;
 
-
-
 };
 
 
@@ -73,7 +71,7 @@ public:
 	void DrawMesh(ModelData *mesh);
 
 	void AddDataMesh(ModelData* data_mesh);
-	void AddTextureData(uint id_texture,uint width, uint height);
+	void AddTextureData(uint id_texture,uint width, uint height, int index);
 	void DeleteAllDataMesh();
 	void DrawMeshInformation();
 

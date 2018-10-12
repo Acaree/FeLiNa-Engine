@@ -18,7 +18,7 @@ ModuleTexture::~ModuleTexture()
 }
 
 
-bool ModuleTexture::LoadTexture(const char* path) const 
+bool ModuleTexture::LoadTexture(const char* path,int index) const 
 {
 	uint imageID = 0;				
 
@@ -67,7 +67,7 @@ bool ModuleTexture::LoadTexture(const char* path) const
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
 			0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
-		App->renderer3D->AddTextureData(textureID, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT));
+		App->renderer3D->AddTextureData(textureID, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),index);
 
 		if (success)
 			LOG("Texture creation successful.");

@@ -174,8 +174,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	img->TakeScreenGif(dt);
 
-	
-
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
@@ -290,22 +288,18 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 
 	}
 
-
-
-
-	
 }
 
 
 void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
+	glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a);
 
 	glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 	glTexCoordPointer(2,GL_FLOAT,0 , NULL);
@@ -323,7 +317,7 @@ void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
 }
 
-void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh)
+void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh) 
 {
 
 	data.push_back(data_mesh);
@@ -367,22 +361,26 @@ void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh)
 
 void ModuleRenderer3D::DeleteAllDataMesh()
 {
-	
 	data.clear();
-	
-
-	
 }
 
 
-void ModuleRenderer3D::AddTextureData(uint id_texture, uint widht, uint height)
+void ModuleRenderer3D::AddTextureData(uint id_texture, uint widht, uint height, int index)
 {
-	
-	for (uint i = 0; i < data.size(); ++i)
+	if (index == -1)
 	{
-		data[i]->texture_id = id_texture;
-		data[i]->texture_width = widht;
-		data[i]->texture_height = height;
+		for (uint i = 0; i < data.size(); ++i)
+		{
+			data[i]->texture_id = id_texture;
+			data[i]->texture_width = widht;
+			data[i]->texture_height = height;
+		}
+	}
+	else
+	{
+		data[index]->texture_id = id_texture;
+		data[index]->texture_width = widht;
+		data[index]->texture_height = height;
 	}
 
 }

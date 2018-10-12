@@ -1,7 +1,5 @@
 #include "ModuleHardware.h"
 
-
-
 ModuleHardware::ModuleHardware(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Hardware";
@@ -47,7 +45,7 @@ void ModuleHardware::FillHardwareInfo()
 	fill_hardware = true;
 }
 
-void ModuleHardware::DrawHardwareInformationPanel()
+void ModuleHardware::DrawHardwareInformationPanel() 
 {
 	if (!fill_hardware)
 		FillHardwareInfo();

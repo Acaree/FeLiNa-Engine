@@ -18,12 +18,6 @@ private:
 	ImGuiTextBuffer console_buffer;
 	bool console_scroll = false;
 
-
 };
-
-
-
-
-
 
 #endif
