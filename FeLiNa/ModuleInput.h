@@ -2,7 +2,6 @@
 #define _MODULE_INPUT_
 
 #include "Module.h"
-#include "Globals.h"
 
 #define MAX_MOUSE_BUTTONS 5
 
@@ -59,7 +58,8 @@ public:
 	{
 		return mouse_y_motion;
 	}
-	void DrawInputConfiguration();
+
+	void DrawInputConfiguration() const;
 
 private:
 	KEY_STATE* keyboard;
@@ -69,7 +69,6 @@ private:
 	int mouse_z;
 	int mouse_x_motion;
 	int mouse_y_motion;
-
 };
 
 #endif

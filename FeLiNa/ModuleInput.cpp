@@ -1,7 +1,6 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ImGui/imgui_impl_sdl.h"
+
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -39,7 +38,6 @@ bool ModuleInput::Init()
 // Called every draw update
 update_status ModuleInput::PreUpdate(float dt)
 {
-
 	module_timer.Start();
 
 	SDL_PumpEvents();
@@ -92,8 +90,6 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	bool quit = false;
 
-	
-
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
@@ -101,68 +97,56 @@ update_status ModuleInput::PreUpdate(float dt)
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
-			mouse_z = e.wheel.y;
-			break;
+
+				mouse_z = e.wheel.y;
+				break;
 
 			case SDL_MOUSEMOTION:
-			mouse_x = e.motion.x / SCREEN_SIZE;
-			mouse_y = e.motion.y / SCREEN_SIZE;
-
-			mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
-			mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
-			break;
-
-			case SDL_QUIT:
-			quit = true;
-			break;
-
-			case SDL_WINDOWEVENT:
-			{
-				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
-					App->renderer3D->OnResize(e.window.data1, e.window.data2);
-			}
-
-			break;
-
 			
+				mouse_x = e.motion.x / SCREEN_SIZE;
+				mouse_y = e.motion.y / SCREEN_SIZE;
 
+				mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
+				mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
+				break;
+			
+			case SDL_QUIT:
+			
+				quit = true;
+				break;
+			
+			case SDL_WINDOWEVENT:
+			
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+
+				break;
+			
 			case SDL_DROPFILE:
 			{
-				
-				char* dropped_filedir;
-				dropped_filedir = e.drop.file;
-				// Shows directory of dropped file
-				//SDL_ShowSimpleMessageBox(
-					//SDL_MESSAGEBOX_INFORMATION,
-					//"File dropped on window",
-					//dropped_filedir,
-					//App->window->window
-				//);
-
+				const char* dropped_filedir = e.drop.file;
 				std::string path(dropped_filedir);
 
-				
-
-				if (path.substr(path.find_last_of(".")) == ".png" || path.substr(path.find_last_of(".")) == ".PNG" || path.substr(path.find_last_of(".")) == ".jpg" || path.substr(path.find_last_of(".")) == ".JPG" || path.substr(path.find_last_of(".")) == ".dds"  || path.substr(path.find_last_of(".")) == ".DDS") {
-
+				if (path.substr(path.find_last_of(".")) == ".png" || path.substr(path.find_last_of(".")) == ".PNG" || path.substr(path.find_last_of(".")) == ".jpg" || path.substr(path.find_last_of(".")) == ".JPG" || path.substr(path.find_last_of(".")) == ".dds" || path.substr(path.find_last_of(".")) == ".DDS")
+				{
 					if (App->renderer3D->data.size() > 0) {
 						App->texture->LoadTexture(path.c_str());
 					}
-
 				}
 				// TO REVISION
-				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX") {
+				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX")
+				{
 					App->renderer3D->DeleteAllDataMesh();
 					App->mesh_import->LoadData(dropped_filedir);
 					App->camera->FocusToCenterObject();
 					App->gui->inspector_open = true;
 				}
 
-				SDL_free(dropped_filedir);
-				
+				SDL_free(&dropped_filedir);
+				break;
 			}
-
-			break;
+			default: //TO REVISION IF ALWAYS WORKS
+				break;
 		}
 	}
 	
@@ -181,7 +165,7 @@ bool ModuleInput::CleanUp()
 }
 
 
-void ModuleInput::DrawInputConfiguration()
+void ModuleInput::DrawInputConfiguration() const
 {
 	ImGui::Text("Mouse Position: ");
 	ImGui::Text("x: %i", mouse_x);
