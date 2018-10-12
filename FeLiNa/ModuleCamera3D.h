@@ -2,9 +2,6 @@
 #define _MODULE_CAMERA_3D
 
 #include "Module.h"
-#include "Globals.h"
-
-#include "MathGeoLib/MathGeoLib.h"
 
 class ModuleCamera3D : public Module
 {
@@ -23,6 +20,7 @@ public:
 
 	void CreateFocusObject(float3 min,float3 max);
 	void FocusToCenterObject();
+
 private:
 
 	void CalculateViewMatrix();
@@ -36,9 +34,6 @@ public:
 private:
 
 	float4x4 ViewMatrix, ViewMatrixInverse;
-
-	// TO REVISION to center camera in object
-	
 
 };
 
