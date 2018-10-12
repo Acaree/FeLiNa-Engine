@@ -296,11 +296,6 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 	
 }
 
-void ModuleRenderer3D::AssignTexture(const char* path) {
-
-	data[0]->texture_id = App->texture->LoadTexture(path);
-
-}
 
 void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
@@ -379,6 +374,20 @@ void ModuleRenderer3D::DeleteAllDataMesh()
 	
 }
 
+
+void ModuleRenderer3D::AddTextureData(uint id_texture, uint widht, uint height)
+{
+	
+	for (uint i = 0; i < data.size(); ++i)
+	{
+		data[i]->texture_id = id_texture;
+		data[i]->texture_width = widht;
+		data[i]->texture_height = height;
+	}
+
+}
+
+
 void ModuleRenderer3D::DrawMeshInformation()
 {
 	ImGuiWindowFlags window_flags = 0;
@@ -424,9 +433,9 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 		if (ImGui::CollapsingHeader("Material Information", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::Text("Width: %i", App->texture->width);
+			ImGui::Text("Width: %i", it->texture_width);
 			ImGui::SameLine();
-			ImGui::Text("Height: %i", App->texture->height);
+			ImGui::Text("Height: %i", it->texture_height);
 			ImGui::Image((ImTextureID)(it->texture_id), ImVec2(250, 250));
 		}
 	}
@@ -435,5 +444,6 @@ void ModuleRenderer3D::DrawMeshInformation()
 	ImGui::End();
 
 }
+
 
 

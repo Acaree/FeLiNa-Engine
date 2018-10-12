@@ -126,24 +126,18 @@ void ModuleImport::LoadData(const char* path)
 					std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data; // 5 = Game/
 					std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
 
-					uint tex_id = 0;
-					tex_id = App->texture->LoadTexture(fbx_folder.c_str());
+					bool success = false;
+					success = App->texture->LoadTexture(fbx_folder.c_str());
 
-					if (tex_id == 0)
+					if (!success)
 					{
-						tex_id = App->texture->LoadTexture(game_folder.c_str());
+						success= App->texture->LoadTexture(game_folder.c_str());
 
-						if (tex_id == 0)
+						if (!success)
 						{
-							tex_id = App->texture->LoadTexture(felina_folder.c_str());
+							success = App->texture->LoadTexture(felina_folder.c_str());
 
 						}
-					}
-
-					if (tex_id != 0)
-					{
-						data->texture_id = tex_id;
-
 					}
 					//-----------------------------------------------------------------------------------------------
 				}

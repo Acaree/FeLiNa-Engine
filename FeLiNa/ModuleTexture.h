@@ -10,11 +10,8 @@ public:
 	ModuleTexture(Application* app,bool start_enabled = true);
 	~ModuleTexture();
 
-	uint LoadTexture(const char* path);
+	bool LoadTexture(const char* path) const;
 
-public: 
-	uint width = 0;
-	uint height = 0;
 };
 
 

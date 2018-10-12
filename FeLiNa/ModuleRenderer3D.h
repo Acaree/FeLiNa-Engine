@@ -23,6 +23,9 @@ struct ModelData
 	std::string name ="";
 	std::string path = "";
 
+	uint texture_width = 0;
+	uint texture_height = 0;
+
 	float3 position = { 0,0,0 };
 	float3 rotation = { 0,0,0 };
 	float3 scale = { 1,1,1 };
@@ -70,9 +73,10 @@ public:
 	void DrawMesh(ModelData *mesh);
 
 	void AddDataMesh(ModelData* data_mesh);
+	void AddTextureData(uint id_texture,uint width, uint height);
 	void DeleteAllDataMesh();
-
 	void DrawMeshInformation();
+
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -80,10 +84,7 @@ public:
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
-
 	std::vector<ModelData*> data;
-	void AssignTexture(const char* path);
-
 private:
 	bool depth_test = false;
 	bool cull_face = false;
