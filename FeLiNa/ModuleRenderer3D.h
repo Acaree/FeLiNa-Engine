@@ -59,6 +59,7 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init();
+	bool Awake(JSON_Object* config);
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();

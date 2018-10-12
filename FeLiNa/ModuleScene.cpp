@@ -2,7 +2,7 @@
 #include "ModuleScene.h"
 #include "ModuleImport.h"
 #include "ModuleRenderer3D.h"
-#include <math.h>
+
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Scene";
@@ -27,11 +27,7 @@ bool ModuleScene::Start()
 	grid_plane->axis = true;
 	grid_plane->is_grid = true;
 
-
-	//const int CHECKERS_HEIGHT = 4;
-	//const int CHECKERS_WIDTH = 4;
-
-
+	//To revision GO to ModuleRender and take this in default texture or a selectable
 	GLubyte checkImage[36][36][4]; 
 	for (int i = 0; i < 36; i++) { 
 		for (int j = 0; j < 36; j++) { 
@@ -42,8 +38,6 @@ bool ModuleScene::Start()
 			checkImage[i][j][3] = (GLubyte)255; 
 		} 
 	}
-	
-	
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
 	glGenTextures(1, &ImageName); 
@@ -81,126 +75,6 @@ update_status ModuleScene::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 	
-	/*
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
-
-	glLineWidth(2.0f);
-	glBegin(GL_TRIANGLES);
-
-	glColor3f(1.0f, 1.0f, 1.0f);
-	//UP
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-	
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-
-	glTexCoord2f(1.0f,0.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-
-	//BACK
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-	
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-
-	//
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-
-	//Front
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	//
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 1.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-
-	
-	
-	glEnd();
-
-	
-
-	glDisable(GL_TEXTURE_2D);
-	*/
-
-	
-
 	return update_return;
 }
 
@@ -209,7 +83,6 @@ update_status ModuleScene::PostUpdate(float dt)
 	update_status update_return = UPDATE_CONTINUE;
 
 	grid_plane->Render();
-
 
 	return update_return;
 }

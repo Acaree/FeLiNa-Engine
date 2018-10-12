@@ -125,18 +125,53 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	depth_test = glIsEnabled(GL_DEPTH_TEST);
-	cull_face = glIsEnabled(GL_CULL_FACE);
-	lighting = glIsEnabled(GL_LIGHTING);
-	color_material = glIsEnabled(GL_COLOR_MATERIAL);
-	texture2D = glIsEnabled(GL_TEXTURE_2D);
-	line_smooth = glIsEnabled(GL_LINE_SMOOTH);
-	polygon_smooth = glIsEnabled(GL_POLYGON_SMOOTH);
+	if (depth_test)
+		glEnable(GL_DEPTH_TEST);
+	else
+		glDisable(GL_DEPTH_TEST);
 
+	if (cull_face)
+		glEnable(GL_CULL_FACE);
+	else
+		glDisable(GL_CULL_FACE);
 	
+	if (lighting)
+		glEnable(GL_LIGHTING);
+	else
+		glDisable(GL_LIGHTING);
+
+	if (texture2D)
+		glEnable(GL_TEXTURE_2D);
+	else
+		glDisable(GL_TEXTURE_2D);
+
+	if (line_smooth)
+		glEnable(GL_LINE_SMOOTH);
+	else
+		glDisable(GL_LINE_SMOOTH);
+
+	if (polygon_smooth)
+		glEnable(GL_POLYGON_SMOOTH);
+	else
+		glDisable(GL_POLYGON_SMOOTH);
 
 	return ret;
 }
+
+bool ModuleRenderer3D::Awake(JSON_Object* config)
+{
+	depth_test = json_object_get_boolean(config, "Depth test");
+	cull_face = json_object_get_boolean(config, "Cull face");
+	lighting = json_object_get_boolean(config, "Lighting");
+	color_material = json_object_get_boolean(config, "Color material");
+	texture2D = json_object_get_boolean(config, "Texture 2D");
+	line_smooth = json_object_get_boolean(config, "Line smooth");
+	polygon_smooth = json_object_get_boolean(config, "Polygon smooth");
+
+
+	return true;
+}
+
 
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)

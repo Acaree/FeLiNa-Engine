@@ -30,6 +30,14 @@ bool ModuleGui::Start()
 	return true;
 }
 
+bool ModuleGui::Awake(JSON_Object* config)
+{
+	open_configuration = json_object_get_boolean(config, "Configuration");
+	open_console = json_object_get_boolean(config, "Console");
+
+	return true;
+}
+
 update_status ModuleGui::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
@@ -49,9 +57,6 @@ update_status ModuleGui::Update(float dt)
 
 	if(open_configuration)
 		ShowConfigurationWindow();
-
-	/*if (open_render_configuration)
-		App->renderer3D->DrawCheckBoxEdgeGLPanel();*/
 
 	if (open_console)
 		App->console->DrawConsole();
@@ -112,11 +117,6 @@ void ModuleGui::ShowMainMenuBar()
 			if (ImGui::MenuItem("Wireframe", NULL, App->scene->grid_plane->wire, true))
 			{
 				App->scene->grid_plane->wire = !App->scene->grid_plane->wire;
-			}
-
-			if (ImGui::MenuItem("GL Options", NULL, open_render_configuration, true))
-			{
-				open_render_configuration = !open_render_configuration;
 			}
 
 			ImGui::EndMenu();

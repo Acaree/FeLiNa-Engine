@@ -71,7 +71,6 @@ bool ModuleTexture::LoadTexture(const char* path,int index) const
 
 		if (success)
 			LOG("Texture creation successful.");
-		
 	}
 	else
 		LOG("Texture creation failed.");

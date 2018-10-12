@@ -4,6 +4,8 @@
 
 Application::Application()
 {
+	name = "Application";
+
 	hardware = new ModuleHardware(this,false);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
@@ -75,11 +77,17 @@ bool Application::Awake()
 
 	JSON_Value* root = json_parse_file("data.json");
 
-	//NEED CHARGE APP
 
 	if (root != nullptr)
 	{
 		JSON_Object* node = json_value_get_object(root);
+
+		JSON_Object* config_app = json_object_get_object(node, name);
+
+		strcpy(app_name, json_object_get_string(config_app, "Title"));
+		strcpy(organization, json_object_get_string(config_app, "Organization"));
+		vsync = json_object_get_boolean(config_app, "VSYNC");
+		FPS_cap = json_object_get_number(config_app, "Max frames");
 
 		for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret == true; it++)
 		{
@@ -236,9 +244,19 @@ void Application::Load()
 	JSON_Value* root = nullptr;
 	root = json_parse_file("data.json");
 
+
 	if (root != nullptr)
 	{
+		
 		JSON_Object* data = json_value_get_object(root);
+
+		JSON_Object* config_app = json_object_get_object(data, name);
+
+		strcpy(app_name, json_object_get_string(config_app,"Title"));
+		strcpy(organization, json_object_get_string(config_app, "Organization"));
+		vsync = json_object_get_boolean(config_app, "VSYNC");
+		FPS_cap = json_object_get_number(config_app, "Max frames");
+
 
 		for (std::list<Module*>::const_iterator item = list_modules.begin(); item != list_modules.end(); ++item)
 		{

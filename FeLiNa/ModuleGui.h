@@ -8,9 +8,6 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl2.h"
 
-//TEST
-#include "ModuleImage.h"
-
 #include <vector>
 
 class ModuleGui : public Module
@@ -21,6 +18,7 @@ public:
 	~ModuleGui();
 
 	bool Start();
+	bool Awake(JSON_Object* config);
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);

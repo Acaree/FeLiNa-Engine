@@ -3,8 +3,8 @@
 	{
 		"Title": "FeLiNa Engine",
 		"Organization": "UPC CITM",
-		"Cap frames": true,
-		"Max frames": 60
+		"VSYNC": false,
+		"Max frames": 120
 	},
 
 	"Window":
@@ -26,10 +26,6 @@
 	{
 	},
 
-	"Audio":
-	{
-	},
-
 	"Scene":
 	{
 	},
@@ -37,18 +33,16 @@
 	"Gui":
 	{
 		"Configuration": false,
-		"Render": false,
 		"Console": false
 	},
 
 	"Render":
 	{
-		"VSYNC": false,
-		"Depth test": false,
-		"Cull face": false,
+		"Depth test": true,
+		"Cull face": true,
 		"Lighting": false,
-		"Color material": false,
-		"Texture 2D": false,
+		"Color material": true,
+		"Texture 2D": true,
 		"Line smooth": false,
 		"Polygon smooth": false
 	}

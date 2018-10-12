@@ -39,7 +39,7 @@ public:
 	bool vsync = false;
 
 private:
-
+	char* name;
 	PerfTimer	ms_timer;
 	float	dt = 0.0f;
 	double last_FPS = 0.0f;
