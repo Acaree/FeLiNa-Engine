@@ -63,8 +63,9 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 			{
 				aiQuaternion q;
 				aiVector3D scale, pos;
-				node->mChildren[num_meshes]->mTransformation.Decompose(scale, q, pos);
 
+				node->mTransformation.Decompose(scale, q, pos);
+				
 				ModelData* data = new ModelData(); //TO REVISION PASS &DATA and not create one?  
 
 				//TO REVISION
