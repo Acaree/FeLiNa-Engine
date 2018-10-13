@@ -197,6 +197,8 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
+	Save();
+
 	for (std::list<Module*>::const_reverse_iterator it = list_modules.rbegin(); it != list_modules.rend() && ret; ++it)
 	{
 		ret = (*it)->CleanUp();
@@ -224,25 +226,32 @@ void Application::Save()
 {
 	Log_app("Saving State....");
 
+
 	JSON_Value* root = json_parse_file("data.json");
 
-	if (root != nullptr)
+	if (root == nullptr)
 	{
-		JSON_Object* data = json_value_get_object(root);
-
-		for (std::list<Module*>::const_iterator item = list_modules.begin(); item != list_modules.end(); ++item)
-		{
-			JSON_Object* module_to_save = json_object_get_object(data, (*item)->GetName());
-			(*item)->SaveState(module_to_save);
-		}
-
-		json_serialize_to_file_pretty(root, "data.json");
-		json_value_free(root);
-
-		Log_app("Saving succesful");
+		root = json_value_init_object();
 	}
-	else
-		Log_app("Save failed: can't find root");
+
+	JSON_Object* config_app = json_value_get_object(root);
+
+	json_object_set_string(config_app, "Title", app_name);
+	json_object_set_string(config_app, "Organization", organization);
+	json_object_set_boolean(config_app, "VSYNC", vsync);
+	json_object_set_number(config_app, "Max frames", FPS_cap);
+
+	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
+	{
+		JSON_Object* module_to_save = json_object_get_object(json_value_get_object(root), (*it)->GetName());
+		(*it)->SaveState(module_to_save);
+	}
+
+	char* string_serialized = json_serialize_to_string_pretty(root);
+	puts(string_serialized);
+	json_serialize_to_file(root, "data.json");
+	json_free_serialized_string(string_serialized);
+	json_value_free(root);
 
 	need_save = false;
 }

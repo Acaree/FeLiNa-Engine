@@ -44,6 +44,11 @@ bool ModuleGui::Awake(JSON_Object* config)
 	return true;
 }
 
+void ModuleGui::SaveState(JSON_Object* config)
+{
+	json_object_set_boolean(config, "Configuration",open_configuration);
+	json_object_set_boolean(config, "Console", open_console);
+}
 update_status ModuleGui::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
@@ -84,8 +89,6 @@ update_status ModuleGui::PostUpdate(float dt)
 	
 	
 
-	if (close_program)
-		update_return = UPDATE_ERROR;
 
 	return update_return;
 }

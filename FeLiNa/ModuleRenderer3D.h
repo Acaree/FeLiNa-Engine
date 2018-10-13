@@ -70,7 +70,7 @@ public:
 	void DrawMeshInformation();
 	void CreateCheckers();
 	void CleanAllDataModel();
-
+	void SaveState(JSON_Object* config);
 public:
 
 	Light lights[MAX_LIGHTS];

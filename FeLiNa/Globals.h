@@ -25,6 +25,7 @@ enum update_status
 {
 	UPDATE_CONTINUE = 1,
 	UPDATE_STOP,
+	UPDATE_FINISH,
 	UPDATE_ERROR
 };
 

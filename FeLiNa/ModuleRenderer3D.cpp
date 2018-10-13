@@ -184,6 +184,18 @@ bool ModuleRenderer3D::Awake(JSON_Object* config)
 	return true;
 }
 
+void ModuleRenderer3D::SaveState(JSON_Object* config)
+{
+	json_object_set_boolean(config, "Checker", material_cheker);
+	json_object_set_boolean(config, "Depth test", depth_test);
+	json_object_set_boolean(config, "Cull face", cull_face);
+	json_object_set_boolean(config, "Lighting", lighting);
+	json_object_set_boolean(config, "Color material", color_material);
+	json_object_set_boolean(config, "Texture 2D", texture2D);
+	json_object_set_boolean(config, "Line smooth", line_smooth);
+	json_object_set_boolean(config, "Polygon smooth", polygon_smooth);
+}
+
 
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
@@ -207,6 +219,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	update_status update_return = UPDATE_CONTINUE;
 
 	for (std::vector<ModelData*>::const_iterator it = data.begin(); it != data.end(); ++it)
 	{
@@ -226,8 +239,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	SDL_GL_SwapWindow(App->window->window);
 
+
+	if (App->gui->close_program)
+		update_return = UPDATE_STOP;
+
 	
-	return UPDATE_CONTINUE;
+	return update_return;
 }
 
 // Called before quitting

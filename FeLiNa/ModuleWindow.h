@@ -19,7 +19,7 @@ public:
 
 	void SetTitle(const char* title) const;
 	void DrawWindowInformationPanel();
-
+	void SaveState(JSON_Object* config);
 public:
 
 	

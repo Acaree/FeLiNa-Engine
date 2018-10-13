@@ -97,7 +97,7 @@ bool ModuleWindow::Awake(JSON_Object* config)
 		fullscreen = json_object_get_boolean(config, "Fullscreen");
 		reasizable = json_object_get_boolean(config, "Reasizable");
 		bordeless = json_object_get_boolean(config, "Bordeless");
-		fullscreen_desktop = json_object_get_boolean(config, "Bordeless");
+		fullscreen_desktop = json_object_get_boolean(config, "Fullscreen desktop");
 
 		ret = true;
 	}
@@ -105,6 +105,16 @@ bool ModuleWindow::Awake(JSON_Object* config)
 	return ret;
 }
 
+void ModuleWindow::SaveState(JSON_Object* config)
+{
+	json_object_set_boolean(config, "Width", width);
+	json_object_set_boolean(config, "Height", height);
+	json_object_set_boolean(config, "Brightness", brightness);
+	json_object_set_boolean(config, "Fullscreen", fullscreen);
+	json_object_set_boolean(config, "Reasizable", reasizable);
+	json_object_set_boolean(config, "Bordeless", bordeless);
+	json_object_set_boolean(config, "Fullscreen desktop", fullscreen_desktop);
+}
 
 
 // Called before quitting
