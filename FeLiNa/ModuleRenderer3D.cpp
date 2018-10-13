@@ -373,7 +373,7 @@ void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	
+
 }
 
 void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh) 
@@ -543,3 +543,31 @@ void ModuleRenderer3D::CreateCheckers()
 }
 
 
+void ModuleRenderer3D::CleanAllDataModel()
+{
+	for (int i = 0; i < data.size(); ++i)
+	{
+		
+			data[i]->name.clear();
+			data[i]->path.clear();
+			//Test
+			glDeleteBuffers(data[i]->num_vertices, (GLuint*) &(data[i]->id_vertices));
+			glDeleteBuffers(data[i]->num_indices, (GLuint*) &(data[i]->id_indices));
+			glDeleteTextures(data[i]->num_uv, (GLuint*) &(data[i]->texture_id));
+			glDeleteBuffers(data[i]->num_uv, (GLuint*) &(data[i]->id_uv));
+			glDeleteBuffers(data[i]->num_color, (GLuint*) &(data[i]->id_color));
+			delete[] data[i]->indices;
+			delete[] data[i]->vertices;
+			delete[] data[i]->uv;
+			delete[] data[i]->colors;
+			
+			data[i]->indices = nullptr;
+			data[i]->vertices = nullptr;
+			data[i]->uv = nullptr;
+			data[i]->colors = nullptr;
+
+
+		
+
+	}
+}

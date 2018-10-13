@@ -41,22 +41,6 @@ struct ModelData
 	float* colors = nullptr;
 	aiColor4D color_4D;
 
-	void CleanUp()
-	{
-		name.clear();
-		path.clear();
-		
-		delete[] indices;
-		delete[] vertices;
-		delete[] uv;
-		delete[] colors;
-
-		indices = nullptr;
-		vertices = nullptr;
-		uv = nullptr;
-		colors = nullptr;
-	}
-
 
 };
 
@@ -85,6 +69,7 @@ public:
 	void DeleteAllDataMesh();
 	void DrawMeshInformation();
 	void CreateCheckers();
+	void CleanAllDataModel();
 
 public:
 
