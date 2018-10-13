@@ -13,9 +13,6 @@ ModuleImage::ModuleImage(int widht, int height) : width(widht), height(height)
 
 ModuleImage::~ModuleImage()
 {
-	delete[]pixels;
-	
-	delete[]pixel_full;
 }
 
 bool ModuleImage::TakeScreenshoot()
@@ -84,4 +81,14 @@ void ModuleImage::TakeScreenGif(float dt)
 		break;
 
 	}
+}
+
+bool ModuleImage::CleanUp() {
+
+	delete[] pixels;
+	delete[] pixel_full;
+	delete filename;
+
+	return true;
+
 }
