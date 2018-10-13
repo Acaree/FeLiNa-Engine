@@ -40,6 +40,8 @@ bool ModuleScene::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	delete grid_plane;
+
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();

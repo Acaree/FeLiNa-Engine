@@ -16,6 +16,8 @@ public:
 	ModuleImage(int width, int height);
 	~ModuleImage();
 
+	bool CleanUp();
+
 	bool TakeScreenshoot();
 
 	void TakeScreenGif(float dt);
