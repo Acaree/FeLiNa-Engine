@@ -546,29 +546,45 @@ void ModuleRenderer3D::CreateCheckers()
 
 void ModuleRenderer3D::CleanAllDataModel()
 {
-	for (int i = 0; i < data.size(); ++i)
+	
+	for(int i = 0; i < data.size(); ++i)
 	{
-		
-			data[i]->name.clear();
-			data[i]->path.clear();
-			//Test
-			glDeleteBuffers(data[i]->num_vertices, (GLuint*) &(data[i]->id_vertices));
-			glDeleteBuffers(data[i]->num_indices, (GLuint*) &(data[i]->id_indices));
-			glDeleteTextures(data[i]->num_uv, (GLuint*) &(data[i]->texture_id));
-			glDeleteBuffers(data[i]->num_uv, (GLuint*) &(data[i]->id_uv));
-			glDeleteBuffers(data[i]->num_color, (GLuint*) &(data[i]->id_color));
+	
+		data[i]->name.clear();
+		data[i]->path.clear();
+		//Test
+		glDeleteBuffers(1, (GLuint*) &(data[i]->id_vertices));
+		glDeleteBuffers(1, (GLuint*) &(data[i]->id_indices));
+		glDeleteTextures(1, (GLuint*) &(data[i]->texture_id));
+		glDeleteBuffers(1, (GLuint*) &(data[i]->id_uv));
+		glDeleteBuffers(1, (GLuint*) &(data[i]->id_color));
+
+		if (data[i]->indices != nullptr)
+		{
 			delete[] data[i]->indices;
-			delete[] data[i]->vertices;
-			delete[] data[i]->uv;
-			delete[] data[i]->colors;
-			
 			data[i]->indices = nullptr;
+		}
+
+		if (data[i]->vertices != nullptr)
+		{
+			delete[] data[i]->vertices;
 			data[i]->vertices = nullptr;
+		}
+
+		if (data[i]->uv != nullptr)
+		{
+			delete[] data[i]->uv;
 			data[i]->uv = nullptr;
-			data[i]->colors = nullptr;
-
-
+		}
 		
+		if (data[i]->colors != nullptr)
+		{
+			delete[] data[i]->colors;
+			data[i]->colors = nullptr;
+		}
+
 
 	}
+
+	
 }
