@@ -2,9 +2,6 @@
 #define _MODULE_IMPORT_
 
 #include "Module.h"
-#include "OpenGL.h"
-
-
 
 class aiScene;
 struct aiLogStream;

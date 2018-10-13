@@ -401,9 +401,6 @@
     <ClInclude Include="Glew\include\eglew.h">
       <Filter>Tools\Glew</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGL.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleConsole.h">
       <Filter>Modules</Filter>
     </ClInclude>

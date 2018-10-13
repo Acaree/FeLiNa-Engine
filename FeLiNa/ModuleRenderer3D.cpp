@@ -1,7 +1,14 @@
-
+#include "Glew/include/glew.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleWindow.h"
+#include "ModuleCamera3D.h"
+#include "ModuleGui.h"
+
 #include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_opengl2.h"
+
+#include "ModuleImage.h"
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */

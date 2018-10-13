@@ -1,10 +1,16 @@
 #include "ModuleGui.h"
 #include "Application.h"
-#include "mmgr/mmgr.h"
+#include "ModuleConsole.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
 #include "ModuleHardware.h"
 #include "ModuleScene.h"
+#include "ModuleRenderer3D.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl.h"
+#include "ImGui/imgui_impl_opengl2.h"
 
-
+#include "mmgr/mmgr.h"
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

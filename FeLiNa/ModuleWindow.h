@@ -2,10 +2,7 @@
 #define __ModuleWindow_H__
 
 #include "Module.h"
-#include "OpenGL.h"
 #include "SDL/include/SDL.h"
-
-class Application;
 
 class ModuleWindow : public Module
 {

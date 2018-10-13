@@ -1,21 +1,13 @@
 #ifndef _MODULE_RENDER_3D_
 #define _MODULE_RENDER_3D_
 
-
-#include "OpenGL.h"
 #include "Module.h"
-#include "Globals.h"
 #include "Light.h"
-#include "ModuleImage.h"
-#include "ModuleGui.h"
-
-#include "ModuleImport.h"
 #include "Assimp/include/cfileio.h"
-#include <vector>
-#include "Cube_ArraysandIndex.h"
+
 #define MAX_LIGHTS 8
 
-
+class ModuleImage;
 
 struct ModelData
 {

@@ -1,14 +1,17 @@
 #include "ModuleImport.h"
-
+#include "Glew/include/glew.h" 
+#include "SDL/include/SDL_opengl.h"
+#include "Application.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleTexture.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
-#include "Devil/include/ilut.h"
-#include "Application.h"
+#include <string>
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
-#include <string>
+
 
 ModuleImport::ModuleImport(Application*app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -30,7 +33,7 @@ bool ModuleImport::Start()
 	aiLogStream stream = aiLogStream();
 	stream.callback = myCallback;
 	aiAttachLogStream(&stream);
-	ilInit();
+
 
 	return true;
 }

@@ -1,7 +1,6 @@
 #include "ModuleTexture.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-
 #include "Devil/include/il.h"
 #include "Devil/include/ilut.h"
 

@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "mPlane.h"
-#include "OpenGL.h"
+#include "Glew/include/glew.h" 
+#include "SDL/include/SDL_opengl.h"
 
 
 mPlane::mPlane(float x, float y, float z, float d) : transform(float4x4::identity), color(White), wire(false), axis(false)

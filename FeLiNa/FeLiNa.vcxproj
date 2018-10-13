@@ -170,7 +170,6 @@
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleTexture.h" />
     <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="OpenGL.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="mPlane.h" />
     <ClInclude Include="Timer.h" />

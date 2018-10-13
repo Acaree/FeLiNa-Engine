@@ -2,13 +2,7 @@
 #define _MODULEGUI_H
 
 #include "Module.h"
-#include "Globals.h"
 
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_sdl.h"
-#include "ImGui/imgui_impl_opengl2.h"
-
-#include <vector>
 
 class ModuleGui : public Module
 {

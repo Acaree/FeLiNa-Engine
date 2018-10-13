@@ -1,21 +1,20 @@
 #ifndef _APPLICATION_
 #define _APPLICATION_
 
-#include <list>
-#include "Globals.h"
-#include "Timer.h"
 #include "Module.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleScene.h"
-#include "ModuleRenderer3D.h"
-#include "ModuleCamera3D.h"
-#include "ModuleGui.h"
-#include "ModuleHardware.h"
-#include "ModuleConsole.h"
-#include "ModuleImport.h"
-#include "ModuleTexture.h"
-#include "Parson/parson.h"
+#include <list>
+#include <vector>
+
+class ModuleHardware;
+class ModuleWindow;
+class ModuleInput;
+class ModuleScene;
+class ModuleRenderer3D;
+class ModuleCamera3D;
+class ModuleGui;
+class ModuleConsole;
+class ModuleImport;
+class ModuleTexture;
 
 class Application
 {

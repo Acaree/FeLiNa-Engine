@@ -1,9 +1,9 @@
 #include "ModuleImage.h"
 #include "Application.h"
-#include "ModuleWindow.h"
+#include "ModuleInput.h"
 #include "Gif/gif.h"
 #include "Devil\include\ilut.h"
-
+#include <time.h>
 
 ModuleImage::ModuleImage(int widht, int height) : width(widht), height(height)
 {
@@ -49,7 +49,7 @@ void ModuleImage::TakeScreenGif(float dt)
 	{
 	case GIF_START:
 
-		if (App->input->GetKey(FullScreenKey) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 		{
 			time_t actual_time = time(0);
 			tm reported_time;
@@ -73,7 +73,7 @@ void ModuleImage::TakeScreenGif(float dt)
 
 		GifWriteFrame(&writer, pixel_full, width, height, (uint32_t)(dt * 100.0f), 8, false);
 		
-		if (App->input->GetKey(FullScreenKey) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 		{
 			GifEnd(&writer);
 			

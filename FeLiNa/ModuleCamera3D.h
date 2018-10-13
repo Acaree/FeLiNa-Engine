@@ -2,6 +2,8 @@
 #define _MODULE_CAMERA_3D
 
 #include "Module.h"
+#include "MathGeoLib/MathGeoLib.h"
+
 
 class ModuleCamera3D : public Module
 {

@@ -1,4 +1,14 @@
 #include "ModuleHardware.h"
+#include "SDL/include/SDL_cpuinfo.h"
+#include "SDL/include/SDL_version.h"
+#include "ImGui/imgui.h"
+#include "mmgr/mmgr.h"
+
+#define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX			0x9047
+#define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX		0x9048
+#define GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX    0x9049
+#define GPU_MEMORY_INFO_EVICTION_COUNT_NVX				0x904A
+#define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX				0x904B
 
 ModuleHardware::ModuleHardware(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

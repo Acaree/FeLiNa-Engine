@@ -1,7 +1,15 @@
 #include "Application.h"
-
-
-
+#include "ModuleRenderer3D.h"
+#include "ModuleHardware.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleScene.h"
+#include "ModuleCamera3D.h"
+#include "ModuleGui.h"
+#include "ModuleConsole.h"
+#include "ModuleImport.h"
+#include "ModuleTexture.h"
+#include "mmgr/mmgr.h"
 Application::Application()
 {
 	name = "Application";

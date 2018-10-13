@@ -1,5 +1,13 @@
+#include "ModuleRenderer3D.h"
 #include "Application.h"
+#include "ModuleTexture.h"
+#include "ModuleCamera3D.h"
+#include "ModuleGui.h"
+#include "ModuleImport.h"
 #include "ModuleInput.h"
+
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl.h"
 
 #define MAX_KEYS 300
 

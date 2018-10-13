@@ -1,11 +1,9 @@
 #ifndef _MODULE_H_
 #define _MODULE_H_
 
-
 #include "Globals.h"
 #include "Parson/parson.h"
 #include "Timer.h"
-#include "Parson/parson.h"
 
 class Application;
 

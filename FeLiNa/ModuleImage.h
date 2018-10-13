@@ -1,17 +1,7 @@
 #ifndef _MODULE_IMAGE_
 #define _MODULE_IMAGE_
 
-
-
-#include "OpenGL.h"
-#include <time.h>
-#include <corecrt_wtime.h>
-
-//test
-#include "MathGeoLib/Math/float2.h"
-#include "SDL/include/SDL_scancode.h"
-//-----------
-
+#include <Windows.h>
 
 
 enum Gif_State
@@ -36,8 +26,6 @@ private:
 	int width;
 	int height;
 	char* filename;
-
-	int FullScreenKey = SDL_Scancode::SDL_SCANCODE_Q;
 	bool start_gif = false;
 	Gif_State state = Gif_State::GIF_START;
 	

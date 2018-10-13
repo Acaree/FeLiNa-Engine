@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "ImGui/imgui.h"
 
+struct ImGuiTextBuffer;
+
 class ModuleConsole : public Module
 {
 public:
