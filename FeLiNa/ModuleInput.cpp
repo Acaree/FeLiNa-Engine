@@ -141,7 +141,7 @@ update_status ModuleInput::PreUpdate(float dt)
 						App->texture->LoadTexture(path.c_str(),-1);
 					}
 				}
-				// TO REVISION
+				
 				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX")
 				{
 					for (int i = 0; i < App->renderer3D->data.size(); ++i)
@@ -157,7 +157,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				SDL_free(&dropped_filedir);
 				break;
 			}
-			default: //TO REVISION IF ALWAYS WORKS
+			default: 
 				break;
 		}
 	}

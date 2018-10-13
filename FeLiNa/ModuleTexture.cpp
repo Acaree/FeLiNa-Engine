@@ -18,10 +18,31 @@ ModuleTexture::~ModuleTexture()
 {
 }
 
+bool ModuleTexture::Init()
+{
+	bool ret = true;
+
+	// Check versions
+	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION || iluGetInteger(ILU_VERSION_NUM) < ILU_VERSION || ilutGetInteger(ILUT_VERSION_NUM) < ILUT_VERSION)
+	{
+		LOG(" ERROR: DevIL version is different.");
+		ret = false;
+	}
+	else
+	{
+		ilutRenderer(ILUT_OPENGL);
+		ilInit();
+		iluInit();
+		ilutInit();
+		ilutRenderer(ILUT_OPENGL);
+	}
+
+	return ret;
+}
 
 bool ModuleTexture::LoadTexture(const char* path,int index) const 
 {
-	ilInit(); // To revision
+
 
 	uint imageID = 0;				
 

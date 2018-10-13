@@ -20,6 +20,7 @@ ModuleImage::~ModuleImage()
 
 bool ModuleImage::TakeScreenshoot()
 {
+	
 	ILuint imageID = ilGenImage();
 	ilBindImage(imageID);
 	ilutGLScreen();

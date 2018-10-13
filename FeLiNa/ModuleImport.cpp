@@ -64,7 +64,7 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
 			{
-				ModelData* data = new ModelData(); //TO REVISE PASS &DATA and not create one?  
+				ModelData* data = new ModelData(); //TO REVISION PASS &DATA and not create one?  
 
 				//TO REVISION
 				data->path = path;
