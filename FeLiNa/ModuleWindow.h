@@ -17,7 +17,7 @@ public:
 	bool Awake(JSON_Object* config);
 	bool CleanUp();
 
-	void SetTitle(const char* title);
+	void SetTitle(const char* title) const;
 	void DrawWindowInformationPanel();
 
 public:

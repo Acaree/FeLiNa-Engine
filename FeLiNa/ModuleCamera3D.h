@@ -18,7 +18,7 @@ public:
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &Spot);
 	void Move(const float3 &Movement);
-	float* GetViewMatrix();
+	float* GetViewMatrix() const;
 
 	void CreateFocusObject(float3 min,float3 max);
 	void FocusToCenterObject();

@@ -62,7 +62,7 @@ public:
 
 	virtual void SaveState(JSON_Object*) { };
 	virtual void LoadState(JSON_Object*) { };
-	inline char* GetName() const { return name; }
+	inline const char* GetName() const { return name; }
 
 	PerfTimer module_timer;
 	float last_update_ms=0;

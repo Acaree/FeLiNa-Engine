@@ -124,7 +124,7 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::SetTitle(const char* title)
+void ModuleWindow::SetTitle(const char* title) const
 {
 	SDL_SetWindowTitle(window, title);
 }

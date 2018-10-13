@@ -241,7 +241,7 @@ void ModuleCamera3D::Move(const float3 &Movement)
 }
 
 // -----------------------------------------------------------------
-float* ModuleCamera3D::GetViewMatrix()
+float* ModuleCamera3D::GetViewMatrix() const
 {
 	return (float*)&ViewMatrix;
 }

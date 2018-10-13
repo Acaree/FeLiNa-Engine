@@ -210,12 +210,12 @@ void Application::AddModule(Module* mod)
 	list_modules.push_back(mod);
 }
 
-float Application::GetMS()
+float Application::GetMS() const
 {
 	return last_ms;
 }
 
-float Application::GetFPS()
+float Application::GetFPS() const
 {
 	return last_FPS;
 }
@@ -420,7 +420,7 @@ void Application::DrawModulesTime() {
 }
 
 
-void Application::Log_app(const char * text)
+void Application::Log_app(const char * text) const
 {
 	console->Log_console(text);
 }

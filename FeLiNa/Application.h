@@ -63,13 +63,13 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-	float GetMS();
-	float GetFPS();
+	float GetMS() const;
+	float GetFPS() const;
 
 	void DrawApplicationInformationPanel();
 	void DrawModulesTime();
 
-	void Log_app(const char* text);
+	void Log_app(const char* text) const;
 
 	void NeedSave();
 	void NeedLoad();
