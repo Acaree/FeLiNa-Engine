@@ -66,13 +66,13 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 
 				node->mTransformation.Decompose(scale, q, pos);
 				
-				ModelData* data = new ModelData(); //TO REVISION PASS &DATA and not create one?  
+				ModelData* data = new ModelData();  
 
 				//TO REVISION
 				data->path = path;
 				std::string tmp = path;
 				data->name = tmp.erase(0, tmp.find_last_of("\\") + 1);
-
+				tmp.clear();
 				data->position = { pos.x,pos.y,pos.z };
 				data->scale = { scale.x,scale.y,scale.z };
 				data->rotation = Quat( q.x,q.y,q.z,q.w );
@@ -161,6 +161,8 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 				App->renderer3D->AddDataMesh(data); 
 				//TO revision best wave?
 				FindTexturePath(material, path, num_meshes);
+
+				
 			}
 
 		}
@@ -181,22 +183,27 @@ void ModuleImport::FindTexturePath(aiMaterial* material, const char *path, int i
 
 		std::string fbx_path = path;
 
-		//THIS MAGICAL NUMBER HAVE ONE REASEON IF path//Game//test.fbx and want Game// are 5
+		std::string texture_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1) + "Textures\\" + texture_name.data;
 		std::string fbx_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1) + texture_name.data;
 		std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data;
 		std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
 
 		bool success = false;
-		success = App->texture->LoadTexture(fbx_folder.c_str(),index);
+		success = App->texture->LoadTexture(texture_folder.c_str(), index);
 
 		if (!success)
 		{
-			success = App->texture->LoadTexture(game_folder.c_str(),index);
+			success = App->texture->LoadTexture(fbx_folder.c_str(), index);
 
 			if (!success)
 			{
-				success = App->texture->LoadTexture(felina_folder.c_str(),index);
+				success = App->texture->LoadTexture(game_folder.c_str(), index);
 
+				if (!success)
+				{
+					success = App->texture->LoadTexture(felina_folder.c_str(), index);
+
+				}
 			}
 		}
 	}

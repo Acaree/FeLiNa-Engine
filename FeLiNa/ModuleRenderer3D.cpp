@@ -552,7 +552,7 @@ void ModuleRenderer3D::CleanAllDataModel()
 	
 		data[i]->name.clear();
 		data[i]->path.clear();
-		//Test
+		
 		glDeleteBuffers(1, (GLuint*) &(data[i]->id_vertices));
 		glDeleteBuffers(1, (GLuint*) &(data[i]->id_indices));
 		glDeleteTextures(1, (GLuint*) &(data[i]->texture_id));
@@ -583,7 +583,7 @@ void ModuleRenderer3D::CleanAllDataModel()
 			data[i]->colors = nullptr;
 		}
 
-
+		delete data[i];
 	}
 
 	
