@@ -449,6 +449,7 @@
     <ClInclude Include="ModuleTexture.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="OpenGl.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">

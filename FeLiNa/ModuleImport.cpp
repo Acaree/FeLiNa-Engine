@@ -58,12 +58,13 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 
 		if (node != nullptr)
 		{
-			aiQuaternion q;
-			aiVector3D scale, pos;
-			node->mTransformation.Decompose(scale,q,pos);
-
+		
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
 			{
+				aiQuaternion q;
+				aiVector3D scale, pos;
+				node->mChildren[num_meshes]->mTransformation.Decompose(scale, q, pos);
+
 				ModelData* data = new ModelData(); //TO REVISION PASS &DATA and not create one?  
 
 				//TO REVISION
@@ -73,7 +74,7 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 
 				data->position = { pos.x,pos.y,pos.z };
 				data->scale = { scale.x,scale.y,scale.z };
-				data->rotation = { q.GetEuler().x, q.GetEuler().y, q.GetEuler().z };
+				data->rotation = Quat( q.x,q.y,q.z,q.w );
 
 
 				aiMesh* new_mesh = scene->mMeshes[num_meshes];

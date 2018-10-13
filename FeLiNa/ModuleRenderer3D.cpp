@@ -470,8 +470,9 @@ void ModuleRenderer3D::DrawMeshInformation()
 			ImGui::Text("Position:");
 			ImGui::Text("x: %f  y: %f  z: %f", it->position.x, it->position.y, it->position.z);
 
+			float3 rot_euler = it->rotation.ToEulerXYZ();
 			ImGui::Text("Rotation:");
-			ImGui::Text("x: %f  y: %f  z: %f", it->rotation.x, it->rotation.y, it->rotation.z);
+			ImGui::Text("x: %f  y: %f  z: %f", rot_euler.x, rot_euler.y, rot_euler.z);
 
 			ImGui::Text("Scale:");
 			ImGui::Text("x: %f  y: %f  z: %f", it->scale.x, it->scale.y, it->scale.z);

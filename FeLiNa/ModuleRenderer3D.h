@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "Light.h"
 #include "Assimp/include/cfileio.h"
-
+#include "MathGeoLib/Math/Quat.h"
 #define MAX_LIGHTS 8
 
 class ModuleImage;
@@ -19,7 +19,7 @@ struct ModelData
 	uint texture_height = 0;
 
 	float3 position = { 0,0,0 };
-	float3 rotation = { 0,0,0 };
+	Quat rotation = Quat::identity;
 	float3 scale = { 1,1,1 };
 
 	uint id_indices = 0;
