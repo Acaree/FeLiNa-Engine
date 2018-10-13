@@ -1,7 +1,9 @@
 #include "ModuleTexture.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+
 #include "Devil/include/il.h"
+#include "Devil/include/ilu.h"
 #include "Devil/include/ilut.h"
 
 #pragma comment (lib, "Devil/libx86/DevIL.lib")
@@ -19,6 +21,8 @@ ModuleTexture::~ModuleTexture()
 
 bool ModuleTexture::LoadTexture(const char* path,int index) const 
 {
+	ilInit(); // To revision
+
 	uint imageID = 0;				
 
 	uint textureID = 0;			

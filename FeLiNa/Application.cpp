@@ -341,7 +341,7 @@ void Application::DrawApplicationInformationPanel()
 	}
 
 	sprintf_s(title, 25, "Memory Consumption ");
-	ImGui::PlotHistogram("##Memory Consumption", &vector_memory[0], vector_memory.size(), 0, title, 0.0f, 1000000, ImVec2(310, 100));
+	ImGui::PlotHistogram("##Memory Consumption", &vector_memory[0], vector_memory.size(), 0, title, 0.0f, 100000000, ImVec2(310, 100));
 
 	ImGui::Text("Total Reported Mem:");
 	ImGui::SameLine();

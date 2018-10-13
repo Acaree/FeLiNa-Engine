@@ -144,6 +144,10 @@ update_status ModuleInput::PreUpdate(float dt)
 				// TO REVISION
 				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX")
 				{
+					for (int i = 0; i < App->renderer3D->data.size(); ++i)
+						App->renderer3D->data[i]->CleanUp();
+
+					App->renderer3D->data.clear();
 					App->renderer3D->DeleteAllDataMesh();
 					App->mesh_import->LoadData(dropped_filedir);
 					App->camera->FocusToCenterObject();
@@ -157,7 +161,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				break;
 		}
 	}
-	
+
 	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return UPDATE_STOP;
 
