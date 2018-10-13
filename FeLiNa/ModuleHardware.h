@@ -10,13 +10,20 @@ class ModuleHardware : public Module
 public:
 	ModuleHardware(Application* parent, bool start_enabled = true);
 	~ModuleHardware();
-	
+
 	void DrawHardwareInformationPanel();
+
+	int devil_current_version_num = 0;
+
 
 private:
 	void FillHardwareInfo();
 
 	char sdl_current_version[10];
+	char devil_current_version[10];
+	char glew_current_version[10];
+	char assimp_current_version[10];
+
 	//CPU
 	int cpu_count = 0;
 	char cpu_version_count[10];
@@ -38,11 +45,12 @@ private:
 	GLint memory_usage = 0;
 	GLint dedicated_memory = 0;
 	GLint available_memory = 0;
-	
+
 	bool fill_hardware = false;
 };
 
 
 
 #endif
+
 

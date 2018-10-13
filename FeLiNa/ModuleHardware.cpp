@@ -1,8 +1,13 @@
+#include "Glew/include/glew.h"
 #include "ModuleHardware.h"
 #include "SDL/include/SDL_cpuinfo.h"
 #include "SDL/include/SDL_version.h"
 #include "ImGui/imgui.h"
+#include "MathGeoLib/MathGeoLib.h"
 #include "mmgr/mmgr.h"
+#include "Devil/include/il.h"
+#include "Assimp/include/version.h"
+
 
 #define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX			0x9047
 #define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX		0x9048
@@ -21,11 +26,21 @@ ModuleHardware::~ModuleHardware()
 
 void ModuleHardware::FillHardwareInfo()
 {
-	
+
 	SDL_version sdl_version;
 	SDL_VERSION(&sdl_version);
 
 	sprintf_s(sdl_current_version, "%i.%i.%i", sdl_version.major, sdl_version.minor, sdl_version.patch);
+
+	devil_current_version_num = ilGetInteger(IL_VERSION_NUM);
+
+	sprintf_s(devil_current_version, "%i.%i.%i", devil_current_version_num / 100, devil_current_version_num / 10 - (devil_current_version_num / 100) * 10, devil_current_version_num - (devil_current_version_num / 10) * 10);
+
+	sprintf_s(glew_current_version, "%i.%i.%i", GLEW_VERSION_MAJOR, GLEW_VERSION_MINOR, GLEW_VERSION_MICRO);
+
+	sprintf_s(assimp_current_version, "%i.%i.%i", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
+
+
 
 	cpu_count = SDL_GetCPUCount();
 	sprintf_s(cpu_version_count, sizeof(cpu_version_count), "%i", cpu_count);
@@ -55,14 +70,39 @@ void ModuleHardware::FillHardwareInfo()
 	fill_hardware = true;
 }
 
-void ModuleHardware::DrawHardwareInformationPanel() 
+void ModuleHardware::DrawHardwareInformationPanel()
 {
 	if (!fill_hardware)
 		FillHardwareInfo();
-	
+
 	ImGui::Text("SDL Version: ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(0, 1, 0, 100),sdl_current_version);
+	ImGui::TextColored(ImVec4(0, 1, 0, 100), sdl_current_version);
+
+	ImGui::Text("Devil Version: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0, 1, 0, 100), devil_current_version);
+
+	ImGui::Text("Glew Version: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0, 1, 0, 100), glew_current_version);
+
+	ImGui::Text("Assimp Version: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0, 1, 0, 100), assimp_current_version);
+
+	ImGui::Text("ImGui Version: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0, 1, 0, 100), IMGUI_VERSION);
+
+	ImGui::Text("MathGeoLib Version: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0, 1, 0, 100), "1.5");
+
+
+
+
+
 
 	ImGui::Separator();
 
@@ -148,6 +188,6 @@ void ModuleHardware::DrawHardwareInformationPanel()
 	ImGui::Text("VRAM Reserved: ");
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(0, 1, 0, 100), "%.2f Mb", (dedicated_memory * 0.001));
-	
+
 }
 
