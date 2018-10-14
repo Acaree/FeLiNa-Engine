@@ -4,6 +4,7 @@ FeLiNa Engine is a 3D game engine currently developed by:
 
 - Alex Campamar, GitHub account [Acaree](https://github.com/Acaree).
 - Alfonso Sanchez, GitHub account [Siitoo](https://github.com/Siitoo).
+- Project repository [Felina](https://github.com/Acaree/FeLiNa-Engine).
 
 
 This engine have been developed in the design & development grade of CITM (Terrasa).
@@ -19,13 +20,32 @@ Link to repository: [FeLiNa Engine](https://github.com/Acaree/FeLiNa-Engine).
 -IDE: Mircrosoft Visual Studio 2017.
 -SDL 2.0.4 
 -OpenGl 3.1.0
--Parson 
+-Parson 0.94 
 -Pcg
 -Devil 1.7.8
 -Glew 2.3.4
 -Assimp 3.3.0
 -ImGui 1.65
 -MathGeoLib 1.5
+
+## Controls
+
+- Mouse Hold Right:
+	- Look around
+	- WASD: move forward, left, backward and right
+	- E/R: move up/down
+- F: Focus the camera around geometry
+- Hold Alt:
+	- Mouse Hold Left: look around target
+	- Mouse Wheel: zoom in/out
+	- Mouse Hold Shift: movement speed x2, zoom speed x0.5
+
+- 1: Take a screenshot
+- Q: Start/finish a gif recording.
+- 2: Enable/Disable wireframe mode
+- Shift + M : Open/Close Configuration windows
+- Shift + I : Open/Close Inspector windows
+- Shift + C : Open/Close Console
 
 ## Innovation
 
