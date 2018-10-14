@@ -64,6 +64,24 @@ update_status ModuleGui::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+			open_console = !open_console;
+
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+			open_configuration = !open_configuration;
+
+		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+			inspector_open = !inspector_open;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		need_screenshoot = true;
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		App->renderer3D->wire = !App->renderer3D->wire;
+
+
 	ShowMainMenuBar();
 
 	if(open_configuration)
@@ -107,7 +125,7 @@ void ModuleGui::ShowMainMenuBar()
 		if (ImGui::BeginMenu("Menu"))
 		{
 
-			if (ImGui::MenuItem("Take Screenshot", NULL, false, true))
+			if (ImGui::MenuItem("Take Screenshot", "1", false, true))
 			{
 				need_screenshoot = true;
 			}
@@ -123,9 +141,9 @@ void ModuleGui::ShowMainMenuBar()
 		if (ImGui::BeginMenu("Mode"))
 		{
 
-			if (ImGui::MenuItem("Wireframe", NULL, App->scene->grid_plane->wire, true))
+			if (ImGui::MenuItem("Wireframe", "2", App->renderer3D->wire, true))
 			{
-				App->scene->grid_plane->wire = !App->scene->grid_plane->wire;
+				App->renderer3D->wire = !App->renderer3D->wire;
 			}
 
 			ImGui::EndMenu();
@@ -133,17 +151,17 @@ void ModuleGui::ShowMainMenuBar()
 
 		if (ImGui::BeginMenu("Window"))
 		{
-			if (ImGui::MenuItem("Configuration", NULL, open_configuration, true))
+			if (ImGui::MenuItem("Configuration", "Shift+M", open_configuration, true))
 			{
 				open_configuration = !open_configuration;
 			}
 
-			if (ImGui::MenuItem("Inspector", NULL, inspector_open, true))
+			if (ImGui::MenuItem("Inspector", "Shift+I", inspector_open, true))
 			{
 				inspector_open = !inspector_open;
 			}
 
-			if (ImGui::MenuItem("Console", NULL, open_console, true))
+			if (ImGui::MenuItem("Console", "Shift+C", open_console, true))
 			{
 				open_console = !open_console;
 			}

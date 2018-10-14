@@ -240,6 +240,13 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	SDL_GL_SwapWindow(App->window->window);
 
 
+	if (wire)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+
+
 	if (App->gui->close_program)
 		update_return = UPDATE_STOP;
 

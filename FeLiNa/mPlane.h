@@ -23,7 +23,7 @@ public:
 
 	Color color;
 	float4x4 transform;
-	bool axis, wire;
+	bool axis;
 
 	bool is_grid = false;
 	Plane* matGeo_plane;

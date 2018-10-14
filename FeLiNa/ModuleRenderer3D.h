@@ -79,6 +79,7 @@ public:
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	std::vector<ModelData*> data;
+	bool wire = false;
 private:
 	bool depth_test = false;
 	bool cull_face = false;
