@@ -13,6 +13,10 @@ ModuleImage::ModuleImage(int widht, int height) : width(widht), height(height)
 
 ModuleImage::~ModuleImage()
 {
+	delete[] pixels;
+	delete[] pixel_full;
+	pixels = nullptr;
+	pixel_full = nullptr;
 }
 
 bool ModuleImage::TakeScreenshoot()
