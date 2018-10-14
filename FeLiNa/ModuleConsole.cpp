@@ -1,5 +1,6 @@
 #include "ModuleConsole.h"
-
+#include "Application.h"
+#include "ModuleGui.h"
 
 ModuleConsole::ModuleConsole(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -30,9 +31,8 @@ void ModuleConsole::DrawConsole()
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
 	window_flags |= ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoTitleBar;
 
-	ImGui::Begin("Console", &Log_active, window_flags);
+	ImGui::Begin("Console", &App->gui->open_console, window_flags);
 	ImGui::TextUnformatted(console_buffer.begin());
 	if (console_scroll)
 		ImGui::SetScrollHere(1.0F);

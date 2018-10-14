@@ -479,7 +479,7 @@ void ModuleRenderer3D::DrawMeshInformation()
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
 
 
-	ImGui::Begin("Inspector",false,window_flags);
+	ImGui::Begin("Inspector",&App->gui->inspector_open,window_flags);
 
 	if (data.size() != 0)
 	{

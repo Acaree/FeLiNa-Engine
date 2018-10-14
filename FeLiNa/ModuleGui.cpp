@@ -211,8 +211,9 @@ void ModuleGui::ShowConfigurationWindow()
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	
 
-	ImGui::Begin("Configuration", false, window_flags);
+	ImGui::Begin("Configuration",&open_configuration, window_flags);
 
 	if (ImGui::CollapsingHeader("Application"))
 	{
@@ -255,7 +256,7 @@ void ModuleGui::ShowAboutWindow() {
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
-	window_flags |= ImGuiWindowFlags_NoMove;
+	
 
 	ImGui::Begin("About",&About_active, window_flags);
 
