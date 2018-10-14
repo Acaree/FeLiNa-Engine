@@ -13,7 +13,7 @@ public:
 
 	void DrawHardwareInformationPanel();
 
-	int devil_current_version_num = 0;
+	
 
 
 private:
@@ -23,6 +23,8 @@ private:
 	char devil_current_version[10];
 	char glew_current_version[10];
 	char assimp_current_version[10];
+	const GLubyte *OpenGL_current_version;
+	int devil_current_version_num = 0;
 
 	//CPU
 	int cpu_count = 0;

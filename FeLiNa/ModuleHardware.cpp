@@ -40,7 +40,7 @@ void ModuleHardware::FillHardwareInfo()
 
 	sprintf_s(assimp_current_version, "%i.%i.%i", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
 
-
+	
 
 	cpu_count = SDL_GetCPUCount();
 	sprintf_s(cpu_version_count, sizeof(cpu_version_count), "%i", cpu_count);
@@ -58,6 +58,8 @@ void ModuleHardware::FillHardwareInfo()
 	SSE41 = SDL_HasSSE41();
 	SSE42 = SDL_HasSSE42();
 
+	OpenGL_current_version = glGetString(GL_VERSION);
+
 	vendor = glGetString(GL_VENDOR);
 	gpu_name = glGetString(GL_RENDERER);
 
@@ -74,6 +76,10 @@ void ModuleHardware::DrawHardwareInformationPanel()
 {
 	if (!fill_hardware)
 		FillHardwareInfo();
+
+	ImGui::Text("OpenGL Version: ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0, 1, 0, 100), "%s",OpenGL_current_version);
 
 	ImGui::Text("SDL Version: ");
 	ImGui::SameLine();

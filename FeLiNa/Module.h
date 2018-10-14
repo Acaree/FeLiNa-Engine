@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Parson/parson.h"
 #include "Timer.h"
+#include <vector>
 
 class Application;
 
@@ -66,6 +67,7 @@ public:
 
 	PerfTimer module_timer;
 	float last_update_ms=0;
+	std::vector<float> vector_update_ms;
 
 };
 

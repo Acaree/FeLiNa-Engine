@@ -177,8 +177,19 @@ update_status Application::Update()
 		(*it)->module_timer.Play();
 		ret = (*it)->PostUpdate(dt);
 		if (!pause_diagram) {
+
 			(*it)->last_update_ms = (*it)->module_timer.ReadMs();
+			
+			if ((*it)->vector_update_ms.size() >= 100) {
+				
+				(*it)->vector_update_ms.erase((*it)->vector_update_ms.begin());
+			
+			}
+			
+			(*it)->vector_update_ms.push_back((*it)->last_update_ms);
 		}
+
+
 		++it;
 	}
 	
@@ -395,36 +406,19 @@ void Application::DrawApplicationInformationPanel()
 void Application::DrawModulesTime() {
 
 	ImGui::Text("Module Camera 3D");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", camera->last_update_ms);
-
-	ImGui::Text("Module Console");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", console->last_update_ms);
-
-	ImGui::Text("Module Import");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", mesh_import->last_update_ms);
+	ImGui::PlotHistogram("##milliseconds", &camera->vector_update_ms[0], camera->vector_update_ms.size(), 0, "MS", 0.0f, 1.0f, ImVec2(310, 100));
 
 	ImGui::Text("Module GUI");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", gui->last_update_ms);
-
-	ImGui::Text("Module Hardware");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", hardware->last_update_ms);
+	ImGui::PlotHistogram("##milliseconds", &gui->vector_update_ms[0], gui->vector_update_ms.size(), 0, "MS", 0.0f, 1.0f, ImVec2(310, 100));
 
 	ImGui::Text("Module Input");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", input->last_update_ms);
+	ImGui::PlotHistogram("##milliseconds", &input->vector_update_ms[0], input->vector_update_ms.size(), 0, "MS", 0.0f, 1.0f, ImVec2(310, 100));
 
 	ImGui::Text("Module Renderer");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", renderer3D->last_update_ms);
+	ImGui::PlotHistogram("##milliseconds", &renderer3D->vector_update_ms[0], renderer3D->vector_update_ms.size(), 0, "MS", 0.0f, 1.0f, ImVec2(310, 100));
 
 	ImGui::Text("Module Scene Intro");
-	ImGui::SameLine();
-	ImGui::Text("%f ms", scene->last_update_ms);
+	ImGui::PlotHistogram("##milliseconds", &scene->vector_update_ms[0], scene->vector_update_ms.size(), 0, "MS", 0.0f, 1.0f, ImVec2(310, 100));
 
 }
 
