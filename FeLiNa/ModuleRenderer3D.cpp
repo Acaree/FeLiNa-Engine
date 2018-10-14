@@ -513,13 +513,19 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 		if (ImGui::CollapsingHeader("Mesh Information", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::Text("Indices: %i", it->num_indices);
+			for (int i = 0; i < data.size(); ++i)
+			{
+				ImGui::Text("Mesh %i", i);
+				ImGui::Text("Indices: %i", data[i]->num_indices);
 
-			ImGui::Text("Vertices: %i", it->num_vertices);
+				ImGui::Text("Vertices: %i", data[i]->num_vertices);
 
-			ImGui::Text("Uv's: %i", it->num_uv);
+				ImGui::Text("Uv's: %i", data[i]->num_uv);
 
-			ImGui::Text("Triangles: %i", it->num_vertices / 3);
+				ImGui::Text("Triangles: %i", data[i]->num_vertices / 3);
+
+				ImGui::Separator();
+			}
 		}
 
 		if (ImGui::CollapsingHeader("Material Material", ImGuiTreeNodeFlags_DefaultOpen))
