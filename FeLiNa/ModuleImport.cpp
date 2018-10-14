@@ -7,6 +7,7 @@
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
+#include "ModuleWindow.h"
 #include <string>
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
@@ -47,26 +48,26 @@ bool ModuleImport::CleanUp()
 
 void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or not because we have streams to all errors?
 {
-    LOG("Inicialization load data model")
+	LOG("Inicialization load data model")
 
-	
-	const aiScene* scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
-	
+
+		const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		const aiNode* node = scene->mRootNode;
 
 		if (node != nullptr)
 		{
-		
+
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
 			{
 				aiQuaternion q;
 				aiVector3D scale, pos;
 
 				node->mTransformation.Decompose(scale, q, pos);
-				
-				ModelData* data = new ModelData();  
+
+				ModelData* data = new ModelData();
 
 				//TO REVISION
 				data->path = path;
@@ -75,7 +76,7 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 				tmp.clear();
 				data->position = { pos.x,pos.y,pos.z };
 				data->scale = { scale.x,scale.y,scale.z };
-				data->rotation = Quat( q.x,q.y,q.z,q.w );
+				data->rotation = Quat(q.x, q.y, q.z, q.w);
 
 
 				aiMesh* new_mesh = scene->mMeshes[num_meshes];
@@ -120,7 +121,7 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 
 				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
 
-				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data->color_4D) == aiReturn_FAILURE || data->color_4D == aiColor4D(0,0,0,1))
+				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &data->color_4D) == aiReturn_FAILURE || data->color_4D == aiColor4D(0, 0, 0, 1))
 				{
 					data->color_4D = { 255.0f,255.0f,255.0f,255.0f };
 				}
@@ -158,18 +159,20 @@ void ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_color);
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
 
-				App->renderer3D->AddDataMesh(data); 
+				App->renderer3D->AddDataMesh(data);
 				//TO revision best wave?
 				FindTexturePath(material, path, num_meshes);
 
-				
+
 			}
 
 		}
-			
+
 	}
-	else
-		LOG("Error loading Scene %s",path);
+	else {
+		LOG("Error loading Scene %s", path);
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unable to load the file",path, App->window->window);
+	}
 }
 
 //TO REVISION LOGS 
