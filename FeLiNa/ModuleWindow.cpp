@@ -30,8 +30,8 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		width = SCREEN_WIDTH * SCREEN_SIZE;
-		height = SCREEN_HEIGHT * SCREEN_SIZE;
+		/*width = SCREEN_WIDTH * SCREEN_SIZE;
+		height = SCREEN_HEIGHT * SCREEN_SIZE;*/
 		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -107,8 +107,8 @@ bool ModuleWindow::Awake(JSON_Object* config)
 
 void ModuleWindow::SaveState(JSON_Object* config)
 {
-	json_object_set_boolean(config, "Width", width);
-	json_object_set_boolean(config, "Height", height);
+	json_object_set_number(config, "Width", width);
+	json_object_set_number(config, "Height", height);
 	json_object_set_number(config, "Brightness", brightness);
 	json_object_set_boolean(config, "Fullscreen", fullscreen);
 	json_object_set_boolean(config, "Reasizable", reasizable);

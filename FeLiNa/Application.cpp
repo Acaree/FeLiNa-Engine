@@ -240,31 +240,26 @@ void Application::Save()
 	Log_app("Saving State....");
 
 
-	/*JSON_Value* root = json_parse_file("data.json");
-
+	JSON_Value* root = json_parse_file("data.json");
+	
 	if (root == nullptr)
 	{
 		root = json_value_init_object();
 	}
 
-	JSON_Object* config_app = json_value_get_object(root);
-
-	json_object_set_string(config_app, "Title", app_name);
-	json_object_set_string(config_app, "Organization", organization);
-	json_object_set_boolean(config_app, "VSYNC", vsync);
-	json_object_set_number(config_app, "Max frames", FPS_cap);
-
-	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
+	
+	for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); ++it)
 	{
-		JSON_Object* module_to_save = json_object_get_object(json_value_get_object(json_value_init_object()), (*it)->GetName());
-		(*it)->SaveState(module_to_save);
+		JSON_Object* module_save = json_object_get_object(json_value_get_object(root), (*it)->GetName());
+
+		(*it)->SaveState(module_save);
 	}
 
-	char* string_serialized = json_serialize_to_string_pretty(root);
-	puts(string_serialized);
+	char *serialized_string = json_serialize_to_string_pretty(root);
+	puts(serialized_string);
 	json_serialize_to_file(root, "data.json");
-	json_free_serialized_string(string_serialized);
-	json_value_free(root);*/
+	json_free_serialized_string(serialized_string);
+	json_value_free(root);
 
 	need_save = false;
 }
@@ -282,20 +277,25 @@ void Application::Load()
 		
 		JSON_Object* data = json_value_get_object(root);
 
-		JSON_Object* config_app = json_object_get_object(data, name);
-
-		strcpy(app_name, json_object_get_string(config_app,"Title"));
-		strcpy(organization, json_object_get_string(config_app, "Organization"));
-		vsync = json_object_get_boolean(config_app, "VSYNC");
-		FPS_cap = json_object_get_number(config_app, "Max frames");
-
-
-		for (std::list<Module*>::const_iterator item = list_modules.begin(); item != list_modules.end(); ++item)
+		if (data != nullptr)
 		{
-			JSON_Object* module_to_save = json_object_get_object(data, (*item)->GetName());
-			(*item)->LoadState(module_to_save);
-		}
+			JSON_Object* config_app = json_object_get_object(data, name);
 
+			if (config_app != nullptr)
+			{
+				strcpy(app_name, json_object_get_string(config_app, "Title"));
+				strcpy(organization, json_object_get_string(config_app, "Organization"));
+				vsync = json_object_get_boolean(config_app, "VSYNC");
+				FPS_cap = json_object_get_number(config_app, "Max frames");
+
+
+				for (std::list<Module*>::const_iterator item = list_modules.begin(); item != list_modules.end(); ++item)
+				{
+					JSON_Object* module_to_save = json_object_get_object(data, (*item)->GetName());
+					(*item)->LoadState(module_to_save);
+				}
+			}
+		}
 		json_value_free(root);
 
 		Log_app("Load succesful");
