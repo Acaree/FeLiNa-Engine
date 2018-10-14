@@ -4,7 +4,7 @@
 #include "SDL/include/SDL_opengl.h"
 
 
-mPlane::mPlane(float x, float y, float z, float d) : transform(float4x4::identity), color(White), wire(false), axis(false)
+mPlane::mPlane(float x, float y, float z, float d) : transform(float4x4::identity), color(White), axis(false)
 {
 	float3 plane_pos(x, y, z);
 
