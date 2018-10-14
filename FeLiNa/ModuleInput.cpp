@@ -149,8 +149,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					App->renderer3D->CleanAllDataModel();
 					App->renderer3D->DeleteAllDataMesh();
 					App->mesh_import->LoadData(dropped_filedir);
-					App->camera->FocusToCenterObject();
-					App->gui->inspector_open = true;
+					
 				}
 
 				SDL_free(&dropped_filedir);

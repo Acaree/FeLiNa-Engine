@@ -447,7 +447,8 @@ void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh)
 	}
 	
 	App->camera->CreateFocusObject(min, max);
-	
+	App->camera->FocusToCenterObject();
+	App->gui->inspector_open = true;
 }
 
 void ModuleRenderer3D::DeleteAllDataMesh()

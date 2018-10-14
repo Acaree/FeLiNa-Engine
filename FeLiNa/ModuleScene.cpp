@@ -32,6 +32,8 @@ bool ModuleScene::Start()
 	grid_plane->axis = true;
 	grid_plane->is_grid = true;
 
+	App->mesh_import->LoadData("Assets\\BakerHouse.FBX");
+
 	return ret;
 }
 

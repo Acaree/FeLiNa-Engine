@@ -186,7 +186,7 @@ void ModuleImport::FindTexturePath(aiMaterial* material, const char *path, int i
 
 		std::string fbx_path = path;
 
-		std::string texture_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1) + "Textures\\" + texture_name.data;
+		std::string texture_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1)  + texture_name.data;
 		std::string fbx_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1) + texture_name.data;
 		std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data;
 		std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
