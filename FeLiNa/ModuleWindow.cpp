@@ -109,7 +109,7 @@ void ModuleWindow::SaveState(JSON_Object* config)
 {
 	json_object_set_boolean(config, "Width", width);
 	json_object_set_boolean(config, "Height", height);
-	json_object_set_boolean(config, "Brightness", brightness);
+	json_object_set_number(config, "Brightness", brightness);
 	json_object_set_boolean(config, "Fullscreen", fullscreen);
 	json_object_set_boolean(config, "Reasizable", reasizable);
 	json_object_set_boolean(config, "Bordeless", bordeless);
@@ -147,7 +147,13 @@ void ModuleWindow::DrawWindowInformationPanel()
 		SDL_UpdateWindowSurface(window);
 	}
 
-	if (ImGui::SliderInt("Width", &width, 1, 2000) || ImGui::SliderInt("Height", &height, 1, 2000))
+	if (ImGui::SliderInt("Width", &width, 1, 2000))
+	{
+		SDL_SetWindowSize(window, width, height);
+		SDL_UpdateWindowSurface(window);
+	}
+
+	if (ImGui::SliderInt("Height", &height, 1, 2000))
 	{
 		SDL_SetWindowSize(window, width, height);
 		SDL_UpdateWindowSurface(window);
@@ -165,8 +171,6 @@ void ModuleWindow::DrawWindowInformationPanel()
 	}
 	ImGui::SameLine();
 
-	//¿Reasizable?
-
 	if (ImGui::Checkbox("Bordeless", &bordeless))
 	{
 		SDL_SetWindowBordered(window, (SDL_bool)!bordeless);
@@ -180,5 +184,9 @@ void ModuleWindow::DrawWindowInformationPanel()
 		else
 			SDL_SetWindowFullscreen(window, flags);
 	}
+
+	ImGui::Text("Restart to apply changes:");
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Resizable", &reasizable));
 
 }

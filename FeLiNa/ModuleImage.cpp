@@ -28,7 +28,7 @@ bool ModuleImage::TakeScreenshoot()
 	localtime_s(&reported_time, &actual_time);
 
 	static char tmp[50];
-	sprintf_s(tmp, 1024, "Screenshots_gif/Screenshot_%i_%i_%i.%i.%i.gif", reported_time.tm_mday, reported_time.tm_mon, reported_time.tm_hour, reported_time.tm_min, reported_time.tm_sec);
+	sprintf_s(tmp, 1024, "Screenshots_gif/Screenshot_%i_%i_%i.%i.%i.gif", reported_time.tm_mday, reported_time.tm_mon+1, reported_time.tm_hour, reported_time.tm_min, reported_time.tm_sec);
 
 	ilSave(IL_PNG, tmp);
 	ilDisable(IL_FILE_OVERWRITE);
@@ -54,7 +54,7 @@ void ModuleImage::TakeScreenGif(float dt)
 			localtime_s(&reported_time, &actual_time);
 
 			static char tmp[50];
-			sprintf_s(tmp, 1024, "Screenshots_gif/Gif_%i_%i_%i.%i.%i.gif", reported_time.tm_mday, reported_time.tm_mon, reported_time.tm_hour, reported_time.tm_min, reported_time.tm_sec);
+			sprintf_s(tmp, 1024, "Screenshots_gif/Gif_%i_%i_%i.%i.%i.gif", reported_time.tm_mday, reported_time.tm_mon+1, reported_time.tm_hour, reported_time.tm_min, reported_time.tm_sec);
 
 
 			bool gif_in_progress = GifBegin(&writer, tmp, width, height, (uint32_t)(dt * 100.0f), 8, false);

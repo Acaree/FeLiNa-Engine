@@ -333,8 +333,10 @@ void Application::DrawApplicationInformationPanel()
 	char title[30];
 
 	ImGui::SliderInt("FPS", &FPS_cap, 0, 120);
-
+	
 	ImGui::Checkbox("Vsync", &vsync);
+	ImGui::SameLine();
+	ImGui::Text("(Restart to apply changes)");
 
 	ImGui::Checkbox("Pause", &pause_diagram);
 	

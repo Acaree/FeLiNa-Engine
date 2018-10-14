@@ -30,7 +30,6 @@ void ModuleConsole::DrawConsole()
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
-	window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
 
 	ImGui::Begin("Console", &App->gui->open_console, window_flags);
