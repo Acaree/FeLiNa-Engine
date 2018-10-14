@@ -92,18 +92,20 @@ bool Application::Awake()
 
 		JSON_Object* config_app = json_object_get_object(node, name);
 
-		strcpy(app_name, json_object_get_string(config_app, "Title"));
-		strcpy(organization, json_object_get_string(config_app, "Organization"));
-		vsync = json_object_get_boolean(config_app, "VSYNC");
-		FPS_cap = json_object_get_number(config_app, "Max frames");
-
-		for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret == true; it++)
+		if (config_app != nullptr)
 		{
-			JSON_Object* module_obj = json_object_get_object(node, (*it)->GetName());
+			strcpy(app_name, json_object_get_string(config_app, "Title"));
+			strcpy(organization, json_object_get_string(config_app, "Organization"));
+			vsync = json_object_get_boolean(config_app, "VSYNC");
+			FPS_cap = json_object_get_number(config_app, "Max frames");
 
-			ret = (*it)->Awake(module_obj);	
+			for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret == true; it++)
+			{
+				JSON_Object* module_obj = json_object_get_object(node, (*it)->GetName());
+
+				ret = (*it)->Awake(module_obj);
+			}
 		}
-
 		json_value_free(root);
 
 	}
@@ -238,7 +240,7 @@ void Application::Save()
 	Log_app("Saving State....");
 
 
-	JSON_Value* root = json_parse_file("data.json");
+	/*JSON_Value* root = json_parse_file("data.json");
 
 	if (root == nullptr)
 	{
@@ -254,7 +256,7 @@ void Application::Save()
 
 	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end(); ++it)
 	{
-		JSON_Object* module_to_save = json_object_get_object(json_value_get_object(root), (*it)->GetName());
+		JSON_Object* module_to_save = json_object_get_object(json_value_get_object(json_value_init_object()), (*it)->GetName());
 		(*it)->SaveState(module_to_save);
 	}
 
@@ -262,7 +264,7 @@ void Application::Save()
 	puts(string_serialized);
 	json_serialize_to_file(root, "data.json");
 	json_free_serialized_string(string_serialized);
-	json_value_free(root);
+	json_value_free(root);*/
 
 	need_save = false;
 }
@@ -342,10 +344,6 @@ void Application::DrawApplicationInformationPanel()
 	
 	sprintf_s(title, 25, "Framerate %.1f", vector_fps[vector_fps.size() - 1]);
 	ImGui::PlotHistogram("##framerate", &vector_fps[0], vector_fps.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-	
-
-	
-	
 
 	sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
 	ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
