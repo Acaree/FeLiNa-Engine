@@ -272,10 +272,8 @@ void ModuleGui::ShowAboutWindow() {
 	ImGui::Separator();
 	ImGui::Text("Libraries:");
 
-	SDL_version version;
-	SDL_GetVersion(&version);
 
-	ImGui::Text("ImGuI, OpenGL %s, \nSDL %i.%i.%i, MathGeoLib, PCG, Parson, MMGR", glGetString(GL_VERSION), version.major, version.minor, version.patch);
+	ImGui::Text("ImGuI, Glew, OpenGL, SDL, \nSDL MathGeoLib, PCG, Parson, MMGR \nSDL Devil, Assimp \nSDL Window->Configuration->Hardware Detection to see software versions ");
 	ImGui::Separator();
 
 	ImGui::Text("MIT License Copyright(c) 2018 FeLiNa \n");
