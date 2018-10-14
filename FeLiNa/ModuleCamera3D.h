@@ -21,6 +21,7 @@ public:
 	float* GetViewMatrix() const;
 
 	void CreateFocusObject(float3 min,float3 max);
+	void GetMinMaxAABB(float3 &min, float3 &max);
 	void FocusToCenterObject();
 
 private:
@@ -29,7 +30,11 @@ private:
 
 public:
 	
-	float3 X, Y, Z, Position, Reference;
+	float3 X = { 0,0,0 };
+	float3 Y = { 0,0,0 };
+	float3 Z = { 0,0,0 };
+	float3 Position = { 0,0,0 };
+	float3 Reference = {0,0,0};
 
 	AABB* focus_box = nullptr;
 

@@ -89,10 +89,10 @@ private:
 	bool line_smooth = false;
 	bool polygon_smooth = false;
 	
-	ModuleImage* img;
+	ModuleImage* img = nullptr;
 
 	//Checkers
-	uint checker_id;
+	uint checker_id = 0;
 	bool material_cheker = false;
 	bool no_texture = false;
 

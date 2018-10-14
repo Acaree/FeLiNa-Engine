@@ -16,8 +16,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	mPlane* grid_plane;
-	uint ImageName;
+	mPlane* grid_plane = nullptr;
 
 };
 

@@ -245,8 +245,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-
-
 	if (App->gui->close_program)
 		update_return = UPDATE_STOP;
 
@@ -406,9 +404,18 @@ void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh)
 
 	data.push_back(data_mesh);
 
-	float3 min = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
-	float3 max = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
-	
+	float3 min = {0,0,0};
+	float3 max = { 0,0,0 };
+
+	if (data.size() == 1)
+	{
+		min = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
+		max = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
+	}
+	else
+		App->camera->GetMinMaxAABB(min, max);
+
+
 	for (uint i = 3; i < data_mesh->num_vertices; i+=3)
 	{
 		if (data_mesh->vertices[i] < min.x)

@@ -39,8 +39,8 @@ private:
 	bool SSE41 = false;
 	bool SSE42 = false;
 	//GPU
-	const GLubyte *vendor;
-	const GLubyte *gpu_name;
+	const GLubyte *vendor = nullptr;
+	const GLubyte *gpu_name = nullptr;
 	GLint total_memory = 0;
 	GLint memory_usage = 0;
 	GLint dedicated_memory = 0;

@@ -23,7 +23,7 @@ public:
 public:
 
 	
-	SDL_Window* window;
+	SDL_Window* window = nullptr;
 	Uint32 flags;
 	SDL_Surface* screen_surface;
 

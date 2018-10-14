@@ -24,9 +24,10 @@ public:
 
 private:
 
-	BYTE * pixels, *pixel_full;
-	int width;
-	int height;
+	BYTE * pixels = nullptr;
+	BYTE *pixel_full = nullptr;
+	int width = 0;
+	int height = 0;
 	char* filename;
 	bool start_gif = false;
 	Gif_State state = Gif_State::GIF_START;

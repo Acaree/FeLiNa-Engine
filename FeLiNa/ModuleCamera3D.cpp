@@ -278,3 +278,10 @@ void ModuleCamera3D::FocusToCenterObject()
 		LookAt(Reference);
 	}
 }
+
+void ModuleCamera3D::GetMinMaxAABB(float3 &min, float3 &max)
+{
+	min = focus_box->minPoint;
+	max = focus_box->maxPoint;
+
+}
