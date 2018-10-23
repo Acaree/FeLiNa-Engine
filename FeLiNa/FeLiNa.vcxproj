@@ -83,7 +83,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentMesh.h" />
-    <ClInclude Include="Component_Transform.h" />
+    <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gif\gif.h" />
     <ClInclude Include="Glew\include\eglew.h" />
@@ -184,7 +184,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
-    <ClCompile Include="Component_Transform.cpp" />
+    <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />

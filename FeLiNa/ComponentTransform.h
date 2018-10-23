@@ -1,17 +1,17 @@
-#ifndef _COMPONENT_TRANSFORM
-#define _COMPONENT_TRANSFORM
+#ifndef _COMPONENTTRANSFORM
+#define _COMPONENTTRANSFORM
 
 #include "Component.h"
 #include "MathGeoLib/MathGeoLib.h"
 
-class Component_Transform : public Component
+class ComponentTransform : public Component
 {
 public:
-	Component_Transform(GameObject* parent);
-	~Component_Transform();
+	ComponentTransform(GameObject* parent);
+	~ComponentTransform();
 
 
-	float3x3 GetTransformMatrix() const;
+	float4x4 GetTransformMatrix() const;
 	
 	void SetPosition(float3 new_pos);
 	void SetRotation(float3 new_rotation);
@@ -24,11 +24,14 @@ public:
 
 private:
 
+	void UpdateMatrix();
+
 	float3 position;
 	float3 euler_angles;
 	float3 scale;
+	Quat quat_rotation;
 
-	float3x3 transform_matrix;
+	float4x4 transform_matrix;
 
 
 };
