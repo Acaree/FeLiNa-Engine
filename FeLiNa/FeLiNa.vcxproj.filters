@@ -169,6 +169,9 @@
     <ClCompile Include="ModuleTexture.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -450,6 +453,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="OpenGl.h" />
+    <ClInclude Include="GameObject.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
