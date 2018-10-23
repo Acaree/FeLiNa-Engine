@@ -170,7 +170,10 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Modules</Filter>
+      <Filter>Modules\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -454,7 +457,10 @@
     </ClInclude>
     <ClInclude Include="OpenGl.h" />
     <ClInclude Include="GameObject.h">
-      <Filter>Modules</Filter>
+      <Filter>Modules\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -487,6 +493,12 @@
     </Filter>
     <Filter Include="Tools\Gif">
       <UniqueIdentifier>{b80e695f-ff73-456e-b74f-9c6bf20b1c65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\GameObject">
+      <UniqueIdentifier>{d645f7f2-57ed-46e7-bad4-03b9d606fde1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\GameObject\Components">
+      <UniqueIdentifier>{2375c286-ce9c-429b-864a-c0108843b5d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
