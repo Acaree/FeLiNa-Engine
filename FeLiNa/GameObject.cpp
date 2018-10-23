@@ -7,8 +7,8 @@ GameObject::GameObject(GameObject* parent)
 {
 	this->parent = parent;
 
-	/*if (parent != nullptr)
-		parent->childrens.push_back(this);*/
+	if (parent != nullptr)
+		parent->childrens.push_back(this);
 }
 
 
@@ -30,11 +30,14 @@ GameObject::~GameObject()
 
 void GameObject::Update(float dt)
 {
-	for (int i = 0; i < components.size(); ++i)
-		components[i];
 
 	for (int i = 0; i < childrens.size(); ++i)
-		childrens[i];
+		childrens[i]->Update(dt);
+
+	for (int i = 0; i < components.size(); ++i)
+		components[i]->Draw();
+
+	
 
 }
 
@@ -104,6 +107,7 @@ GameObject* GameObject::GetParent() const
 
 void GameObject::SetComponent(Component* component)
 {
+	//need check if component exist - TO REVISION
 	components.push_back(component);
 }
 

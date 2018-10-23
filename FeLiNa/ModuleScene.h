@@ -23,6 +23,8 @@ public:
 	bool DeleteGameObject(GameObject* object);
 	bool DeleteGameObject(char* name);
 
+
+	GameObject* root_object = nullptr;
 private:
 
 	mPlane* grid_plane = nullptr;

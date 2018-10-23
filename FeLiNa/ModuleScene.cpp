@@ -34,8 +34,9 @@ bool ModuleScene::Start()
 	grid_plane->axis = true;
 	grid_plane->is_grid = true;
 
+	root_object = new GameObject(nullptr);
 	App->mesh_import->LoadData("Assets\\BakerHouse.FBX");
-
+	
 	return ret;
 }
 
@@ -70,6 +71,7 @@ update_status ModuleScene::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 	
+	root_object->Update(dt);
 	return update_return;
 }
 

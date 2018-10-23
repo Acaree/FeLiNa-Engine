@@ -4,8 +4,11 @@
 #include "Module.h"
 
 class aiScene;
+class aiNode;
 struct aiLogStream;
 struct aiMaterial;
+class GameObject;
+struct Mesh;
 
 class ModuleImport : public Module
 {
@@ -16,7 +19,9 @@ public:
 	bool Start();
 	bool CleanUp();
 	
-	void LoadData(const char* path);
+	bool LoadData(const char* path);
+	GameObject* LoadModel(const aiScene* scene, aiNode* node, const char* path);
+	void GenerateBufferData(Mesh* mesh_data);
 	void FindTexturePath(aiMaterial* material, const char* path, int index );
 };
 

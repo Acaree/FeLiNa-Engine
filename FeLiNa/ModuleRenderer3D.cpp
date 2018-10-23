@@ -502,7 +502,8 @@ void ModuleRenderer3D::DrawMeshInformation()
 		{
 			ImGui::Text("Position:");
 			ImGui::Text("x: %f  y: %f  z: %f", it->position.x, it->position.y, it->position.z);
-
+			Quat q;
+			
 			float3 rot_euler = it->rotation.ToEulerXYZ();
 			ImGui::Text("Rotation:");
 			ImGui::Text("x: %f  y: %f  z: %f", rot_euler.x, rot_euler.y, rot_euler.z);
