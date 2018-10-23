@@ -175,10 +175,10 @@
     <ClCompile Include="Component.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Component_Transform.cpp">
+    <ClCompile Include="ComponentMesh.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentMesh.cpp">
+    <ClCompile Include="ComponentTransform.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -468,10 +468,10 @@
     <ClInclude Include="Component.h">
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Component_Transform.h">
+    <ClInclude Include="ComponentMesh.h">
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentMesh.h">
+    <ClInclude Include="ComponentTransform.h">
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>

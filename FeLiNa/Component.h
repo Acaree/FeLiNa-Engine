@@ -5,10 +5,10 @@ class GameObject;
 
 enum ComponentType
 {
-	ComponentDefault,
-	ComponentTransform,
-	ComponenMesh,
-	ComponentMaterial
+	Component_Default,
+	Component_Transform,
+	Component_Mesh,
+	Component_Material
 
 };
 
