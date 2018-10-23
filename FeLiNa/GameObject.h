@@ -4,6 +4,8 @@
 #include "Globals.h"
 #include <vector>
 
+class Component;
+enum ComponentType;
 
 class GameObject
 {
@@ -11,8 +13,8 @@ public:
 
 	GameObject();
 	GameObject(GameObject* parent);
-	GameObject(char* name = "No Name");
-	GameObject(char* name, GameObject* parent = nullptr, bool active = true);
+	GameObject(char* name);
+	GameObject(char* name, GameObject* parent , bool active = true);
 
 	~GameObject();
 	
@@ -32,7 +34,12 @@ public:
 	void SetParent(GameObject* parent);
 	GameObject* GetParent()const;
 
-
+	void SetComponent(Component* component);
+	void SetComponent(ComponentType type);
+	void SetComponent(GameObject* parent, ComponentType type);
+	
+	bool DeleteComponent(Component* component);
+	bool DeleteComponent(ComponentType type);
 
 private:
 	
@@ -40,6 +47,7 @@ private:
 	bool active = true;
 	std::vector<GameObject*> childrens;
 	GameObject* parent = nullptr;
+	std::vector<Component*> components;
 };
 
 

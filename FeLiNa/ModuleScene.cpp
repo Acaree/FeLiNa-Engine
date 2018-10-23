@@ -7,6 +7,8 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl2.h"
+#include "GameObject.h"
+#include "Component.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -43,6 +45,14 @@ bool ModuleScene::CleanUp()
 	LOG("Unloading Intro scene");
 
 	delete grid_plane;
+	grid_plane = nullptr;
+
+	for (std::vector<GameObject*>::const_iterator it = game_objects.begin(); it != game_objects.end(); ++it)
+	{
+		(*it)->CleanUp();
+	}
+
+	game_objects.clear();
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
@@ -72,4 +82,73 @@ update_status ModuleScene::PostUpdate(float dt)
 	return update_return;
 }
 
+void ModuleScene::CreateGameObject()
+{
+	game_objects.push_back(new GameObject());
+}
 
+void ModuleScene::CreateGameObject(GameObject* object)
+{
+	game_objects.push_back(object);
+}
+
+void ModuleScene::CreateGameObject(char* name)
+{
+	game_objects.push_back(new GameObject(name));
+}
+
+void ModuleScene::CreateGameObject(char* name, GameObject* parent, bool active)
+{
+	game_objects.push_back(new GameObject(name, parent,active));
+}
+
+bool ModuleScene::DeleteGameObject(GameObject* object)
+{
+	bool ret = false;
+
+	if (game_objects.size() != 0)
+	{
+
+		for (std::vector<GameObject*>::const_iterator it = game_objects.begin(); it != game_objects.end(); ++it)
+		{
+			if ((*it) == object)
+			{
+				(*it)->CleanUp();
+				game_objects.erase(it);
+
+				ret = true;
+			}
+
+		}
+
+		game_objects.shrink_to_fit();
+	}
+
+	return ret;
+
+}
+
+bool ModuleScene::DeleteGameObject(char* name)
+{
+	bool ret = false;
+
+	if (game_objects.size() != 0)
+	{
+
+		for (std::vector<GameObject*>::const_iterator it = game_objects.begin(); it != game_objects.end(); ++it)
+		{
+			if (strcmp((*it)->GetName(),name) == 0)
+			{
+				(*it)->CleanUp();
+				game_objects.erase(it);
+
+				ret = true;
+			}
+
+		}
+
+		game_objects.shrink_to_fit();
+	}
+
+	return ret;
+}

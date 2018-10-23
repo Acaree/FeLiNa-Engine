@@ -18,9 +18,11 @@ class Component
 public:
 
 	Component();
+	Component(Component* component);
 	Component(ComponentType type = ComponentDefault);
 	Component(GameObject* parent,ComponentType type = ComponentDefault);
-	Component(GameObject* parent, ComponentType type = ComponentDefault, bool active = true);
+
+	void CleanUp();
 
 	~Component();
 
