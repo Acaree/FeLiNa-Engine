@@ -2,27 +2,9 @@
 #include "GameObject.h"
 
 
-Component::Component()
-{
-
-}
-
-Component::Component(Component* component)
-{
-	this->type = component->GetComponentType();
-	this->active = component->GetComponentType();
-	this->parent = component->GetParent();
-}
-
-Component::Component(ComponentType type)
-{
-	this->type = type;
-}
-
-Component::Component(GameObject* parent, ComponentType type)
+Component::Component(GameObject* parent)
 {
 	this->parent = parent;
-	this->type = type;
 }
 
 void Component::CleanUp()
