@@ -1,30 +1,20 @@
 #include "GameObject.h"
 #include "Component.h"
 
-GameObject::GameObject()
-{
-}
+
 
 GameObject::GameObject(GameObject* parent)
 {
 	this->parent = parent;
+
+	/*if (parent != nullptr)
+		parent->childrens.push_back(this);*/
 }
 
-GameObject::GameObject(char* name)
-{
-	this->name;
-}
 
-GameObject::GameObject(char* name, GameObject* parent, bool active)
-{
-	this->name = name;
-	this->parent = parent;
-	this->active = active;
-}
 
 GameObject::~GameObject()
 {
-
 	for (std::vector<GameObject*>::const_iterator it = childrens.begin(); it != childrens.end(); ++it)
 	{
 		(*it)->CleanUp();
@@ -38,6 +28,15 @@ GameObject::~GameObject()
 	parent = nullptr;
 }
 
+void GameObject::Update(float dt)
+{
+	for (int i = 0; i < components.size(); ++i)
+		components[i];
+
+	for (int i = 0; i < childrens.size(); ++i)
+		childrens[i];
+
+}
 
 bool GameObject::CleanUp()
 {
@@ -106,16 +105,6 @@ GameObject* GameObject::GetParent() const
 void GameObject::SetComponent(Component* component)
 {
 	components.push_back(component);
-}
-
-void GameObject::SetComponent(ComponentType type = ComponentDefault)
-{
-	components.push_back(new Component(type));
-}
-
-void GameObject::SetComponent(GameObject* parent, ComponentType type = ComponentDefault)
-{
-	components.push_back(new Component(parent,type));
 }
 
 bool GameObject::DeleteComponent(Component* component)

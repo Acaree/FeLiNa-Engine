@@ -82,24 +82,9 @@ update_status ModuleScene::PostUpdate(float dt)
 	return update_return;
 }
 
-void ModuleScene::CreateGameObject()
-{
-	game_objects.push_back(new GameObject());
-}
-
 void ModuleScene::CreateGameObject(GameObject* object)
 {
 	game_objects.push_back(object);
-}
-
-void ModuleScene::CreateGameObject(char* name)
-{
-	game_objects.push_back(new GameObject(name));
-}
-
-void ModuleScene::CreateGameObject(char* name, GameObject* parent, bool active)
-{
-	game_objects.push_back(new GameObject(name, parent,active));
 }
 
 bool ModuleScene::DeleteGameObject(GameObject* object)

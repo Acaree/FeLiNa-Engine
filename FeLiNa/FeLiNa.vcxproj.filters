@@ -178,6 +178,9 @@
     <ClCompile Include="Component_Transform.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>Modules\GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -466,6 +469,9 @@
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="Component_Transform.h">
+      <Filter>Modules\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMesh.h">
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>

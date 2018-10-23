@@ -11,14 +11,11 @@ class GameObject
 {
 public:
 
-	GameObject();
 	GameObject(GameObject* parent);
-	GameObject(char* name);
-	GameObject(char* name, GameObject* parent , bool active = true);
 
 	~GameObject();
 	
-	//bool Update(float dt);
+	void Update(float dt);
 	//bool PostUpdate(float dt);
 	bool CleanUp();
 
@@ -34,9 +31,7 @@ public:
 	void SetParent(GameObject* parent);
 	GameObject* GetParent()const;
 
-	void SetComponent(Component* component);
-	void SetComponent(ComponentType type);
-	void SetComponent(GameObject* parent, ComponentType type);
+	void SetComponent(Component* parent);
 	
 	bool DeleteComponent(Component* component);
 	bool DeleteComponent(ComponentType type);

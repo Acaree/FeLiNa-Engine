@@ -7,6 +7,21 @@ Component::Component(GameObject* parent)
 	this->parent = parent;
 }
 
+Component::~Component()
+{
+
+}
+
+void Component::Update(float dt)
+{
+
+}
+
+void Component::Draw()
+{
+
+}
+
 void Component::CleanUp()
 {
 	delete parent;

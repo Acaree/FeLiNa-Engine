@@ -12,8 +12,6 @@ enum ComponentType
 
 };
 
-
-
 class Component
 {
 public:
@@ -22,7 +20,10 @@ public:
 
 	void CleanUp();
 
-	virtual ~Component();
+	~Component();
+
+	virtual void Update(float dt);
+	virtual void Draw();
 
 	void SetComponentType(ComponentType type = ComponentDefault);
 	ComponentType GetComponentType() const;

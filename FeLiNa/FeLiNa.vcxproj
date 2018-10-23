@@ -82,6 +82,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="Component_Transform.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gif\gif.h" />
@@ -182,6 +183,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="Component_Transform.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Globals.cpp" />

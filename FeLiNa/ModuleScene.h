@@ -18,10 +18,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void CreateGameObject();
 	void CreateGameObject(GameObject* object);
-	void CreateGameObject(char* name);
-	void CreateGameObject(char* name, GameObject* parent, bool active = true);
 
 	bool DeleteGameObject(GameObject* object);
 	bool DeleteGameObject(char* name);
