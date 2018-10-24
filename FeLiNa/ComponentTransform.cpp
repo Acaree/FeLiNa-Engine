@@ -2,9 +2,20 @@
 #include "Globals.h"
 
 
-ComponentTransform::ComponentTransform(GameObject* parent): Component(parent)
+ComponentTransform::ComponentTransform(GameObject* parent, float3 position, float3 rotation, float3 scale): Component(parent)
 {
 	type = Component_Transform;
+
+	this->position = position;
+
+	euler_angles = rotation;
+
+	quat_rotation = math::Quat::FromEulerXYZ(euler_angles.x * DEGTORAD, euler_angles.y * DEGTORAD, euler_angles.z * DEGTORAD);
+
+	this->scale = scale;
+
+	UpdateMatrix();
+
 }
 
 ComponentTransform::~ComponentTransform(){

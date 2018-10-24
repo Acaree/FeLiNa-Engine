@@ -181,6 +181,9 @@
     <ClCompile Include="ComponentTransform.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentTexture.cpp">
+      <Filter>Modules\GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -472,6 +475,9 @@
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="ComponentTransform.h">
+      <Filter>Modules\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTexture.h">
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>

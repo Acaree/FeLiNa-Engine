@@ -37,6 +37,7 @@ public:
 	//Reading Mesh Data functions?
 	
 private:
+	
 	Mesh* mesh;
 	//Here AABB?
 
