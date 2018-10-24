@@ -49,24 +49,38 @@ bool ModuleImport::CleanUp()
 	return true;
 }
 
-bool ModuleImport::LoadData(const char* path) //TO REVISE THIS FUNCTION BOOL? or not because we have streams to all errors?
+bool ModuleImport::LoadData(const char* path) 
 {
 	LOG("Inicialization load data model");
 
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	
+	GameObject* obj = new GameObject(nullptr);
 
+	std::string tmp = path;
+	tmp = tmp.erase(0, tmp.find_last_of("\\") + 1);
+	tmp = tmp.substr(0, tmp.find_last_of("."));
+	//TO REVISE-> ¿Create a function that convert a const char* to char*?
+	int length = strlen(tmp.c_str());
+	char* temp = new char[length + 1];
+	strcpy(temp, tmp.c_str());
+	temp[length] = '\0';
+
+	obj->SetName(temp);
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		const aiNode* curr = scene->mRootNode;
 
 		for (int num_children = 0; num_children < curr->mNumChildren; ++num_children)
 		{
-			App->scene->root_object->AddChildren(LoadModel(scene, curr->mChildren[num_children], path));
+			obj->AddChildren(LoadModel(scene, curr->mChildren[num_children], path));
 		}
 
 	}
+
+	App->scene->root_object->AddChildren(obj);
+
 
 	//To change-> false and show.
 	return true;
