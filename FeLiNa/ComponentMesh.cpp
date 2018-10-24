@@ -3,7 +3,7 @@
 
 ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 {
-	type = ComponenMesh;
+	type = Component_Mesh;
 }
 
 ComponentMesh::~ComponentMesh()

@@ -5,10 +5,10 @@ class GameObject;
 
 enum ComponentType
 {
-	Component_Default,
 	Component_Transform,
 	Component_Mesh,
-	Component_Material
+	Component_Material,
+	Component_Default
 
 };
 
@@ -25,7 +25,7 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw();
 
-	void SetComponentType(ComponentType type = ComponentDefault);
+	void SetComponentType(ComponentType type = Component_Default);
 	ComponentType GetComponentType() const;
 
 	void SetActive(bool active = true);
@@ -36,7 +36,7 @@ public:
 
 protected:
 
-	ComponentType type = ComponentDefault;
+	ComponentType type = Component_Default;
 	bool active = true;
 	GameObject* parent = nullptr;
 
