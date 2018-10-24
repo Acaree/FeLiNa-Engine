@@ -14,7 +14,8 @@ ComponentTexture::~ComponentTexture() {
 }
 
 
-void ComponentTexture::apply_texture_to_mesh() {
+void ComponentTexture::ApplyTextureToMesh() {
 
+	
 
 }

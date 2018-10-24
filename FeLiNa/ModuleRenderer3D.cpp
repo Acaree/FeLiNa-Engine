@@ -4,6 +4,13 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
 #include "ModuleGui.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+
+#include "Component.h"
+#include "ComponentTransform.h"
+#include "ComponentTexture.h"
+#include "ComponentMesh.h"
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
@@ -489,27 +496,38 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 	ImGui::Begin("Inspector",&App->gui->inspector_open,window_flags);
 
-	if (data.size() != 0)
+	if (App->scene->root_object != nullptr)
 	{
-		ModelData * it = data[0];
+		GameObject * it = App->scene->root_object->GetChild(0);
 
-
-		ImGui::Text("File name: %s", it->name.c_str());
-		ImGui::Text("Path: %s", it->path.c_str());
+		ImGui::Text("File name: %s", it->GetName());
+		//ImGui::Text("Path: %s", it->path.c_str());
 		ImGui::Text("All the information is just for reading.");
+
+
 
 		if (ImGui::CollapsingHeader("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::Text("Position:");
-			ImGui::Text("x: %f  y: %f  z: %f", it->position.x, it->position.y, it->position.z);
+
+			ComponentTransform* trans = nullptr;
+
+			for (int i = 0; i <= it->components.size(); i++) {
+				if (it->components[i]->type != Component_Transform) {
+					trans = (ComponentTransform*)(it->components[i]);
+					break;
+				}
+			}
+
+			ImGui::Text("x: %f  y: %f  z: %f", trans->GetPosition().x, trans->GetPosition().y, trans->GetPosition().z);
 			Quat q;
 			
-			float3 rot_euler = it->rotation.ToEulerXYZ();
+			float3 rot_euler = trans->GetRotation();
 			ImGui::Text("Rotation:");
 			ImGui::Text("x: %f  y: %f  z: %f", rot_euler.x, rot_euler.y, rot_euler.z);
 
 			ImGui::Text("Scale:");
-			ImGui::Text("x: %f  y: %f  z: %f", it->scale.x, it->scale.y, it->scale.z);
+			ImGui::Text("x: %f  y: %f  z: %f", trans->GetScale().x, trans->GetScale().y, trans->GetScale().z);
 		}
 
 		if (ImGui::CollapsingHeader("Mesh Information", ImGuiTreeNodeFlags_DefaultOpen))
@@ -534,6 +552,15 @@ void ModuleRenderer3D::DrawMeshInformation()
 			ImGui::Checkbox("Checker Material", &material_cheker);
 			ImGui::Checkbox("No Texture", &no_texture);
 
+			ComponentTexture* texture_com = nullptr;
+
+			for (int i = 0; i <= it->components.size(); i++) {
+				if (it->components[i]->type != Component_Material) {
+					texture_com = (ComponentTexture*)(it->components[i]);
+					break;
+				}
+			}
+
 			if (!no_texture)
 			{
 				if (material_cheker)
@@ -544,10 +571,10 @@ void ModuleRenderer3D::DrawMeshInformation()
 				}
 				else
 				{
-					ImGui::Text("Width: %i", it->texture_width);
+					ImGui::Text("Width: %i", texture_com->widht);
 					ImGui::SameLine();
-					ImGui::Text("Height: %i", it->texture_height);
-					ImGui::Image((ImTextureID)(it->texture_id), ImVec2(250, 250));
+					ImGui::Text("Height: %i", texture_com->height);
+					ImGui::Image((ImTextureID)(texture_com->texture_id), ImVec2(250, 250));
 				}
 			}
 		}

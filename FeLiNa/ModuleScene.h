@@ -25,12 +25,13 @@ public:
 
 	void ShowHierarchy();
 
+	std::vector<GameObject*> game_objects;
 
 	GameObject* root_object = nullptr;
 private:
 
 	mPlane* grid_plane = nullptr;
-	std::vector<GameObject*> game_objects;
+
 	
 	bool hierarchy_open = true;
 

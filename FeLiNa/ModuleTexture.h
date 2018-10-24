@@ -11,7 +11,7 @@ public:
 	~ModuleTexture();
 
 	bool Init();
-	bool LoadTexture(const char* path, int index) const;
+	uint LoadTexture(const char* path, int index) const;
 
 };
 

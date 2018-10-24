@@ -37,6 +37,8 @@ public:
 	bool DeleteComponent(Component* component);
 	bool DeleteComponent(ComponentType type);
 
+	std::vector<Component*> components;
+
 	uint GetNumChildren() const;
 
 private:
@@ -45,7 +47,7 @@ private:
 	bool active = true;
 	std::vector<GameObject*> childrens;
 	GameObject* parent = nullptr;
-	std::vector<Component*> components;
+
 };
 
 

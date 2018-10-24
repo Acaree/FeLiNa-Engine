@@ -31,12 +31,14 @@ public:
 	void SetActive(bool active = true);
 	bool GetActive() const;
 
+	ComponentType type = Component_Default;
+
 	void SetParent(GameObject* parent = nullptr);
 	GameObject* GetParent() const;
 
 protected:
 
-	ComponentType type = Component_Default;
+	
 	bool active = true;
 	GameObject* parent = nullptr;
 

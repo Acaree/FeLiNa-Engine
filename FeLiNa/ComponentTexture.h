@@ -14,14 +14,16 @@ public:
 	~ComponentTexture();
 
 
-	void apply_texture_to_mesh();
+	void ApplyTextureToMesh();
 
+	uint texture_id;
+
+	uint widht;
+	uint height;
 
 private:
 
-	uint texture_id;
-	uint widht;
-	uint height;
+
 
 
 };

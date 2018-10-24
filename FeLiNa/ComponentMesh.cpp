@@ -1,5 +1,7 @@
 #include "ComponentMesh.h"
 #include "Glew/include/glew.h"
+#include "GameObject.h"
+#include "ComponentTexture.h"
 
 ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 {
@@ -19,7 +21,20 @@ void ComponentMesh::Draw()
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+
+	ComponentTexture* texture_com = nullptr;
+
+	for (int i = 0; i <= parent->components.size(); i++) {
+		if (parent->components[i]->type != Component_Material) {
+			texture_com = (ComponentTexture*)(parent->components[i]);
+			break;
+		}
+	}
+
+	
+
+	glBindBuffer(GL_ARRAY_BUFFER, texture_com->texture_id);
+
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices); //Texture indices that to Material component

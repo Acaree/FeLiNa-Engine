@@ -40,7 +40,7 @@ bool ModuleTexture::Init()
 	return ret;
 }
 
-bool ModuleTexture::LoadTexture(const char* path,int index) const 
+uint ModuleTexture::LoadTexture(const char* path,int index) const 
 {
 
 
@@ -101,5 +101,5 @@ bool ModuleTexture::LoadTexture(const char* path,int index) const
 
 	ilDeleteImages(1, &imageID); 
 
-	return success;
+	return textureID;
 }
