@@ -12,7 +12,7 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
-
+#include "ComponentTransform.h"
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
 
@@ -87,10 +87,24 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 		//Create a game object components
 		ComponentMesh* component_mesh = new ComponentMesh(game_object);
 		Mesh* mesh_data = new Mesh();
+		ComponentTransform* component_transform = new ComponentTransform(game_object);
+
+		aiQuaternion q;
+		aiVector3D scale, pos;
+
+		node->mTransformation.Decompose(scale, q, pos);
+
+		component_transform->SetPosition(float3(pos.x, pos.y, pos.z));
+		component_transform->SetQuaternion(Quat(q.x, q.y, q.z, q.w));
+		component_transform->SetScale(float3(scale.x, scale.y, scale.z));
 
 		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
 		{
 			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[num_meshes]];
+
+
+
+
 
 			//Load Vertices
 			mesh_data->num_vertices = new_mesh->mNumVertices;
@@ -176,6 +190,7 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 
 		}
 
+		game_object->SetComponent(component_transform);
 		game_object->SetComponent(component_mesh);
 		//Ad to game object, mesh component.
 		
