@@ -68,7 +68,7 @@ bool GameObject::CleanUp()
 void GameObject::SetName(char* name)
 {
 	this->name = name;
-	strcpy(this->name, name);
+	
 }
 
 char* GameObject::GetName() const
