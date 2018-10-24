@@ -160,3 +160,8 @@ bool GameObject::DeleteComponent(ComponentType type)
 
 	return ret;
 }
+
+uint GameObject::GetNumChildren() const
+{
+	return childrens.size();
+}

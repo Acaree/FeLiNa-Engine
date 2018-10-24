@@ -23,6 +23,8 @@ public:
 	bool DeleteGameObject(GameObject* object);
 	bool DeleteGameObject(char* name);
 
+	void ShowHierarchy();
+
 
 	GameObject* root_object = nullptr;
 private:
@@ -30,6 +32,8 @@ private:
 	mPlane* grid_plane = nullptr;
 	std::vector<GameObject*> game_objects;
 	
+	bool hierarchy_open = true;
+
 };
 
 #endif

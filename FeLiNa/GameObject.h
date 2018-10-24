@@ -36,6 +36,8 @@ public:
 	bool DeleteComponent(Component* component);
 	bool DeleteComponent(ComponentType type);
 
+	uint GetNumChildren() const;
+
 private:
 	
 	char* name = "No Name";

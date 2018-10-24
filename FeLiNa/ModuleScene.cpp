@@ -71,6 +71,9 @@ update_status ModuleScene::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 	
+	ShowHierarchy();
+
+
 	root_object->Update(dt);
 	return update_return;
 }
@@ -138,4 +141,39 @@ bool ModuleScene::DeleteGameObject(char* name)
 	}
 
 	return ret;
+}
+
+void ModuleScene::ShowHierarchy()
+{
+	ImGui::ShowDemoWindow();
+	ImGui::SetNextWindowSize({300,500});
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+	ImGui::Begin("Hierarchy", &hierarchy_open ,window_flags);
+
+	
+	ImGuiTreeNodeFlags flags = 0;
+
+	flags |= ImGuiTreeNodeFlags_DefaultOpen;
+
+	
+	for (uint i = 0; i < root_object->GetNumChildren(); ++i)
+	{
+		
+
+		if (ImGui::TreeNodeEx(root_object->GetChild(i)->GetName()))
+		{
+			int x = 0;
+			ImGui::TreePop();
+		}
+
+		
+	}
+
+
+	ImGui::End();
 }
