@@ -96,16 +96,14 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 			//Create a game object components
 			ComponentMesh* component_mesh = new ComponentMesh(game_object);
 			Mesh* mesh_data = new Mesh();
-			ComponentTransform* component_transform = new ComponentTransform(game_object);
 
 			aiQuaternion q;
 			aiVector3D scale, pos;
 
 			curr->mTransformation.Decompose(scale, q, pos);
 
-			component_transform->SetPosition(float3(pos.x, pos.y, pos.z));
-			component_transform->SetQuaternion(Quat(q.x, q.y, q.z, q.w));
-			component_transform->SetScale(float3(scale.x, scale.y, scale.z));
+			ComponentTransform* component_transform = new ComponentTransform(game_object, float3(pos.x, pos.y, pos.z), float3(scale.x, scale.y, scale.z), float3(0,0,0));
+
 
 			for (int num_meshes = 0; num_meshes < curr->mNumMeshes; ++num_meshes)
 			{
