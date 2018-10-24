@@ -167,7 +167,6 @@ void ModuleScene::ShowHierarchy()
 
 		if (ImGui::TreeNodeEx(root_object->GetChild(i)->GetName()))
 		{
-			int x = 0;
 			ImGui::TreePop();
 		}
 
