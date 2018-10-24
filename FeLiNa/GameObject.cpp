@@ -68,6 +68,7 @@ bool GameObject::CleanUp()
 void GameObject::SetName(char* name)
 {
 	this->name = name;
+	strcpy(this->name, name);
 }
 
 char* GameObject::GetName() const
@@ -160,3 +161,9 @@ bool GameObject::DeleteComponent(ComponentType type)
 
 	return ret;
 }
+
+uint GameObject::GetNumChildren() const
+{
+	return childrens.size();
+}
+

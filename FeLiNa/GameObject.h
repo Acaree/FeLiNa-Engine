@@ -27,6 +27,7 @@ public:
 
 	void AddChildren(GameObject* child);
 	GameObject* GetChild(uint position);
+	
 
 	void SetParent(GameObject* parent);
 	GameObject* GetParent()const;
@@ -35,6 +36,8 @@ public:
 	
 	bool DeleteComponent(Component* component);
 	bool DeleteComponent(ComponentType type);
+
+	uint GetNumChildren() const;
 
 private:
 	

@@ -65,7 +65,7 @@ float3 ComponentTransform::GetScale()const{
 
 void ComponentTransform :: UpdateMatrix() {
 
-	transform_matrix = { 1,0,0,position.x,
+	/*transform_matrix = { 1,0,0,position.x,
 						0,1,0,position.y,
 						0,0,1,position.z,
 						0,0,0,1 };
@@ -77,8 +77,19 @@ void ComponentTransform :: UpdateMatrix() {
 													0,scale.y,0,0,
 													0,0,scale.z,0,
 													0,0,0,1 };
+													*/
+	
 
+	transform_matrix = float4x4::FromTRS(position,quat_rotation, scale);
 }
 
+void ComponentTransform::SetQuaternion(Quat quaternion)
+{
+	quat_rotation = quaternion;
+}
 
+Quat ComponentTransform::GetQuaternion() const
+{
+	return quat_rotation;
+}
 
