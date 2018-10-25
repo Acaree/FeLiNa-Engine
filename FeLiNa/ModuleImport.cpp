@@ -92,6 +92,15 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 	//Creating a game object to set data
 	GameObject* game_object = new GameObject(nullptr);
 
+	/*aiNode* node_next = node;
+	int child = 0;
+	while (node_next != nullptr)
+	{
+
+
+	}*/
+
+
 	//Recursive search for all meshes in all children meshes
 	for (int meshes_children = 0; meshes_children < node->mNumChildren; ++meshes_children)
 	{
@@ -202,9 +211,9 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 
 			App->renderer3D->AddDataMesh(data);
 			//TO revision best wave?
-			FindTexturePath(material, path, num_meshes);*/
+			FindTexturePath(material, path, num_meshes);
 
-			//game_object = (LoadModel(scene, curr->mChildren[meshes_children], path));
+			//game_object = (LoadModel(scene, curr->mChildren[meshes_children], path));*/
 		}
 
 

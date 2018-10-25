@@ -41,6 +41,8 @@ public:
 
 	uint GetNumChildren() const;
 
+	void ShowObjectHierarchy();
+	
 private:
 	
 	char* name = "No Name";

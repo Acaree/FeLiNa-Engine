@@ -1,6 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
-
+#include "ImGui/imgui.h"
 
 
 GameObject::GameObject(GameObject* parent)
@@ -37,7 +37,6 @@ void GameObject::Update(float dt)
 	for (int i = 0; i < components.size(); ++i)
 		components[i]->Draw();
 
-	
 
 }
 
@@ -167,3 +166,19 @@ uint GameObject::GetNumChildren() const
 	return childrens.size();
 }
 
+void GameObject::ShowObjectHierarchy()
+{
+	
+		if (GetNumChildren() != 0)
+		{
+			for (int i = 0; i < GetNumChildren(); ++i)
+			{
+				if (ImGui::TreeNodeEx(childrens[i]->GetName()))
+				{
+					childrens[i]->ShowObjectHierarchy();
+					ImGui::TreePop();
+				}
+			}
+		}
+	
+}

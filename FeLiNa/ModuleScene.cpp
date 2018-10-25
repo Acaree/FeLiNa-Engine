@@ -35,7 +35,7 @@ bool ModuleScene::Start()
 	grid_plane->is_grid = true;
 
 	root_object = new GameObject(nullptr);
-	App->mesh_import->LoadData("Assets\\BakerHouse.FBX");
+	App->mesh_import->LoadData("Assets\\Jerarquia.FBX");
 	
 	return ret;
 }
@@ -154,7 +154,7 @@ void ModuleScene::ShowHierarchy()
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
 
 	ImGui::Begin("Hierarchy", &hierarchy_open ,window_flags);
-
+	
 	
 	ImGuiTreeNodeFlags flags = 0;
 
@@ -168,8 +168,15 @@ void ModuleScene::ShowHierarchy()
 		if (ImGui::TreeNodeEx(root_object->GetChild(i)->GetName()))
 		{
 			//TO Change
+			root_object->GetChild(i)->ShowObjectHierarchy();
+			//root_object->GetChild(i)->show = true;
+
+			/*for (uint j = 0; j < root_object->GetChild(i)->GetNumChildren(); ++j)
+			{
+				root_object->GetChild(i)->ShowObjectHierarchy();
+			}*/
 			
-			if (ImGui::TreeNodeEx(root_object->GetChild(i)->GetChild(0)->GetName()))
+			/*if (ImGui::TreeNodeEx(root_object->GetChild(i)->GetChild(0)->GetName()))
 			{
 				int x = 0;
 				ImGui::TreePop();
@@ -179,7 +186,7 @@ void ModuleScene::ShowHierarchy()
 			{
 				int x = 0;
 				ImGui::TreePop();
-			}
+			}*/
 			
 			ImGui::TreePop();
 		}
