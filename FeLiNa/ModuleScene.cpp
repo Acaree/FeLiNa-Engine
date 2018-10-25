@@ -35,7 +35,7 @@ bool ModuleScene::Start()
 	grid_plane->is_grid = true;
 
 	root_object = new GameObject(nullptr);
-	App->mesh_import->LoadData("Assets\\Jerarquia.FBX");
+	App->mesh_import->LoadData("Assets\\Hierarchy.FBX");
 	
 	return ret;
 }

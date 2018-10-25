@@ -89,9 +89,10 @@ bool ModuleImport::LoadData(const char* path)
 
 GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* path)
 {
+
 	//Creating a game object to set data
 	GameObject* game_object = new GameObject(nullptr);
-
+	
 	/*aiNode* node_next = node;
 	int child = 0;
 	while (node_next != nullptr)
@@ -105,7 +106,7 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 	for (int meshes_children = 0; meshes_children < node->mNumChildren; ++meshes_children)
 	{
 		aiNode* curr = node->mChildren[meshes_children];
-
+		
 		while (curr->mNumMeshes < 1)
 		{
 			curr = curr->mChildren[0];
@@ -114,6 +115,7 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 		if (curr->mNumMeshes > 0)
 		{
 			//Game Object name
+			game_object = new GameObject(nullptr);
 			game_object->SetName(curr->mName.data);
 
 			//Create a game object components
@@ -220,7 +222,11 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 		
 	}
 	
-	
+
+	for (uint i = 0; i < node->mNumChildren; ++i)
+	{	
+		game_object->AddChildren(LoadModel(scene, node->mChildren[i], path));	
+	}
 	return game_object;
 }
 
