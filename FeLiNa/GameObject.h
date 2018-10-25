@@ -42,6 +42,8 @@ public:
 	uint GetNumChildren() const;
 
 	void ShowObjectHierarchy();
+
+
 	
 private:
 	

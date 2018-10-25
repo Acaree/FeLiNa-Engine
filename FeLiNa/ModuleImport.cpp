@@ -107,15 +107,10 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 	{
 		aiNode* curr = node->mChildren[meshes_children];
 		
-		while (curr->mNumMeshes < 1)
-		{
-			curr = curr->mChildren[0];
-		}
-
 		if (curr->mNumMeshes > 0)
 		{
 			//Game Object name
-			game_object = new GameObject(nullptr);
+			
 			game_object->SetName(curr->mName.data);
 
 			//Create a game object components
@@ -198,37 +193,25 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 			game_object->SetComponent(component_transform);
 			game_object->SetComponent(component_mesh);
-			//Ad to game object, mesh component.
 
-
-			/*
-
-			data->path = path;
-			std::string tmp = path;
-			data->name = tmp.erase(0, tmp.find_last_of("\\") + 1);
-			tmp.clear();
-			data->position = { pos.x,pos.y,pos.z };
-			data->scale = { scale.x,scale.y,scale.z };
-			data->rotation = Quat(q.x, q.y, q.z, q.w);
-
-			App->renderer3D->AddDataMesh(data);
-			//TO revision best wave?
-			FindTexturePath(material, path, num_meshes);
-
-			//game_object = (LoadModel(scene, curr->mChildren[meshes_children], path));*/
+			obj->AddChildren(game_object);
+		}
+		else
+		{
+			game_object = obj;
 		}
 
 
-		
+
 	}
 	
+	for (uint i = 0; i < node->mChildren[0]->mNumChildren; ++i)
+	{
+		LoadModel(scene, node->mChildren[i], path, game_object);
+	}
+
 	
-		/*for (uint i = 0; i < node->mChildren[0]->mNumChildren; ++i)
-		{
-			game_object->AddChildren(LoadModel(scene, node->mChildren[i], path));
-		}*/
 	
-	obj->AddChildren(game_object);
 	
 }
 
