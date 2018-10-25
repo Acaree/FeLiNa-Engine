@@ -5,7 +5,7 @@
 #include "ModuleGui.h"
 #include "ModuleImport.h"
 #include "ModuleInput.h"
-
+#include "ModuleScene.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 

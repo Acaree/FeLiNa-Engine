@@ -56,7 +56,7 @@ bool ModuleImport::LoadData(const char* path)
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	
-	GameObject* obj = new GameObject(nullptr);
+	GameObject* obj2 = new GameObject(nullptr);
 
 	std::string tmp = path;
 	tmp = tmp.erase(0, tmp.find_last_of("\\") + 1);
@@ -67,19 +67,19 @@ bool ModuleImport::LoadData(const char* path)
 	strcpy(temp, tmp.c_str());
 	temp[length] = '\0';
 
-	obj->SetName(temp);
+	obj2->SetName(temp);
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		const aiNode* curr = scene->mRootNode;
 
 		for (int num_children = 0; num_children < curr->mNumChildren; ++num_children)
 		{
-			obj->AddChildren(LoadModel(scene, curr->mChildren[num_children], path));
+			LoadModel(scene, curr->mChildren[num_children], path,obj2);
 		}
 
 	}
 
-	App->scene->root_object->AddChildren(obj);
+	App->scene->root_object->AddChildren(obj2);
 
 
 	//To change-> false and show.
@@ -87,7 +87,7 @@ bool ModuleImport::LoadData(const char* path)
 
 }
 
-GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* path)
+void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* path, GameObject* obj)
 {
 
 	//Creating a game object to set data
@@ -222,12 +222,14 @@ GameObject* ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const ch
 		
 	}
 	
-
-	for (uint i = 0; i < node->mNumChildren; ++i)
-	{	
-		game_object->AddChildren(LoadModel(scene, node->mChildren[i], path));	
-	}
-	return game_object;
+	
+		/*for (uint i = 0; i < node->mChildren[0]->mNumChildren; ++i)
+		{
+			game_object->AddChildren(LoadModel(scene, node->mChildren[i], path));
+		}*/
+	
+	obj->AddChildren(game_object);
+	
 }
 
 void ModuleImport::GenerateBufferData(Mesh* mesh_data)

@@ -20,7 +20,7 @@ public:
 	bool CleanUp();
 	
 	bool LoadData(const char* path);
-	GameObject* LoadModel(const aiScene* scene, aiNode* node, const char* path);
+	void LoadModel(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
 	void GenerateBufferData(Mesh* mesh_data);
 	void FindTexturePath(aiMaterial* material, const char* path, int index );
 };
