@@ -158,39 +158,28 @@ void ModuleScene::ShowHierarchy()
 	
 	ImGuiTreeNodeFlags flags = 0;
 
-	flags |= ImGuiTreeNodeFlags_DefaultOpen;
-
 	
+
 	for (uint i = 0; i < root_object->GetNumChildren(); ++i)
 	{
-		
 
-		if (ImGui::TreeNodeEx(root_object->GetChild(i)->GetName()))
+		if (root_object->GetChild(i)->IsSelected())
+			flags |= ImGuiTreeNodeFlags_Selected;
+		else
+			flags = 0;
+
+		bool opened = ImGui::TreeNodeEx(root_object->GetChild(i)->GetName(), flags);
+
+		if (ImGui::IsItemClicked())
 		{
-			//TO Change
-			root_object->GetChild(i)->ShowObjectHierarchy();
-			//root_object->GetChild(i)->show = true;
-
-			/*for (uint j = 0; j < root_object->GetChild(i)->GetNumChildren(); ++j)
-			{
-				root_object->GetChild(i)->ShowObjectHierarchy();
-			}*/
-			
-			/*if (ImGui::TreeNodeEx(root_object->GetChild(i)->GetChild(0)->GetName()))
-			{
-				int x = 0;
-				ImGui::TreePop();
-			}
-
-			if (ImGui::TreeNodeEx(root_object->GetChild(i)->GetChild(1)->GetName()))
-			{
-				int x = 0;
-				ImGui::TreePop();
-			}*/
-			
-			ImGui::TreePop();
+			root_object->GetChild(i)->ToggleSelected();
 		}
 
+		if (opened)
+		{
+			root_object->GetChild(i)->ShowObjectHierarchy();
+			ImGui::TreePop();
+		}
 		
 	}
 

@@ -183,3 +183,20 @@ void GameObject::ShowObjectHierarchy()
 	
 }
 
+void GameObject::SetSelected(bool selected)
+{
+	this->selected = selected;
+}
+
+bool GameObject::IsSelected() const
+{
+	return selected;
+}
+
+void GameObject::ToggleSelected()
+{
+	if (selected)
+		selected = false;
+	else
+		selected = true;
+}

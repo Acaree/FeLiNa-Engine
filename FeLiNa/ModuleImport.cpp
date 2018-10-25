@@ -202,7 +202,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 		}
 
 
-
+		
 	}
 	
 	for (uint i = 0; i < node->mChildren[0]->mNumChildren; ++i)

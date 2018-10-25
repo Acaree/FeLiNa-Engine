@@ -43,15 +43,16 @@ public:
 
 	void ShowObjectHierarchy();
 
-
-	
+	void SetSelected(bool selected);
+	bool IsSelected() const;
+	void ToggleSelected();
 private:
 	
 	char* name = "No Name";
 	bool active = true;
 	std::vector<GameObject*> childrens;
 	GameObject* parent = nullptr;
-
+	bool selected = false;
 };
 
 
