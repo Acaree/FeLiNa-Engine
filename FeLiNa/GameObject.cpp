@@ -1,7 +1,8 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "Application.h"
 #include "ImGui/imgui.h"
-
+#include "ModuleScene.h"
 
 GameObject::GameObject(GameObject* parent)
 {
@@ -168,18 +169,42 @@ uint GameObject::GetNumChildren() const
 
 void GameObject::ShowObjectHierarchy()
 {
-	
-		if (GetNumChildren() != 0)
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+	bool node_open = false;
+
+	if (selected)
+		flags |= ImGuiTreeNodeFlags_Selected;
+
+	if (childrens.size() == 0)
+		flags |= ImGuiTreeNodeFlags_Leaf;
+
+	if (ImGui::TreeNodeEx(name, flags))
+		node_open = true;
+
+	if (ImGui::IsItemClicked())
+	{
+		GameObject* go = App->scene->GetSelectedGameObject();
+
+		if (go != nullptr)
 		{
-			for (int i = 0; i < GetNumChildren(); ++i)
-			{
-				if (ImGui::TreeNodeEx(childrens[i]->GetName()))
-				{
-					childrens[i]->ShowObjectHierarchy();
-					ImGui::TreePop();
-				}
-			}
+			go->SetSelected(false);
 		}
+
+		App->scene->SetSelectedGameObject(this);
+		SetSelected(true);
+	}
+
+	if (node_open)
+	{
+		for (uint i = 0; i < childrens.size(); ++i)
+		{
+			ImGui::PushID(i);
+			childrens[i]->ShowObjectHierarchy();
+			ImGui::PopID();
+		}
+
+		ImGui::TreePop();
+	}
 	
 }
 

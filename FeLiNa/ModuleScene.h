@@ -28,12 +28,15 @@ public:
 	std::vector<GameObject*> game_objects;
 
 	GameObject* root_object = nullptr;
+
+	void SetSelectedGameObject(GameObject* go);
+	GameObject* GetSelectedGameObject() const;
 private:
 
 	mPlane* grid_plane = nullptr;
-
-	
 	bool hierarchy_open = true;
+
+	GameObject* selected = nullptr;
 
 };
 

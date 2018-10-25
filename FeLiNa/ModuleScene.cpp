@@ -155,34 +155,21 @@ void ModuleScene::ShowHierarchy()
 
 	ImGui::Begin("Hierarchy", &hierarchy_open ,window_flags);
 	
-	
-	ImGuiTreeNodeFlags flags = 0;
-
-	
-
 	for (uint i = 0; i < root_object->GetNumChildren(); ++i)
 	{
-
-		if (root_object->GetChild(i)->IsSelected())
-			flags |= ImGuiTreeNodeFlags_Selected;
-		else
-			flags = 0;
-
-		bool opened = ImGui::TreeNodeEx(root_object->GetChild(i)->GetName(), flags);
-
-		if (ImGui::IsItemClicked())
-		{
-			root_object->GetChild(i)->ToggleSelected();
-		}
-
-		if (opened)
-		{
-			root_object->GetChild(i)->ShowObjectHierarchy();
-			ImGui::TreePop();
-		}
-		
+		ImGui::PushID(i);
+		root_object->GetChild(i)->ShowObjectHierarchy();
+		ImGui::PopID();
 	}
-
-
 	ImGui::End();
+}
+
+void ModuleScene::SetSelectedGameObject(GameObject* go)
+{
+	selected = go;
+}
+
+GameObject* ModuleScene::GetSelectedGameObject() const
+{
+	return selected;
 }
