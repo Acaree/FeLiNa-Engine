@@ -9,6 +9,7 @@ struct aiLogStream;
 struct aiMaterial;
 class GameObject;
 struct Mesh;
+class ComponentTexture;
 
 class ModuleImport : public Module
 {
@@ -22,7 +23,7 @@ public:
 	bool LoadData(const char* path);
 	void LoadModel(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
 	void GenerateBufferData(Mesh* mesh_data);
-	void FindTexturePath(aiMaterial* material, const char* path, int index );
+	ComponentTexture* FindTexturePath(aiMaterial* material, const char* path, int index );
 };
 
 

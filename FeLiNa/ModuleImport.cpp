@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ComponentTexture.h"
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
 
@@ -115,6 +116,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 			//Create a game object components
 			ComponentMesh* component_mesh = new ComponentMesh(game_object);
+			ComponentTexture* component_texture = nullptr;
 			Mesh* mesh_data = new Mesh();
 
 			aiQuaternion q;
@@ -173,6 +175,10 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 				}
 
+				 component_texture = FindTexturePath(material, path, meshes_children);
+
+
+
 				//Normals
 				if (new_mesh->HasNormals())
 				{
@@ -193,7 +199,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 			game_object->SetComponent(component_transform);
 			game_object->SetComponent(component_mesh);
-
+			game_object->SetComponent(component_texture);
 			obj->AddChildren(game_object);
 		}
 		else
@@ -241,11 +247,14 @@ void ModuleImport::GenerateBufferData(Mesh* mesh_data)
 }
 
 //TO REVISION LOGS 
-void ModuleImport::FindTexturePath(aiMaterial* material, const char *path, int index)
+ComponentTexture* ModuleImport::FindTexturePath(aiMaterial* material, const char *path, int index)
 {
+	ComponentTexture* texture = nullptr;
+
 	if (material != nullptr)
 	{
 		
+
 		aiString texture_name;
 		material->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
 
@@ -256,24 +265,25 @@ void ModuleImport::FindTexturePath(aiMaterial* material, const char *path, int i
 		std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data;
 		std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
 
-		bool success = false;
-		success = App->texture->LoadTexture(texture_folder.c_str(), index);
+		
+		texture = App->texture->LoadTexture(texture_folder.c_str(), index);
 
-		if (!success)
+		if (texture->texture_id == 0)
 		{
-			success = App->texture->LoadTexture(fbx_folder.c_str(), index);
+			texture = App->texture->LoadTexture(fbx_folder.c_str(), index);
 
-			if (!success)
+			if (texture->texture_id == 0)
 			{
-				success = App->texture->LoadTexture(game_folder.c_str(), index);
+				texture = App->texture->LoadTexture(game_folder.c_str(), index);
 
-				if (!success)
+				if (texture->texture_id == 0)
 				{
-					success = App->texture->LoadTexture(felina_folder.c_str(), index);
+					texture = App->texture->LoadTexture(felina_folder.c_str(), index);
 
 				}
 			}
 		}
 	}
 
+	return texture;
 }

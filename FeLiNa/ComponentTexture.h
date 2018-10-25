@@ -13,13 +13,13 @@ public:
 	ComponentTexture(GameObject* parent, uint texture_id);
 	~ComponentTexture();
 
-
+	
 	void ApplyTextureToMesh();
 
-	uint texture_id;
+	uint texture_id = 0;
 
-	uint widht;
-	uint height;
+	uint widht = 0;
+	uint height = 0;
 
 private:
 

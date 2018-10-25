@@ -16,28 +16,26 @@ ComponentMesh::~ComponentMesh()
 void ComponentMesh::Draw()
 {
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
 	ComponentTexture* texture_com = nullptr;
 
 	for (int i = 0; i <= parent->components.size(); i++) {
-		if (parent->components[i]->type != Component_Material) {
+		if (parent->components[i]->type == Component_Material) {
 			texture_com = (ComponentTexture*)(parent->components[i]);
 			break;
 		}
 	}
 
-	
+	glBindTexture(GL_TEXTURE_2D, texture_com->texture_id);
 
-	glBindBuffer(GL_ARRAY_BUFFER, texture_com->texture_id);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices); //Texture indices that to Material component
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices); 
 
 	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 
@@ -47,7 +45,7 @@ void ComponentMesh::Draw()
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glDisable(GL_TEXTURE_2D);
+
 
 }
 

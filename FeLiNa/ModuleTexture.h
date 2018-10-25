@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+class ComponentTexture;
 
 class ModuleTexture : public Module
 {
@@ -11,7 +12,7 @@ public:
 	~ModuleTexture();
 
 	bool Init();
-	uint LoadTexture(const char* path, int index) const;
+	ComponentTexture* LoadTexture(const char* path, int index) const;
 
 };
 

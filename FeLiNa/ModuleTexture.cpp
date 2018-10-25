@@ -1,7 +1,7 @@
 #include "ModuleTexture.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-
+#include "ComponentTexture.h"
 #include "Devil/include/il.h"
 #include "Devil/include/ilu.h"
 #include "Devil/include/ilut.h"
@@ -40,9 +40,8 @@ bool ModuleTexture::Init()
 	return ret;
 }
 
-uint ModuleTexture::LoadTexture(const char* path,int index) const 
+ComponentTexture* ModuleTexture::LoadTexture(const char* path,int index) const 
 {
-
 
 	uint imageID = 0;				
 
@@ -58,7 +57,8 @@ uint ModuleTexture::LoadTexture(const char* path,int index) const
 
 	success = ilLoadImage(path); 	
 
-	
+	ComponentTexture* texture = new ComponentTexture(nullptr,0);
+
 	if (success)
 	{
 
@@ -91,7 +91,11 @@ uint ModuleTexture::LoadTexture(const char* path,int index) const
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
 			0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
-		App->renderer3D->AddTextureData(textureID, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),index);
+
+		texture->texture_id = textureID;
+		texture->widht = ilGetInteger(IL_IMAGE_WIDTH);
+		texture->height = ilGetInteger(IL_IMAGE_HEIGHT);
+
 
 		if (success)
 			LOG("Texture creation successful.");
@@ -101,5 +105,5 @@ uint ModuleTexture::LoadTexture(const char* path,int index) const
 
 	ilDeleteImages(1, &imageID); 
 
-	return textureID;
+	return texture;
 }

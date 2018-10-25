@@ -5,6 +5,7 @@
 
 ComponentTexture::ComponentTexture(GameObject* parent, uint texture_id) : Component(parent) {
 
+	type = Component_Material;
 	this->texture_id = texture_id;
 
 }
