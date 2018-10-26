@@ -22,6 +22,10 @@ struct Mesh
 	uint num_vertices = 0;
 	float* vertices = nullptr;
 
+	uint id_uv = 0;
+	uint num_uv = 0;
+	float* uv = nullptr;
+
 	uint id_normals = 0;
 	uint num_normals = 0;
 	float* normals = nullptr;
@@ -49,7 +53,7 @@ public:
 
 	void AddDataMesh(Mesh* data_mesh);
 	void DeleteAllDataMesh();
-	void DrawMeshInformation();
+
 	void CreateCheckers();
 	void CleanAllDataModel();
 	void SaveState(JSON_Object* config);

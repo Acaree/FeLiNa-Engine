@@ -393,7 +393,7 @@ void ModuleRenderer3D :: DrawMesh(Mesh* mesh) {
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	//glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 	glTexCoordPointer(2,GL_FLOAT,0 , NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
@@ -464,111 +464,6 @@ void ModuleRenderer3D::AddDataMesh(Mesh* data_mesh)
 void ModuleRenderer3D::DeleteAllDataMesh()
 {
 	meshes.clear();
-}
-
-
-
-void ModuleRenderer3D::DrawMeshInformation()
-{
-	ImGuiWindowFlags window_flags = 0;
-
-	window_flags |= ImGuiWindowFlags_AlwaysAutoResize;//ImGuiWindowFlags_NoResize;
-	window_flags |= ImGuiWindowFlags_NoCollapse;
-	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
-
-
-	ImGui::Begin("Inspector",&App->gui->inspector_open,window_flags);
-
-	if (App->scene->root_object != nullptr)
-	{
-		GameObject * it = App->scene->root_object->GetChild(0);
-
-		ImGui::Text("File name: %s", it->GetName());
-		//ImGui::Text("Path: %s", it->path.c_str());
-		ImGui::Text("All the information is just for reading.");
-
-
-
-		if (ImGui::CollapsingHeader("Transformation", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::Text("Position:");
-
-			ComponentTransform* trans = nullptr;
-
-			if (it->components.size())
-			{
-				for (int i = 0; i < it->components.size(); i++) {
-					if (it->components[i]->type != Component_Transform) {
-						trans = (ComponentTransform*)(it->components[i]);
-						break;
-					}
-				}
-
-				ImGui::Text("x: %f  y: %f  z: %f", trans->GetPosition().x, trans->GetPosition().y, trans->GetPosition().z);
-				Quat q;
-
-				float3 rot_euler = trans->GetRotation();
-				ImGui::Text("Rotation:");
-				ImGui::Text("x: %f  y: %f  z: %f", rot_euler.x, rot_euler.y, rot_euler.z);
-
-				ImGui::Text("Scale:");
-				ImGui::Text("x: %f  y: %f  z: %f", trans->GetScale().x, trans->GetScale().y, trans->GetScale().z);
-			}
-		}
-
-		if (ImGui::CollapsingHeader("Mesh Information", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			for (int i = 0; i < meshes.size(); ++i)
-			{
-				ImGui::Text("Mesh %i", i);
-				ImGui::Text("Indices: %i", meshes[i]->num_indices);
-
-				ImGui::Text("Vertices: %i", meshes[i]->num_vertices);
-
-			//	ImGui::Text("Uv's: %i", meshes[i]->num_uv);
-
-				ImGui::Text("Triangles: %i", meshes[i]->num_vertices / 3);
-
-				ImGui::Separator();
-			}
-		}
-
-		if (ImGui::CollapsingHeader("Material Material", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::Checkbox("Checker Material", &material_cheker);
-			ImGui::Checkbox("No Texture", &no_texture);
-
-			ComponentTexture* texture_com = nullptr;
-
-			for (int i = 0; i < it->components.size(); i++) {
-				if (it->components[i]->type != Component_Material) {
-					texture_com = (ComponentTexture*)(it->components[i]);
-					break;
-				}
-			}
-
-			if (!no_texture)
-			{
-				if (material_cheker)
-				{
-					ImGui::Image((ImTextureID)(checker_id), ImVec2(250, 250));
-
-					ImGui::Text("Associate Texture");
-				}
-				else
-				{
-					ImGui::Text("Width: %i", texture_com->widht);
-					ImGui::SameLine();
-					ImGui::Text("Height: %i", texture_com->height);
-					ImGui::Image((ImTextureID)(texture_com->texture_id), ImVec2(250, 250));
-				}
-			}
-		}
-	}
-	
-
-	ImGui::End();
-
 }
 
 void ModuleRenderer3D::CreateCheckers()
