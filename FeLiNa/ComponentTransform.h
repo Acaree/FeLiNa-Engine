@@ -23,6 +23,8 @@ public:
 	float3 GetScale()const;
 	Quat GetQuaternion()const;
 
+	void Draw();
+
 private:
 
 	void UpdateMatrix();

@@ -512,22 +512,25 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 			ComponentTransform* trans = nullptr;
 
-			for (int i = 0; i <= it->components.size(); i++) {
-				if (it->components[i]->type != Component_Transform) {
-					trans = (ComponentTransform*)(it->components[i]);
-					break;
+			if (it->components.size())
+			{
+				for (int i = 0; i < it->components.size(); i++) {
+					if (it->components[i]->type != Component_Transform) {
+						trans = (ComponentTransform*)(it->components[i]);
+						break;
+					}
 				}
+
+				ImGui::Text("x: %f  y: %f  z: %f", trans->GetPosition().x, trans->GetPosition().y, trans->GetPosition().z);
+				Quat q;
+
+				float3 rot_euler = trans->GetRotation();
+				ImGui::Text("Rotation:");
+				ImGui::Text("x: %f  y: %f  z: %f", rot_euler.x, rot_euler.y, rot_euler.z);
+
+				ImGui::Text("Scale:");
+				ImGui::Text("x: %f  y: %f  z: %f", trans->GetScale().x, trans->GetScale().y, trans->GetScale().z);
 			}
-
-			ImGui::Text("x: %f  y: %f  z: %f", trans->GetPosition().x, trans->GetPosition().y, trans->GetPosition().z);
-			Quat q;
-			
-			float3 rot_euler = trans->GetRotation();
-			ImGui::Text("Rotation:");
-			ImGui::Text("x: %f  y: %f  z: %f", rot_euler.x, rot_euler.y, rot_euler.z);
-
-			ImGui::Text("Scale:");
-			ImGui::Text("x: %f  y: %f  z: %f", trans->GetScale().x, trans->GetScale().y, trans->GetScale().z);
 		}
 
 		if (ImGui::CollapsingHeader("Mesh Information", ImGuiTreeNodeFlags_DefaultOpen))

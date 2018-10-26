@@ -33,7 +33,7 @@ public:
 	GameObject* GetParent()const;
 
 	void SetComponent(Component* parent);
-	
+
 	bool DeleteComponent(Component* component);
 	bool DeleteComponent(ComponentType type);
 
@@ -42,6 +42,7 @@ public:
 	uint GetNumChildren() const;
 
 	void ShowObjectHierarchy();
+	void ShowObjectInspector();
 
 	void SetSelected(bool selected);
 	bool IsSelected() const;

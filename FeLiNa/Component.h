@@ -23,6 +23,7 @@ public:
 	~Component();
 
 	virtual void Update(float dt);
+
 	virtual void Draw();
 
 	void SetComponentType(ComponentType type = Component_Default);

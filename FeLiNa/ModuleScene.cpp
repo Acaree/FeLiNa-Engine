@@ -72,7 +72,7 @@ update_status ModuleScene::Update(float dt)
 	update_status update_return = UPDATE_CONTINUE;
 	
 	ShowHierarchy();
-
+	ShowInspector();
 
 	root_object->Update(dt);
 	return update_return;
@@ -145,7 +145,6 @@ bool ModuleScene::DeleteGameObject(char* name)
 
 void ModuleScene::ShowHierarchy()
 {
-	ImGui::ShowDemoWindow();
 	ImGui::SetNextWindowSize({300,500});
 	ImGuiWindowFlags window_flags = 0;
 
@@ -162,6 +161,34 @@ void ModuleScene::ShowHierarchy()
 		ImGui::PopID();
 	}
 	ImGui::End();
+}
+
+void ModuleScene::ShowInspector()
+{
+	ImGui::SetNextWindowSize({ 300,500 });
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+	ImGui::Begin("Inspector", &inspector_open, window_flags);
+
+	GameObject* go = GetSelectedGameObject();
+
+	if (go != nullptr)
+	{
+		for (uint i = 0; i < go->components.size(); i++)
+		{
+			go->components[i]->Draw();
+		}
+
+
+	}
+
+
+	ImGui::End();
+
 }
 
 void ModuleScene::SetSelectedGameObject(GameObject* go)

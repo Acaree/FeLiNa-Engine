@@ -24,6 +24,7 @@ public:
 	bool DeleteGameObject(char* name);
 
 	void ShowHierarchy();
+	void ShowInspector();
 
 	std::vector<GameObject*> game_objects;
 
@@ -35,7 +36,7 @@ private:
 
 	mPlane* grid_plane = nullptr;
 	bool hierarchy_open = true;
-
+	bool inspector_open = true;
 	GameObject* selected = nullptr;
 
 };

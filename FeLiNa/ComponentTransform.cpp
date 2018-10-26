@@ -1,6 +1,6 @@
 #include "ComponentTransform.h"
 #include "Globals.h"
-
+#include "ImGui/imgui.h"
 
 ComponentTransform::ComponentTransform(GameObject* parent, float3 position, float3 rotation, float3 scale): Component(parent)
 {
@@ -93,3 +93,15 @@ Quat ComponentTransform::GetQuaternion() const
 	return quat_rotation;
 }
 
+void ComponentTransform::Draw()
+{
+
+	ImGui::Text("Position:");
+
+	
+	ImGui::Text("Rotation:");
+
+	
+	ImGui::Text("Scale:");
+
+}

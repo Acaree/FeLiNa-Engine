@@ -225,3 +225,18 @@ void GameObject::ToggleSelected()
 	else
 		selected = true;
 }
+
+void GameObject::ShowObjectInspector()
+{
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+	bool node_open = false;
+
+	if (selected)
+		flags |= ImGuiTreeNodeFlags_Selected;
+
+	if (components.size() == 0)
+		flags |= ImGuiTreeNodeFlags_Leaf;
+
+
+
+}
