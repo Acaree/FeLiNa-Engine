@@ -40,7 +40,7 @@ bool ModuleTexture::Init()
 	return ret;
 }
 
-ComponentTexture* ModuleTexture::LoadTexture(const char* path,int index) const 
+bool ModuleTexture::LoadTexture(const char* path,int index)
 {
 
 	uint imageID = 0;				
@@ -57,10 +57,10 @@ ComponentTexture* ModuleTexture::LoadTexture(const char* path,int index) const
 
 	success = ilLoadImage(path); 	
 
-	ComponentTexture* texture = new ComponentTexture(nullptr,0);
 
 	if (success)
 	{
+		Texture* texture = new Texture();
 
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
@@ -93,8 +93,10 @@ ComponentTexture* ModuleTexture::LoadTexture(const char* path,int index) const
 
 
 		texture->texture_id = textureID;
-		texture->widht = ilGetInteger(IL_IMAGE_WIDTH);
+		texture->width = ilGetInteger(IL_IMAGE_WIDTH);
 		texture->height = ilGetInteger(IL_IMAGE_HEIGHT);
+
+		textures.push_back(texture);
 
 
 		if (success)
@@ -105,5 +107,18 @@ ComponentTexture* ModuleTexture::LoadTexture(const char* path,int index) const
 
 	ilDeleteImages(1, &imageID); 
 
-	return texture;
+	return success;
+}
+
+void ModuleTexture::AddTexture(Texture* tex)
+{
+	textures.push_back(tex);
+}
+
+ComponentTexture* ModuleTexture::CreateComponentTexture()
+{
+	ComponentTexture* c_texture = new ComponentTexture(nullptr);
+	c_texture->SetTexture(textures[textures.size() - 1]);
+
+	return c_texture;
 }

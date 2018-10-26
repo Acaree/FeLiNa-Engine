@@ -9,6 +9,8 @@
 
 class ModuleImage;
 class ComponentMesh;
+
+
 struct Mesh
 {
 	std::string name = "";

@@ -368,7 +368,7 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 }
 
 
-void ModuleRenderer3D :: DrawMesh(Mesh* mesh) {
+void ModuleRenderer3D ::DrawMesh(Mesh* mesh) {
 
 	//glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a);
 
@@ -494,7 +494,7 @@ void ModuleRenderer3D::CreateCheckers()
 
 void ModuleRenderer3D::CleanAllDataModel()
 {
-	
+
 	for(int i = 0; i < meshes.size(); ++i)
 	{
 	
@@ -504,7 +504,7 @@ void ModuleRenderer3D::CleanAllDataModel()
 		glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_vertices));
 		glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_indices));
 		//glDeleteTextures(1, (GLuint*) &(meshes[i]->texture_id));
-		//glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_uv));
+		glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_uv));
 		//glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
 
 		if (meshes[i]->indices != nullptr)
@@ -519,11 +519,11 @@ void ModuleRenderer3D::CleanAllDataModel()
 			meshes[i]->vertices = nullptr;
 		}
 
-		/*if (meshes[i]->uv != nullptr)
+		if (meshes[i]->uv != nullptr)
 		{
 			delete[] meshes[i]->uv;
 			meshes[i]->uv = nullptr;
-		}*/
+		}
 		
 		/*if (meshes[i]->colors != nullptr)
 		{

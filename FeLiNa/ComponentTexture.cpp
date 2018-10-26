@@ -1,13 +1,11 @@
 #include "ComponentTexture.h"
-#include "ComponentMesh.h"
+#include "ModuleTexture.h"
 
 
 
-ComponentTexture::ComponentTexture(GameObject* parent, uint texture_id) : Component(parent) {
+ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
 
 	type = Component_Material;
-	this->texture_id = texture_id;
-
 }
 
 ComponentTexture::~ComponentTexture() {
@@ -15,8 +13,12 @@ ComponentTexture::~ComponentTexture() {
 }
 
 
-void ComponentTexture::ApplyTextureToMesh() {
+void ComponentTexture::SetTexture(Texture* tex)
+{
+	this->texture = tex;
+}
 
-	
-
+Texture* ComponentTexture::GetTexture() const
+{
+	return texture;
 }

@@ -5,6 +5,14 @@
 
 class ComponentTexture;
 
+struct Texture
+{
+	uint texture_id = 0;
+	uint width = 0;
+	uint height = 0;
+
+};
+
 class ModuleTexture : public Module
 {
 public:
@@ -12,8 +20,15 @@ public:
 	~ModuleTexture();
 
 	bool Init();
-	ComponentTexture* LoadTexture(const char* path, int index) const;
 
+	bool LoadTexture(const char* path, int index);
+
+	void AddTexture(Texture* tex);
+	
+	ComponentTexture* CreateComponentTexture();
+
+private:
+	std::vector<Texture*> textures;
 };
 
 

@@ -117,6 +117,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 			//Create a game object components
 			ComponentMesh* component_mesh = nullptr;
 			ComponentTexture* component_texture = nullptr;
+
 			Mesh* mesh_data = new Mesh();
 
 			aiQuaternion q;
@@ -160,7 +161,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 				}
 
 				//Texture
-				/*aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+				aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
 				if (new_mesh->HasTextureCoords(0))
 				{
 					mesh_data->num_uv = new_mesh->mNumVertices;
@@ -175,7 +176,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 				}
 
-				 component_texture = FindTexturePath(material, path, meshes_children);*/
+				 component_texture = FindTexturePath(material, path, meshes_children);
 
 
 
@@ -198,7 +199,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 			game_object->SetComponent(component_transform);
 			game_object->SetComponent(component_mesh);
-			//game_object->SetComponent(component_texture);
+			game_object->SetComponent(component_texture);
 			obj->AddChildren(game_object);
 		}
 		else
@@ -230,9 +231,9 @@ void ModuleImport::GenerateBufferData(Mesh* mesh_data)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_data->id_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh_data->num_indices, mesh_data->indices, GL_STATIC_DRAW);
 
-	/*glGenBuffers(1, (GLuint*) &(mesh_data->id_uv));
+	glGenBuffers(1, (GLuint*) &(mesh_data->id_uv));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_uv);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh_data->num_uv, mesh_data->uv, GL_STATIC_DRAW);*/
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh_data->num_uv, mesh_data->uv, GL_STATIC_DRAW);
 
 	glGenBuffers(1, (GLuint*)&(mesh_data->id_normals));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_normals);
@@ -249,11 +250,10 @@ void ModuleImport::GenerateBufferData(Mesh* mesh_data)
 ComponentTexture* ModuleImport::FindTexturePath(aiMaterial* material, const char *path, int index)
 {
 	ComponentTexture* texture = nullptr;
+	bool succes = false;
 
 	if (material != nullptr)
 	{
-		
-
 		aiString texture_name;
 		material->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
 
@@ -265,23 +265,26 @@ ComponentTexture* ModuleImport::FindTexturePath(aiMaterial* material, const char
 		std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
 
 		
-		texture = App->texture->LoadTexture(texture_folder.c_str(), index);
+		succes = App->texture->LoadTexture(texture_folder.c_str(), index);
 
-		if (texture->texture_id == 0)
+		if (!succes)
 		{
-			texture = App->texture->LoadTexture(fbx_folder.c_str(), index);
+			succes = App->texture->LoadTexture(fbx_folder.c_str(), index);
 
-			if (texture->texture_id == 0)
+			if (!succes)
 			{
-				texture = App->texture->LoadTexture(game_folder.c_str(), index);
+				succes = App->texture->LoadTexture(game_folder.c_str(), index);
 
-				if (texture->texture_id == 0)
+				if (!succes)
 				{
-					texture = App->texture->LoadTexture(felina_folder.c_str(), index);
+					succes = App->texture->LoadTexture(felina_folder.c_str(), index);
 
 				}
 			}
 		}
+		
+		if (succes)
+			texture = App->texture->CreateComponentTexture();
 	}
 
 	return texture;

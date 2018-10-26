@@ -6,26 +6,21 @@
 #include "MathGeoLib/MathGeoLib.h"
 #include "Globals.h"
 
+struct Texture;
+
 class ComponentTexture : public Component
 {
 public:
 	
-	ComponentTexture(GameObject* parent, uint texture_id);
+	ComponentTexture(GameObject* parent);
 	~ComponentTexture();
-
 	
-	void ApplyTextureToMesh();
-
-	uint texture_id = 0;
-
-	uint widht = 0;
-	uint height = 0;
+	void SetTexture(Texture* texture);
+	Texture* GetTexture() const;
 
 private:
 
-
-
-
+	Texture* texture = nullptr;
 };
 
 #endif
