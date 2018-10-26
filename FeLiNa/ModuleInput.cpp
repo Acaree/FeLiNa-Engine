@@ -139,7 +139,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					path.substr(path.find_last_of(".")) == ".JPG" || path.substr(path.find_last_of(".")) == ".dds" || path.substr(path.find_last_of(".")) == ".DDS"
 					|| path.substr(path.find_last_of(".")) == ".tga" || path.substr(path.find_last_of(".")) == ".TGA")
 				{
-					if (App->renderer3D->data.size() > 0) {
+					if (App->renderer3D->meshes.size() > 0) {
 						App->texture->LoadTexture(path.c_str(),-1);
 					}
 				}

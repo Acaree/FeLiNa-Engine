@@ -90,8 +90,8 @@ update_status ModuleGui::Update(float dt)
 	if (open_console)
 		App->console->DrawConsole();
 
-	if (inspector_open)
-		App->renderer3D->DrawMeshInformation();
+	/*if (inspector_open)
+		App->renderer3D->DrawMeshInformation();*/ //TO DELETE
 	
 
 	if (About_active) {

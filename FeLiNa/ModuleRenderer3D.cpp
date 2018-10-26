@@ -228,7 +228,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	for (std::vector<ModelData*>::const_iterator it = data.begin(); it != data.end(); ++it)
+	for (std::vector<Mesh*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it)
 	{
 		DrawMesh(*it);
 	}
@@ -368,9 +368,11 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 }
 
 
-void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
+void ModuleRenderer3D :: DrawMesh(Mesh* mesh) {
 
-	glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a);
+	//glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	if (no_texture)
 	{
@@ -382,7 +384,8 @@ void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 	}
 	else
 	{
-		glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
 	}
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -390,7 +393,7 @@ void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+	//glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
 	glTexCoordPointer(2,GL_FLOAT,0 , NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
@@ -406,15 +409,15 @@ void ModuleRenderer3D :: DrawMesh(ModelData* mesh) {
 
 }
 
-void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh) 
+void ModuleRenderer3D::AddDataMesh(Mesh* data_mesh) 
 {
 
-	data.push_back(data_mesh);
+	meshes.push_back(data_mesh);
 
 	float3 min = {0,0,0};
 	float3 max = { 0,0,0 };
 
-	if (data.size() == 1)
+	if (meshes.size() == 1)
 	{
 		min = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
 		max = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
@@ -460,29 +463,9 @@ void ModuleRenderer3D::AddDataMesh(ModelData* data_mesh)
 
 void ModuleRenderer3D::DeleteAllDataMesh()
 {
-	data.clear();
+	meshes.clear();
 }
 
-
-void ModuleRenderer3D::AddTextureData(uint id_texture, uint widht, uint height, int index)
-{
-	if (index == -1)
-	{
-		for (uint i = 0; i < data.size(); ++i)
-		{
-			data[i]->texture_id = id_texture;
-			data[i]->texture_width = widht;
-			data[i]->texture_height = height;
-		}
-	}
-	else
-	{
-		data[index]->texture_id = id_texture;
-		data[index]->texture_width = widht;
-		data[index]->texture_height = height;
-	}
-
-}
 
 
 void ModuleRenderer3D::DrawMeshInformation()
@@ -535,16 +518,16 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 		if (ImGui::CollapsingHeader("Mesh Information", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			for (int i = 0; i < data.size(); ++i)
+			for (int i = 0; i < meshes.size(); ++i)
 			{
 				ImGui::Text("Mesh %i", i);
-				ImGui::Text("Indices: %i", data[i]->num_indices);
+				ImGui::Text("Indices: %i", meshes[i]->num_indices);
 
-				ImGui::Text("Vertices: %i", data[i]->num_vertices);
+				ImGui::Text("Vertices: %i", meshes[i]->num_vertices);
 
-				ImGui::Text("Uv's: %i", data[i]->num_uv);
+			//	ImGui::Text("Uv's: %i", meshes[i]->num_uv);
 
-				ImGui::Text("Triangles: %i", data[i]->num_vertices / 3);
+				ImGui::Text("Triangles: %i", meshes[i]->num_vertices / 3);
 
 				ImGui::Separator();
 			}
@@ -557,7 +540,7 @@ void ModuleRenderer3D::DrawMeshInformation()
 
 			ComponentTexture* texture_com = nullptr;
 
-			for (int i = 0; i <= it->components.size(); i++) {
+			for (int i = 0; i < it->components.size(); i++) {
 				if (it->components[i]->type != Component_Material) {
 					texture_com = (ComponentTexture*)(it->components[i]);
 					break;
@@ -617,44 +600,52 @@ void ModuleRenderer3D::CreateCheckers()
 void ModuleRenderer3D::CleanAllDataModel()
 {
 	
-	for(int i = 0; i < data.size(); ++i)
+	for(int i = 0; i < meshes.size(); ++i)
 	{
 	
-		data[i]->name.clear();
-		data[i]->path.clear();
+		meshes[i]->name.clear();
+		meshes[i]->path.clear();
 		
-		glDeleteBuffers(1, (GLuint*) &(data[i]->id_vertices));
-		glDeleteBuffers(1, (GLuint*) &(data[i]->id_indices));
-		glDeleteTextures(1, (GLuint*) &(data[i]->texture_id));
-		glDeleteBuffers(1, (GLuint*) &(data[i]->id_uv));
-		glDeleteBuffers(1, (GLuint*) &(data[i]->id_color));
+		glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_vertices));
+		glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_indices));
+		//glDeleteTextures(1, (GLuint*) &(meshes[i]->texture_id));
+		//glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_uv));
+		//glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
 
-		if (data[i]->indices != nullptr)
+		if (meshes[i]->indices != nullptr)
 		{
-			delete[] data[i]->indices;
-			data[i]->indices = nullptr;
+			delete[] meshes[i]->indices;
+			meshes[i]->indices = nullptr;
 		}
 
-		if (data[i]->vertices != nullptr)
+		if (meshes[i]->vertices != nullptr)
 		{
-			delete[] data[i]->vertices;
-			data[i]->vertices = nullptr;
+			delete[] meshes[i]->vertices;
+			meshes[i]->vertices = nullptr;
 		}
 
-		if (data[i]->uv != nullptr)
+		/*if (meshes[i]->uv != nullptr)
 		{
-			delete[] data[i]->uv;
-			data[i]->uv = nullptr;
-		}
+			delete[] meshes[i]->uv;
+			meshes[i]->uv = nullptr;
+		}*/
 		
-		if (data[i]->colors != nullptr)
+		/*if (meshes[i]->colors != nullptr)
 		{
-			delete[] data[i]->colors;
-			data[i]->colors = nullptr;
-		}
+			delete[] meshes[i]->colors;
+			meshes[i]->colors = nullptr;
+		}*/
 
-		delete data[i];
+		delete meshes[i];
 	}
 
 	
+}
+
+ComponentMesh* ModuleRenderer3D::CreateComponentMesh()
+{
+	ComponentMesh*  c_mesh = new ComponentMesh(nullptr);
+	c_mesh->SetMesh(meshes[meshes.size() - 1]);
+
+	return c_mesh;
 }

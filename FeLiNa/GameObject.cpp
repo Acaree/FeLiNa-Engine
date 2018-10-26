@@ -109,6 +109,7 @@ GameObject* GameObject::GetParent() const
 void GameObject::SetComponent(Component* component)
 {
 	//need check if component exist - TO REVISION
+	component->SetParent(this);
 	components.push_back(component);
 }
 

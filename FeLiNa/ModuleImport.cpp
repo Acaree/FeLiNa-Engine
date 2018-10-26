@@ -115,7 +115,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 			game_object->SetName(curr->mName.data);
 
 			//Create a game object components
-			ComponentMesh* component_mesh = new ComponentMesh(game_object);
+			ComponentMesh* component_mesh = nullptr;
 			ComponentTexture* component_texture = nullptr;
 			Mesh* mesh_data = new Mesh();
 
@@ -160,7 +160,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 				}
 
 				//Texture
-				aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+				/*aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
 				if (new_mesh->HasTextureCoords(0))
 				{
 					mesh_data->num_uv = new_mesh->mNumVertices;
@@ -175,7 +175,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 				}
 
-				 component_texture = FindTexturePath(material, path, meshes_children);
+				 component_texture = FindTexturePath(material, path, meshes_children);*/
 
 
 
@@ -185,21 +185,20 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 					mesh_data->num_normals = new_mesh->mNumVertices;
 					mesh_data->normals = new float[mesh_data->num_normals * 3];
 					memcpy(mesh_data->normals, new_mesh->mNormals, sizeof(float) * mesh_data->num_normals * 3);
-
-
 				}
 
 				//Add the mesh component
-
 				GenerateBufferData(mesh_data);
 
-				component_mesh->SetMesh(mesh_data);
+				App->renderer3D->AddDataMesh(mesh_data);
+
+				component_mesh = App->renderer3D->CreateComponentMesh();
 
 			}
 
 			game_object->SetComponent(component_transform);
 			game_object->SetComponent(component_mesh);
-			game_object->SetComponent(component_texture);
+			//game_object->SetComponent(component_texture);
 			obj->AddChildren(game_object);
 		}
 		else
@@ -231,9 +230,9 @@ void ModuleImport::GenerateBufferData(Mesh* mesh_data)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_data->id_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh_data->num_indices, mesh_data->indices, GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*) &(mesh_data->id_uv));
+	/*glGenBuffers(1, (GLuint*) &(mesh_data->id_uv));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_uv);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh_data->num_uv, mesh_data->uv, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh_data->num_uv, mesh_data->uv, GL_STATIC_DRAW);*/
 
 	glGenBuffers(1, (GLuint*)&(mesh_data->id_normals));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_normals);

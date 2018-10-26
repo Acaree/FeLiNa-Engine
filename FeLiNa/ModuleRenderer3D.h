@@ -8,19 +8,11 @@
 #define MAX_LIGHTS 8
 
 class ModuleImage;
-
-struct ModelData
+class ComponentMesh;
+struct Mesh
 {
-
-	std::string name ="";
+	std::string name = "";
 	std::string path = "";
-
-	uint texture_width = 0;
-	uint texture_height = 0;
-
-	float3 position = { 0,0,0 };
-	Quat rotation = Quat::identity;
-	float3 scale = { 1,1,1 };
 
 	uint id_indices = 0;
 	uint num_indices = 0;
@@ -30,18 +22,9 @@ struct ModelData
 	uint num_vertices = 0;
 	float* vertices = nullptr;
 
-	uint texture_id = 0;
-
-	uint id_uv = 0;
-	uint num_uv = 0;
-	float* uv = nullptr;
-
-	uint id_color = 0;
-	uint num_color = 0;
-	float* colors = nullptr;
-	aiColor4D color_4D;
-
-
+	uint id_normals = 0;
+	uint num_normals = 0;
+	float* normals = nullptr;
 };
 
 
@@ -62,15 +45,16 @@ public:
 
 	void DrawCheckBoxEdgeGLPanel();
 
-	void DrawMesh(ModelData *mesh);
+	void DrawMesh(Mesh *mesh);
 
-	void AddDataMesh(ModelData* data_mesh);
-	void AddTextureData(uint id_texture,uint width, uint height, int index);
+	void AddDataMesh(Mesh* data_mesh);
 	void DeleteAllDataMesh();
 	void DrawMeshInformation();
 	void CreateCheckers();
 	void CleanAllDataModel();
 	void SaveState(JSON_Object* config);
+
+	ComponentMesh* CreateComponentMesh();
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -78,7 +62,7 @@ public:
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
-	std::vector<ModelData*> data;
+	std::vector<Mesh*> meshes;
 	bool wire = false;
 private:
 	bool depth_test = false;
