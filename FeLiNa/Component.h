@@ -8,6 +8,7 @@ enum ComponentType
 	Component_Transform,
 	Component_Mesh,
 	Component_Material,
+	Component_Camera,
 	Component_Default
 
 };
