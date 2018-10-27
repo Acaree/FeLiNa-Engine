@@ -83,8 +83,7 @@ void ComponentTransform::DrawInspector()
 
 	if (ImGui::CollapsingHeader("Transform")) {
 
-		if (ImGui::CollapsingHeader("Position:")) {
-
+		ImGui::Text("Position:");
 
 			char Pos_x_c[16] = {};
 
@@ -128,9 +127,8 @@ void ComponentTransform::DrawInspector()
 				UpdateMatrix();
 			}
 
-		}
 
-		if (ImGui::CollapsingHeader("Rotation:")) {
+			ImGui::Text("Rotation:");
 
 
 			char Rot_x_c[16] = {};
@@ -175,9 +173,8 @@ void ComponentTransform::DrawInspector()
 				UpdateMatrix();
 			}
 
-		}
 
-		if (ImGui::CollapsingHeader("Scale:")) {
+			ImGui::Text("Scale:");
 
 
 			char Sc_x_c[16] = {};
@@ -221,12 +218,8 @@ void ComponentTransform::DrawInspector()
 				UpdateMatrix();
 			}
 
-		}
-
 	}
-	
-	
-	
+		
 	
 
 }
