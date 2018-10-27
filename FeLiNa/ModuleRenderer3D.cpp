@@ -235,6 +235,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		ComponentTexture* material = (ComponentTexture*)go->GetComponent(Component_Material);
 	
 		DrawGameObject(go,mesh, material);
+		go->DrawBoundingBox();
 	}
 
 	if (App->gui->need_screenshoot)
@@ -423,6 +424,7 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 		ComponentTexture* material = (ComponentTexture*)child->GetComponent(Component_Material);
 
 		DrawGameObject(child,mesh, material);
+		child->DrawBoundingBox();
 	}
 
 }
