@@ -92,6 +92,8 @@ void ComponentTransform::DrawInspector()
 		float temp = atof(Pos_x_c);
 
 		position.x = temp;
+
+		UpdateMatrix();
 	}
 
 
@@ -105,6 +107,8 @@ void ComponentTransform::DrawInspector()
 		float temp = atof(Pos_y_c);
 
 		position.y = temp;
+
+		UpdateMatrix();
 	}
 
 
@@ -117,6 +121,8 @@ void ComponentTransform::DrawInspector()
 		float temp = atof(Pos_z_c);
 
 		position.z = temp;
+
+		UpdateMatrix();
 	}
 
 

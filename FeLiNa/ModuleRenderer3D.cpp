@@ -17,6 +17,8 @@
 
 #include "ModuleImage.h"
 
+
+
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -381,22 +383,29 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 	{
 		Mesh* m_mesh = mesh->GetMesh();
 
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(Component_Transform);
+		float4x4 matrix = trans->GetTransformMatrix();
+		glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
+
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		if (texture == nullptr)
-		{
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
-		else if (material_cheker)
-		{
-			glBindTexture(GL_TEXTURE_2D, checker_id);
-		}
-		else
-		{
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
-		}
+		if (texture == nullptr){
 
+	
+			glBindTexture(GL_TEXTURE_2D, 0);
+			}
+			else if (material_cheker)
+			{
+				glBindTexture(GL_TEXTURE_2D, checker_id);
+			}
+			else
+			{
+				glBindTexture(GL_TEXTURE_2D, 0);
+				glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
+			}
+	
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_vertices);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -415,6 +424,8 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 		glDisableClientState(GL_VERTEX_ARRAY);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glPopMatrix();
 	}
 
 	for (int i = 0; i < go->GetNumChildren(); ++i)
