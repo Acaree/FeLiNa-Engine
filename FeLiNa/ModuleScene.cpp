@@ -180,7 +180,7 @@ void ModuleScene::ShowInspector()
 	{
 		for (uint i = 0; i < go->components.size(); i++)
 		{
-			go->components[i]->Draw();
+			go->components[i]->DrawInspector();
 		}
 
 

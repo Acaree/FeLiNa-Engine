@@ -23,7 +23,7 @@ public:
 	float3 GetScale()const;
 	Quat GetQuaternion()const;
 
-	void Draw();
+	void DrawInspector();
 
 private:
 

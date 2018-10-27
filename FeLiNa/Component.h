@@ -25,7 +25,7 @@ public:
 
 	virtual void Update(float dt);
 
-	virtual void Draw();
+	virtual void DrawInspector();
 
 	void SetComponentType(ComponentType type = Component_Default);
 	ComponentType GetComponentType() const;

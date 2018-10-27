@@ -65,21 +65,6 @@ float3 ComponentTransform::GetScale()const{
 
 void ComponentTransform :: UpdateMatrix() {
 
-	/*transform_matrix = { 1,0,0,position.x,
-						0,1,0,position.y,
-						0,0,1,position.z,
-						0,0,0,1 };
-
-	
-	transform_matrix = transform_matrix * quat_rotation.ToFloat4x4();
-
-	transform_matrix = transform_matrix * float4x4{ scale.x,0,0,0,
-													0,scale.y,0,0,
-													0,0,scale.z,0,
-													0,0,0,1 };
-													*/
-	
-
 	transform_matrix = float4x4::FromTRS(position,quat_rotation, scale);
 }
 
@@ -93,15 +78,15 @@ Quat ComponentTransform::GetQuaternion() const
 	return quat_rotation;
 }
 
-void ComponentTransform::Draw()
+void ComponentTransform::DrawInspector()
 {
 
-	ImGui::Text("Position:");
+	ImGui::Text("Position: %f %f %f",position.x,position.y,position.z);
 
 	
-	ImGui::Text("Rotation:");
+	ImGui::Text("Rotation: %f %f %f", euler_angles.x, euler_angles.y, euler_angles.z);
 
 	
-	ImGui::Text("Scale:");
+	ImGui::Text("Scale: %f %f %f", scale.x, scale.y, scale.z);
 
 }

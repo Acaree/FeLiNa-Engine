@@ -17,7 +17,7 @@ void Component::Update(float dt)
 
 }
 
-void Component::Draw()
+void Component::DrawInspector()
 {
 
 }
