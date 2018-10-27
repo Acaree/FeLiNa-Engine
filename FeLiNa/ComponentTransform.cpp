@@ -1,6 +1,7 @@
 #include "ComponentTransform.h"
 #include "Globals.h"
 #include "ImGui/imgui.h"
+#include "GameObject.h"
 
 ComponentTransform::ComponentTransform(GameObject* parent, float3 position, float3 rotation, float3 scale): Component(parent)
 {
@@ -24,7 +25,7 @@ ComponentTransform::~ComponentTransform(){
 
 float4x4 ComponentTransform::GetTransformMatrix() const {
 
-	return transform_matrix;
+	return global_matrix;
 }
 
 void ComponentTransform::SetPosition(float3 new_pos) {
@@ -65,7 +66,18 @@ void ComponentTransform :: UpdateMatrix() {
 
 	quat_rotation = math::Quat::FromEulerXYZ(euler_angles.x * DEGTORAD, euler_angles.y * DEGTORAD, euler_angles.z * DEGTORAD);
 
-	transform_matrix = float4x4::FromTRS(position,quat_rotation, scale);
+	local_matrix = float4x4::FromTRS(position,quat_rotation, scale);
+
+	if (parent->GetParent() != nullptr) {
+		ComponentTransform* parent_trans = (ComponentTransform*)parent->GetParent()->GetComponent(Component_Transform);
+
+		global_matrix = parent_trans->GetTransformMatrix() * local_matrix;
+	}
+
+	else {
+		global_matrix = local_matrix;
+
+	}
 }
 
 void ComponentTransform::SetQuaternion(Quat quaternion)
@@ -83,7 +95,7 @@ void ComponentTransform::DrawInspector()
 
 	if (ImGui::CollapsingHeader("Transform")) {
 
-		ImGui::Text("Position:");
+		if (ImGui::CollapsingHeader("Position:")) {
 
 			char Pos_x_c[16] = {};
 
@@ -126,9 +138,9 @@ void ComponentTransform::DrawInspector()
 
 				UpdateMatrix();
 			}
+		}
 
-
-			ImGui::Text("Rotation:");
+		if (ImGui::CollapsingHeader("Rotation:")) {
 
 
 			char Rot_x_c[16] = {};
@@ -173,8 +185,9 @@ void ComponentTransform::DrawInspector()
 				UpdateMatrix();
 			}
 
+		}
 
-			ImGui::Text("Scale:");
+		if (ImGui::CollapsingHeader("Scale:")) {
 
 
 			char Sc_x_c[16] = {};
@@ -217,6 +230,7 @@ void ComponentTransform::DrawInspector()
 
 				UpdateMatrix();
 			}
+		}
 
 	}
 		

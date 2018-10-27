@@ -9,6 +9,7 @@
 #include "ImGui/imgui_impl_opengl2.h"
 #include "GameObject.h"
 #include "Component.h"
+#include "ComponentTransform.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -35,6 +36,11 @@ bool ModuleScene::Start()
 	grid_plane->is_grid = true;
 
 	root_object = new GameObject(nullptr);
+
+	ComponentTransform* trans = new ComponentTransform(root_object);
+
+	root_object->SetComponent(trans);
+
 	App->mesh_import->LoadData("Assets\\BakerHouse.FBX");
 	
 	return ret;

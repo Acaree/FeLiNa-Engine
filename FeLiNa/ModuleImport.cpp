@@ -89,6 +89,8 @@ bool ModuleImport::LoadData(const char* path)
 
 	}
 
+	obj2->SetParent(App->scene->root_object);
+
 	App->scene->root_object->AddChildren(obj2);
 
 
@@ -201,6 +203,8 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 			game_object->SetComponent(component_transform);
 			game_object->SetComponent(component_mesh);
 			game_object->SetComponent(component_texture);
+
+			game_object->SetParent(obj);
 			obj->AddChildren(game_object);
 		}
 		else

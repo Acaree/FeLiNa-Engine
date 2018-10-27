@@ -7,7 +7,7 @@
 class ComponentTransform : public Component
 {
 public:
-	ComponentTransform(GameObject* parent, float3 position, float3 rotation, float3 scale);
+	ComponentTransform(GameObject* parent, float3 position = { 0,0,0 }, float3 rotation = { 0,0,0 }, float3 scale = {1,1,1});
 	~ComponentTransform();
 
 
@@ -36,7 +36,8 @@ private:
 	float3 scale = {1,1,1};
 	Quat quat_rotation = {0, 0, 0, 1};
 
-	float4x4 transform_matrix;
+	float4x4 local_matrix = float4x4::identity;
+	float4x4 global_matrix = float4x4::identity;
 
 
 };
