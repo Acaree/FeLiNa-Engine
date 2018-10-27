@@ -66,7 +66,69 @@ update_status ModuleCamera3D::Update(float dt)
 	/*if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
 		// TODO-> Focus*/
 
-	MoveCamera(newPos, speed);
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			newPos -= Z * speed;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			newPos += Z * speed;
+
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			newPos -= X * speed;
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			newPos += X * speed;
+
+
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+
+		float Sensitivity = 0.01F;
+
+		if (dx != 0)
+		{
+			float DeltaX = (float)dx * Sensitivity;
+
+			float4x4 matrixX = math::float4x4::RotateAxisAngle(float3(0, 1, 0), DeltaX);
+			float4 resultX = matrixX * float4(X.x, X.y, X.z, 1);
+			float3 vectorX = float3(resultX.x, resultX.y, resultX.z);
+
+			resultX = matrixX * float4(Y.x, Y.y, Y.z, 1);
+			float3 vectorY = float3(resultX.x, resultX.y, resultX.z);
+
+			resultX = matrixX * float4(Z.x, Z.y, Z.z, 1);
+			float3 vectorZ = float3(resultX.x, resultX.y, resultX.z);
+
+			X = vectorX;
+			Y = vectorY;
+			Z = vectorZ;
+
+		}
+		if (dy != 0)
+		{
+			float DeltaY = (float)dy * Sensitivity;
+
+			float4x4 matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
+			float4 resultY = matrixY * float4(Y.x, Y.y, Y.z, 1);
+			float3 vectorY = float3(resultY.x, resultY.y, resultY.z);
+
+			matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
+			resultY = matrixY * float4(Z.x, Z.y, Z.z, 1);
+			float3 vectorZ = float3(resultY.x, resultY.y, resultY.z);
+
+			Y = vectorY;
+
+			Z = vectorZ;
+
+			if (Y.y < 0.0F)
+			{
+				Z = float3(0.0F, Z.y > 0.0F ? 1.0F : -1.0F, 0.0F);
+				Y = math::Cross(Z, X);
+			}
+		}
+
+	}
 	
 	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
 	{
@@ -202,7 +264,7 @@ void ModuleCamera3D::CalculateViewMatrix()
 
 
 void ModuleCamera3D::MoveCamera(float3 newPos, float speed)
-{
+{/*
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 
@@ -266,5 +328,6 @@ void ModuleCamera3D::MoveCamera(float3 newPos, float speed)
 		}
 
 	}
+	*/
 }
 

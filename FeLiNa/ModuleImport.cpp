@@ -73,6 +73,15 @@ bool ModuleImport::LoadData(const char* path)
 	{
 		const aiNode* curr = scene->mRootNode;
 
+		aiQuaternion q;
+		aiVector3D scale, pos;
+
+		curr->mTransformation.Decompose(scale, q, pos);
+
+		ComponentTransform* component_transform = new ComponentTransform(obj2, float3(pos.x, pos.y, pos.z), float3(0, 0, 0), float3(scale.x, scale.y, scale.z));
+
+		obj2->SetComponent(component_transform);
+
 		for (int num_children = 0; num_children < curr->mNumChildren; ++num_children)
 		{
 			LoadModel(scene, curr->mChildren[num_children], path,obj2);

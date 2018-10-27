@@ -83,7 +83,7 @@ void ComponentTransform::DrawInspector()
 
 	ImGui::Text("Position:");
 
-	char Pos_x_c[6] = {};
+	char Pos_x_c[16] = {};
 
 	sprintf_s(Pos_x_c, "%.2f", position.x);
 	
@@ -98,7 +98,7 @@ void ComponentTransform::DrawInspector()
 
 
 
-	char Pos_y_c[6] = {};
+	char Pos_y_c[16] = {};
 
 	sprintf_s(Pos_y_c, "%.2f", position.y);
 
@@ -112,7 +112,7 @@ void ComponentTransform::DrawInspector()
 	}
 
 
-	char Pos_z_c[6] = {};
+	char Pos_z_c[16] = {};
 
 	sprintf_s(Pos_z_c, "%.2f", position.z);
 
