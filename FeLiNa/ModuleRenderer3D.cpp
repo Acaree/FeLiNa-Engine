@@ -373,9 +373,9 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 }
 
 
-void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, ComponentTexture* texture) {
+void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, ComponentTexture* texture) 
+{
 
-	//glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a);
 
 	if (mesh != nullptr)
 	{

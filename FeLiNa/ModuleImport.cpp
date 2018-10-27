@@ -95,9 +95,8 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 	GameObject* game_object = new GameObject(nullptr);
 
 	//Recursive search for all meshes in all children meshes
-	for (int meshes_children = 0; meshes_children < node->mNumChildren; ++meshes_children)
-	{
-		aiNode* curr = node->mChildren[meshes_children];
+	
+		aiNode* curr = node;
 		
 		if (curr->mNumMeshes > 0)
 		{
@@ -167,7 +166,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 				}
 
-				 component_texture = FindTexturePath(material, path, meshes_children);
+				 component_texture = FindTexturePath(material, path, 0);
 
 
 
@@ -202,7 +201,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 
 		
-	}
+	
 	
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
