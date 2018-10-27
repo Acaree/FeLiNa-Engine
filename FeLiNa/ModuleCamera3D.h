@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "MathGeoLib/MathGeoLib.h"
 
+class ComponentCamera;
 
 class ModuleCamera3D : public Module
 {
@@ -18,6 +19,10 @@ public:
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &Spot);
 	void Move(const float3 &Movement);
+
+	void MoveCamera(float3 newPos, float speed);
+	
+	
 	float* GetViewMatrix() const;
 
 private:
@@ -38,6 +43,7 @@ private:
 
 	float4x4 ViewMatrix, ViewMatrixInverse;
 
+	ComponentCamera* dummy_frustum = nullptr;
 };
 
 #endif
