@@ -36,6 +36,8 @@ public:
 
 	void SetComponent(Component* parent);
 
+	Component* GetComponent(ComponentType type);
+
 	bool DeleteComponent(Component* component);
 	bool DeleteComponent(ComponentType type);
 

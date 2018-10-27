@@ -228,9 +228,13 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	for (std::vector<Mesh*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it)
+	for (int i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
 	{
-		DrawMesh(*it);
+		GameObject* go = App->scene->root_object->GetChild(i);
+		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(Component_Mesh);
+		ComponentTexture* material = (ComponentTexture*)go->GetComponent(Component_Material);
+	
+		DrawGameObject(go,mesh, material);
 	}
 
 	if (App->gui->need_screenshoot)
@@ -368,45 +372,58 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 }
 
 
-void ModuleRenderer3D ::DrawMesh(Mesh* mesh) {
+void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, ComponentTexture* texture) {
 
 	//glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a);
 
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	if (no_texture)
+	if (mesh != nullptr)
 	{
+		Mesh* m_mesh = mesh->GetMesh();
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		if (texture == nullptr)
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+		else if (material_cheker)
+		{
+			glBindTexture(GL_TEXTURE_2D, checker_id);
+		}
+		else
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
+		}
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_vertices);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_uv);
+		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_mesh->id_indices);
+
+		glDrawElements(GL_TRIANGLES, m_mesh->num_indices, GL_UNSIGNED_INT, NULL);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-	else if (material_cheker)
+
+	for (int i = 0; i < go->GetNumChildren(); ++i)
 	{
-		glBindTexture(GL_TEXTURE_2D, checker_id);
+		GameObject* child = go->GetChild(i);
+		ComponentMesh* mesh = (ComponentMesh*)child->GetComponent(Component_Mesh);
+		ComponentTexture* material = (ComponentTexture*)child->GetComponent(Component_Material);
+
+		DrawGameObject(child,mesh, material);
 	}
-	else
-	{
-		glBindTexture(GL_TEXTURE_2D, 0);
-		//glBindTexture(GL_TEXTURE_2D, mesh->texture_id);
-	}
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
-	glTexCoordPointer(2,GL_FLOAT,0 , NULL);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
-
-	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 

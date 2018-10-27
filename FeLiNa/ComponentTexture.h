@@ -17,6 +17,7 @@ public:
 	
 	void SetTexture(Texture* texture);
 	Texture* GetTexture() const;
+	uint GetTextureID() const;
 
 private:
 

@@ -271,3 +271,18 @@ void GameObject::DrawBoundingBox()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+Component* GameObject::GetComponent(ComponentType type)
+{
+	Component* component = nullptr;
+
+	for (int i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == type)
+		{
+			component = components[i];
+			break;
+		}
+	}
+
+	return component;
+}

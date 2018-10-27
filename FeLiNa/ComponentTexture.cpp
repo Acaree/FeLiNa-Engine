@@ -22,3 +22,11 @@ Texture* ComponentTexture::GetTexture() const
 {
 	return texture;
 }
+
+uint ComponentTexture::GetTextureID() const
+{
+	if (texture != nullptr)
+		return texture->texture_id;
+	else
+		return 0;
+}

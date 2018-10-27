@@ -9,7 +9,9 @@
 
 class ModuleImage;
 class ComponentMesh;
-
+class Component;
+class GameObject;
+class ComponentTexture;
 
 struct Mesh
 {
@@ -51,8 +53,7 @@ public:
 
 	void DrawCheckBoxEdgeGLPanel();
 
-	void DrawMesh(Mesh *mesh);
-
+	void DrawGameObject(GameObject* go,ComponentMesh* mesh, ComponentTexture* material);
 	void AddDataMesh(Mesh* data_mesh);
 	void DeleteAllDataMesh();
 
