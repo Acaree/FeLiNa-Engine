@@ -196,7 +196,9 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 				component_mesh = App->renderer3D->CreateComponentMesh();
 
 			}
-
+			//CREATE AABB
+			game_object->AddBoundingBox(mesh_data);
+			//ADD COMPONENTS
 			game_object->SetComponent(component_transform);
 			game_object->SetComponent(component_mesh);
 			game_object->SetComponent(component_texture);

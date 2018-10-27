@@ -2,10 +2,12 @@
 #define _GAME_OBJECT_
 
 #include "Globals.h"
+#include "MathGeoLib/MathGeoLib.h"
 #include <vector>
 
 class Component;
 enum ComponentType;
+struct Mesh;
 
 class GameObject
 {
@@ -47,6 +49,10 @@ public:
 	void SetSelected(bool selected);
 	bool IsSelected() const;
 	void ToggleSelected();
+
+	void AddBoundingBox(const Mesh* mesh);
+	void DrawBoundingBox();
+
 private:
 	
 	char* name = "No Name";
@@ -54,6 +60,8 @@ private:
 	std::vector<GameObject*> childrens;
 	GameObject* parent = nullptr;
 	bool selected = false;
+
+	AABB* bounding_box = nullptr;
 };
 
 

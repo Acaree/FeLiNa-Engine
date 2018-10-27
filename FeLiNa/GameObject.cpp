@@ -3,6 +3,9 @@
 #include "Application.h"
 #include "ImGui/imgui.h"
 #include "ModuleScene.h"
+#include "Glew/include/glew.h"
+#include "ComponentMesh.h"
+#include "ModuleRenderer3D.h"
 
 GameObject::GameObject(GameObject* parent)
 {
@@ -38,6 +41,8 @@ void GameObject::Update(float dt)
 	for (int i = 0; i < components.size(); ++i)
 		components[i]->Draw();
 
+	if(bounding_box != nullptr)
+		DrawBoundingBox();
 
 }
 
@@ -108,9 +113,11 @@ GameObject* GameObject::GetParent() const
 
 void GameObject::SetComponent(Component* component)
 {
-	//need check if component exist - TO REVISION
-	component->SetParent(this);
-	components.push_back(component);
+	if (component != nullptr)
+	{
+		component->SetParent(this);
+		components.push_back(component);
+	}
 }
 
 bool GameObject::DeleteComponent(Component* component)
@@ -238,6 +245,29 @@ void GameObject::ShowObjectInspector()
 	if (components.size() == 0)
 		flags |= ImGuiTreeNodeFlags_Leaf;
 
-
-
 }
+
+void GameObject::AddBoundingBox(const Mesh* mesh)
+{
+	if (bounding_box == nullptr)
+		bounding_box = new AABB();
+	
+	bounding_box->SetNegativeInfinity();
+	bounding_box->Enclose((float3 *)mesh->vertices,mesh->num_vertices);
+}
+
+void GameObject::DrawBoundingBox()
+{
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+	for (uint i = 0; i < 12; i++)
+	{
+		glVertex3f(bounding_box->Edge(i).a.x, bounding_box->Edge(i).a.y, bounding_box->Edge(i).a.z);
+		glVertex3f(bounding_box->Edge(i).b.x, bounding_box->Edge(i).b.y, bounding_box->Edge(i).b.z);
+	}
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+

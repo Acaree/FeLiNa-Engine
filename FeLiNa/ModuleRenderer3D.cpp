@@ -372,6 +372,7 @@ void ModuleRenderer3D ::DrawMesh(Mesh* mesh) {
 
 	//glColor4f(mesh->color_4D.r, mesh->color_4D.g, mesh->color_4D.b, mesh->color_4D.a);
 
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	if (no_texture)
