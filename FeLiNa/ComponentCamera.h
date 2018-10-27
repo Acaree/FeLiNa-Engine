@@ -22,6 +22,8 @@ public:
 	void SetFov(float f_fov);
 	void SetAspectRatio(float f_ratio);
 
+	void DebugDraw();
+
 private:
 
 	Frustum frustum;

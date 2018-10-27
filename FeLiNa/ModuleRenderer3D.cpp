@@ -412,54 +412,7 @@ void ModuleRenderer3D ::DrawMesh(Mesh* mesh) {
 
 void ModuleRenderer3D::AddDataMesh(Mesh* data_mesh) 
 {
-
 	meshes.push_back(data_mesh);
-
-	float3 min = {0,0,0};
-	float3 max = { 0,0,0 };
-
-	if (meshes.size() == 1)
-	{
-		min = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
-		max = { data_mesh->vertices[0], data_mesh->vertices[1], data_mesh->vertices[2] };
-	}
-	else
-		App->camera->GetMinMaxAABB(min, max);
-
-
-	for (uint i = 3; i < data_mesh->num_vertices; i+=3)
-	{
-		if (data_mesh->vertices[i] < min.x)
-		{
-			min.x = data_mesh->vertices[i];
-		}
-		if (data_mesh->vertices[i] > max.x)
-		{
-			max.x = data_mesh->vertices[i];
-		}
-
-		if (data_mesh->vertices[i+1] < min.y)
-		{
-			min.y = data_mesh->vertices[i+1];
-		}
-		if (data_mesh->vertices[i+1] > max.y)
-		{
-			max.y = data_mesh->vertices[i+1];
-		}
-
-		if (data_mesh->vertices[i + 2] < min.z)
-		{
-			min.z = data_mesh->vertices[i + 2];
-		}
-		if (data_mesh->vertices[i + 2] > max.z)
-		{
-			max.z = data_mesh->vertices[i + 2];
-		}
-	}
-	
-	App->camera->CreateFocusObject(min, max);
-	App->camera->FocusToCenterObject();
-	App->gui->inspector_open = true;
 }
 
 void ModuleRenderer3D::DeleteAllDataMesh()
