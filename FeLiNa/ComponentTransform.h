@@ -18,6 +18,8 @@ public:
 	void SetScale(float3 new_scale);
 	void SetQuaternion(Quat quaternion);
 
+
+
 	float3 GetPosition()const;
 	float3 GetRotation()const;
 	float3 GetScale()const;

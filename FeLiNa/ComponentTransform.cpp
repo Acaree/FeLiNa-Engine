@@ -81,7 +81,44 @@ Quat ComponentTransform::GetQuaternion() const
 void ComponentTransform::DrawInspector()
 {
 
-	ImGui::Text("Position: %f %f %f",position.x,position.y,position.z);
+	ImGui::Text("Position:");
+
+	char Pos_x_c[6] = {};
+
+	sprintf_s(Pos_x_c, "%.2f", position.x);
+	
+	if (ImGui::InputText("x", Pos_x_c, sizeof(Pos_x_c))) {
+
+		float temp = atof(Pos_x_c);
+
+		position.x = temp;
+	}
+
+
+
+	char Pos_y_c[6] = {};
+
+	sprintf_s(Pos_y_c, "%.2f", position.y);
+
+	if (ImGui::InputText("y", Pos_y_c, sizeof(Pos_y_c))) {
+
+		float temp = atof(Pos_y_c);
+
+		position.y = temp;
+	}
+
+
+	char Pos_z_c[6] = {};
+
+	sprintf_s(Pos_z_c, "%.2f", position.z);
+
+	if (ImGui::InputText("z", Pos_z_c, sizeof(Pos_z_c))) {
+
+		float temp = atof(Pos_z_c);
+
+		position.z = temp;
+	}
+
 
 	
 	ImGui::Text("Rotation: %f %f %f", euler_angles.x, euler_angles.y, euler_angles.z);
