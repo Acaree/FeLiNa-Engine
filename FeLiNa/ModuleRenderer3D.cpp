@@ -205,10 +205,23 @@ void ModuleRenderer3D::SaveState(JSON_Object* config)
 	json_object_set_boolean(config, "Polygon smooth", polygon_smooth);
 }
 
+void ModuleRenderer3D::UpdateTransforms(GameObject* go) {
+
+
+	ComponentTransform* go_trans = (ComponentTransform*)go->GetComponent(Component_Transform);
+
+	go_trans->UpdateMatrix();
+
+	for (int i = 0; i < go->GetNumChildren(); i++)
+	{
+		UpdateTransforms(go->GetChild(i));
+	}
+}
 
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -217,6 +230,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadMatrixf(App->camera->GetViewMatrix());
 	
 	// light 0 on cam pos
+
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
@@ -229,6 +243,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
+
+	UpdateTransforms(App->scene->root_object);
 
 	for (int i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
 	{
@@ -293,9 +309,9 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 }
 
-float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
+math::float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
 {
-	float4x4 Perspective;
+	math::float4x4 Perspective;
 
 	float coty = 1.0f / tan(fovy * math::pi / 360.0f);
 
@@ -386,7 +402,7 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(Component_Transform);
-		float4x4 matrix = trans->GetTransformMatrix();
+		math::float4x4 matrix = trans->GetTransformMatrix();
 		glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
 		glBindTexture(GL_TEXTURE_2D, 0);

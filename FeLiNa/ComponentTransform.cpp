@@ -3,7 +3,7 @@
 #include "ImGui/imgui.h"
 #include "GameObject.h"
 
-ComponentTransform::ComponentTransform(GameObject* parent, float3 position, float3 rotation, float3 scale): Component(parent)
+ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position, math::float3 rotation, math::float3 scale): Component(parent)
 {
 	type = Component_Transform;
 
@@ -23,69 +23,70 @@ ComponentTransform::~ComponentTransform(){
 
 }
 
-float4x4 ComponentTransform::GetTransformMatrix() const {
+math::float4x4 ComponentTransform::GetTransformMatrix() const {
 
 	return global_matrix;
 }
 
-void ComponentTransform::SetPosition(float3 new_pos) {
+void ComponentTransform::SetPosition(math::float3 new_pos) {
 
 	position = new_pos;
 	
-	UpdateMatrix();
-
 }
-void ComponentTransform::SetRotation(float3 new_rotation) {
+void ComponentTransform::SetRotation(math::float3 new_rotation) {
 	
 	euler_angles = new_rotation;
 
-	UpdateMatrix();
+	quat_rotation = math::Quat::FromEulerXYZ(euler_angles.x * DEGTORAD, euler_angles.y * DEGTORAD, euler_angles.z * DEGTORAD);
 }
 
-void ComponentTransform::SetScale(float3 new_scale) {
+void ComponentTransform::SetScale(math::float3 new_scale) {
 
 	scale = new_scale;
 
-	UpdateMatrix();
 }
 
-float3 ComponentTransform::GetPosition()const{
+math::float3 ComponentTransform::GetPosition()const{
 
 	return position;
 }
-float3 ComponentTransform::GetRotation()const{
+math::float3 ComponentTransform::GetRotation()const{
 
 	return euler_angles;
 }
-float3 ComponentTransform::GetScale()const{
+math::float3 ComponentTransform::GetScale()const{
 
 	return scale;
 }
 
 void ComponentTransform :: UpdateMatrix() {
 
-	quat_rotation = math::Quat::FromEulerXYZ(euler_angles.x * DEGTORAD, euler_angles.y * DEGTORAD, euler_angles.z * DEGTORAD);
+	//quat_rotation = math::Quat::FromEulerXYZ(euler_angles.x * DEGTORAD, euler_angles.y * DEGTORAD, euler_angles.z * DEGTORAD);
 
-	local_matrix = float4x4::FromTRS(position,quat_rotation, scale);
+	local_matrix = math::float4x4::FromTRS(position,math::Quat(quat_rotation.x,quat_rotation.y,quat_rotation.z,quat_rotation.w), scale);
 
 	if (parent->GetParent() != nullptr) {
 		ComponentTransform* parent_trans = (ComponentTransform*)parent->GetParent()->GetComponent(Component_Transform);
 
-		global_matrix = parent_trans->GetTransformMatrix() * local_matrix;
+		math::float4x4 tempmatrix = parent_trans->GetTransformMatrix();
+
+		global_matrix = tempmatrix * local_matrix;
+
 	}
 
 	else {
+		
 		global_matrix = local_matrix;
 
 	}
 }
 
-void ComponentTransform::SetQuaternion(Quat quaternion)
+void ComponentTransform::SetQuaternion(math::Quat quaternion)
 {
 	quat_rotation = quaternion;
 }
 
-Quat ComponentTransform::GetQuaternion() const
+math::Quat ComponentTransform::GetQuaternion() const
 {
 	return quat_rotation;
 }
@@ -107,7 +108,6 @@ void ComponentTransform::DrawInspector()
 
 				position.x = temp;
 
-				UpdateMatrix();
 			}
 
 
@@ -122,7 +122,6 @@ void ComponentTransform::DrawInspector()
 
 				position.y = temp;
 
-				UpdateMatrix();
 			}
 
 
@@ -135,8 +134,6 @@ void ComponentTransform::DrawInspector()
 				float temp = atof(Pos_z_c);
 
 				position.z = temp;
-
-				UpdateMatrix();
 			}
 		}
 
@@ -153,7 +150,6 @@ void ComponentTransform::DrawInspector()
 
 				euler_angles.x = temp;
 
-				UpdateMatrix();
 			}
 
 
@@ -168,7 +164,6 @@ void ComponentTransform::DrawInspector()
 
 				euler_angles.y = temp;
 
-				UpdateMatrix();
 			}
 
 
@@ -182,7 +177,6 @@ void ComponentTransform::DrawInspector()
 
 				euler_angles.z = temp;
 
-				UpdateMatrix();
 			}
 
 		}
@@ -199,7 +193,6 @@ void ComponentTransform::DrawInspector()
 				float temp = atof(Sc_x_c);
 				scale.x = temp;
 
-				UpdateMatrix();
 			}
 
 
@@ -214,7 +207,6 @@ void ComponentTransform::DrawInspector()
 
 				scale.y = temp;
 
-				UpdateMatrix();
 			}
 
 
@@ -228,7 +220,6 @@ void ComponentTransform::DrawInspector()
 
 				scale.z = temp;
 
-				UpdateMatrix();
 			}
 		}
 

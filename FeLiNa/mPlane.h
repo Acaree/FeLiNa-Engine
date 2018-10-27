@@ -15,18 +15,18 @@ public:
 	void			Render() const;
 	void			InnerRender() const;
 	void			SetPos(float x, float y, float z);
-	void			SetRotation(float angle, const float3 &u);
+	void			SetRotation(float angle, const math::float3 &u);
 	void			Scale(float x, float y, float z);
 
 
 public:
 
 	Color color;
-	float4x4 transform;
+	math::float4x4 transform;
 	bool axis;
 
 	bool is_grid = false;
-	Plane* matGeo_plane;
+	math::Plane* matGeo_plane;
 
 };
 

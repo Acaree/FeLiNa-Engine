@@ -9,12 +9,12 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 	CalculateViewMatrix();
 
-	X = float3(1.0F, 0.0F, 0.0F);
-	Y = float3(0.0F, 1.0F, 0.0F);
-	Z = float3(0.0F, 0.0F, 1.0F);
+	X = math::float3(1.0F, 0.0F, 0.0F);
+	Y = math::float3(0.0F, 1.0F, 0.0F);
+	Z = math::float3(0.0F, 0.0F, 1.0F);
 
-	Position = float3(0.0F, 0.0F, 5.0F);
-	Reference = float3(0.0F, 0.0F, 0.0F);
+	Position = math::float3(0.0F, 0.0F, 5.0F);
+	Reference = math::float3(0.0F, 0.0F, 0.0F);
 
 	dummy_frustum = new ComponentCamera(nullptr);
 }
@@ -48,7 +48,7 @@ bool ModuleCamera3D::CleanUp()
 update_status ModuleCamera3D::Update(float dt)
 {
 
-	float3 newPos(0,0,0);
+	math::float3 newPos(0,0,0);
 	float speed = 3.0F * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -90,15 +90,15 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			float DeltaX = (float)dx * Sensitivity;
 
-			float4x4 matrixX = math::float4x4::RotateAxisAngle(float3(0, 1, 0), DeltaX);
-			float4 resultX = matrixX * float4(X.x, X.y, X.z, 1);
-			float3 vectorX = float3(resultX.x, resultX.y, resultX.z);
+			math::float4x4 matrixX = math::float4x4::RotateAxisAngle(math::float3(0, 1, 0), DeltaX);
+			math::float4 resultX = matrixX * math::float4(X.x, X.y, X.z, 1);
+			math::float3 vectorX = math::float3(resultX.x, resultX.y, resultX.z);
 
-			resultX = matrixX * float4(Y.x, Y.y, Y.z, 1);
-			float3 vectorY = float3(resultX.x, resultX.y, resultX.z);
+			resultX = matrixX * math::float4(Y.x, Y.y, Y.z, 1);
+			math::float3 vectorY = math::float3(resultX.x, resultX.y, resultX.z);
 
-			resultX = matrixX * float4(Z.x, Z.y, Z.z, 1);
-			float3 vectorZ = float3(resultX.x, resultX.y, resultX.z);
+			resultX = matrixX * math::float4(Z.x, Z.y, Z.z, 1);
+			math::float3 vectorZ = math::float3(resultX.x, resultX.y, resultX.z);
 
 			X = vectorX;
 			Y = vectorY;
@@ -109,13 +109,13 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			float DeltaY = (float)dy * Sensitivity;
 
-			float4x4 matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
-			float4 resultY = matrixY * float4(Y.x, Y.y, Y.z, 1);
-			float3 vectorY = float3(resultY.x, resultY.y, resultY.z);
+			math::float4x4 matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
+			math::float4 resultY = matrixY * math::float4(Y.x, Y.y, Y.z, 1);
+			math::float3 vectorY = math::float3(resultY.x, resultY.y, resultY.z);
 
-			matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
-			resultY = matrixY * float4(Z.x, Z.y, Z.z, 1);
-			float3 vectorZ = float3(resultY.x, resultY.y, resultY.z);
+			matrixY =math::float4x4::RotateAxisAngle(X, DeltaY);
+			resultY = matrixY * math::float4(Z.x, Z.y, Z.z, 1);
+			math::float3 vectorZ = math::float3(resultY.x, resultY.y, resultY.z);
 
 			Y = vectorY;
 
@@ -123,7 +123,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 			if (Y.y < 0.0F)
 			{
-				Z = float3(0.0F, Z.y > 0.0F ? 1.0F : -1.0F, 0.0F);
+				Z = math::float3(0.0F, Z.y > 0.0F ? 1.0F : -1.0F, 0.0F);
 				Y = math::Cross(Z, X);
 			}
 		}
@@ -202,14 +202,14 @@ update_status ModuleCamera3D::Update(float dt)
 }
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference)
+void ModuleCamera3D::Look(const math::float3 &Position, const math::float3 &Reference, bool RotateAroundReference)
 {
 	this->Position = Position;
 	this->Reference = Reference;
 
 	Z = Position-Reference;
 	Z.Normalize();
-	X = float3(0.0F, 1.0F, 0.0F).Cross(Z);
+	X = math::float3(0.0F, 1.0F, 0.0F).Cross(Z);
 	X.Normalize();
 	Y = Z.Cross(X);
 
@@ -223,13 +223,13 @@ void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool 
 }
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::LookAt( const float3 &Spot)
+void ModuleCamera3D::LookAt( const math::float3 &Spot)
 {
 	Reference = Spot;
 
 	Z = Position - Reference;
 	Z.Normalize();
-	X = float3(0.0F, 1.0F, 0.0F).Cross(Z);
+	X = math::float3(0.0F, 1.0F, 0.0F).Cross(Z);
 	X.Normalize();
 	Y = Z.Cross(X);
 
@@ -238,7 +238,7 @@ void ModuleCamera3D::LookAt( const float3 &Spot)
 
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::Move(const float3 &Movement)
+void ModuleCamera3D::Move(const math::float3 &Movement)
 {
 	Position += Movement;
 	Reference += Movement;
@@ -255,15 +255,15 @@ float* ModuleCamera3D::GetViewMatrix() const
 // -----------------------------------------------------------------
 void ModuleCamera3D::CalculateViewMatrix()
 {
-	ViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0F, X.y, Y.y, Z.y, 0.0F, X.z, Y.z, Z.z, 0.0F, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0F);
+	ViewMatrix = math::float4x4(X.x, Y.x, Z.x, 0.0F, X.y, Y.y, Z.y, 0.0F, X.z, Y.z, Z.z, 0.0F, -X.Dot(Position), -Y.Dot(Position), -Z.Dot(Position), 1.0F);
 
-	float4x4 inverse = ViewMatrix;
+	math::float4x4 inverse = ViewMatrix;
 	inverse.Inverse();
 	ViewMatrixInverse = inverse;
 }
 
 
-void ModuleCamera3D::MoveCamera(float3 newPos, float speed)
+void ModuleCamera3D::MoveCamera(math::float3 newPos, float speed)
 {/*
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
@@ -289,15 +289,15 @@ void ModuleCamera3D::MoveCamera(float3 newPos, float speed)
 		{
 			float DeltaX = (float)dx * Sensitivity;
 
-			float4x4 matrixX = math::float4x4::RotateAxisAngle(float3(0, 1, 0), DeltaX);
-			float4 resultX = matrixX * float4(X.x, X.y, X.z, 1);
-			float3 vectorX = float3(resultX.x, resultX.y, resultX.z);
+			math::float4x4 matrixX = math::math::float4x4::RotateAxisAngle(math::float3(0, 1, 0), DeltaX);
+			math::float4 resultX = matrixX * math::float4(X.x, X.y, X.z, 1);
+			math::float3 vectorX = math::float3(resultX.x, resultX.y, resultX.z);
 
-			resultX = matrixX * float4(Y.x, Y.y, Y.z, 1);
-			float3 vectorY = float3(resultX.x, resultX.y, resultX.z);
+			resultX = matrixX * math::float4(Y.x, Y.y, Y.z, 1);
+			math::float3 vectorY = math::float3(resultX.x, resultX.y, resultX.z);
 
-			resultX = matrixX * float4(Z.x, Z.y, Z.z, 1);
-			float3 vectorZ = float3(resultX.x, resultX.y, resultX.z);
+			resultX = matrixX * math::float4(Z.x, Z.y, Z.z, 1);
+			math::float3 vectorZ = math::float3(resultX.x, resultX.y, resultX.z);
 
 			X = vectorX;
 			Y = vectorY;
@@ -308,13 +308,13 @@ void ModuleCamera3D::MoveCamera(float3 newPos, float speed)
 		{
 			float DeltaY = (float)dy * Sensitivity;
 
-			float4x4 matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
-			float4 resultY = matrixY * float4(Y.x, Y.y, Y.z, 1);
-			float3 vectorY = float3(resultY.x, resultY.y, resultY.z);
+			math::float4x4 matrixY = math::math::float4x4::RotateAxisAngle(X, DeltaY);
+			math::float4 resultY = matrixY * math::float4(Y.x, Y.y, Y.z, 1);
+			math::float3 vectorY = math::float3(resultY.x, resultY.y, resultY.z);
 
-			matrixY = math::float4x4::RotateAxisAngle(X, DeltaY);
-			resultY = matrixY * float4(Z.x, Z.y, Z.z, 1);
-			float3 vectorZ = float3(resultY.x, resultY.y, resultY.z);
+			matrixY = math::math::float4x4::RotateAxisAngle(X, DeltaY);
+			resultY = matrixY * math::float4(Z.x, Z.y, Z.z, 1);
+			math::float3 vectorZ = math::float3(resultY.x, resultY.y, resultY.z);
 
 			Y = vectorY;
 
@@ -322,7 +322,7 @@ void ModuleCamera3D::MoveCamera(float3 newPos, float speed)
 
 			if (Y.y < 0.0F)
 			{
-				Z = float3(0.0F, Z.y > 0.0F ? 1.0F : -1.0F, 0.0F);
+				Z = math::float3(0.0F, Z.y > 0.0F ? 1.0F : -1.0F, 0.0F);
 				Y = math::Cross(Z, X);
 			}
 		}

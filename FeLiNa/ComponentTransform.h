@@ -7,37 +7,39 @@
 class ComponentTransform : public Component
 {
 public:
-	ComponentTransform(GameObject* parent, float3 position = { 0,0,0 }, float3 rotation = { 0,0,0 }, float3 scale = {1,1,1});
+	ComponentTransform(GameObject* parent, math::float3 position = math::float3::zero, math::float3 rotation = math::float3::zero, math::float3 scale = math::float3::one);
 	~ComponentTransform();
 
 
-	float4x4 GetTransformMatrix() const;
+	math::float4x4 GetTransformMatrix() const;
 
-	void SetPosition(float3 new_pos);
-	void SetRotation(float3 new_rotation);
-	void SetScale(float3 new_scale);
-	void SetQuaternion(Quat quaternion);
+	void SetPosition(math::float3 new_pos);
+	void SetRotation(math::float3 new_rotation);
+	void SetScale(math::float3 new_scale);
+	void SetQuaternion(math::Quat quaternion);
 
 
 
-	float3 GetPosition()const;
-	float3 GetRotation()const;
-	float3 GetScale()const;
-	Quat GetQuaternion()const;
+	math::float3 GetPosition()const;
+	math::float3 GetRotation()const;
+	math::float3 GetScale()const;
+	math::Quat GetQuaternion()const;
 
 	void DrawInspector();
 
-private:
-
 	void UpdateMatrix();
 
-	float3 position = {0,0,0};
-	float3 euler_angles = {0,0,0};
-	float3 scale = {1,1,1};
-	Quat quat_rotation = {0, 0, 0, 1};
+private:
 
-	float4x4 local_matrix = float4x4::identity;
-	float4x4 global_matrix = float4x4::identity;
+
+
+	math::float3 position = math::float3::zero;
+	math::float3 euler_angles = math::float3::zero;
+	math::float3 scale = math::float3::one;
+	math::Quat quat_rotation = math::Quat::identity;
+
+	math::float4x4 local_matrix = math::float4x4::identity;
+	math::float4x4 global_matrix = math::float4x4::identity;
 
 
 };

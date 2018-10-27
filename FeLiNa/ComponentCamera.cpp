@@ -7,10 +7,10 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
 {
 	type = Component_Camera;
 
-	frustum.type = PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = float3::unitZ;
-	frustum.up = float3::unitY;
+	frustum.type = math::PerspectiveFrustum;
+	frustum.pos = math::float3::zero;
+	frustum.front = math::float3::unitZ;
+	frustum.up = math::float3::unitY;
 
 	frustum.nearPlaneDistance = 0.1F;
 	frustum.farPlaneDistance = 1000.0F;

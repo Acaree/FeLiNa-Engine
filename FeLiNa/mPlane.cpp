@@ -4,11 +4,11 @@
 #include "SDL/include/SDL_opengl.h"
 
 
-mPlane::mPlane(float x, float y, float z, float d) : transform(float4x4::identity), color(White), axis(false)
+mPlane::mPlane(float x, float y, float z, float d) : transform(math::float4x4::identity), color(White), axis(false)
 {
-	float3 plane_pos(x, y, z);
+	math::float3 plane_pos(x, y, z);
 
-	matGeo_plane = new Plane(plane_pos, d);
+	matGeo_plane = new math::Plane(plane_pos, d);
 }
 
 void mPlane::Render() const
@@ -62,19 +62,19 @@ void mPlane::Render() const
 // ------------------------------------------------------------
 void mPlane::SetPos(float x, float y, float z)
 {
-	transform = float4x4::Translate(x, y, z).ToFloat4x4() * transform;
+	transform = math::float4x4::Translate(x, y, z).ToFloat4x4() * transform;
 }
 
 // ------------------------------------------------------------
-void mPlane::SetRotation(float angle, const float3 &u)
+void mPlane::SetRotation(float angle, const math::float3 &u)
 {
-	transform = float4x4::RotateAxisAngle(u, angle) * transform;
+	transform = math::float4x4::RotateAxisAngle(u, angle) * transform;
 }
 
 // ------------------------------------------------------------
 void mPlane::Scale(float x, float y, float z)
 {
-	transform = float4x4::Scale(x, y, z).ToFloat4x4() * transform;
+	transform = math::float4x4::Scale(x, y, z).ToFloat4x4() * transform;
 }
 
 

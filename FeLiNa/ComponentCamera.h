@@ -26,7 +26,7 @@ public:
 
 private:
 
-	Frustum frustum;
+	math::Frustum frustum;
 	
 
 };

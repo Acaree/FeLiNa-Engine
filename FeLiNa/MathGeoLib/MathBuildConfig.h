@@ -17,6 +17,8 @@
 	@brief Specifies all build flags for the library. */
 #pragma once
 
+#define MATH_SILENT_ASSUME
+
 // If MATH_ENABLE_NAMESPACE is defined, all math symbols are put inside a namespace.
 #define MATH_ENABLE_NAMESPACE
 
@@ -27,7 +29,7 @@
 // If MATH_AUTO_USE_NAMESPACE is defined, a 'using namespace math;' directive is issued in all header files, causing
 // the math namespace to exist only for internal symbol hiding purposes, and not for external code.
 // This flag does not have any effect if MATH_ENABLE_NAMESPACE is not defined.
-#define MATH_AUTO_USE_NAMESPACE
+//#define MATH_AUTO_USE_NAMESPACE
 
 // Detect if we're building on Windows 8 and mark it in define WIN8 if so.
 #if defined(WINVER) && !defined(WIN8)
@@ -63,7 +65,7 @@
 #ifdef _DEBUG
 // If MATH_ASSERT_CORRECTNESS is defined, special (and possibly rather costly) mathassert()
 // tests are enabled, which test the internal correctness of the library.
-#define MATH_ASSERT_CORRECTNESS
+//#define MATH_ASSERT_CORRECTNESS
 #endif
 
 // If FAIL_USING_EXCEPTIONS is defined, all mathassert(), assert() and assume() macros turn into
@@ -104,11 +106,11 @@
 #endif
 
 // Uncomment to specify the SIMD instruction set level in use.
-#define MATH_AVX
-#define MATH_SSE41
-#define MATH_SSE3
-#define MATH_SSE2
-#define MATH_SSE // SSE1.
+//#define MATH_AVX
+//#define MATH_SSE41
+//#define MATH_SSE3
+//#define MATH_SSE2
+//#define MATH_SSE // SSE1.
 
 ///\todo Test iOS support.
 ///\todo Enable NEON only on ARMv7, not older.

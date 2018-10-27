@@ -78,7 +78,7 @@ bool ModuleImport::LoadData(const char* path)
 
 		curr->mTransformation.Decompose(scale, q, pos);
 
-		ComponentTransform* component_transform = new ComponentTransform(obj2, float3(pos.x, pos.y, pos.z), float3(0, 0, 0), float3(scale.x, scale.y, scale.z));
+		ComponentTransform* component_transform = new ComponentTransform(obj2, math::float3(pos.x, pos.y, pos.z), math::float3(0, 0, 0), math::float3(scale.x, scale.y, scale.z));
 
 		obj2->SetComponent(component_transform);
 
@@ -126,7 +126,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 			curr->mTransformation.Decompose(scale, q, pos);
 
-			ComponentTransform* component_transform = new ComponentTransform(game_object, float3(pos.x, pos.y, pos.z),float3(0,0,0), float3(scale.x, scale.y, scale.z));
+			ComponentTransform* component_transform = new ComponentTransform(game_object, math::float3(pos.x, pos.y, pos.z),math::float3(0,0,0), math::float3(scale.x, scale.y, scale.z));
 
 
 			for (int num_meshes = 0; num_meshes < curr->mNumMeshes; ++num_meshes)

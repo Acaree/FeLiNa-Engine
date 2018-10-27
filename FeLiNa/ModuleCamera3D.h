@@ -16,11 +16,11 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
-	void LookAt(const float3 &Spot);
-	void Move(const float3 &Movement);
+	void Look(const math::float3 &Position, const math::float3 &Reference, bool RotateAroundReference = false);
+	void LookAt(const math::float3 &Spot);
+	void Move(const math::float3 &Movement);
 
-	void MoveCamera(float3 newPos, float speed);
+	void MoveCamera(math::float3 newPos, float speed);
 	
 	
 	float* GetViewMatrix() const;
@@ -31,17 +31,17 @@ private:
 
 public:
 	
-	float3 X = { 0,0,0 };
-	float3 Y = { 0,0,0 };
-	float3 Z = { 0,0,0 };
-	float3 Position = { 0,0,0 };
-	float3 Reference = {0,0,0};
+	math::float3 X = { 0,0,0 };
+	math::float3 Y = { 0,0,0 };
+	math::float3 Z = { 0,0,0 };
+	math::float3 Position = { 0,0,0 };
+	math::float3 Reference = {0,0,0};
 
 
 
 private:
 
-	float4x4 ViewMatrix, ViewMatrixInverse;
+	math::float4x4 ViewMatrix, ViewMatrixInverse;
 
 	ComponentCamera* dummy_frustum = nullptr;
 };

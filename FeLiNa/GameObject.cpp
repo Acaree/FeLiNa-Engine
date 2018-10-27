@@ -247,10 +247,10 @@ void GameObject::ShowObjectInspector()
 void GameObject::AddBoundingBox(const Mesh* mesh)
 {
 	if (bounding_box == nullptr)
-		bounding_box = new AABB();
+		bounding_box = new math::AABB();
 	
 	bounding_box->SetNegativeInfinity();
-	bounding_box->Enclose((float3 *)mesh->vertices,mesh->num_vertices);
+	bounding_box->Enclose((math::float3 *)mesh->vertices,mesh->num_vertices);
 }
 
 void GameObject::DrawBoundingBox()

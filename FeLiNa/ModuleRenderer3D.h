@@ -47,11 +47,13 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
-	float4x4 perspective(float fovy, float aspect, float n, float f);
+	math::float4x4 perspective(float fovy, float aspect, float n, float f);
 
 	void OnResize(int width, int height);
 
 	void DrawCheckBoxEdgeGLPanel();
+
+	void UpdateTransforms(GameObject* go);
 
 	void DrawGameObject(GameObject* go,ComponentMesh* mesh, ComponentTexture* material);
 	void AddDataMesh(Mesh* data_mesh);
@@ -66,8 +68,8 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	float3x3 NormalMatrix;
-	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	math::float3x3 NormalMatrix;
+	math::float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	std::vector<Mesh*> meshes;
 	bool wire = false;

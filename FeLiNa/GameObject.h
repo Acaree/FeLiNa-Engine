@@ -63,7 +63,7 @@ private:
 	GameObject* parent = nullptr;
 	bool selected = false;
 
-	AABB* bounding_box = nullptr;
+	math::AABB* bounding_box = nullptr;
 };
 
 
