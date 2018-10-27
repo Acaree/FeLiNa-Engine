@@ -93,15 +93,6 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 	//Creating a game object to set data
 	GameObject* game_object = new GameObject(nullptr);
-	
-	/*aiNode* node_next = node;
-	int child = 0;
-	while (node_next != nullptr)
-	{
-
-
-	}*/
-
 
 	//Recursive search for all meshes in all children meshes
 	for (int meshes_children = 0; meshes_children < node->mNumChildren; ++meshes_children)
@@ -213,7 +204,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 		
 	}
 	
-	for (uint i = 0; i < node->mChildren[0]->mNumChildren; ++i)
+	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
 		LoadModel(scene, node->mChildren[i], path, game_object);
 	}
