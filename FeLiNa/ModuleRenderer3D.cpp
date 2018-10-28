@@ -249,11 +249,18 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	for (int i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
 	{
 		GameObject* go = App->scene->root_object->GetChild(i);
-		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(Component_Mesh);
-		ComponentTexture* material = (ComponentTexture*)go->GetComponent(Component_Material);
-	
-		DrawGameObject(go,mesh, material);
+
+		if (go->IsActive())
+		{
+			ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(Component_Mesh);
+			ComponentTexture* material = (ComponentTexture*)go->GetComponent(Component_Material);
+
+			DrawGameObject(go, mesh, material);
+		}
+
 		go->DrawBoundingBox();
+		
+	
 	}
 
 	if (App->gui->need_screenshoot)
@@ -453,7 +460,10 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 		ComponentMesh* mesh = (ComponentMesh*)child->GetComponent(Component_Mesh);
 		ComponentTexture* material = (ComponentTexture*)child->GetComponent(Component_Material);
 
-		DrawGameObject(child,mesh, material);
+		if (child->IsActive())
+		{
+			DrawGameObject(child, mesh, material);
+		}
 		child->DrawBoundingBox();
 	}
 

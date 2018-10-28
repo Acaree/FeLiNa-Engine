@@ -54,18 +54,24 @@ public:
 	void ToggleSelected();
 
 	void AddBoundingBox(const Mesh* mesh);
+	math::AABB GetAABB() const;
 	void DrawBoundingBox();
 	void RecalculateBoundingBox();
+
+	void SetActive(bool active);
+	bool IsActive() const;
 
 private:
 	
 	char* name = "No Name";
-	bool active = true;
+	
 	std::vector<GameObject*> childrens;
 	GameObject* parent = nullptr;
 	bool selected = false;
 
 	math::AABB bounding_box;
+
+	bool active = true;
 };
 
 

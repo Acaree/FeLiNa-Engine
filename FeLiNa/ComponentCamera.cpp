@@ -89,3 +89,39 @@ void ComponentCamera::DebugDraw()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
+
+Culling ComponentCamera::ContainsAaBox(const math::AABB refBox) const
+{
+	
+	math::float3 corners[8];
+	int total_in = 0;
+	refBox.GetCornerPoints(corners);
+
+	for (uint p = 0; p < 6; ++p)
+	{
+		int In_count = 8;
+		int point_In = 1;
+
+		for (uint i = 0; i < 8; ++i)
+		{
+			if (frustum.GetPlane(p).IsOnPositiveSide(corners[i]))
+			{
+				point_In = 0;
+				In_count--;
+			}
+		}
+
+		if (In_count == 0)
+		{
+			return CULL_OUT;
+		}
+
+		total_in += point_In;
+	}
+
+	if (total_in == 6)
+		return CULL_IN;
+	
+
+	return CULL_INTERSECT;
+}

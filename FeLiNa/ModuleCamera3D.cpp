@@ -60,6 +60,19 @@ bool ModuleCamera3D::CleanUp()
 	return true;
 }
 
+update_status ModuleCamera3D::PreUpdate(float dt)
+{
+	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
+	{
+		CheckObjectActive(App->scene->root_object->GetChild(i));
+	}
+
+
+
+	return UPDATE_CONTINUE;
+}
+
+
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
@@ -347,3 +360,19 @@ void ModuleCamera3D::MoveCamera(math::float3 newPos, float speed)
 	*/
 }
 
+void ModuleCamera3D::CheckObjectActive(GameObject* go)
+{
+	
+	Culling cull = dummy_frustum->ContainsAaBox(go->GetAABB());
+
+	if (cull == Culling::CULL_OUT)
+		go->SetActive(false);
+	else
+		go->SetActive(true);
+
+	for (uint i = 0; i < go->GetNumChildren(); ++i)
+	{
+		CheckObjectActive(go->GetChild(i));
+	}
+
+}

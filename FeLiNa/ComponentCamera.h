@@ -4,6 +4,14 @@
 #include "Globals.h"
 #include "Component.h"
 #include "MathGeoLib/Geometry/Frustum.h"
+#include "MathGeoLib/Geometry/AABB.h"
+
+enum Culling
+{
+	CULL_IN = 0,
+	CULL_OUT,
+	CULL_INTERSECT
+};
 
 class ComponentCamera : public Component
 {
@@ -23,6 +31,8 @@ public:
 	void SetAspectRatio(float f_ratio);
 
 	void DebugDraw();
+
+	Culling ContainsAaBox(const math::AABB refBox) const;
 
 private:
 

@@ -313,3 +313,18 @@ void GameObject::RecalculateBoundingBox()
 	for (uint i = 0; i < childrens.size(); ++i)
 		childrens[i]->RecalculateBoundingBox();
 }
+
+void GameObject::SetActive(bool active)
+{
+	this->active = active;
+}
+
+bool GameObject::IsActive() const
+{
+	return active;
+}
+
+math::AABB GameObject::GetAABB() const
+{
+	return bounding_box;
+}

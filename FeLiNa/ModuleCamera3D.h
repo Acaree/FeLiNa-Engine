@@ -15,6 +15,7 @@ public:
 	~ModuleCamera3D();
 
 	bool Start();
+	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	bool CleanUp();
 
@@ -24,6 +25,7 @@ public:
 
 	void MoveCamera(math::float3 newPos, float speed);
 	
+	void CheckObjectActive(GameObject* go);
 	
 	float* GetViewMatrix() const;
 
