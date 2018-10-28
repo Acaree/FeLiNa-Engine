@@ -35,6 +35,7 @@ public:
 	void SetAspectRatio(float f_ratio);
 
 	void DebugDraw();
+	void DrawInspector();
 
 	Culling ContainsAaBox(const math::AABB refBox) const;
 

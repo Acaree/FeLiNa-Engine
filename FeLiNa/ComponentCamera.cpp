@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "Glew/include/glew.h"
+#include "ImGui/imgui.h"
 
 ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
 {
@@ -14,7 +15,7 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
 	frustum.up = math::float3::unitY;
 
 	frustum.nearPlaneDistance = 1.0F;
-	frustum.farPlaneDistance = 10.0F;
+	frustum.farPlaneDistance = 100.0F;
 	frustum.verticalFov = math::DegToRad(60.0F);
 	frustum.horizontalFov = 2 * atanf(1.3 * tanf(frustum.verticalFov * 0.5));
 }
@@ -76,12 +77,9 @@ void ComponentCamera::SetAspectRatio(float f_ratio)
 
 void ComponentCamera::DebugDraw()
 {
-
-
-
 	glBegin(GL_LINES);
 	glLineWidth(10.0f);
-	glColor4f(0.75f, 0.75f, 0.75f, 1.0f);
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 
 	for (uint i = 0; i < 12; i++)
 	{
@@ -137,4 +135,42 @@ float* ComponentCamera::GetViewMatrix() const
 	matrix.Transpose();
 
 	return (float*)matrix.v;
+}
+
+void ComponentCamera::DrawInspector()
+{
+	if (ImGui::TreeNodeEx("Camera"))
+	{
+		ImGui::Text("Near:");
+		ImGui::SameLine();
+
+		float f_near = frustum.nearPlaneDistance;
+
+		if (ImGui::DragFloat("##near", &f_near, 1.0F))
+		{
+			SetNear(f_near);
+		}
+
+		ImGui::Text("Far:");
+		ImGui::SameLine();
+		float f_far = frustum.farPlaneDistance;
+
+		if (ImGui::DragFloat("##far", &f_far, 1.0F))
+		{
+			SetFar(f_far);
+		}
+
+		ImGui::Text("Fov:");
+		ImGui::SameLine();
+
+		float f_fov = GetFov();
+		if (ImGui::DragFloat("##fov", &f_fov, 1.0F))
+		{
+			SetFov(f_fov);
+		}
+
+		ImGui::TreePop();
+	}
+
+
 }
