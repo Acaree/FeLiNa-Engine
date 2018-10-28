@@ -31,7 +31,7 @@ void ComponentCamera::Update(float dt)
 
 	frustum.pos = matrix.TranslatePart();
 	frustum.front = matrix.WorldZ().Normalized();
-	frustum.up = matrix.WorldY();
+	frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();
 }
 
 float ComponentCamera::GetNear() const
