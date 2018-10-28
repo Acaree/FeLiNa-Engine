@@ -176,7 +176,7 @@ void ModuleScene::ShowHierarchy()
 
 void ModuleScene::ShowInspector()
 {
-	ImGui::SetNextWindowSize({ 300,500 });
+	ImGui::SetNextWindowSize({ 400,600 });
 	ImGuiWindowFlags window_flags = 0;
 
 	window_flags |= ImGuiWindowFlags_NoResize;

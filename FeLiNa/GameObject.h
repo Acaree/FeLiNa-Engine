@@ -61,6 +61,8 @@ public:
 	void SetActive(bool active);
 	bool IsActive() const;
 
+	bool static_object = false;
+
 private:
 	
 	char* name = "No Name";
@@ -72,6 +74,7 @@ private:
 	math::AABB bounding_box;
 
 	bool active = true;
+
 };
 
 

@@ -241,14 +241,17 @@ void GameObject::ToggleSelected()
 
 void GameObject::ShowObjectInspector()
 {
-	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-	bool node_open = false;
 
-	if (selected)
-		flags |= ImGuiTreeNodeFlags_Selected;
+	if (ImGui::TreeNodeEx("Properties:"))
+	{
 
-	if (components.size() == 0)
-		flags |= ImGuiTreeNodeFlags_Leaf;
+		ImGui::Checkbox("Static", &static_object);
+
+		ImGui::InputText("##name", name, 30);
+
+		ImGui::TreePop();
+	}
+
 
 	for (int i = 0; i < components.size(); ++i)
 	{

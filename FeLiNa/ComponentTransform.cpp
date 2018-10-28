@@ -103,7 +103,12 @@ void ComponentTransform::DrawInspector()
 		ImGui::Text("Position:");
 		ImGui::SameLine();
 
-		if (ImGui::DragFloat3("##pos", &position[0], 1.0F))
+		float vel = 1.0F;
+
+		if (parent->static_object)
+			vel = 0.0F;
+
+		if (ImGui::DragFloat3("##pos", &position[0], vel))
 		{
 			SetPosition(position);
 		}
@@ -111,7 +116,7 @@ void ComponentTransform::DrawInspector()
 		ImGui::Text("Rotation:");
 		ImGui::SameLine();
 
-		if (ImGui::DragFloat3("##rot", &euler_angles[0], 1.0F))
+		if (ImGui::DragFloat3("##rot", &euler_angles[0], vel))
 		{
 			SetRotation(euler_angles);
 		}
@@ -119,7 +124,7 @@ void ComponentTransform::DrawInspector()
 		ImGui::Text("Scale:");
 		ImGui::SameLine();
 
-		if (ImGui::DragFloat3("##scale", &scale[0], 1.0F))
+		if (ImGui::DragFloat3("##scale", &scale[0], vel))
 		{
 			SetScale(scale);
 

@@ -146,6 +146,7 @@ void ComponentCamera::DrawInspector()
 
 		float f_near = frustum.nearPlaneDistance;
 
+
 		if (ImGui::DragFloat("##near", &f_near, 1.0F))
 		{
 			SetNear(f_near);
