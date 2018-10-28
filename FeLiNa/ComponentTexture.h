@@ -18,6 +18,8 @@ public:
 	void SetTexture(Texture* texture);
 	Texture* GetTexture() const;
 	uint GetTextureID() const;
+	uint GetTextureHeight() const;
+	uint GetTextureWidth() const;
 
 private:
 

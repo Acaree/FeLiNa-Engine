@@ -59,7 +59,7 @@ public:
 	void AddDataMesh(Mesh* data_mesh);
 	void DeleteAllDataMesh();
 
-	void CreateCheckers();
+	uint CreateCheckers();
 	void CleanAllDataModel();
 	void SaveState(JSON_Object* config);
 

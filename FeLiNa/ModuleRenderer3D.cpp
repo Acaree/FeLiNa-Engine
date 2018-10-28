@@ -466,7 +466,7 @@ void ModuleRenderer3D::DeleteAllDataMesh()
 	meshes.clear();
 }
 
-void ModuleRenderer3D::CreateCheckers()
+uint ModuleRenderer3D::CreateCheckers()
 {
 	GLubyte checkImage[36][36][4];
 	for (int i = 0; i < 36; i++) {
@@ -489,6 +489,8 @@ void ModuleRenderer3D::CreateCheckers()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 36, 36, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return checker_id;
 }
 
 

@@ -25,8 +25,6 @@ public:
 	math::float3 GetScale()const;
 	math::Quat GetQuaternion()const;
 
-	void DrawInspector();
-
 	void UpdateMatrix();
 
 private:

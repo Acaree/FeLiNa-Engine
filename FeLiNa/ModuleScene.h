@@ -39,6 +39,10 @@ private:
 	bool inspector_open = true;
 	GameObject* selected = nullptr;
 
+	uint checker_id = 0;
+	bool material_cheker = false;
+	bool no_texture = false;
+
 };
 
 #endif

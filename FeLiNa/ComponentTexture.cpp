@@ -30,3 +30,14 @@ uint ComponentTexture::GetTextureID() const
 	else
 		return 0;
 }
+
+uint ComponentTexture::GetTextureHeight() const {
+
+	return texture->height;
+}
+
+uint ComponentTexture::GetTextureWidth() const {
+
+	return texture->width;
+
+}
