@@ -1,6 +1,7 @@
 #include "ComponentCamera.h"
 #include "Component.h"
 #include "GameObject.h"
+#include "ComponentTransform.h"
 #include "Glew/include/glew.h"
 
 ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
@@ -65,6 +66,14 @@ void ComponentCamera::SetAspectRatio(float f_ratio)
 
 void ComponentCamera::DebugDraw()
 {
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	GameObject* go = parent;
+	ComponentTransform* trans = (ComponentTransform*)go->GetComponent(Component_Transform);
+	math::float4x4 matrix = trans->GetTransformMatrix();
+	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
+
+
 	glBegin(GL_LINES);
 	glLineWidth(3.0f);
 	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
@@ -75,6 +84,7 @@ void ComponentCamera::DebugDraw()
 		glVertex3f(frustum.Edge(i).b.x, frustum.Edge(i).b.y, frustum.Edge(i).b.z);
 	}
 
+	glPopMatrix();
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 

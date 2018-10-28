@@ -5,6 +5,8 @@
 #include "MathGeoLib/MathGeoLib.h"
 
 class ComponentCamera;
+class GameObject;
+class ComponentTransform;
 
 class ModuleCamera3D : public Module
 {
@@ -37,13 +39,15 @@ public:
 	math::float3 Position = { 0,0,0 };
 	math::float3 Reference = {0,0,0};
 
-
+	GameObject* main_camera = nullptr;
 
 private:
 
 	math::float4x4 ViewMatrix, ViewMatrixInverse;
 
+	
 	ComponentCamera* dummy_frustum = nullptr;
+	ComponentTransform* transform_camera = nullptr;
 };
 
 #endif

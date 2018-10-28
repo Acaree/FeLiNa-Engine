@@ -394,16 +394,17 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, ComponentTexture* texture) 
 {
 
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	ComponentTransform* trans = (ComponentTransform*)go->GetComponent(Component_Transform);
+	math::float4x4 matrix = trans->GetTransformMatrix();
+	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
 	if (mesh != nullptr)
 	{
 		Mesh* m_mesh = mesh->GetMesh();
 
-		glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
-		ComponentTransform* trans = (ComponentTransform*)go->GetComponent(Component_Transform);
-		math::float4x4 matrix = trans->GetTransformMatrix();
-		glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
+
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -441,8 +442,10 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		glPopMatrix();
+		
 	}
+
+	glPopMatrix();
 
 	for (int i = 0; i < go->GetNumChildren(); ++i)
 	{

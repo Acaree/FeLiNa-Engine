@@ -1,7 +1,10 @@
 #include "ModuleCamera3D.h"
 #include "Application.h"
+#include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "ComponentCamera.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -16,7 +19,9 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	Position = math::float3(0.0F, 0.0F, 5.0F);
 	Reference = math::float3(0.0F, 0.0F, 0.0F);
 
-	dummy_frustum = new ComponentCamera(nullptr);
+
+
+	
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -30,6 +35,17 @@ bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
+
+	main_camera = new GameObject(nullptr);
+	main_camera->SetName("Main Camera");
+
+	transform_camera = new ComponentTransform(main_camera);
+	dummy_frustum = new ComponentCamera(main_camera);
+
+	main_camera->SetComponent(transform_camera);
+	main_camera->SetComponent(dummy_frustum);
+
+
 
 	return ret;
 }
