@@ -43,7 +43,7 @@ bool ModuleScene::Start()
 
 	root_object->SetComponent(trans);
 
-	App->mesh_import->LoadData("Assets\\BakerHouse.FBX");
+	App->mesh_import->LoadData("Assets\\Street environment_V01.FBX");
 	
 	return ret;
 }

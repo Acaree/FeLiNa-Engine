@@ -57,41 +57,27 @@ bool ModuleImport::LoadData(const char* path)
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	
-	GameObject* obj2 = new GameObject(nullptr);
+	
 
-	std::string tmp = path;
+	/*std::string tmp = path;
 	tmp = tmp.erase(0, tmp.find_last_of("\\") + 1);
 	tmp = tmp.substr(0, tmp.find_last_of("."));
 	//TO REVISE-> ¿Create a function that convert a const char* to char*?
 	int length = strlen(tmp.c_str());
 	char* temp = new char[length + 1];
 	strcpy(temp, tmp.c_str());
-	temp[length] = '\0';
+	temp[length] = '\0';*/
 
-	obj2->SetName(temp);
-	if (scene != nullptr && scene->HasMeshes())
+	if (scene != nullptr)
 	{
-		const aiNode* curr = scene->mRootNode;
+		aiNode* rootNode = scene->mRootNode;
 
-		aiQuaternion q;
-		aiVector3D scale, pos;
-
-		curr->mTransformation.Decompose(scale, q, pos);
-
-		ComponentTransform* component_transform = new ComponentTransform(obj2, math::float3(pos.x, pos.y, pos.z), math::float3(0, 0, 0), math::float3(scale.x, scale.y, scale.z));
-
-		obj2->SetComponent(component_transform);
-
-		for (int num_children = 0; num_children < curr->mNumChildren; ++num_children)
-		{
-			LoadModel(scene, curr->mChildren[num_children], path,obj2);
-		}
-
+		LoadModel(scene, rootNode,path, App->scene->root_object);
 	}
 
-	obj2->SetParent(App->scene->root_object);
+	//obj2->SetParent(App->scene->root_object);
 
-	App->scene->root_object->AddChildren(obj2);
+	//App->scene->root_object->AddChildren(obj2);
 
 
 	//To change-> false and show.
@@ -104,122 +90,109 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 	//Creating a game object to set data
 	GameObject* game_object = new GameObject(nullptr);
+	game_object->SetName(node->mName.data);
+	aiQuaternion q;
+	aiVector3D scale, pos;
+	node->mTransformation.Decompose(scale, q, pos);
 
-	//Recursive search for all meshes in all children meshes
-	
-		aiNode* curr = node;
-		
-		if (curr->mNumMeshes > 0)
+	ComponentTransform* component_transform = new ComponentTransform(game_object, math::float3(pos.x, pos.y, pos.z), math::float3(q.GetEuler().x, q.GetEuler().y, q.GetEuler().z), math::float3(scale.x, scale.y, scale.z));
+	game_object->SetComponent(component_transform);
+
+
+	if (node->mNumMeshes > 0)
+	{
+		//Create a game object components
+		ComponentMesh* component_mesh = nullptr;
+		ComponentTexture* component_texture = nullptr;
+
+		Mesh* mesh_data = new Mesh();
+
+		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
 		{
-			//Game Object name
-			
-			game_object->SetName(curr->mName.data);
+			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[num_meshes]];
 
-			//Create a game object components
-			ComponentMesh* component_mesh = nullptr;
-			ComponentTexture* component_texture = nullptr;
-
-			Mesh* mesh_data = new Mesh();
-
-			aiQuaternion q;
-			aiVector3D scale, pos;
-
-			curr->mTransformation.Decompose(scale, q, pos);
-
-			ComponentTransform* component_transform = new ComponentTransform(game_object, math::float3(pos.x, pos.y, pos.z),math::float3(0,0,0), math::float3(scale.x, scale.y, scale.z));
+			//Load Vertices
+			mesh_data->num_vertices = new_mesh->mNumVertices;
+			mesh_data->vertices = new float[mesh_data->num_vertices * 3];
+			memcpy(mesh_data->vertices, new_mesh->mVertices, sizeof(float)*mesh_data->num_vertices * 3);
+			LOG("New mesh with %d vertices", mesh_data->num_vertices);
 
 
-			for (int num_meshes = 0; num_meshes < curr->mNumMeshes; ++num_meshes)
+
+			//Load Mesh
+			if (new_mesh->HasFaces())
 			{
-				aiMesh* new_mesh = scene->mMeshes[curr->mMeshes[num_meshes]];
+				mesh_data->num_indices = new_mesh->mNumFaces * 3;
+				mesh_data->indices = new uint[mesh_data->num_indices];
 
-				//Load Vertices
-				mesh_data->num_vertices = new_mesh->mNumVertices;
-				mesh_data->vertices = new float[mesh_data->num_vertices * 3];
-				memcpy(mesh_data->vertices, new_mesh->mVertices, sizeof(float)*mesh_data->num_vertices * 3);
-				LOG("New mesh with %d vertices", mesh_data->num_vertices);
-
-
-
-				//Load Mesh
-				if (new_mesh->HasFaces())
+				for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
 				{
-					mesh_data->num_indices = new_mesh->mNumFaces * 3;
-					mesh_data->indices = new uint[mesh_data->num_indices];
-
-					for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
+					if (new_mesh->mFaces[num_faces].mNumIndices != 3)
 					{
-						if (new_mesh->mFaces[num_faces].mNumIndices != 3)
-						{
-							LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
-						}
-						else
-							memcpy(&mesh_data->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
-
+						LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
 					}
-
-
-				}
-
-				//Texture
-				aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
-				if (new_mesh->HasTextureCoords(0))
-				{
-					mesh_data->num_uv = new_mesh->mNumVertices;
-					mesh_data->uv = new float[mesh_data->num_uv * 2];
-
-					for (uint coords = 0; coords < new_mesh->mNumVertices; ++coords)
-					{
-						memcpy(&mesh_data->uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
-						memcpy(&mesh_data->uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
-					}
-
+					else
+						memcpy(&mesh_data->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
 
 				}
 
-				 component_texture = FindTexturePath(material, path, 0);
-
-
-
-				//Normals
-				if (new_mesh->HasNormals())
-				{
-					mesh_data->num_normals = new_mesh->mNumVertices;
-					mesh_data->normals = new float[mesh_data->num_normals * 3];
-					memcpy(mesh_data->normals, new_mesh->mNormals, sizeof(float) * mesh_data->num_normals * 3);
-				}
-
-				//Add the mesh component
-				GenerateBufferData(mesh_data);
-
-				App->renderer3D->AddDataMesh(mesh_data);
-
-				component_mesh = App->renderer3D->CreateComponentMesh();
 
 			}
-			//CREATE AABB
-			game_object->AddBoundingBox(mesh_data);
-			//ADD COMPONENTS
-			game_object->SetComponent(component_transform);
-			game_object->SetComponent(component_mesh);
-			game_object->SetComponent(component_texture);
 
-			game_object->SetParent(obj);
-			obj->AddChildren(game_object);
+			//Texture
+			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+			if (new_mesh->HasTextureCoords(0))
+			{
+				mesh_data->num_uv = new_mesh->mNumVertices;
+				mesh_data->uv = new float[mesh_data->num_uv * 2];
+
+				for (uint coords = 0; coords < new_mesh->mNumVertices; ++coords)
+				{
+					memcpy(&mesh_data->uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
+					memcpy(&mesh_data->uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
+				}
+
+
+			}
+
+			component_texture = FindTexturePath(material, path, 0);
+
+
+
+			//Normals
+			if (new_mesh->HasNormals())
+			{
+				mesh_data->num_normals = new_mesh->mNumVertices;
+				mesh_data->normals = new float[mesh_data->num_normals * 3];
+				memcpy(mesh_data->normals, new_mesh->mNormals, sizeof(float) * mesh_data->num_normals * 3);
+			}
+
+			//Add the mesh component
+			GenerateBufferData(mesh_data);
+
+			App->renderer3D->AddDataMesh(mesh_data);
+
+			component_mesh = App->renderer3D->CreateComponentMesh();
+
 		}
-		else
-		{
-			game_object = obj;
-		}
+
+		//CREATE AABB
+		game_object->AddBoundingBox(mesh_data);
+
+		game_object->SetComponent(component_mesh);
+		game_object->SetComponent(component_texture);
+
+	}
+
+	game_object->SetParent(obj);
+	obj->AddChildren(game_object);
 
 
-		
-	
-	
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
 		LoadModel(scene, node->mChildren[i], path, game_object);
 	}
+		
 
 	
 	
