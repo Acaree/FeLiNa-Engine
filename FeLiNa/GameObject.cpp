@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "Glew/include/glew.h"
 #include "ComponentMesh.h"
+#include "ComponentTransform.h"
 #include "ModuleRenderer3D.h"
 
 GameObject::GameObject(GameObject* parent)
@@ -13,8 +14,11 @@ GameObject::GameObject(GameObject* parent)
 
 	if (parent != nullptr)
 		parent->childrens.push_back(this);
-}
 
+	
+
+	bounding_box.SetNegativeInfinity();
+}
 
 
 GameObject::~GameObject()
@@ -34,7 +38,7 @@ GameObject::~GameObject()
 
 void GameObject::Update(float dt)
 {
-
+	
 	for (int i = 0; i < childrens.size(); ++i)
 		childrens[i]->Update(dt);
 
@@ -114,6 +118,8 @@ void GameObject::SetComponent(Component* component)
 	{
 		component->SetParent(this);
 		components.push_back(component);
+
+		
 	}
 }
 
@@ -246,30 +252,28 @@ void GameObject::ShowObjectInspector()
 
 void GameObject::AddBoundingBox(const Mesh* mesh)
 {
-	if (bounding_box == nullptr)
-		bounding_box = new math::AABB();
-	
-	bounding_box->SetNegativeInfinity();
-	bounding_box->Enclose((math::float3 *)mesh->vertices,mesh->num_vertices);
+	bounding_box.SetNegativeInfinity();
+	bounding_box.Enclose((math::float3 *)mesh->vertices,mesh->num_vertices);
 }
 
 void GameObject::DrawBoundingBox()
 {
-	if (bounding_box != nullptr)
-	{
-		glBegin(GL_LINES);
-		glLineWidth(3.0f);
-		glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
 
-		for (uint i = 0; i < 12; i++)
-		{
-			glVertex3f(bounding_box->Edge(i).a.x, bounding_box->Edge(i).a.y, bounding_box->Edge(i).a.z);
-			glVertex3f(bounding_box->Edge(i).b.x, bounding_box->Edge(i).b.y, bounding_box->Edge(i).b.z);
-		}
-		glEnd();
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	for (uint i = 0; i < 12; i++)
+	{
+		glVertex3f(bounding_box.Edge(i).a.x, bounding_box.Edge(i).a.y, bounding_box.Edge(i).a.z);
+		glVertex3f(bounding_box.Edge(i).b.x, bounding_box.Edge(i).b.y, bounding_box.Edge(i).b.z);
 	}
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	
+	
+
 }
+
 
 Component* GameObject::GetComponent(ComponentType type)
 {
@@ -285,4 +289,27 @@ Component* GameObject::GetComponent(ComponentType type)
 	}
 
 	return component;
+}
+
+void GameObject::RecalculateBoundingBox()
+{
+	bounding_box.SetNegativeInfinity();
+
+	ComponentTransform* tr = (ComponentTransform*)GetComponent(Component_Transform);
+	ComponentMesh* mesh = (ComponentMesh*)GetComponent(Component_Mesh);
+
+
+	if (mesh != nullptr)
+		bounding_box.Enclose((const math::float3*)mesh->GetMesh()->vertices, mesh->GetMesh()->num_vertices);
+
+	if (tr != nullptr)
+	{
+		math::OBB obb = bounding_box.Transform(tr->GetTransformMatrix());
+
+		if (obb.IsFinite())
+			bounding_box = obb.MinimalEnclosingAABB();
+	}
+
+	for (uint i = 0; i < childrens.size(); ++i)
+		childrens[i]->RecalculateBoundingBox();
 }

@@ -36,6 +36,7 @@ public:
 
 	void SetComponent(Component* parent);
 
+
 	Component* GetComponent(ComponentType type);
 
 	bool DeleteComponent(Component* component);
@@ -54,6 +55,7 @@ public:
 
 	void AddBoundingBox(const Mesh* mesh);
 	void DrawBoundingBox();
+	void RecalculateBoundingBox();
 
 private:
 	
@@ -63,7 +65,7 @@ private:
 	GameObject* parent = nullptr;
 	bool selected = false;
 
-	math::AABB* bounding_box = nullptr;
+	math::AABB bounding_box;
 };
 
 

@@ -240,6 +240,9 @@ void ModuleScene::ShowInspector()
 					pos.z = temp;
 				}
 
+				/*if (pos.x != transform->GetPosition().x && pos.y != transform->GetPosition().y && pos.z != transform->GetPosition().z)
+					go->RecalculateBoundingBox();*/
+
 				transform->SetPosition(pos);
 			}
 
@@ -324,6 +327,9 @@ void ModuleScene::ShowInspector()
 			}
 
 		}
+
+		
+			
 	}
 
 	if (mesh != nullptr) {

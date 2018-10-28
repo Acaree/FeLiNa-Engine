@@ -17,6 +17,7 @@ ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position
 
 	UpdateMatrix();
 
+
 }
 
 ComponentTransform::~ComponentTransform(){
@@ -61,9 +62,9 @@ math::float3 ComponentTransform::GetScale()const{
 
 void ComponentTransform :: UpdateMatrix() {
 
-	//quat_rotation = math::Quat::FromEulerXYZ(euler_angles.x * DEGTORAD, euler_angles.y * DEGTORAD, euler_angles.z * DEGTORAD);
-
-	local_matrix = math::float4x4::FromTRS(position,math::Quat(quat_rotation.x,quat_rotation.y,quat_rotation.z,quat_rotation.w), scale);
+	math::float4x4 last_global = global_matrix;
+	
+	local_matrix = math::float4x4::FromTRS(position,quat_rotation, scale);
 
 	if (parent->GetParent() != nullptr) {
 		ComponentTransform* parent_trans = (ComponentTransform*)parent->GetParent()->GetComponent(Component_Transform);
@@ -73,12 +74,16 @@ void ComponentTransform :: UpdateMatrix() {
 		global_matrix = tempmatrix * local_matrix;
 
 	}
-
 	else {
 		
 		global_matrix = local_matrix;
 
 	}
+
+	
+	if (!global_matrix.Equals(last_global))
+		parent->RecalculateBoundingBox();
+
 }
 
 void ComponentTransform::SetQuaternion(math::Quat quaternion)
