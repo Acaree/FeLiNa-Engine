@@ -210,7 +210,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Pos_x_c, "%.2f", pos.x);
 
-				if (ImGui::InputText("x", Pos_x_c, sizeof(Pos_x_c))) {
+				if (ImGui::InputText("x ###px", Pos_x_c, sizeof(Pos_x_c))) {
 
 					pos.x = atof(Pos_x_c);
 
@@ -222,7 +222,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Pos_y_c, "%.2f", pos.y);
 
-				if (ImGui::InputText("y", Pos_y_c, sizeof(Pos_y_c))) {
+				if (ImGui::InputText("y ###py", Pos_y_c, sizeof(Pos_y_c))) {
 
 					pos.y = atof(Pos_y_c);
 
@@ -233,7 +233,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Pos_z_c, "%.2f", pos.z);
 
-				if (ImGui::InputText("z", Pos_z_c, sizeof(Pos_z_c))) {
+				if (ImGui::InputText("z ###pz", Pos_z_c, sizeof(Pos_z_c))) {
 
 					float temp = atof(Pos_z_c);
 
@@ -253,7 +253,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Rot_x_c, "%.2f", e_rot.x);
 
-				if (ImGui::InputText("x", Rot_x_c, sizeof(Rot_x_c))) {
+				if (ImGui::InputText("x ###rx", Rot_x_c, sizeof(Rot_x_c))) {
 
 					e_rot.x = atof(Rot_x_c);
 
@@ -265,7 +265,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Rot_y_c, "%.2f", e_rot.y);
 
-				if (ImGui::InputText("y", Rot_y_c, sizeof(Rot_y_c))) {
+				if (ImGui::InputText("y ###ry", Rot_y_c, sizeof(Rot_y_c))) {
 
 					e_rot.y = atof(Rot_y_c);
 
@@ -276,7 +276,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Rot_z_c, "%.2f", e_rot.z);
 
-				if (ImGui::InputText("z", Rot_z_c, sizeof(Rot_z_c))) {
+				if (ImGui::InputText("z ###rz", Rot_z_c, sizeof(Rot_z_c))) {
 
 					e_rot.z = atof(Rot_z_c);
 
@@ -294,7 +294,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Sc_x_c, "%.2f", scale.x);
 
-				if (ImGui::InputText("x", Sc_x_c, sizeof(Sc_x_c))) {
+				if (ImGui::InputText("x ###sx", Sc_x_c, sizeof(Sc_x_c))) {
 
 					scale.x = atof(Sc_x_c);
 
@@ -306,7 +306,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Sc_y_c, "%.2f", scale.y);
 
-				if (ImGui::InputText("y", Sc_y_c, sizeof(Sc_y_c))) {
+				if (ImGui::InputText("y ###sy", Sc_y_c, sizeof(Sc_y_c))) {
 
 					scale.y = atof(Sc_y_c);
 				}
@@ -316,7 +316,7 @@ void ModuleScene::ShowInspector()
 
 				sprintf_s(Sc_z_c, "%.2f", scale.z);
 
-				if (ImGui::InputText("z", Sc_z_c, sizeof(Sc_z_c))) {
+				if (ImGui::InputText("z ###sz", Sc_z_c, sizeof(Sc_z_c))) {
 
 					scale.z = atof(Sc_z_c);
 
