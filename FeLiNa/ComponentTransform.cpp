@@ -96,3 +96,37 @@ math::Quat ComponentTransform::GetQuaternion() const
 	return quat_rotation;
 }
 
+void ComponentTransform::DrawInspector()
+{
+	if (ImGui::TreeNodeEx("Transform"))
+	{
+		ImGui::Text("Position:");
+		ImGui::SameLine();
+
+		if (ImGui::DragFloat3("##pos", &position[0], 5.0F))
+		{
+			SetPosition(position);
+		}
+
+		ImGui::Text("Rotation:");
+		ImGui::SameLine();
+
+		if (ImGui::DragFloat3("##rot", &euler_angles[0], 5.0F))
+		{
+			SetRotation(euler_angles);
+		}
+
+		ImGui::Text("Scale:");
+		ImGui::SameLine();
+
+		if (ImGui::DragFloat3("##scale", &scale[0], 5.0F))
+		{
+			SetScale(scale);
+
+		}
+
+		ImGui::TreePop();
+	}
+	
+
+}

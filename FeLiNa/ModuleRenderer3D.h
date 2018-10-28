@@ -86,8 +86,7 @@ private:
 
 	//Checkers
 	uint checker_id = 0;
-	bool material_cheker = false;
-	bool no_texture = false;
+
 
 };
 

@@ -14,6 +14,8 @@ public:
 	ComponentMesh(GameObject* parent);
 	~ComponentMesh();
 
+	void DrawInspector();
+
 	void SetMesh(Mesh* mesh);
 	Mesh* GetMesh() const;
 

@@ -181,7 +181,7 @@ bool ModuleRenderer3D::Init()
 
 bool ModuleRenderer3D::Awake(JSON_Object* config)
 {
-	material_cheker = json_object_get_boolean(config, "Checker");
+
 	depth_test = json_object_get_boolean(config, "Depth test");
 	cull_face = json_object_get_boolean(config, "Cull face");
 	lighting = json_object_get_boolean(config, "Lighting");
@@ -196,7 +196,7 @@ bool ModuleRenderer3D::Awake(JSON_Object* config)
 
 void ModuleRenderer3D::SaveState(JSON_Object* config)
 {
-	json_object_set_boolean(config, "Checker", material_cheker);
+
 	json_object_set_boolean(config, "Depth test", depth_test);
 	json_object_set_boolean(config, "Cull face", cull_face);
 	json_object_set_boolean(config, "Lighting", lighting);
@@ -415,11 +415,11 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		if (texture == nullptr){
+		if (texture == nullptr || texture->no_texture){
 
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-		else if (material_cheker)
+		else if (texture->material_checker)
 		{
 			glBindTexture(GL_TEXTURE_2D, checker_id);
 		}

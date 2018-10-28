@@ -1,6 +1,6 @@
 #include "ComponentTexture.h"
 #include "ModuleTexture.h"
-
+#include "ImGui/imgui.h"
 
 
 ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
@@ -39,5 +39,31 @@ uint ComponentTexture::GetTextureHeight() const {
 uint ComponentTexture::GetTextureWidth() const {
 
 	return texture->width;
+
+}
+
+void ComponentTexture::DrawInspector()
+{
+
+	if (ImGui::TreeNodeEx("Material"))
+	{
+		ImGui::Text("Texture ID: %i", texture->texture_id);
+		ImGui::Separator();
+
+		ImGui::Checkbox("Checker Material", &material_checker);
+		ImGui::Checkbox("No Texture", &no_texture);
+
+		ImGui::Text("Width: %i", texture->width);
+		ImGui::SameLine();
+		ImGui::Text("Height: %i", texture->height);
+
+		ImGui::Image((ImTextureID)(texture->texture_id), ImVec2(250, 250));
+
+
+		ImGui::TreePop();
+	}
+
+
+
 
 }

@@ -46,7 +46,7 @@ bool ModuleScene::Start()
 
 	root_object->AddChildren(App->camera->main_camera);
 
-	App->mesh_import->LoadData("Assets\\Street environment_V01.FBX");
+	App->mesh_import->LoadData("Assets\\BakerHouse.FBX");
 	
 	return ret;
 }
@@ -185,191 +185,14 @@ void ModuleScene::ShowInspector()
 
 	ImGui::Begin("Inspector", &inspector_open, window_flags);
 
-
-	//MEMORY LEAK?
-
 	GameObject* go = GetSelectedGameObject();
 
-	ComponentTransform* transform = nullptr;
-	ComponentMesh* mesh = nullptr;
-	ComponentTexture* tex = nullptr;
-
-	if (go != nullptr) {
-
-		transform = (ComponentTransform*)go->GetComponent(Component_Transform);
-		mesh = (ComponentMesh*)go->GetComponent(Component_Mesh);
-		tex = (ComponentTexture*)go->GetComponent(Component_Material);
+	if (go != nullptr)
+	{
+		go->ShowObjectInspector();
 	}
 
-	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
-
-		if (transform != nullptr) {
-
-			if (ImGui::CollapsingHeader("Position:")) {
-
-				math::float3 pos = transform->GetPosition();
-
-				char Pos_x_c[16] = {};
-
-				sprintf_s(Pos_x_c, "%.2f", pos.x);
-
-				if (ImGui::InputText("x ###px", Pos_x_c, sizeof(Pos_x_c))) {
-
-					pos.x = atof(Pos_x_c);
-
-				}
-
-
-
-				char Pos_y_c[16] = {};
-
-				sprintf_s(Pos_y_c, "%.2f", pos.y);
-
-				if (ImGui::InputText("y ###py", Pos_y_c, sizeof(Pos_y_c))) {
-
-					pos.y = atof(Pos_y_c);
-
-				}
-
-
-				char Pos_z_c[16] = {};
-
-				sprintf_s(Pos_z_c, "%.2f", pos.z);
-
-				if (ImGui::InputText("z ###pz", Pos_z_c, sizeof(Pos_z_c))) {
-
-					float temp = atof(Pos_z_c);
-
-					pos.z = temp;
-				}
-
-				/*if (pos.x != transform->GetPosition().x && pos.y != transform->GetPosition().y && pos.z != transform->GetPosition().z)
-					go->RecalculateBoundingBox();*/
-
-				transform->SetPosition(pos);
-			}
-
-
-			if (ImGui::CollapsingHeader("Rotation:")) {
-
-
-				math::float3 e_rot = transform->GetRotation();
-
-				char Rot_x_c[16] = {};
-
-				sprintf_s(Rot_x_c, "%.2f", e_rot.x);
-
-				if (ImGui::InputText("x ###rx", Rot_x_c, sizeof(Rot_x_c))) {
-
-					e_rot.x = atof(Rot_x_c);
-
-				}
-
-
-
-				char Rot_y_c[16] = {};
-
-				sprintf_s(Rot_y_c, "%.2f", e_rot.y);
-
-				if (ImGui::InputText("y ###ry", Rot_y_c, sizeof(Rot_y_c))) {
-
-					e_rot.y = atof(Rot_y_c);
-
-				}
-
-
-				char Rot_z_c[16] = {};
-
-				sprintf_s(Rot_z_c, "%.2f", e_rot.z);
-
-				if (ImGui::InputText("z ###rz", Rot_z_c, sizeof(Rot_z_c))) {
-
-					e_rot.z = atof(Rot_z_c);
-
-				}
-
-				transform->SetRotation(e_rot);
-
-			}
-
-			if (ImGui::CollapsingHeader("Scale:")) {
-
-				math::float3 scale = transform->GetScale();
-
-				char Sc_x_c[16] = {};
-
-				sprintf_s(Sc_x_c, "%.2f", scale.x);
-
-				if (ImGui::InputText("x ###sx", Sc_x_c, sizeof(Sc_x_c))) {
-
-					scale.x = atof(Sc_x_c);
-
-				}
-
-
-
-				char Sc_y_c[16] = {};
-
-				sprintf_s(Sc_y_c, "%.2f", scale.y);
-
-				if (ImGui::InputText("y ###sy", Sc_y_c, sizeof(Sc_y_c))) {
-
-					scale.y = atof(Sc_y_c);
-				}
-
-
-				char Sc_z_c[16] = {};
-
-				sprintf_s(Sc_z_c, "%.2f", scale.z);
-
-				if (ImGui::InputText("z ###sz", Sc_z_c, sizeof(Sc_z_c))) {
-
-					scale.z = atof(Sc_z_c);
-
-				}
-			}
-
-		}
-
-		
-			
-	}
-
-	if (mesh != nullptr) {
-		if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::Text("Indices: %i", mesh->GetMesh()->num_indices);
-
-			ImGui::Text("Vertices: %i", mesh->GetMesh()->num_vertices);
-
-			ImGui::Text("Uv's: %i", mesh->GetMesh()->num_uv);
-
-			ImGui::Text("Triangles: %i", mesh->GetMesh()->num_vertices / 3);
-		}
-	}
-
-	if (tex != nullptr) {
-		if (ImGui::CollapsingHeader("Material Material", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::Checkbox("Checker Material", &material_cheker);
-			ImGui::Checkbox("No Texture", &no_texture);
-			if (material_cheker)
-			{
-				if (checker_id = 0) {
-					checker_id = App->renderer3D->CreateCheckers();
-				}
-				ImGui::Image((ImTextureID)(checker_id), ImVec2(250, 250));
-			}
-			else
-			{
-				ImGui::Text("Width: %i", tex->GetTextureWidth());
-				ImGui::SameLine();
-				ImGui::Text("Height: %i", tex->GetTextureHeight());
-				ImGui::Image((ImTextureID)(tex->GetTextureID()), ImVec2(250, 250));
-			}
-		}
-	}
-		ImGui::End();
+	ImGui::End();
 
 }
 

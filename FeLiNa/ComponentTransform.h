@@ -11,6 +11,8 @@ public:
 	~ComponentTransform();
 
 
+	void DrawInspector();
+
 	math::float4x4 GetTransformMatrix() const;
 
 	void SetPosition(math::float3 new_pos);

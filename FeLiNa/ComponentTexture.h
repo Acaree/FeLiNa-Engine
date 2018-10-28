@@ -21,9 +21,15 @@ public:
 	uint GetTextureHeight() const;
 	uint GetTextureWidth() const;
 
+	void DrawInspector();
+
+	bool material_checker = false;
+	bool no_texture = false;
+
 private:
 
 	Texture* texture = nullptr;
+
 };
 
 #endif
