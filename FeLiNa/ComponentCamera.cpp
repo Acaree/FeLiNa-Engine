@@ -129,3 +129,12 @@ Culling ComponentCamera::ContainsAaBox(const math::AABB refBox) const
 
 	return CULL_INTERSECT;
 }
+
+float* ComponentCamera::GetViewMatrix() const
+{
+	static math::float4x4 matrix;
+	matrix = frustum.ViewMatrix();
+	matrix.Transpose();
+
+	return (float*)matrix.v;
+}

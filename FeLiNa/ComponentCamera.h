@@ -22,6 +22,8 @@ public:
 
 	void Update(float dt);
 
+	float* GetViewMatrix() const;
+
 	float GetNear() const;
 	float GetFar() const;
 	float GetFov() const;
@@ -36,7 +38,7 @@ public:
 
 	Culling ContainsAaBox(const math::AABB refBox) const;
 
-private:
+public:
 
 	math::Frustum frustum;
 	

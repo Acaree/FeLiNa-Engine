@@ -30,7 +30,7 @@ bool ModuleScene::Start()
 	bool ret = true;
 
 	//Initial position camera.
-	App->camera->Move(math::float3(1.0f, 1.0f, 0.0f));
+	
 	App->camera->LookAt(math::float3(0, 0, 0));
 
 	//Create Axis Plane 

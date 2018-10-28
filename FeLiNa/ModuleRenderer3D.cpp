@@ -9,6 +9,7 @@
 
 #include "Component.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 #include "ComponentTexture.h"
 #include "ComponentMesh.h"
 
@@ -227,11 +228,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	glLoadMatrixf(App->camera->camera_editor->GetViewMatrix());
 	
 	// light 0 on cam pos
 
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->camera_editor->frustum.pos.x, App->camera->camera_editor->frustum.pos.y, App->camera->camera_editor->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
