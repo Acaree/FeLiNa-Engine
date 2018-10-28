@@ -14,6 +14,7 @@ mPlane::mPlane(float x, float y, float z, float d) : transform(math::float4x4::i
 void mPlane::Render() const
 {
 
+	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glMultMatrixf((GLfloat*)transform.ptr());
 

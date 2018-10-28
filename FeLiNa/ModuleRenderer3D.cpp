@@ -250,13 +250,12 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	{
 		GameObject* go = App->scene->root_object->GetChild(i);
 
-		if (go->IsActive())
-		{
-			ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(Component_Mesh);
-			ComponentTexture* material = (ComponentTexture*)go->GetComponent(Component_Material);
+		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(Component_Mesh);
+		ComponentTexture* material = (ComponentTexture*)go->GetComponent(Component_Material);
 
-			DrawGameObject(go, mesh, material);
-		}
+		
+		DrawGameObject(go, mesh, material);
+		
 
 		go->DrawBoundingBox();
 		
@@ -407,7 +406,7 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 	math::float4x4 matrix = trans->GetTransformMatrix();
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
-	if (mesh != nullptr)
+	if (mesh != nullptr && go->IsActive() == true)
 	{
 		Mesh* m_mesh = mesh->GetMesh();
 
@@ -417,18 +416,16 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 
 		if (texture == nullptr){
 
-	
 			glBindTexture(GL_TEXTURE_2D, 0);
-			}
-			else if (material_cheker)
-			{
-				glBindTexture(GL_TEXTURE_2D, checker_id);
-			}
-			else
-			{
-				glBindTexture(GL_TEXTURE_2D, 0);
-				glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
-			}
+		}
+		else if (material_cheker)
+		{
+			glBindTexture(GL_TEXTURE_2D, checker_id);
+		}
+		else
+		{
+			glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
+		}
 	
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_vertices);
@@ -460,10 +457,9 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 		ComponentMesh* mesh = (ComponentMesh*)child->GetComponent(Component_Mesh);
 		ComponentTexture* material = (ComponentTexture*)child->GetComponent(Component_Material);
 
-		if (child->IsActive())
-		{
-			DrawGameObject(child, mesh, material);
-		}
+		
+		DrawGameObject(child, mesh, material);
+		
 		child->DrawBoundingBox();
 	}
 

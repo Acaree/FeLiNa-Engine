@@ -20,6 +20,8 @@ public:
 	ComponentCamera(GameObject* go = nullptr);
 	~ComponentCamera();
 
+	void Update(float dt);
+
 	float GetNear() const;
 	float GetFar() const;
 	float GetFov() const;

@@ -62,6 +62,8 @@ bool ModuleCamera3D::CleanUp()
 
 update_status ModuleCamera3D::PreUpdate(float dt)
 {
+
+	
 	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
 	{
 		CheckObjectActive(App->scene->root_object->GetChild(i));

@@ -13,8 +13,8 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
 	frustum.front = math::float3::unitZ;
 	frustum.up = math::float3::unitY;
 
-	frustum.nearPlaneDistance = 0.1F;
-	frustum.farPlaneDistance = 1000.0F;
+	frustum.nearPlaneDistance = 1.0F;
+	frustum.farPlaneDistance = 10.0F;
 	frustum.verticalFov = math::DegToRad(60.0F);
 	frustum.horizontalFov = 2 * atanf(1.3 * tanf(frustum.verticalFov * 0.5));
 }
@@ -23,6 +23,16 @@ ComponentCamera::~ComponentCamera()
 {
 }
 
+void ComponentCamera::Update(float dt)
+{
+	const ComponentTransform* transform = (ComponentTransform*)parent->GetComponent(Component_Transform);
+
+	math::float4x4 matrix = transform->GetTransformMatrix();
+
+	frustum.pos = matrix.TranslatePart();
+	frustum.front = matrix.WorldZ().Normalized();
+	frustum.up = matrix.WorldY();
+}
 
 float ComponentCamera::GetNear() const
 {
@@ -66,26 +76,20 @@ void ComponentCamera::SetAspectRatio(float f_ratio)
 
 void ComponentCamera::DebugDraw()
 {
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	GameObject* go = parent;
-	ComponentTransform* trans = (ComponentTransform*)go->GetComponent(Component_Transform);
-	math::float4x4 matrix = trans->GetTransformMatrix();
-	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
+
 
 
 	glBegin(GL_LINES);
-	glLineWidth(3.0f);
-	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+	glLineWidth(10.0f);
+	glColor4f(0.75f, 0.75f, 0.75f, 1.0f);
 
 	for (uint i = 0; i < 12; i++)
 	{
 		glVertex3f(frustum.Edge(i).a.x, frustum.Edge(i).a.y, frustum.Edge(i).a.z);
 		glVertex3f(frustum.Edge(i).b.x, frustum.Edge(i).b.y, frustum.Edge(i).b.z);
 	}
-
-	glPopMatrix();
 	glEnd();
+
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
