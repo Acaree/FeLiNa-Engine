@@ -59,25 +59,28 @@ bool ModuleImport::LoadData(const char* path)
 	
 	
 
-	/*std::string tmp = path;
+	std::string tmp = path;
 	tmp = tmp.erase(0, tmp.find_last_of("\\") + 1);
 	tmp = tmp.substr(0, tmp.find_last_of("."));
 	//TO REVISE-> ¿Create a function that convert a const char* to char*?
 	int length = strlen(tmp.c_str());
 	char* temp = new char[length + 1];
 	strcpy(temp, tmp.c_str());
-	temp[length] = '\0';*/
+	temp[length] = '\0';
 
+	GameObject* obj2 = new GameObject(nullptr);
+	obj2->SetName(temp);
 	if (scene != nullptr)
 	{
 		aiNode* rootNode = scene->mRootNode;
-
-		LoadModel(scene, rootNode,path, App->scene->root_object);
+		ComponentTransform* trans = new ComponentTransform(nullptr);
+		LoadModel(scene, rootNode,path, obj2, trans);
+		obj2->SetComponent(trans);
 	}
 
-	//obj2->SetParent(App->scene->root_object);
-
-	//App->scene->root_object->AddChildren(obj2);
+	obj2->SetParent(App->scene->root_object);
+	
+	App->scene->root_object->AddChildren(obj2);
 
 
 	//To change-> false and show.
@@ -85,7 +88,7 @@ bool ModuleImport::LoadData(const char* path)
 
 }
 
-void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* path, GameObject* obj)
+void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* path, GameObject* obj, ComponentTransform* trans)
 {
 
 	//Creating a game object to set data
@@ -95,8 +98,10 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 	aiVector3D scale, pos;
 	node->mTransformation.Decompose(scale, q, pos);
 
-	ComponentTransform* component_transform = new ComponentTransform(game_object, math::float3(pos.x, pos.y, pos.z), math::float3(q.GetEuler().x, q.GetEuler().y, q.GetEuler().z), math::float3(scale.x, scale.y, scale.z));
-	game_object->SetComponent(component_transform);
+	ComponentTransform* component_trans = new ComponentTransform(nullptr, math::float3(pos.x, pos.y, pos.z), math::float3(q.GetEuler().x, q.GetEuler().y, q.GetEuler().z), math::float3(scale.x, scale.y, scale.z));
+	component_trans->SumPosition(trans->GetPosition());
+	component_trans->SumRotation(trans->GetRotation());
+	component_trans->SumScale(trans->GetScale());
 
 
 	if (node->mNumMeshes > 0)
@@ -104,6 +109,11 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 		//Create a game object components
 		ComponentMesh* component_mesh = nullptr;
 		ComponentTexture* component_texture = nullptr;
+		ComponentTransform* tr = component_trans;
+
+		tr->SetParent(game_object);
+		
+	
 
 		Mesh* mesh_data = new Mesh();
 
@@ -178,19 +188,25 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 		//CREATE AABB
 		game_object->AddBoundingBox(mesh_data);
-
+		game_object->SetComponent(tr);
 		game_object->SetComponent(component_mesh);
 		game_object->SetComponent(component_texture);
 
+		game_object->SetParent(obj);
+		obj->AddChildren(game_object);
+
+	}
+	else
+	{
+		game_object = obj;
 	}
 
-	game_object->SetParent(obj);
-	obj->AddChildren(game_object);
+
 
 
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
-		LoadModel(scene, node->mChildren[i], path, game_object);
+		LoadModel(scene, node->mChildren[i], path, game_object,component_trans);
 	}
 		
 

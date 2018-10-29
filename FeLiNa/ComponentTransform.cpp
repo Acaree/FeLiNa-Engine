@@ -66,7 +66,8 @@ void ComponentTransform :: UpdateMatrix() {
 	
 	local_matrix = math::float4x4::FromTRS(position,quat_rotation, scale);
 
-	if (parent->GetParent() != nullptr) {
+
+	if ( parent  != nullptr && parent->GetParent() != nullptr) {
 		ComponentTransform* parent_trans = (ComponentTransform*)parent->GetParent()->GetComponent(Component_Transform);
 
 		math::float4x4 tempmatrix = parent_trans->GetTransformMatrix();
@@ -82,7 +83,8 @@ void ComponentTransform :: UpdateMatrix() {
 
 	
 	if (!global_matrix.Equals(last_global))
-		parent->RecalculateBoundingBox();
+		if(parent != nullptr)
+			parent->RecalculateBoundingBox();
 
 }
 
@@ -94,6 +96,23 @@ void ComponentTransform::SetQuaternion(math::Quat quaternion)
 math::Quat ComponentTransform::GetQuaternion() const
 {
 	return quat_rotation;
+}
+
+void ComponentTransform::SumPosition(math::float3 pos)
+{
+	position += pos;
+}
+
+void ComponentTransform::SumRotation(math::float3 rot)
+{
+	euler_angles += rot;
+}
+
+void ComponentTransform::SumScale(math::float3 scale)
+{
+	this->scale.x *= scale.x;
+	this->scale.y *= scale.y;
+	this->scale.z *= scale.z;
 }
 
 void ComponentTransform::DrawInspector()

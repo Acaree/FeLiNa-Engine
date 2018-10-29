@@ -20,7 +20,9 @@ public:
 	void SetScale(math::float3 new_scale);
 	void SetQuaternion(math::Quat quaternion);
 
-
+	void SumPosition(math::float3 new_pos);
+	void SumRotation(math::float3 new_rotation);
+	void SumScale(math::float3 new_scale);
 
 	math::float3 GetPosition()const;
 	math::float3 GetRotation()const;
