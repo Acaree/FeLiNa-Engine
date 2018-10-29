@@ -166,6 +166,7 @@
     <ClInclude Include="mmgr\targetver.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleConsole.h" />
+    <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleImport.h" />
     <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModuleHardware.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="OpenGl.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="mPlane.h" />
+    <ClInclude Include="PhysFS\physfs.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +236,7 @@
     <ClCompile Include="mmgr\stdafx.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleConsole.cpp" />
+    <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleImport.cpp" />
     <ClCompile Include="ModuleGui.cpp" />
     <ClCompile Include="ModuleHardware.cpp" />

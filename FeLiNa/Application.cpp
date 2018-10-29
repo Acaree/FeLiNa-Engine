@@ -8,6 +8,7 @@
 #include "ModuleGui.h"
 #include "ModuleConsole.h"
 #include "ModuleImport.h"
+#include "ModuleFileSystem.h"
 #include "ModuleTexture.h"
 #include "mmgr/mmgr.h"
 Application::Application()
@@ -23,6 +24,7 @@ Application::Application()
 	gui = new ModuleGui(this);
 	console = new ModuleConsole(this);
 	mesh_import = new ModuleImport(this);
+	fs = new ModuleFileSystem(this);
 	texture = new ModuleTexture(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -37,6 +39,7 @@ Application::Application()
 	AddModule(hardware);
 	AddModule(console);
 	AddModule(mesh_import);
+	AddModule(fs);
 	// Scenes
 	AddModule(scene);
 	

@@ -187,6 +187,9 @@
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleFileSystem.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -486,6 +489,12 @@
     <ClInclude Include="ComponentCamera.h">
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="PhysFS\physfs.h">
+      <Filter>Tools\Physfs</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFileSystem.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -523,6 +532,9 @@
     </Filter>
     <Filter Include="Modules\GameObject\Components">
       <UniqueIdentifier>{2375c286-ce9c-429b-864a-c0108843b5d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Physfs">
+      <UniqueIdentifier>{c385ea4a-21fe-487d-80aa-2eb691c19ec1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

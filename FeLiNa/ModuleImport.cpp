@@ -267,3 +267,4 @@ ComponentTexture* ModuleImport::FindTexturePath(aiMaterial* material, const char
 
 	return texture;
 }
+

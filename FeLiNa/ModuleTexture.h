@@ -24,6 +24,8 @@ public:
 	bool LoadTexture(const char* path, int index);
 
 	void AddTexture(Texture* tex);
+
+	bool SaveTextureAsDDS(std::string& output_path);
 	
 	ComponentTexture* CreateComponentTexture();
 

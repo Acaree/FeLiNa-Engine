@@ -14,6 +14,7 @@ class ModuleCamera3D;
 class ModuleGui;
 class ModuleConsole;
 class ModuleImport;
+class ModuleFileSystem;
 class ModuleTexture;
 
 class Application
@@ -28,6 +29,7 @@ public:
 	ModuleHardware* hardware;
 	ModuleConsole* console;
 	ModuleImport * mesh_import;
+	ModuleFileSystem* fs;
 	ModuleTexture* texture;
 
 	char app_name[20];

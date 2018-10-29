@@ -24,6 +24,7 @@ public:
 	void LoadModel(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
 	void GenerateBufferData(Mesh* mesh_data);
 	ComponentTexture* FindTexturePath(aiMaterial* material, const char* path, int index );
+
 };
 
 

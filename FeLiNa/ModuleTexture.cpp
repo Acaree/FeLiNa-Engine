@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ComponentTexture.h"
+#include "ModuleFileSystem.h"
 #include "Devil/include/il.h"
 #include "Devil/include/ilu.h"
 #include "Devil/include/ilut.h"
@@ -53,7 +54,11 @@ bool ModuleTexture::LoadTexture(const char* path,int index)
 
 	ilGenImages(1, &imageID); 		
 
-	ilBindImage(imageID); 			
+	ilBindImage(imageID);
+
+	std::string path_s = ("%s", path);
+
+	SaveTextureAsDDS(path_s);
 
 	success = ilLoadImage(path); 	
 
@@ -121,4 +126,22 @@ ComponentTexture* ModuleTexture::CreateComponentTexture()
 	c_texture->SetTexture(textures[textures.size() - 1]);
 
 	return c_texture;
+}
+
+bool ModuleTexture::SaveTextureAsDDS(std::string& output_path) {
+	
+	bool ret = false;
+	
+	ILuint   size; 
+	ILubyte* data; 
+	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use 
+	size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer 
+	if (size > 0) {
+		data = new ILubyte[size]; // allocate data buffer    
+		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function        
+			ret = App->fs->SaveFile(output_path, data, size, "Phys_saves", "texture", "dds"); //first folder path, then filename and last extension
+		RELEASE_ARRAY(data);
+	}
+
+	return ret;
 }
