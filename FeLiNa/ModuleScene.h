@@ -6,6 +6,7 @@
 
 class GameObject;
 enum ComponentType;
+class QuadTree;
 
 class ModuleScene : public Module
 {
@@ -32,6 +33,8 @@ public:
 
 	void SetSelectedGameObject(GameObject* go);
 	GameObject* GetSelectedGameObject() const;
+
+	void RecursiveInsert(GameObject * node);
 private:
 
 	mPlane* grid_plane = nullptr;
@@ -42,6 +45,8 @@ private:
 	uint checker_id = 0;
 	bool material_cheker = false;
 	bool no_texture = false;
+
+	QuadTree * quadtree = nullptr;
 
 };
 

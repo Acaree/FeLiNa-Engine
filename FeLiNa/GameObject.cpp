@@ -18,6 +18,7 @@ GameObject::GameObject(GameObject* parent)
 	
 
 	bounding_box.SetNegativeInfinity();
+	
 }
 
 
@@ -44,8 +45,6 @@ void GameObject::Update(float dt)
 
 	for (int i = 0; i < components.size(); ++i)
 		components[i]->Update(dt);
-
-
 
 }
 

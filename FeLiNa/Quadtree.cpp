@@ -8,7 +8,7 @@ QuadTreeNode::QuadTreeNode(const math::AABB &bounding_box, QuadTreeNode* parent)
 	this->parent = parent;
 
 	for (uint i = 0; i < 4; ++i)
-		childrens[i] = nullptr;
+			childrens[i] = nullptr;
 }
 
 QuadTreeNode::~QuadTreeNode()
@@ -54,22 +54,22 @@ void QuadTreeNode::SubdivideNode()
 	//Now create the new child's node from this node
 
 	//TOP-LEFT 
-	box_child_center = { center_bounding_box.x - subdivision_size.x, center_bounding_box.y, center_bounding_box.z - subdivision_size.z };
+	box_child_center = { center_bounding_box.x - subdivision_size.x /2, center_bounding_box.y, center_bounding_box.z - subdivision_size.z/2 };
 	child_bounding_box.SetFromCenterAndSize(box_child_center, subdivision_size);
 	childrens[SubdivideChildsPosition::UP_LEFT] = new QuadTreeNode(child_bounding_box, this);
 
 	//TOP-RIGHT 
-	box_child_center = { center_bounding_box.x + subdivision_size.x, center_bounding_box.y, center_bounding_box.z - subdivision_size.z };
+	box_child_center = { center_bounding_box.x + subdivision_size.x/2, center_bounding_box.y, center_bounding_box.z - subdivision_size.z/2 };
 	child_bounding_box.SetFromCenterAndSize(box_child_center, subdivision_size);
 	childrens[SubdivideChildsPosition::UP_RIGHT] = new QuadTreeNode(child_bounding_box, this);
 
 	//DOWN_LEFT 
-	box_child_center = { center_bounding_box.x - subdivision_size.x, center_bounding_box.y, center_bounding_box.z + subdivision_size.z };
+	box_child_center = { center_bounding_box.x - subdivision_size.x/2, center_bounding_box.y, center_bounding_box.z + subdivision_size.z/2 };
 	child_bounding_box.SetFromCenterAndSize(box_child_center, subdivision_size);
 	childrens[SubdivideChildsPosition::DOWN_LEFT] = new QuadTreeNode(child_bounding_box, this);
 
 	//DOWN_RIGHT
-	box_child_center = { center_bounding_box.x + subdivision_size.x, center_bounding_box.y, center_bounding_box.z + subdivision_size.z };
+	box_child_center = { center_bounding_box.x + subdivision_size.x/2, center_bounding_box.y, center_bounding_box.z + subdivision_size.z/2 };
 	child_bounding_box.SetFromCenterAndSize(box_child_center, subdivision_size);
 	childrens[SubdivideChildsPosition::DOWN_RIGHT] = new QuadTreeNode(child_bounding_box, this);
 }
@@ -120,7 +120,7 @@ void QuadTreeNode::DistributeChildrens()
 			}
 		}
 
-		if (intersections < 4)
+		if (intersections == 1)
 		{
 			for (uint i = 0; i < 4; i++)
 			{

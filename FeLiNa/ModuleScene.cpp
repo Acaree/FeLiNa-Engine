@@ -12,6 +12,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentTexture.h"
+#include "Quadtree.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -46,8 +47,20 @@ bool ModuleScene::Start()
 
 	root_object->AddChildren(App->camera->main_camera);
 
-	App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
+	App->mesh_import->LoadData("Assets\\Street environment_V01.fbx");
+
+
+	//TEST FRUSTUM
+	quadtree = new QuadTree();
+	math::AABB box;
 	
+	box.minPoint = { -50,-50,-50 };
+	box.maxPoint = { 50,50,50 };
+
+	quadtree->SetBoundary(box);
+	//quadtree->Insert(root_object);
+	//quadtree->root_node->CollectIntersections(game_objects, &box);
+	RecursiveInsert(App->scene->root_object);
 	return ret;
 }
 
@@ -92,6 +105,8 @@ update_status ModuleScene::Update(float dt)
 update_status ModuleScene::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
+
+	quadtree->DebugDraw();
 
 	grid_plane->Render();
 
@@ -204,4 +219,20 @@ void ModuleScene::SetSelectedGameObject(GameObject* go)
 GameObject* ModuleScene::GetSelectedGameObject() const
 {
 	return selected;
+}
+
+void ModuleScene::RecursiveInsert(GameObject * node)
+{
+
+	if (node != nullptr)
+		quadtree->Insert(node);
+
+	if (node->GetNumChildren() > 0)
+	{
+		for (int i = 0; i < node->GetNumChildren(); ++i)
+		{
+			RecursiveInsert(node->GetChild(i));
+		}
+
+	}
 }

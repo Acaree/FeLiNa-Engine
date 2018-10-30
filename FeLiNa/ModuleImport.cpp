@@ -194,7 +194,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 		game_object->SetParent(obj);
 		obj->AddChildren(game_object);
-
+		game_object->RecalculateBoundingBox();
 	}
 	else
 	{
