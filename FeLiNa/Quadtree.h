@@ -24,8 +24,11 @@ public:
 
 	QuadTreeNode(const math::AABB &bounding_box , QuadTreeNode* parent);
 	~QuadTreeNode();
+	
+	void Clear();
 
 	void Insert(GameObject* go); // insert a go in this node.
+	void Remove(GameObject* go);
 	void SubdivideNode(); // create the childs
 	bool isLeaf() const;
 
@@ -42,12 +45,29 @@ public:
 	QuadTreeNode* parent = nullptr; // parent of this node 
 
 	std::list<GameObject*> objects; // game objects inside this node.
-	math::AABB boundig_box; // container of node to check the collisions
+	math::AABB bounding_box; // container of node to check the collisions
 
 };
 
 
+class QuadTree
+{
+public:
 
+	QuadTree();
+	~QuadTree();
+
+	void SetBoundary(const math::AABB& boundary);
+	void Insert(GameObject* go);
+	void Remove(GameObject* go);
+	
+	void DebugDraw();
+
+	void Clear();
+
+public:
+	QuadTreeNode* root_node = nullptr;
+};
 
 
 

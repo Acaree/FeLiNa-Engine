@@ -1,10 +1,10 @@
 #include "Quadtree.h"
 #include "GameObject.h"
-
+#include "Glew/include/glew.h"
 
 QuadTreeNode::QuadTreeNode(const math::AABB &bounding_box, QuadTreeNode* parent)
 {
-	this->boundig_box = boundig_box;
+	this->bounding_box = bounding_box;
 	this->parent = parent;
 
 	for (uint i = 0; i < 4; ++i)
@@ -44,10 +44,10 @@ void QuadTreeNode::Insert(GameObject * go)
 
 void QuadTreeNode::SubdivideNode()
 {
-	const math::float3 size_box = boundig_box.Size(); //Take the size of actual boundig box
+	const math::float3 size_box = bounding_box.Size(); //Take the size of actual boundig box
 	const math::float3 subdivision_size = { size_box.x*0.5F, size_box.y, size_box.z*0.5F }; //Calculate the new size for subdivision bounding box
 
-	const math::float3 center_bounding_box = boundig_box.CenterPoint(); //Center of actual boundig box
+	const math::float3 center_bounding_box = bounding_box.CenterPoint(); //Center of actual boundig box
 	math::float3 box_child_center;
 	math::AABB child_bounding_box;
 
@@ -109,6 +109,140 @@ void QuadTreeNode::DistributeChildrens()
 	while (it != objects.end())
 	{
 		//NEED THINK FROM HOW TO DO THIS :/
+		uint intersections = 0;
+		bool is_intersecting[4];
 
+		for (uint i = 0; i < 4; ++i)
+		{
+			if (is_intersecting[i] = (*it)->GetAABB().Intersects(childrens[i]->bounding_box))
+			{
+				intersections++;
+			}
+		}
+
+		if (intersections < 4)
+		{
+			for (uint i = 0; i < 4; i++)
+			{
+				if (is_intersecting[i])
+				{
+					childrens[i]->Insert(*it);
+					it = objects.erase(it);
+				}
+			}
+		}
+		else
+			it++;
 	}
+}
+
+void QuadTreeNode::Remove(GameObject* go)
+{
+	std::list<GameObject*>::iterator it = std::find(objects.begin(), objects.end(), go);
+
+	if (it != objects.end())
+	{
+		objects.erase(it);
+	}
+
+	if (!isLeaf())
+	{
+		for (uint i = 0; i < 4; ++i)
+		{
+			childrens[i]->Remove(go);
+		}
+	}
+}
+
+void QuadTreeNode::DebugDraw()
+{
+	
+
+	for (uint i = 0; i < 12; i++)
+	{
+		glVertex3f(bounding_box.Edge(i).a.x, bounding_box.Edge(i).a.y, bounding_box.Edge(i).a.z);
+		glVertex3f(bounding_box.Edge(i).b.x, bounding_box.Edge(i).b.y, bounding_box.Edge(i).b.z);
+	}
+
+	if (childrens[0] != nullptr)
+	{
+		for (uint i = 0; i < 4; ++i)
+		{
+			childrens[i]->DebugDraw();
+		}
+	}
+
+
+}
+
+void QuadTreeNode::Clear()
+{
+	if (childrens[0] != nullptr) // not best size 0 ?
+	{
+		for (uint i = 0; i < 4; ++i)
+		{
+			childrens[i]->Clear();
+			RELEASE(childrens[i]);
+		}
+	}
+	objects.clear();
+}
+
+
+
+QuadTree::QuadTree()
+{
+}
+
+QuadTree::~QuadTree()
+{
+	RELEASE(root_node);
+}
+
+void QuadTree::Insert(GameObject* go)
+{
+	if (root_node != nullptr)
+	{
+		if (go->GetAABB().Intersects(root_node->bounding_box))
+		{
+			root_node->Insert(go);
+		}
+	}
+}
+
+void QuadTree::SetBoundary(const math::AABB & boundary)
+{
+	if(root_node != nullptr)
+		Clear();
+
+	root_node = new QuadTreeNode(boundary, nullptr);
+}
+
+void QuadTree::Remove(GameObject* go)
+{
+	if (root_node != nullptr)
+		root_node->Remove(go);
+}
+
+void QuadTree::Clear()
+{
+	if (root_node != nullptr)
+	{
+		root_node->Clear();
+		root_node->objects.clear(); // it's neccesary??
+		RELEASE(root_node);
+	}
+}
+
+void QuadTree::DebugDraw()
+{
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 1.0f, 1.0f);
+
+	if (root_node != nullptr)
+		root_node->DebugDraw();
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
