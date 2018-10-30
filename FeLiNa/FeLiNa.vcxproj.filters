@@ -190,6 +190,9 @@
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Quadtree.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -493,6 +496,9 @@
       <Filter>Tools\Physfs</Filter>
     </ClInclude>
     <ClInclude Include="ModuleFileSystem.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Quadtree.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
