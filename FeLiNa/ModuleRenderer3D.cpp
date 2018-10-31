@@ -210,8 +210,9 @@ void ModuleRenderer3D::UpdateTransforms(GameObject* go) {
 
 
 	ComponentTransform* go_trans = (ComponentTransform*)go->GetComponent(Component_Transform);
+	if(go_trans != nullptr)
 
-	go_trans->UpdateMatrix();
+		go_trans->UpdateMatrix();
 
 	for (int i = 0; i < go->GetNumChildren(); i++)
 	{

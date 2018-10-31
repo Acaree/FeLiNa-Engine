@@ -25,7 +25,7 @@ public:
 
 	void AddTexture(Texture* tex);
 
-	bool SaveTextureAsDDS(std::string& output_path);
+	bool SaveTextureAsDDS(std::string& output_path, void* data);
 	
 	ComponentTexture* CreateComponentTexture();
 

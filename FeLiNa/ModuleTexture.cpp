@@ -58,8 +58,6 @@ bool ModuleTexture::LoadTexture(const char* path,int index)
 
 	std::string path_s = ("%s", path);
 
-	SaveTextureAsDDS(path_s);
-
 	success = ilLoadImage(path); 	
 
 
@@ -75,12 +73,12 @@ bool ModuleTexture::LoadTexture(const char* path,int index)
 		}
 
 		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
-	
+
 		if (!success)
 		{
 			error = ilGetError();
-			LOG( "Image conversion failed - IL reports error: %i %s ", error, iluErrorString(error));
-			exit(-1);
+			LOG("Image conversion failed - IL reports error: %i %s ", error, iluErrorString(error));
+
 		}
 
 		glGenTextures(1, &textureID);
@@ -104,13 +102,18 @@ bool ModuleTexture::LoadTexture(const char* path,int index)
 		textures.push_back(texture);
 
 
-		if (success)
+		if (success) {
 			LOG("Texture creation successful.");
+			SaveTextureAsDDS(path_s, &textureID);
+		}
+
 	}
 	else
 		LOG("Texture creation failed.");
 
 	ilDeleteImages(1, &imageID); 
+
+	
 
 	return success;
 }
@@ -128,19 +131,18 @@ ComponentTexture* ModuleTexture::CreateComponentTexture()
 	return c_texture;
 }
 
-bool ModuleTexture::SaveTextureAsDDS(std::string& output_path) {
+bool ModuleTexture::SaveTextureAsDDS(std::string& output_path, void* data) {
 	
 	bool ret = false;
 	
 	ILuint   size; 
-	ILubyte* data; 
 	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use 
 	size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer 
 	if (size > 0) {
 		data = new ILubyte[size]; // allocate data buffer    
 		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function        
 			ret = App->fs->SaveFile(output_path, data, size, "Phys_saves", "texture", "dds"); //first folder path, then filename and last extension
-		RELEASE_ARRAY(data);
+			RELEASE_ARRAY(data);
 	}
 
 	return ret;
