@@ -122,31 +122,32 @@ void ComponentTransform::DrawInspector()
 		ImGui::Text("Position:");
 		ImGui::SameLine();
 
-		float vel = 1.0F;
+		math::float3 last_position = position;
+		math::float3 last_rotation = euler_angles;
+		math::float3 last_scale = scale;
 
-		if (parent->static_object)
-			vel = 0.0F;
-
-		if (ImGui::DragFloat3("##pos", &position[0], vel))
+		if (ImGui::DragFloat3("##pos", &last_position[0], 1.0F))
 		{
-			SetPosition(position);
+			if(!parent->static_object)
+				SetPosition(last_position);
 		}
 
 		ImGui::Text("Rotation:");
 		ImGui::SameLine();
 
-		if (ImGui::DragFloat3("##rot", &euler_angles[0], vel))
+		if (ImGui::DragFloat3("##rot", &last_rotation[0], 1.0F))
 		{
-			SetRotation(euler_angles);
+			if(!parent->static_object)
+				SetRotation(last_rotation);
 		}
 
 		ImGui::Text("Scale:");
 		ImGui::SameLine();
 
-		if (ImGui::DragFloat3("##scale", &scale[0], vel))
+		if (ImGui::DragFloat3("##scale", &last_scale[0], 1.0F))
 		{
-			SetScale(scale);
-
+			if(!parent->static_object)
+				SetScale(last_scale);
 		}
 
 		ImGui::TreePop();
