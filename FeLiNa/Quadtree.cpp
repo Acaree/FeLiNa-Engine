@@ -34,8 +34,7 @@ void QuadTreeNode::Insert(GameObject * go)
 	}
 	else
 	{
-		if (isLeaf())
-			SubdivideNode();
+		SubdivideNode();
 
 		objects.push_back(go);
 		DistributeChildrens();
@@ -45,7 +44,7 @@ void QuadTreeNode::Insert(GameObject * go)
 void QuadTreeNode::SubdivideNode()
 {
 	const math::float3 size_box = bounding_box.Size(); //Take the size of actual boundig box
-	const math::float3 subdivision_size = { size_box.x*0.5F, size_box.y, size_box.z*0.5F }; //Calculate the new size for subdivision bounding box
+	const math::float3 subdivision_size = { size_box.x*0.5F, size_box.y*0.5F, size_box.z*0.5F }; //Calculate the new size for subdivision bounding box
 
 	const math::float3 center_bounding_box = bounding_box.CenterPoint(); //Center of actual boundig box
 	math::float3 box_child_center;
@@ -54,22 +53,22 @@ void QuadTreeNode::SubdivideNode()
 	//Now create the new child's node from this node
 
 	//TOP-LEFT 
-	box_child_center = { center_bounding_box.x - subdivision_size.x /2, center_bounding_box.y, center_bounding_box.z - subdivision_size.z/2 };
+	box_child_center = { center_bounding_box.x - subdivision_size.x /2, center_bounding_box.y + subdivision_size.y/2 , center_bounding_box.z - subdivision_size.z/2 };
 	child_bounding_box.SetFromCenterAndSize(box_child_center, subdivision_size);
 	childrens[SubdivideChildsPosition::UP_LEFT] = new QuadTreeNode(child_bounding_box, this);
 
 	//TOP-RIGHT 
-	box_child_center = { center_bounding_box.x + subdivision_size.x/2, center_bounding_box.y, center_bounding_box.z - subdivision_size.z/2 };
+	box_child_center = { center_bounding_box.x + subdivision_size.x/2, center_bounding_box.y + subdivision_size.y / 2 , center_bounding_box.z - subdivision_size.z/2 };
 	child_bounding_box.SetFromCenterAndSize(box_child_center, subdivision_size);
 	childrens[SubdivideChildsPosition::UP_RIGHT] = new QuadTreeNode(child_bounding_box, this);
 
 	//DOWN_LEFT 
-	box_child_center = { center_bounding_box.x - subdivision_size.x/2, center_bounding_box.y, center_bounding_box.z + subdivision_size.z/2 };
+	box_child_center = { center_bounding_box.x - subdivision_size.x/2, center_bounding_box.y - subdivision_size.y / 2 , center_bounding_box.z + subdivision_size.z/2 };
 	child_bounding_box.SetFromCenterAndSize(box_child_center, subdivision_size);
 	childrens[SubdivideChildsPosition::DOWN_LEFT] = new QuadTreeNode(child_bounding_box, this);
 
 	//DOWN_RIGHT
-	box_child_center = { center_bounding_box.x + subdivision_size.x/2, center_bounding_box.y, center_bounding_box.z + subdivision_size.z/2 };
+	box_child_center = { center_bounding_box.x + subdivision_size.x/2, center_bounding_box.y - subdivision_size.y / 2 , center_bounding_box.z + subdivision_size.z/2 };
 	child_bounding_box.SetFromCenterAndSize(box_child_center, subdivision_size);
 	childrens[SubdivideChildsPosition::DOWN_RIGHT] = new QuadTreeNode(child_bounding_box, this);
 }
