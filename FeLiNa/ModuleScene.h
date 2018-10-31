@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "mPlane.h"
-
+#include <list>
 class GameObject;
 enum ComponentType;
 class QuadTree;
@@ -19,22 +19,12 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void CreateGameObject(GameObject* object);
-
-	bool DeleteGameObject(GameObject* object);
-	bool DeleteGameObject(char* name);
-
 	void ShowHierarchy();
-	void ShowInspector();
-
-	std::vector<GameObject*> game_objects;
-
-	GameObject* root_object = nullptr;
+	void ShowInspector();	
 
 	void SetSelectedGameObject(GameObject* go);
 	GameObject* GetSelectedGameObject() const;
 
-	void RecursiveInsert(GameObject * node);
 private:
 
 	mPlane* grid_plane = nullptr;
@@ -46,8 +36,10 @@ private:
 	bool material_cheker = false;
 	bool no_texture = false;
 
+public:
+	std::list<GameObject*> static_go;
+	GameObject* root_object = nullptr;
 	QuadTree * quadtree = nullptr;
-
 };
 
 #endif

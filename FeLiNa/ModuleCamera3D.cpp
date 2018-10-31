@@ -144,17 +144,18 @@ void ModuleCamera3D::LookAt( const math::float3 &position)
 //TO OTHER
 void ModuleCamera3D::CheckObjectActive(GameObject* go)
 {
-	
-	Culling cull = dummy_frustum->ContainsAaBox(go->GetAABB());
-
-	if (cull == Culling::CULL_OUT)
-		go->SetActive(false);
-	else
-		go->SetActive(true);
-
-	for (uint i = 0; i < go->GetNumChildren(); ++i)
+	if (!go->static_object)
 	{
-		CheckObjectActive(go->GetChild(i));
-	}
+		Culling cull = dummy_frustum->ContainsAaBox(go->GetAABB());
 
+		if (cull == Culling::CULL_OUT)
+			go->SetActive(false);
+		else
+			go->SetActive(true);
+
+		for (uint i = 0; i < go->GetNumChildren(); ++i)
+		{
+			CheckObjectActive(go->GetChild(i));
+		}
+	}
 }

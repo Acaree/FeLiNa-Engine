@@ -7,6 +7,7 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ModuleRenderer3D.h"
+#include "Quadtree.h"
 
 GameObject::GameObject(GameObject* parent)
 {
@@ -244,7 +245,11 @@ void GameObject::ShowObjectInspector()
 	if (ImGui::TreeNodeEx("Properties:"))
 	{
 
-		ImGui::Checkbox("Static", &static_object);
+		if (ImGui::Checkbox("Static", &static_object))
+		{
+			if (static_object)
+				App->scene->static_go.push_back(this);
+		}
 
 		ImGui::InputText("##name", name, 30);
 

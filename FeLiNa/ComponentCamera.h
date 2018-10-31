@@ -42,7 +42,7 @@ public:
 public:
 
 	math::Frustum frustum;
-	
+	bool culling = false;
 
 };
 
