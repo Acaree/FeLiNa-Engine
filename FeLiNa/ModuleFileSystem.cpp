@@ -13,6 +13,8 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 	PHYSFS_init(base_path);
 	SDL_free(base_path);
 
+	PHYSFS_init(nullptr);
+
 	if (PHYSFS_setWriteDir("Assets") == 0)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
@@ -21,6 +23,9 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 ModuleFileSystem::~ModuleFileSystem()
 {
+
+	PHYSFS_deinit();
+
 }
 
 
