@@ -25,6 +25,8 @@ public:
 	void SetSelectedGameObject(GameObject* go);
 	GameObject* GetSelectedGameObject() const;
 
+	void FillStaticGameObjects();
+
 private:
 
 	mPlane* grid_plane = nullptr;
@@ -37,7 +39,7 @@ private:
 	bool no_texture = false;
 
 public:
-	std::list<GameObject*> static_go;
+	std::vector<GameObject*> static_go;
 	GameObject* root_object = nullptr;
 	QuadTree * quadtree = nullptr;
 };

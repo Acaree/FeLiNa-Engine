@@ -59,6 +59,8 @@ public:
 
 	void SetBoundary(const math::AABB& boundary);
 	void Insert(GameObject* go);
+	template<class TYPE>
+	void CollectIntersections(std::vector<GameObject*> &objects, const TYPE & primitive);
 	void CollectObjects(std::vector<GameObject*> &objects) const;
 	
 	void DebugDraw();

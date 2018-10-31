@@ -243,3 +243,10 @@ void QuadTree::CollectObjects(std::vector<GameObject*> &objects) const
 	if (root_node != nullptr)
 		root_node->CollectObjects(objects);
 }
+
+template<class TYPE>
+void QuadTree::CollectIntersections(std::vector<GameObject*> &objects, const TYPE & primitive)
+{
+	if (root_node != nullptr)
+		root_node->CollectIntersections(objects, primitive);
+}
