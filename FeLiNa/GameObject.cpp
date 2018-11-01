@@ -385,21 +385,39 @@ void GameObject::OnSave(JSON_Object* obj)
 {
 	json_object_set_string(obj, "name", name);
 	json_object_set_number(obj, "uid", uid);
-	json_object_set_number(obj, "uid parent", parent->uid);
+
+	if(parent != nullptr)
+		json_object_set_number(obj, "uid parent", parent->uid);
 
 	JSON_Value* arr_components = json_value_init_array();
 	JSON_Array* components_array = json_value_get_array(arr_components);
 
 	for (uint i = 0; i < components.size(); ++i)
 	{
-		JSON_Value* newValue = json_value_init_object();
-		JSON_Object* objToSerialize = json_value_get_object(newValue);
+		JSON_Value* new_value = json_value_init_object();
+		JSON_Object* obj_value = json_value_get_object(new_value);
 
-		components[i]->OnSave(objToSerialize);
-		json_array_append_value(components_array, newValue);
+		components[i]->OnSave(obj_value);
+		json_array_append_value(components_array, new_value);
 	}
 
 	json_object_set_value(obj, "Components", arr_components);
+
+
+	JSON_Value* arr_childs = json_value_init_array();
+	JSON_Array* childs_array = json_value_get_array(arr_childs);
+
+	for (uint i = 0; i < childrens.size(); ++i)
+	{
+		JSON_Value* new_value = json_value_init_object();
+		JSON_Object* obj_value = json_value_get_object(new_value);
+
+		childrens[i]->OnSave(obj_value);
+		json_array_append_value(childs_array, new_value);
+	}
+
+	json_object_set_value(obj, "Childs", arr_childs);
+
 }
 
 void GameObject::OnLoad(JSON_Object* obj)
