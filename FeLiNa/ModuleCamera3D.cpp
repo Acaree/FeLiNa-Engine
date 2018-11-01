@@ -59,10 +59,11 @@ update_status ModuleCamera3D::PreUpdate(float dt)
 {
 
 	//To other module
-	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
+	//TO REVISE
+	/*for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
 	{
 		CheckObjectActive(App->scene->root_object->GetChild(i));
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }

@@ -13,6 +13,8 @@
 #include "ComponentMesh.h"
 #include "ComponentTexture.h"
 #include "Quadtree.h"
+#include "MathGeoLib/Geometry/Frustum.h"
+#include "ComponentCamera.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -207,14 +209,10 @@ void ModuleScene::FillStaticGameObjects()
 			quadtree->Insert(static_go[i]);
 		}
 
-		/*for (uint i = 0; i < static_go.size(); ++i)
-			static_go[i]->SetActive(false);
-
-		std::vector<GameObject*> tmp_go = static_go;
-
-		quadtree->CollectIntersections(tmp_go, App->camera->camera_editor);*/
 
 		need_update_quadtree = false;
 	}
+
+
 
 }

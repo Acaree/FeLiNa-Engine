@@ -62,7 +62,7 @@ public:
 	bool IsActive() const;
 
 	bool static_object = false;
-
+	math::AABB bounding_box;
 private:
 	
 	char* name = "No Name";
@@ -71,7 +71,7 @@ private:
 	GameObject* parent = nullptr;
 	bool selected = false;
 
-	math::AABB bounding_box;
+	
 
 	bool active = true;
 

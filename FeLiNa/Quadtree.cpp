@@ -80,32 +80,11 @@ bool QuadTreeNode::isLeaf() const
 	return childrens[0] == nullptr;
 }
 
-template<class TYPE>
-void QuadTreeNode::CollectIntersections(std::vector<GameObject*> &objects, const TYPE & primitive)
-{
-	if (primitive.Intersects(object))
-	{
-		for (std::vector<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++i)
-		{
-			if (primitive.Intersects((*it)->bounding_box))
-				objects.push_back(*it);
-		}
-		
-		if (!isLeaf) 
-		{
-			for (int i = 0; i < 4; ++i)
-			{
-				if (childrens[i] != nullptr)
-					childrens[i]->CollectIntersections(objects, primitive);
-			}
-		}
-	}
 
-}
 
 void QuadTreeNode::DistributeChildrens()
 {
-	std::list<GameObject*>::const_iterator it = objects.begin();
+	std::vector<GameObject*>::const_iterator it = objects.begin();
 
 	while (it != objects.end())
 	{
@@ -181,7 +160,7 @@ void QuadTreeNode::Clear()
 
 void QuadTreeNode::CollectObjects(std::vector<GameObject*> &object) const
 {
-	for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
+	for (std::vector<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
 		object.push_back(*it);
 	
 	for (int i = 0; i < 4; ++i)
@@ -256,9 +235,3 @@ void QuadTree::CollectObjects(std::vector<GameObject*> &objects) const
 		root_node->CollectObjects(objects);
 }
 
-template<class TYPE>
-void QuadTree::CollectIntersections(std::vector<GameObject*> &objects, const TYPE & primitive)
-{
-	if (root_node != nullptr)
-		root_node->CollectIntersections(objects, primitive);
-}

@@ -15,7 +15,7 @@
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
-
+#include "Quadtree.h"
 #include "ModuleImage.h"
 
 
@@ -232,6 +232,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadMatrixf(App->camera->camera_editor->GetViewMatrix());
 	
 	// light 0 on cam pos
+	
 
 	lights[0].SetPos(App->camera->camera_editor->frustum.pos.x, App->camera->camera_editor->frustum.pos.y, App->camera->camera_editor->frustum.pos.z);
 
@@ -245,6 +246,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
+
+	StaticCulling();
 
 	UpdateTransforms(App->scene->root_object);
 
@@ -460,14 +463,17 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 
 	for (int i = 0; i < go->GetNumChildren(); ++i)
 	{
-		GameObject* child = go->GetChild(i);
-		ComponentMesh* mesh = (ComponentMesh*)child->GetComponent(Component_Mesh);
-		ComponentTexture* material = (ComponentTexture*)child->GetComponent(Component_Material);
+		if (go->GetChild(i)->IsActive())
+		{
+			GameObject* child = go->GetChild(i);
+			ComponentMesh* mesh = (ComponentMesh*)child->GetComponent(Component_Mesh);
+			ComponentTexture* material = (ComponentTexture*)child->GetComponent(Component_Material);
 
-		
-		DrawGameObject(child, mesh, material);
-		
-		child->DrawBoundingBox();
+
+			DrawGameObject(child, mesh, material);
+
+			child->DrawBoundingBox();
+		}
 	}
 
 }
@@ -561,4 +567,19 @@ ComponentMesh* ModuleRenderer3D::CreateComponentMesh()
 	c_mesh->SetMesh(meshes[meshes.size() - 1]);
 
 	return c_mesh;
+}
+
+void ModuleRenderer3D::StaticCulling()
+{
+
+/*	for (uint i = 0; i < App->scene->static_go.size(); ++i)
+		App->scene->static_go[i]->SetActive(false);
+
+	std::vector<GameObject*> tmp_go;
+
+	App->scene->quadtree->CollectIntersections(tmp_go, App->camera->dummy_frustum->frustum);
+
+	for (uint i = 0; i < tmp_go.size(); ++i)
+		tmp_go[i]->SetActive(true);
+	*/
 }

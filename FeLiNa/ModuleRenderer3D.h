@@ -63,6 +63,8 @@ public:
 	void CleanAllDataModel();
 	void SaveState(JSON_Object* config);
 
+	void StaticCulling();
+
 	ComponentMesh* CreateComponentMesh();
 public:
 
