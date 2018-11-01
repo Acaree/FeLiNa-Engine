@@ -16,6 +16,8 @@ Application::Application()
 	name = "Application";
 	random = new math::LCG();
 
+	importer_material = new MaterialImporter();
+
 	hardware = new ModuleHardware(this,false);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);

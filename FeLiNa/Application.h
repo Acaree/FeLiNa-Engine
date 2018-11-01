@@ -5,6 +5,7 @@
 #include "MathGeoLib/Algorithm/Random/LCG.h"
 #include <list>
 #include <vector>
+#include "MaterialImporter.h"
 
 class ModuleHardware;
 class ModuleWindow;
@@ -32,6 +33,9 @@ public:
 	ModuleImport * mesh_import;
 	ModuleFileSystem* fs;
 	ModuleTexture* texture;
+
+	//IMPORTERS
+	MaterialImporter* importer_material ;
 
 	char app_name[20];
 	char organization[20];

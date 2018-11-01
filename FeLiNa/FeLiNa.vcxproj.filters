@@ -193,6 +193,9 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialImporter.cpp">
+      <Filter>Modules\Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -501,6 +504,12 @@
     <ClInclude Include="Quadtree.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Importer.h">
+      <Filter>Modules\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialImporter.h">
+      <Filter>Modules\Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -541,6 +550,9 @@
     </Filter>
     <Filter Include="Tools\Physfs">
       <UniqueIdentifier>{c385ea4a-21fe-487d-80aa-2eb691c19ec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Importers">
+      <UniqueIdentifier>{28105b97-f8f8-463c-9531-91294a5e8159}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

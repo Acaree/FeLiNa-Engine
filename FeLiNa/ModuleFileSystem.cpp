@@ -105,7 +105,7 @@ uint ModuleFileSystem::PhysfsSave(const char* file_path, const void* buffer, uns
 
 uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 	
-	uint objcount = 0;
+	uint count = 0;
 
 	bool file_exists = PHYSFS_exists(filePath);
 
@@ -120,11 +120,11 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 			if (size > 0) {
 				
 				*buffer = new char[size];
-				objcount = PHYSFS_read(file, *buffer, 1, size);
+				count = PHYSFS_read(file, *buffer, 1, size);
 
-				if (objcount == size)
+				if (count == size)
 				{
-					LOG("FILE SYSTEM: Read %u bytes from file '%s'", objcount, filePath);
+					LOG("FILE SYSTEM: Read %u bytes from file '%s'", count, filePath);
 					
 				}
 				else
@@ -143,7 +143,80 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 	else
 		LOG("FILE SYSTEM: Could not load file '%s' to read because it doesn't exist", filePath);
 
-	return objcount;
+	return count;
 }
 
-			
+const char* ModuleFileSystem::GetNameFile(const char* path) const
+{
+	std::string file_name = path;
+	
+	//Erase the folder and extension
+	file_name = file_name.substr(file_name.find_last_of("//") + 1, file_name.size());
+	file_name = file_name.substr(0, file_name.find_last_of("."));
+
+	char* result = new char[file_name.size() + 1];
+
+	strcpy_s(result, file_name.size() + 1, file_name.data());
+
+
+	return result;
+}
+
+uint ModuleFileSystem::SaveTexture(char* buffer, uint size, std::string& output_file)
+{
+	uint ret = 0;
+
+	//COPY NAME
+	char new_name[DEFAULT_BUF_SIZE];
+	sprintf_s(new_name, DEFAULT_BUF_SIZE, output_file.data());
+	output_file = new_name;
+
+	//COPY PATH
+	char new_path[DEFAULT_BUF_SIZE];
+	sprintf_s(new_path, DEFAULT_BUF_SIZE, "Assets/PhysfsSave/%s.%s", new_name, EXTENSION);
+
+	ret = SaveBufferData(buffer, new_path, size);
+
+	return ret;
+}
+
+//  char* buffer, const char* filePath, uint size
+uint ModuleFileSystem::SaveBufferData(char* buffer, const char* file_path, uint size)
+{
+	uint count = 0;
+
+	const char* file_name = GetNameFile(file_path);
+
+	bool exists = PHYSFS_exists(file_path);
+
+	PHYSFS_File* file = nullptr;
+
+	if (!exists)
+		file = PHYSFS_openAppend(file_path);
+	else
+		file = PHYSFS_openWrite(file_path);
+
+	if (file != nullptr)
+	{
+		count = PHYSFS_writeBytes(file, (const void*)buffer, size);
+
+		if (count == size)
+		{
+			if (exists)
+			{
+				LOG("FILE SYSTEM: CREATE ");
+			}
+			else
+				LOG("FILE SYSTEM: FAIL");
+		}
+		else
+			LOG("FILE SYSTEM: Could not write to file '%s'. ERROR: %s", file_name, PHYSFS_getLastError());
+
+		if (PHYSFS_close(file) == 0)
+			LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", file_name, PHYSFS_getLastError());
+	}
+	else
+		LOG("FILE SYSTEM: Could not open file '%s' to write. ERROR: %s", file_name, PHYSFS_getLastError());
+
+	return count;
+}

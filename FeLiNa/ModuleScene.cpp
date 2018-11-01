@@ -51,6 +51,9 @@ bool ModuleScene::Start()
 
 	App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
 
+	std::string output_file;
+	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);
+
 
 	//TEST FRUSTUM
 	quadtree = new QuadTree();
