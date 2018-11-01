@@ -16,6 +16,8 @@
 #include "MathGeoLib/Geometry/Frustum.h"
 #include "ComponentCamera.h"
 
+#include "SceneSerialization.h"
+
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Scene";
@@ -49,10 +51,10 @@ bool ModuleScene::Start()
 
 	root_object->AddChildren(App->camera->main_camera);
 
-	App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
+	App->mesh_import->LoadData("Assets\\Street environment_V01.fbx");
 
-	std::string output_file;
-	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);
+/*	std::string output_file;
+	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);*/
 
 
 	//TEST FRUSTUM
@@ -63,6 +65,9 @@ bool ModuleScene::Start()
 	box.maxPoint = { 50,50,50 };
 
 	quadtree->SetBoundary(box);
+	SceneSerialization s;
+
+	s.SaveScene();
 
 	return ret;
 }
