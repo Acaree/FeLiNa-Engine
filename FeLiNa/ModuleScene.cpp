@@ -177,9 +177,11 @@ GameObject* ModuleScene::GetSelectedGameObject() const
 
 void ModuleScene::FillStaticGameObjects()
 {
+	std::vector<GameObject*> tmp_go;
+
 	if (need_update_quadtree)
 	{
-		
+		//All GO THAt transform to dynamic remove
 		for (uint i = 0; i < static_go.size(); ++i)
 		{
 			if (static_go[i]->static_object == false)
@@ -193,6 +195,9 @@ void ModuleScene::FillStaticGameObjects()
 			
 		}
 
+
+
+		// Reset quatree
 		if (static_go.size() < quadtree->size)
 		{
 			quadtree->Clear();
@@ -204,15 +209,26 @@ void ModuleScene::FillStaticGameObjects()
 			quadtree->SetBoundary(box);
 		}
 
+		//Insert all static_go in quadtree
 		for (uint i = quadtree->size; i < static_go.size(); ++i)
 		{
 			quadtree->Insert(static_go[i]);
 		}
 
-
 		need_update_quadtree = false;
 	}
 
 
+	//Set all static objects to  false
+	for (uint i = 0; i < static_go.size(); ++i)
+		static_go[i]->SetActive(false);
+
+	//Get all go that collision with frustum
+	quadtree->CollectIntersections(tmp_go, App->camera->dummy_frustum->frustum);
+
+	for (uint i = 0; i < tmp_go.size(); ++i)
+	{
+		tmp_go[i]->SetActive(true);
+	}
 
 }
