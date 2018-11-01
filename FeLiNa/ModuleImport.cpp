@@ -3,6 +3,7 @@
 #include "SDL/include/SDL_opengl.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleFileSystem.h"
 #include "ModuleTexture.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -258,29 +259,41 @@ ComponentTexture* ModuleImport::FindTexturePath(aiMaterial* material, const char
 		std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data;
 		std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
 
+		std::string output_filepath;
+
+		succes = App->mesh_import->Import("Baker_house.png","Assets/Textures/", output_filepath);
 		
-		succes = App->texture->LoadTexture(texture_folder.c_str(), index);
-
-		if (!succes)
-		{
-			succes = App->texture->LoadTexture(fbx_folder.c_str(), index);
-
-			if (!succes)
-			{
-				succes = App->texture->LoadTexture(game_folder.c_str(), index);
-
-				if (!succes)
-				{
-					succes = App->texture->LoadTexture(felina_folder.c_str(), index);
-
-				}
-			}
-		}
-		
-		if (succes)
-			texture = App->texture->CreateComponentTexture();
+		texture = App->texture->CreateComponentTexture();
 	}
 
 	return texture;
 }
 
+
+bool ModuleImport::Import(const char* importFileName, const char* importPath, std::string& outputFileName)
+{
+	bool ret = false;
+
+	if (importPath == nullptr)
+		return ret;
+
+	char importFilePath[256]; //256 is default buf size
+	strcpy_s(importFilePath, strlen(importPath) + 1, importPath);
+	if (importFileName != nullptr)
+		strcat_s(importFilePath, strlen(importFilePath) + strlen(importFileName) + 1, importFileName);
+	
+
+	char* buffer;
+	uint size = App->fs->Load(importFilePath, &buffer);
+	if (size > 0)
+	{
+		LOG("MATERIAL IMPORTER: Successfully loaded texture %s (original format)", importFileName);
+		//ret = App->texture->SaveTextureAsDDS(outputFileName, buffer);
+		App->texture->ImportTexture(outputFileName,buffer,size);
+		RELEASE_ARRAY(buffer);
+	}
+	else
+		LOG("MATERIAL IMPORTER: Could not load texture %s (original format)", importFileName);
+
+	return ret;
+}

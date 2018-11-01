@@ -21,7 +21,7 @@ public:
 
 	bool Init();
 
-	bool LoadTexture(const char* path, int index);
+	bool ImportTexture(std::string path, const void* buffer, uint size);
 
 	void AddTexture(Texture* tex);
 

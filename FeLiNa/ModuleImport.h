@@ -21,6 +21,7 @@ public:
 	bool Start();
 	bool CleanUp();
 	
+	bool Import(const char* importFileName, const char* importPath, std::string& outputFileName);
 	bool LoadData(const char* path);
 	void LoadModel(const aiScene* scene, aiNode* node, const char* path, GameObject* obj, ComponentTransform* trans);
 	void GenerateBufferData(Mesh* mesh_data);

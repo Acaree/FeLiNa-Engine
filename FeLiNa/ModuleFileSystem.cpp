@@ -15,10 +15,24 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	PHYSFS_init(nullptr);
 
-	if (PHYSFS_setWriteDir("Assets") == 0)
+	if (PHYSFS_setWriteDir(".") == 0) // create a directory (if it's point it take game as base directory)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
-	PHYSFS_mkdir("Phys_saves");
+	if (PHYSFS_mount("./Assets/", "Assets", 1)==0) { //Add paths to physfs to search throught
+	
+		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
+	}
+
+	if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
+
+		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
+	}
+
+	PHYSFS_mkdir("Assets/PhysfsSave");
+
+	
 }
 
 ModuleFileSystem::~ModuleFileSystem()
@@ -88,3 +102,48 @@ uint ModuleFileSystem::PhysfsSave(const char* file_path, const void* buffer, uns
 
 	return ret;
 }
+
+uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
+	
+	uint objcount = 0;
+
+	bool file_exists = PHYSFS_exists(filePath);
+
+	if (file_exists) {
+		
+		PHYSFS_File* file = PHYSFS_openRead(filePath);
+
+		if (file != nullptr) {
+
+			PHYSFS_sint64 size = PHYSFS_fileLength(file);
+
+			if (size > 0) {
+				
+				*buffer = new char[size];
+				objcount = PHYSFS_read(file, *buffer, 1, size);
+
+				if (objcount == size)
+				{
+					LOG("FILE SYSTEM: Read %u bytes from file '%s'", objcount, filePath);
+					
+				}
+				else
+				{
+					RELEASE(buffer);
+					LOG("FILE SYSTEM: Could not read from file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
+				}
+
+				if (PHYSFS_close(file) == 0)
+					LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
+			}
+		}
+		else
+			LOG("FILE SYSTEM: Could not open file '%s' to read. ERROR: %s", filePath, PHYSFS_getLastError());
+	}
+	else
+		LOG("FILE SYSTEM: Could not load file '%s' to read because it doesn't exist", filePath);
+
+	return objcount;
+}
+
+			

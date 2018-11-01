@@ -28,8 +28,11 @@ void ComponentCamera::Update(float dt)
 {
 	const ComponentTransform* transform = (ComponentTransform*)parent->GetComponent(Component_Transform);
 
-	math::float4x4 matrix = transform->GetTransformMatrix();
+	math::float4x4 matrix = math::float4x4::identity;
 
+	if (transform != nullptr) {
+		matrix = transform->GetTransformMatrix();
+	}
 	frustum.pos = matrix.TranslatePart();
 	frustum.front = matrix.WorldZ().Normalized();
 	frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();

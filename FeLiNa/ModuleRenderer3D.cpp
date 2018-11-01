@@ -405,7 +405,12 @@ void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, Compo
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	ComponentTransform* trans = (ComponentTransform*)go->GetComponent(Component_Transform);
-	math::float4x4 matrix = trans->GetTransformMatrix();
+
+	math::float4x4 matrix = math::float4x4::identity;
+
+	if (trans != nullptr) {
+		matrix = trans->GetTransformMatrix();
+	}
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
 	if (mesh != nullptr && go->IsActive() == true)

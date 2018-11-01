@@ -140,7 +140,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					|| path.substr(path.find_last_of(".")) == ".tga" || path.substr(path.find_last_of(".")) == ".TGA")
 				{
 					if (App->renderer3D->meshes.size() > 0) {
-						App->texture->LoadTexture(path.c_str(),-1);
+						//App->texture->LoadTexture(path.c_str(),-1);
 					}
 				}
 				

@@ -47,7 +47,7 @@ bool ModuleScene::Start()
 
 	root_object->AddChildren(App->camera->main_camera);
 
-	App->mesh_import->LoadData("Assets\\Street environment_V01.fbx");
+	App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
 
 
 	//TEST FRUSTUM
