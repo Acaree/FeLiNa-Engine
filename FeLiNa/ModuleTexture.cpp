@@ -45,7 +45,7 @@ bool ModuleTexture::ImportTexture(std::string path, const void* buffer, uint siz
 {
 	bool success = false;
 	
-	if (buffer != nullptr && size > 0)
+/*	if (buffer != nullptr && size > 0)
 	{
 		ILuint imageID = 0;
 
@@ -82,8 +82,7 @@ bool ModuleTexture::ImportTexture(std::string path, const void* buffer, uint siz
 			{
 				ilEnable(IL_FILE_OVERWRITE);
 				data = new ILubyte[size]; // allocate data buffer
-				if (ilSaveL(IL_DDS, data, size) > 0) // Save with the ilSaveIL function
-					success = App->fs->SaveFile(path, data, size, "Assets/PhysfsSave", "texture", "dds");
+				if (ilSaveL(IL_DDS, data, size) > 0) // Save with the ilSaveIL function				
 
 				texture->texture_id = imageID;
 				texture->width = ilGetInteger(IL_IMAGE_WIDTH);
@@ -95,7 +94,7 @@ bool ModuleTexture::ImportTexture(std::string path, const void* buffer, uint siz
 			}
 			ilDeleteImages(1, &imageID);
 		}
-	}
+	}*/
 
 	return success;
 }
@@ -113,19 +112,3 @@ ComponentTexture* ModuleTexture::CreateComponentTexture()
 	return c_texture;
 }
 
-bool ModuleTexture::SaveTextureAsDDS(std::string& output_path, void* data) {
-	
-	bool ret = false;
-	
-	ILuint   size; 
-	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use 
-	size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer 
-	if (size > 0) {
-		data = new ILubyte[size]; // allocate data buffer    
-		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function        
-			ret = App->fs->SaveFile(output_path, data, size, "Assets/PhysfsSave", "texture", "dds"); //first folder path, then filename and last extension
-			RELEASE_ARRAY(data);
-	}
-
-	return ret;
-}

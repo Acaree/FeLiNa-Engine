@@ -24,8 +24,6 @@ public:
 	bool ImportTexture(std::string path, const void* buffer, uint size);
 
 	void AddTexture(Texture* tex);
-
-	bool SaveTextureAsDDS(std::string& output_path, void* data);
 	
 	ComponentTexture* CreateComponentTexture();
 
