@@ -58,9 +58,7 @@ bool ModuleScene::Start()
 	box.maxPoint = { 50,50,50 };
 
 	quadtree->SetBoundary(box);
-	//quadtree->Insert(root_object);
-	//quadtree->root_node->CollectIntersections(game_objects, &box);
-	RecursiveInsert(App->scene->root_object);
+
 	return ret;
 }
 
@@ -71,13 +69,6 @@ bool ModuleScene::CleanUp()
 
 	delete grid_plane;
 	grid_plane = nullptr;
-
-	for (std::vector<GameObject*>::const_iterator it = game_objects.begin(); it != game_objects.end(); ++it)
-	{
-		(*it)->CleanUp();
-	}
-
-	game_objects.clear();
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
@@ -93,6 +84,7 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
+
 	update_status update_return = UPDATE_CONTINUE;
 	
 	ShowHierarchy();
@@ -113,61 +105,8 @@ update_status ModuleScene::PostUpdate(float dt)
 	return update_return;
 }
 
-void ModuleScene::CreateGameObject(GameObject* object)
-{
-	game_objects.push_back(object);
-}
 
-bool ModuleScene::DeleteGameObject(GameObject* object)
-{
-	bool ret = false;
 
-	if (game_objects.size() != 0)
-	{
-
-		for (std::vector<GameObject*>::const_iterator it = game_objects.begin(); it != game_objects.end(); ++it)
-		{
-			if ((*it) == object)
-			{
-				(*it)->CleanUp();
-				game_objects.erase(it);
-
-				ret = true;
-			}
-
-		}
-
-		game_objects.shrink_to_fit();
-	}
-
-	return ret;
-
-}
-
-bool ModuleScene::DeleteGameObject(char* name)
-{
-	bool ret = false;
-
-	if (game_objects.size() != 0)
-	{
-
-		for (std::vector<GameObject*>::const_iterator it = game_objects.begin(); it != game_objects.end(); ++it)
-		{
-			if (strcmp((*it)->GetName(),name) == 0)
-			{
-				(*it)->CleanUp();
-				game_objects.erase(it);
-
-				ret = true;
-			}
-
-		}
-
-		game_objects.shrink_to_fit();
-	}
-
-	return ret;
-}
 
 void ModuleScene::ShowHierarchy()
 {
@@ -219,20 +158,4 @@ void ModuleScene::SetSelectedGameObject(GameObject* go)
 GameObject* ModuleScene::GetSelectedGameObject() const
 {
 	return selected;
-}
-
-void ModuleScene::RecursiveInsert(GameObject * node)
-{
-
-	if (node != nullptr)
-		quadtree->Insert(node);
-
-	if (node->GetNumChildren() > 0)
-	{
-		for (int i = 0; i < node->GetNumChildren(); ++i)
-		{
-			RecursiveInsert(node->GetChild(i));
-		}
-
-	}
 }

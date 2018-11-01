@@ -141,23 +141,6 @@ void QuadTreeNode::DistributeChildrens()
 	}
 }
 
-void QuadTreeNode::Remove(GameObject* go)
-{
-	std::list<GameObject*>::iterator it = std::find(objects.begin(), objects.end(), go);
-
-	if (it != objects.end())
-	{
-		objects.erase(it);
-	}
-
-	if (!isLeaf())
-	{
-		for (uint i = 0; i < 4; ++i)
-		{
-			childrens[i]->Remove(go);
-		}
-	}
-}
 
 void QuadTreeNode::DebugDraw()
 {
@@ -193,7 +176,15 @@ void QuadTreeNode::Clear()
 	objects.clear();
 }
 
-
+void QuadTreeNode::CollectObjects(std::vector<GameObject*> &object) const
+{
+	for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
+		object.push_back(*it);
+	
+	for (int i = 0; i < 4; ++i)
+		if (childrens[i] != nullptr)
+			childrens[i]->CollectObjects(object);
+}
 
 QuadTree::QuadTree()
 {
@@ -224,12 +215,6 @@ void QuadTree::SetBoundary(const math::AABB & boundary)
 	root_node = new QuadTreeNode(boundary, nullptr);
 }
 
-void QuadTree::Remove(GameObject* go)
-{
-	if (root_node != nullptr)
-		root_node->Remove(go);
-}
-
 void QuadTree::Clear()
 {
 	if (root_node != nullptr)
@@ -251,4 +236,17 @@ void QuadTree::DebugDraw()
 
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void QuadTree::CollectObjects(std::vector<GameObject*> &objects) const
+{
+	if (root_node != nullptr)
+		root_node->CollectObjects(objects);
+}
+
+template<class TYPE>
+void QuadTree::CollectIntersections(std::vector<GameObject*> &objects, const TYPE & primitive)
+{
+	if (root_node != nullptr)
+		root_node->CollectIntersections(objects, primitive);
 }

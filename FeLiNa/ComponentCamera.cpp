@@ -173,6 +173,8 @@ void ComponentCamera::DrawInspector()
 			SetFov(f_fov);
 		}
 
+		ImGui::Checkbox("Culling", &culling);
+
 		ImGui::TreePop();
 	}
 

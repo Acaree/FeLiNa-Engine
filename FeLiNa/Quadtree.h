@@ -28,12 +28,12 @@ public:
 	void Clear();
 
 	void Insert(GameObject* go); // insert a go in this node.
-	void Remove(GameObject* go);
 	void SubdivideNode(); // create the childs
 	bool isLeaf() const;
 
 	template<class TYPE>
 	void CollectIntersections(std::vector<GameObject*> &objects, const TYPE & primitive);
+	void CollectObjects(std::vector<GameObject*>&objects) const;
 
 	void DistributeChildrens(); //order game objects depending on position to new childs.
 
@@ -59,7 +59,9 @@ public:
 
 	void SetBoundary(const math::AABB& boundary);
 	void Insert(GameObject* go);
-	void Remove(GameObject* go);
+	template<class TYPE>
+	void CollectIntersections(std::vector<GameObject*> &objects, const TYPE & primitive);
+	void CollectObjects(std::vector<GameObject*> &objects) const;
 	
 	void DebugDraw();
 
