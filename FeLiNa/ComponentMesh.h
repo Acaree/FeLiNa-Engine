@@ -19,6 +19,9 @@ public:
 	void SetMesh(Mesh* mesh);
 	Mesh* GetMesh() const;
 
+	//void OnSave(JSON_Object* obj); // Same that Texture :/
+	//void OnLoad(JSON_Object* obj);
+
 private:
 	
 	Mesh* mesh = nullptr;

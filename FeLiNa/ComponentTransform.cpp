@@ -115,6 +115,43 @@ void ComponentTransform::SumScale(math::float3 scale)
 	this->scale.z *= scale.z;
 }
 
+
+void ComponentTransform::OnSave(JSON_Object* obj)
+{
+	json_object_set_number(obj, "type", type);
+
+	json_object_set_number(obj, "px", position.x);
+	json_object_set_number(obj, "py", position.y);
+	json_object_set_number(obj, "pz", position.z);
+
+	json_object_set_number(obj, "qx", quat_rotation.x);
+	json_object_set_number(obj, "qy", quat_rotation.y);
+	json_object_set_number(obj, "qz", quat_rotation.z);
+	json_object_set_number(obj, "qw", quat_rotation.w);
+
+	json_object_set_number(obj, "sx", scale.x);
+	json_object_set_number(obj, "sy", scale.y);
+	json_object_set_number(obj, "sz", scale.z);
+}
+
+void ComponentTransform::OnLoad(JSON_Object* obj)
+{
+	position.x = json_object_get_number(obj, "PosX");
+	position.y = json_object_get_number(obj, "PosY");
+	position.z = json_object_get_number(obj, "PosZ");
+
+	quat_rotation.x = json_object_get_number(obj, "RotX");
+	quat_rotation.y = json_object_get_number(obj, "RotY");
+	quat_rotation.z = json_object_get_number(obj, "RotZ");
+	quat_rotation.w = json_object_get_number(obj, "RotW");
+
+	scale.x = json_object_get_number(obj, "ScaleX");
+	scale.y = json_object_get_number(obj, "ScaleY");
+	scale.z = json_object_get_number(obj, "ScaleZ");
+
+}
+
+
 void ComponentTransform::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Transform"))

@@ -1,7 +1,10 @@
 #ifndef _COMPONENT_
 #define _COMPONENT_
 
+#include "Globals.h"
+#include "Parson/parson.h"
 class GameObject;
+
 
 enum ComponentType
 {
@@ -38,12 +41,15 @@ public:
 	void SetParent(GameObject* parent = nullptr);
 	GameObject* GetParent() const;
 
+	virtual void OnSave(JSON_Object* obj);
+	virtual void OnLoad(JSON_Object* obj);
+
 protected:
 
 	
 	bool active = true;
 	GameObject* parent = nullptr;
-
+	uint uid = 0;
 };
 
 

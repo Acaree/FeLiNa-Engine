@@ -140,6 +140,24 @@ float* ComponentCamera::GetViewMatrix() const
 	return (float*)matrix.v;
 }
 
+
+void ComponentCamera::OnSave(JSON_Object* obj)
+{
+	json_object_set_number(obj, "near", frustum.nearPlaneDistance);
+	json_object_set_number(obj, "far", frustum.farPlaneDistance);
+	json_object_set_number(obj, "vFov", frustum.verticalFov);
+	json_object_set_number(obj, "hFov", frustum.horizontalFov);
+}
+
+void ComponentCamera::OnLoad(JSON_Object* obj)
+{
+	frustum.nearPlaneDistance = json_object_get_number(obj, "near");
+	frustum.farPlaneDistance = json_object_get_number(obj, "far");
+	frustum.verticalFov = json_object_get_number(obj, "vFov");
+	frustum.horizontalFov = json_object_get_number(obj, "hFov");
+}
+
+
 void ComponentCamera::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Camera"))

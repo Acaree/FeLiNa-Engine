@@ -31,6 +31,9 @@ public:
 
 	void UpdateMatrix();
 
+	void OnSave(JSON_Object* obj);
+	void OnLoad(JSON_Object* obj);
+
 private:
 
 

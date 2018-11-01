@@ -1,10 +1,12 @@
 #include "Component.h"
 #include "GameObject.h"
-
+#include "Application.h"
+#include "MathGeoLib/Algorithm/Random/LCG.h"
 
 Component::Component(GameObject* parent)
 {
 	this->parent = parent;
+	uid = App->random->Int();
 }
 
 Component::~Component()
@@ -56,4 +58,14 @@ void Component::SetParent(GameObject* parent)
 GameObject* Component::GetParent() const
 {
 	return parent;
+}
+
+void Component::OnLoad(JSON_Object* obj)
+{
+
+}
+
+void Component::OnSave(JSON_Object* obj)
+{
+
 }

@@ -8,6 +8,8 @@
 #include "ComponentTransform.h"
 #include "ModuleRenderer3D.h"
 #include "Quadtree.h"
+#include "ComponentTexture.h"
+#include "ComponentCamera.h"
 
 GameObject::GameObject(GameObject* parent)
 {
@@ -125,6 +127,36 @@ void GameObject::SetComponent(Component* component)
 
 		
 	}
+}
+
+Component* GameObject::AddComponent(ComponentType type)
+{
+	Component* component = nullptr;
+
+	switch (type)
+	{
+	case Component_Transform:
+		component = new ComponentTransform(this);
+		break;
+	case Component_Mesh:
+		component = new ComponentMesh(this);
+		break;
+	case Component_Material:
+		component = new ComponentTexture(this);
+		break;
+	case Component_Camera:
+		component = new ComponentCamera(this);
+		break;
+
+	case Component_Default:
+		break;
+	default:
+		break;
+	}
+
+	components.push_back(component);
+
+	return component;
 }
 
 bool GameObject::DeleteComponent(Component* component)
@@ -347,4 +379,42 @@ bool GameObject::IsActive() const
 math::AABB GameObject::GetAABB() const
 {
 	return bounding_box;
+}
+
+void GameObject::OnSave(JSON_Object* obj)
+{
+	json_object_set_string(obj, "name", name);
+	json_object_set_number(obj, "uid", uid);
+	json_object_set_number(obj, "uid parent", parent->uid);
+
+	JSON_Value* arr_components = json_value_init_array();
+	JSON_Array* components_array = json_value_get_array(arr_components);
+
+	for (uint i = 0; i < components.size(); ++i)
+	{
+		JSON_Value* newValue = json_value_init_object();
+		JSON_Object* objToSerialize = json_value_get_object(newValue);
+
+		components[i]->OnSave(objToSerialize);
+		json_array_append_value(components_array, newValue);
+	}
+
+	json_object_set_value(obj, "Components", arr_components);
+}
+
+void GameObject::OnLoad(JSON_Object* obj)
+{
+	strcpy(name, json_object_get_string( obj, "name"));
+	uid = json_object_get_number(obj, "uid");
+
+	JSON_Array* components_array = json_object_get_array(obj, "Components");
+	JSON_Object* obj_components;
+
+	for (int i = 0; i < json_array_get_count(components_array); i++) {
+
+		obj_components = json_array_get_object(components_array, i);
+		Component* newComponent = AddComponent((ComponentType)(int)json_object_get_number(obj_components, "type"));
+		newComponent->OnLoad(obj_components);
+	}
+
 }

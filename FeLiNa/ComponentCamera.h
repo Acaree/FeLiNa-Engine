@@ -39,6 +39,9 @@ public:
 
 	Culling ContainsAaBox(const math::AABB refBox) const;
 
+	void OnSave(JSON_Object* obj);
+	void OnLoad(JSON_Object* obj);
+
 public:
 
 	math::Frustum frustum;

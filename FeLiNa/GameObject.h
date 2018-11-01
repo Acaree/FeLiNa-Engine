@@ -2,6 +2,7 @@
 #define _GAME_OBJECT_
 
 #include "Globals.h"
+#include "Parson/parson.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include <vector>
 
@@ -35,9 +36,8 @@ public:
 	GameObject* GetParent()const;
 
 	void SetComponent(Component* parent);
-
-
 	Component* GetComponent(ComponentType type);
+	Component* AddComponent(ComponentType type);
 
 	bool DeleteComponent(Component* component);
 	bool DeleteComponent(ComponentType type);
@@ -63,6 +63,9 @@ public:
 
 	bool static_object = false;
 	math::AABB bounding_box;
+
+	void OnSave(JSON_Object* obj);
+	void OnLoad(JSON_Object* obj);
 private:
 	
 	char* name = "No Name";
