@@ -622,26 +622,7 @@ bool Frustum::Intersects(const LineSegment &lineSegment) const
 bool Frustum::Intersects(const AABB &aabb) const
 {
 	///@todo This is a naive test. Implement a faster version.
-	// it's same that camera culling
-	float3 points[8];
-	aabb.GetCornerPoints(points);
-
-	Plane planes[6];
-	GetPlanes(planes);
-
-	// Discard boxes with all points outside
-	int out;
-	for (int i = 0; i < 6; ++i)
-	{
-		out = 0;
-		for (int k = 0; k < 8; ++k)
-			out += planes[i].IsOnPositiveSide(points[k]);
-
-		if (out == 8)
-			return false;
-	}
-
-	return true;
+	return this->ToPolyhedron().Intersects(aabb);
 }
 
 bool Frustum::Intersects(const OBB &obb) const
