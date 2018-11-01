@@ -19,6 +19,8 @@ GameObject::GameObject(GameObject* parent)
 	
 
 	bounding_box.SetNegativeInfinity();
+
+	uid = App->random->Int();
 	
 }
 

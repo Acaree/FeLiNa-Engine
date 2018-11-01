@@ -19,7 +19,7 @@
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Scene";
-	root_object = new GameObject(nullptr);
+	
 }
 
 ModuleScene::~ModuleScene()
@@ -42,7 +42,7 @@ bool ModuleScene::Start()
 	grid_plane->is_grid = true;
 
 	
-
+	root_object = new GameObject(nullptr);
 	ComponentTransform* trans = new ComponentTransform(root_object);
 
 	root_object->SetComponent(trans);

@@ -14,6 +14,7 @@
 Application::Application()
 {
 	name = "Application";
+	random = new math::LCG();
 
 	hardware = new ModuleHardware(this,false);
 	window = new ModuleWindow(this);
@@ -55,6 +56,8 @@ Application::~Application()
 	{
 		delete *it;
 	}
+
+	RELEASE(random);
 
 }
 

@@ -2,6 +2,7 @@
 #define _APPLICATION_
 
 #include "Module.h"
+#include "MathGeoLib/Algorithm/Random/LCG.h"
 #include <list>
 #include <vector>
 
@@ -38,6 +39,7 @@ public:
 	int FPS_cap = 60;
 
 	bool vsync = false;
+	math::LCG* random = nullptr;
 
 private:
 	char* name;
