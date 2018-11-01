@@ -247,7 +247,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	StaticCulling();
 
 	UpdateTransforms(App->scene->root_object);
 
@@ -569,17 +568,3 @@ ComponentMesh* ModuleRenderer3D::CreateComponentMesh()
 	return c_mesh;
 }
 
-void ModuleRenderer3D::StaticCulling()
-{
-
-/*	for (uint i = 0; i < App->scene->static_go.size(); ++i)
-		App->scene->static_go[i]->SetActive(false);
-
-	std::vector<GameObject*> tmp_go;
-
-	App->scene->quadtree->CollectIntersections(tmp_go, App->camera->dummy_frustum->frustum);
-
-	for (uint i = 0; i < tmp_go.size(); ++i)
-		tmp_go[i]->SetActive(true);
-	*/
-}

@@ -63,8 +63,7 @@ bool Application::Init()
 	bool ret = true;
 
 	
-	strcpy_s(app_name, "FeLina Engine");
-	strcpy_s(organization, "UPC CITM");
+
 	// Call Init() in all modules
 	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
 	{
@@ -101,14 +100,15 @@ bool Application::Awake()
 			strcpy(organization, json_object_get_string(config_app, "Organization"));
 			vsync = json_object_get_boolean(config_app, "VSYNC");
 			FPS_cap = json_object_get_number(config_app, "Max frames");
-
-			for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret == true; it++)
-			{
-				JSON_Object* module_obj = json_object_get_object(node, (*it)->GetName());
-
-				ret = (*it)->Awake(module_obj);
-			}
 		}
+
+		for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret == true; it++)
+		{
+			JSON_Object* module_obj = json_object_get_object(node, (*it)->GetName());
+
+			ret = (*it)->Awake(module_obj);
+		}
+		
 		json_value_free(root);
 
 	}
@@ -242,20 +242,36 @@ void Application::Save()
 {
 	Log_app("Saving State....");
 
-
+	//Search data.json
 	JSON_Value* root = json_parse_file("data.json");
 	
+	//if can't find create a json
 	if (root == nullptr)
 	{
 		root = json_value_init_object();
 	}
+	//Get root object
+	JSON_Object* root_object = json_value_get_object(root);
 
+	//Create a new object to store values
+	JSON_Value* new_value = json_value_init_object();
+	JSON_Object* new_object = json_value_get_object(new_value);
+	json_object_set_value(root_object, name, new_value);
+
+	json_object_set_string(new_object,"Title", app_name);
+	json_object_set_string(new_object, "Organization", organization);
+	json_object_set_boolean(new_object, "VSYNC", vsync);
+	json_object_set_number(new_object, "Max Frames", FPS_cap);
 	
 	for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end(); ++it)
 	{
-		JSON_Object* module_save = json_object_get_object(json_value_get_object(root), (*it)->GetName());
+		 new_value = json_value_init_object();
+		 new_object = json_value_get_object(new_value);
 
-		(*it)->SaveState(module_save);
+		json_object_set_value(root_object, (*it)->GetName(), new_value);
+
+
+		(*it)->SaveState(new_object);
 	}
 
 	char *serialized_string = json_serialize_to_string_pretty(root);

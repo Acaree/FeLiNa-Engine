@@ -90,6 +90,7 @@ update_status ModuleScene::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
+	//To Set and Update all static objects
 	FillStaticGameObjects();
 
 	return update_return;

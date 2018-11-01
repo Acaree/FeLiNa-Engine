@@ -29,9 +29,9 @@ public:
 
 private:
 
-	int width = 0;
-	int height = 0;
-	float brightness = 0;
+	int width = 1280;
+	int height = 1024;
+	float brightness = 1;
 	int refresh_rate = 0;
 	bool fullscreen = false, reasizable = false, bordeless=false, fullscreen_desktop= false;
 };
