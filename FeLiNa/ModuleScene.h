@@ -15,6 +15,7 @@ public:
 	~ModuleScene();
 
 	bool Start();
+	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
@@ -42,6 +43,8 @@ public:
 	std::vector<GameObject*> static_go;
 	GameObject* root_object = nullptr;
 	QuadTree * quadtree = nullptr;
+	bool need_update_quadtree = false;
+	uint quadtree_size = 0;
 };
 
 #endif

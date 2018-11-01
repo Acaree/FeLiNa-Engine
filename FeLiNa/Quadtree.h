@@ -69,6 +69,7 @@ public:
 
 public:
 	QuadTreeNode* root_node = nullptr;
+	uint size = 0;
 };
 
 

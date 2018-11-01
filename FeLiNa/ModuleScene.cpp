@@ -67,6 +67,9 @@ bool ModuleScene::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	quadtree->Clear();
+	RELEASE(quadtree);
+
 	delete grid_plane;
 	grid_plane = nullptr;
 
@@ -80,6 +83,16 @@ bool ModuleScene::CleanUp()
 
 	return true;
 }
+
+update_status ModuleScene::PreUpdate(float dt)
+{
+	update_status update_return = UPDATE_CONTINUE;
+
+	FillStaticGameObjects();
+
+	return update_return;
+}
+
 
 // Update
 update_status ModuleScene::Update(float dt)
@@ -158,4 +171,50 @@ void ModuleScene::SetSelectedGameObject(GameObject* go)
 GameObject* ModuleScene::GetSelectedGameObject() const
 {
 	return selected;
+}
+
+void ModuleScene::FillStaticGameObjects()
+{
+	if (need_update_quadtree)
+	{
+		
+		for (uint i = 0; i < static_go.size(); ++i)
+		{
+			if (static_go[i]->static_object == false)
+			{
+				static_go.erase(static_go.begin()+i);
+
+				if (i >= static_go.size())
+					break;
+
+			}
+			
+		}
+
+		if (static_go.size() < quadtree->size)
+		{
+			quadtree->Clear();
+			math::AABB box;
+
+			box.minPoint = { -50,-50,-50 };
+			box.maxPoint = { 50,50,50 };
+
+			quadtree->SetBoundary(box);
+		}
+
+		for (uint i = quadtree->size; i < static_go.size(); ++i)
+		{
+			quadtree->Insert(static_go[i]);
+		}
+
+		/*for (uint i = 0; i < static_go.size(); ++i)
+			static_go[i]->SetActive(false);
+
+		std::vector<GameObject*> tmp_go = static_go;
+
+		quadtree->CollectIntersections(tmp_go, App->camera->camera_editor);*/
+
+		need_update_quadtree = false;
+	}
+
 }

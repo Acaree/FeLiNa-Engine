@@ -249,6 +249,8 @@ void GameObject::ShowObjectInspector()
 		{
 			if (static_object)
 				App->scene->static_go.push_back(this);
+				
+			App->scene->need_update_quadtree = true;
 		}
 
 		ImGui::InputText("##name", name, 30);

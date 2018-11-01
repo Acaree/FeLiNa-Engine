@@ -21,6 +21,7 @@ QuadTreeNode::~QuadTreeNode()
 			RELEASE(childrens[i]);
 		}
 	}
+	bounding_box.SetNegativeInfinity();
 
 	if (parent != nullptr)
 		RELEASE(parent);
@@ -165,13 +166,15 @@ void QuadTreeNode::DebugDraw()
 
 void QuadTreeNode::Clear()
 {
-	if (childrens[0] != nullptr) // not best size 0 ?
+	if (childrens[0] != nullptr) 
 	{
 		for (uint i = 0; i < 4; ++i)
 		{
 			childrens[i]->Clear();
-			RELEASE(childrens[i]);
+			childrens[i] = nullptr;
 		}
+
+		
 	}
 	objects.clear();
 }
@@ -192,16 +195,24 @@ QuadTree::QuadTree()
 
 QuadTree::~QuadTree()
 {
-	RELEASE(root_node);
+	if (root_node != nullptr)
+	{
+		root_node->Clear();
+		root_node->objects.clear();
+		RELEASE(root_node);
+		size = 0;
+	}
+	
 }
 
 void QuadTree::Insert(GameObject* go)
 {
 	if (root_node != nullptr)
 	{
-		if (go->GetAABB().Intersects(root_node->bounding_box))
+		if (go->GetAABB().Intersects(root_node->bounding_box) && go->static_object)
 		{
 			root_node->Insert(go);
+			size++;
 		}
 		
 	}
@@ -220,8 +231,9 @@ void QuadTree::Clear()
 	if (root_node != nullptr)
 	{
 		root_node->Clear();
-		root_node->objects.clear(); // it's neccesary??
+		root_node->objects.clear();
 		RELEASE(root_node);
+		size = 0;
 	}
 }
 
