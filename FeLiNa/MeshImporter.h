@@ -33,6 +33,9 @@ public:
 
 	void GenerateBufferData(Mesh* mesh_data);
 
+	Mesh* LoadFLN(const char* path);
+	Mesh* LoadFLN(const void* buffer, uint size);
+
 	//bool Load(const char* file_name, Texture* output_texture);
 	//bool Load(const void* buffer, uint size, Texture* output_texture);
 

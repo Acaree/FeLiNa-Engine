@@ -211,16 +211,42 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		obj->AddChildren(game_object);
 		game_object->RecalculateBoundingBox();
 
+		/*******************************************************************/
 
-		uint ranges[2] = { mesh_data->num_indices, mesh_data->num_vertices };
+		//put in a new function savefln
+		uint ranges[2] = { mesh_data->num_indices, mesh_data->num_vertices};
 		uint size = sizeof(ranges) + sizeof(uint) * mesh_data->num_indices + sizeof(float) * mesh_data->num_vertices * 3;
+
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
 		uint bytes = sizeof(ranges); // First store ranges
 		memcpy(cursor, ranges, bytes);
+
+		float* vertices_ = new float[mesh_data->num_vertices * 3];
+
+		//memcpy(vertices_, mesh_data->vertices, sizeof(float) * mesh_data->num_vertices * 3);
+		
+		cursor += bytes;
+		bytes = sizeof(float) * mesh_data->num_vertices * 3;
+
+		//TO TEST (delete to assignment)
+		std::vector<float>  test_vector;
+		test_vector.assign(mesh_data->num_vertices * 3, 0.0f);
+		memcpy(test_vector.data(), mesh_data->vertices, sizeof(float)*mesh_data->num_vertices * 3);
+
+		memcpy(cursor, mesh_data->vertices, bytes);
+
 		cursor += bytes; // Store indices
 		bytes = sizeof(uint) * mesh_data->num_indices;
 		memcpy(cursor, mesh_data->indices, bytes);
+
+		//TO TEST (delete to assignment)
+		std::vector<uint>  test_vector2;
+		test_vector2.assign(mesh_data->num_indices, 0.0f);
+		memcpy(test_vector2.data(), mesh_data->indices, sizeof(uint)*mesh_data->num_indices);
+		
+
+		/***************************************************************************************/
 
 
 		
@@ -263,6 +289,64 @@ void MeshImporter::GenerateBufferData(Mesh* mesh_data)
 	  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_color);
 	  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
 	*/
+
+}
+
+Mesh* MeshImporter::LoadFLN(const void* buffer, uint size) {
+
+	Mesh* ret = new Mesh;
+	char* cursor = (char*)buffer;
+	// amount of indices / vertices / colors / normals / texture_coords
+	uint ranges[2];
+	uint bytes = sizeof(ranges);
+	memcpy(ranges, cursor, bytes);
+	
+	ret->num_indices = ranges[0];
+	ret->num_vertices = ranges[1];
+	// Load indices
+	cursor += bytes;
+	bytes = sizeof(float) * ret->num_vertices * 3;
+	ret->vertices = new float[ret->num_vertices * 3];
+	memcpy(ret->vertices, cursor, bytes);
+
+	//TO TEST (delete to assignment)
+	std::vector<float>  test_vector;
+	test_vector.assign(ret->num_vertices * 3, 0.0f);
+	memcpy(test_vector.data(), ret->vertices, sizeof(float)*ret->num_vertices * 3);
+
+	
+	cursor += bytes;
+	bytes = sizeof(uint) * ret->num_indices;
+	ret->indices = new uint[ret->num_indices];
+	memcpy(ret->indices, cursor, bytes);
+
+	//TO TEST (delete to assignment)
+	std::vector<uint>  test_vector2;
+	test_vector2.assign(ret->num_indices, 0.0f);
+	memcpy(test_vector2.data(), ret->indices, sizeof(uint)*ret->num_indices);
+	
+
+	return ret;
+
+}
+
+Mesh* MeshImporter::LoadFLN(const char* path) {
+
+	Mesh* ret = nullptr;
+
+	char* buffer;
+	uint size = App->fs->Load(path, &buffer);
+	if (size > 0)
+	{
+		LOG("MATERIAL IMPORTER: Successfully loaded mesh (own format)");
+		ret = LoadFLN(buffer, size);
+		RELEASE_ARRAY(buffer);
+	}
+	else
+		LOG("MATERIAL IMPORTER: Could not load mesh (own format)");
+
+	return ret;
+
 
 }
 
