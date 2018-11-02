@@ -24,7 +24,7 @@ public:
 	void LookAt(const math::float3 &Spot);
 	void CheckObjectActive(GameObject* go);
 	
-	void RecursiveIntersectionCheck(std::vector<GameObject*> &candidates ,math::LineSegment ray);
+	void PickObjectSelected(std::vector<GameObject*> &candidates ,math::LineSegment ray);
 
 public:
 	ComponentCamera* camera_editor = nullptr;
