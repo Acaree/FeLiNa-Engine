@@ -83,7 +83,7 @@ update_status ModuleGui::Update(float dt)
 
 
 	ShowMainMenuBar();
-
+	ShowEditorMenu();
 	if (serialization_save_scene)
 	{
 		ImGui::OpenPopup("Save Scene as:");
@@ -95,6 +95,8 @@ update_status ModuleGui::Update(float dt)
 		ImGui::OpenPopup("Load Scene:");
 		LoadScene();
 	}
+
+
 
 	if(open_configuration)
 		ShowConfigurationWindow();
@@ -395,3 +397,36 @@ void ModuleGui::LoadScene()
 
 }
 
+void ModuleGui::ShowEditorMenu()
+{
+	ImGuiWindowFlags flags = 0;
+
+	ImGui::SetNextWindowSize({ 300,50 });
+
+	flags |= ImGuiWindowFlags_NoResize;
+	flags |= ImGuiWindowFlags_NoCollapse;
+	flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	flags |= ImGuiWindowFlags_NoTitleBar;
+
+	ImGui::Begin("##engine_editor",false, flags);
+
+	bool a = false;
+	float b = 0.5F;
+	ImGui::Button("Play",{50,30});
+	ImGui::SameLine();
+	ImGui::Button("Stop", { 50,30 });
+	ImGui::SameLine();
+	ImGui::Button("Tick", { 50,30 });
+	ImGui::SameLine();
+	if(ImGui::Checkbox("Debug Draw", &App->renderer3D->debug_draw))
+	{
+
+	}
+	/*ImGui::SameLine();
+	ImGui::SliderFloat("Time scale", &b, 0.0f, 2.0f, "%.0f");*/
+
+
+	ImGui::End();
+
+	
+}

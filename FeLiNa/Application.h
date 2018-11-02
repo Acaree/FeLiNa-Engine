@@ -20,6 +20,19 @@ class ModuleImport;
 class ModuleFileSystem;
 class ModuleTexture;
 
+
+enum ENGINE_STATES
+{
+	ENGINE_STATE_PLAY = 0,
+	ENGINE_STATE_PAUSE,
+	ENGINE_STATE_TICK, //Advance.
+
+	ENGINE_STATE_EDITOR_MODE,
+	ENGINE_STATE_GAME_MODE
+};
+
+
+
 class Application
 {
 public:

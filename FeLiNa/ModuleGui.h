@@ -25,6 +25,7 @@ private:
 	void ShowMainMenuBar();
 	void ShowConfigurationWindow();
 	void ShowAboutWindow();
+	void ShowEditorMenu();
 
 	void SaveScene();
 	void LoadScene();

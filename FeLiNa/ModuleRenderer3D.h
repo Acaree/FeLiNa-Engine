@@ -75,6 +75,10 @@ public:
 
 	std::vector<Mesh*> meshes;
 	bool wire = false;
+
+	//TO REVISE;
+	bool debug_draw = true;
+
 private:
 	bool depth_test = false;
 	bool cull_face = false;
