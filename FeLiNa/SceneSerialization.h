@@ -3,7 +3,7 @@
 
 #include "Globals.h"
 #include "Parson/parson.h"
-
+#include "GameObject.h"
 
 class SceneSerialization
 {
@@ -12,8 +12,13 @@ public:
 	~SceneSerialization();
 
 	void SaveScene();
-	//void LoadScene();
 
+	void LoadScene();
+
+	void RecursiveSearchChildrens(GameObject* parent);
+
+private:
+	std::vector<GameObject*> aux_go;
 
 };
 

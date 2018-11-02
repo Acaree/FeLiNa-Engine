@@ -66,6 +66,9 @@ public:
 
 	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);
+
+	uint uid = 0;
+
 private:
 	
 	char* name = "No Name";
@@ -74,7 +77,7 @@ private:
 	GameObject* parent = nullptr;
 	bool selected = false;
 
-	uint uid = 0;
+	
 
 	bool active = false;
 

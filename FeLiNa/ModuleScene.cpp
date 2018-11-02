@@ -53,7 +53,8 @@ bool ModuleScene::Start()
 
 	std::string output_file;
 
-	App->importer_mesh->Import("BakerHouse.fbx", "Assets/", output_file);
+	App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
+	//App->importer_mesh->Import("BakerHouse.fbx", "Assets/", output_file);
 
 /*	std::string output_file;
 	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);*/
@@ -69,6 +70,7 @@ bool ModuleScene::Start()
 	quadtree->SetBoundary(box);
 	SceneSerialization s;
 
+	//s.LoadScene();
 	s.SaveScene();
 
 	return ret;

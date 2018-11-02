@@ -404,7 +404,7 @@ void GameObject::OnSave(JSON_Object* obj)
 	json_object_set_value(obj, "Components", arr_components);
 
 
-	JSON_Value* arr_childs = json_value_init_array();
+	/*JSON_Value* arr_childs = json_value_init_array();
 	JSON_Array* childs_array = json_value_get_array(arr_childs);
 
 	for (uint i = 0; i < childrens.size(); ++i)
@@ -416,13 +416,15 @@ void GameObject::OnSave(JSON_Object* obj)
 		json_array_append_value(childs_array, new_value);
 	}
 
-	json_object_set_value(obj, "Childs", arr_childs);
-
+	json_object_set_value(obj, "Childs", arr_childs);*/
+	
 }
 
 void GameObject::OnLoad(JSON_Object* obj)
 {
-	strcpy(name, json_object_get_string( obj, "name"));
+	//strcpy(name, json_object_get_string( obj, "name"));
+
+	SetName((char*)json_object_get_string(obj, "name"));
 	uid = json_object_get_number(obj, "uid");
 
 	JSON_Array* components_array = json_object_get_array(obj, "Components");

@@ -143,6 +143,7 @@ float* ComponentCamera::GetViewMatrix() const
 
 void ComponentCamera::OnSave(JSON_Object* obj)
 {
+	json_object_set_number(obj, "type", type);
 	json_object_set_number(obj, "near", frustum.nearPlaneDistance);
 	json_object_set_number(obj, "far", frustum.farPlaneDistance);
 	json_object_set_number(obj, "vFov", frustum.verticalFov);
