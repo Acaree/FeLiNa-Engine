@@ -6,6 +6,8 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "ModuleWindow.h"
+#include "Quadtree.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -88,6 +90,26 @@ update_status ModuleCamera3D::Update(float dt)
 	/*if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
 		// TODO-> Focus*/
 
+
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		//Taking screen values.
+		float width = (float)App->window->screen_surface->w;
+		float height = (float)App->window->screen_surface->h;
+
+		//Take mouse position.
+		int mouse_x = App->input->GetMouseX();
+		int mouse_y = App->input->GetMouseY();
+
+		//if stack overflow say :/ Theory: set the 0,0 in middle of screen.
+		float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / width);
+		float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / height;
+
+		math::LineSegment picking = camera_editor->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+		RecursiveIntersectionCheck(posible_go_intersections, picking);
+	}
+
+
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 
@@ -159,4 +181,24 @@ void ModuleCamera3D::CheckObjectActive(GameObject* go)
 			CheckObjectActive(go->GetChild(i));
 		}
 	}
+}
+
+void ModuleCamera3D::RecursiveIntersectionCheck(std::vector<GameObject*> &candidates, math::LineSegment ray)
+{
+	App->scene->quadtree->CollectIntersections(candidates, ray);
+	int x = 0;
+	/*if (go->IsActive())
+	{
+		float near_point = 0.0f;
+		float far_point = ray.Length();
+
+		if (ray.Intersects(go->bounding_box, near_point, far_point))
+			candidates.insert(std::pair<float, GameObject*>(near_point, go));
+	}*/
+
+	/*if (go->GetNumChildren() > 0)
+	{
+		for (uint i = 0; i < go->GetNumChildren(); ++i)
+			RecursiveIntersectionCheck(candidates, go->GetChild(i), ray);
+	}*/
 }
