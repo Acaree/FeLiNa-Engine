@@ -70,11 +70,16 @@ void ComponentTransform :: UpdateMatrix() {
 	if ( parent  != nullptr && parent->GetParent() != nullptr) {
 		ComponentTransform* parent_trans = (ComponentTransform*)parent->GetParent()->GetComponent(Component_Transform);
 
-	
-		math::float4x4 tempmatrix = parent_trans->GetTransformMatrix();
+		if (parent_trans != nullptr)
+		{
+			math::float4x4 tempmatrix = parent_trans->GetTransformMatrix();
 
-		global_matrix = tempmatrix * local_matrix;
-		
+			global_matrix = tempmatrix * local_matrix;
+		}
+		else
+		{
+			global_matrix = local_matrix;
+		}
 
 	}
 	else {
