@@ -202,6 +202,9 @@
     <ClCompile Include="MeshImporter.cpp">
       <Filter>Modules\Importers</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTimeManagement.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -521,6 +524,9 @@
     </ClInclude>
     <ClInclude Include="MeshImporter.h">
       <Filter>Modules\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTimeManagement.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

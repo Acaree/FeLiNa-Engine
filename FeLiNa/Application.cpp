@@ -10,6 +10,7 @@
 #include "ModuleImport.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTexture.h"
+#include "ModuleTimeManagement.h"
 #include "mmgr/mmgr.h"
 Application::Application()
 {
@@ -31,6 +32,8 @@ Application::Application()
 	mesh_import = new ModuleImport(this);
 	fs = new ModuleFileSystem(this);
 	texture = new ModuleTexture(this);
+	time_management = new ModuleTimeManagement(this);
+
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -47,7 +50,7 @@ Application::Application()
 	AddModule(fs);
 	// Scenes
 	AddModule(scene);
-	
+	AddModule(time_management); // this good?
 	AddModule(gui);
 	// Renderer last!
 	AddModule(renderer3D);

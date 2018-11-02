@@ -8,6 +8,7 @@
 #include "MaterialImporter.h"
 #include "MeshImporter.h"
 
+
 class ModuleHardware;
 class ModuleWindow;
 class ModuleInput;
@@ -19,7 +20,7 @@ class ModuleConsole;
 class ModuleImport;
 class ModuleFileSystem;
 class ModuleTexture;
-
+class ModuleTimeManagement;
 
 enum ENGINE_STATES
 {
@@ -47,7 +48,7 @@ public:
 	ModuleImport * mesh_import;
 	ModuleFileSystem* fs;
 	ModuleTexture* texture;
-
+	ModuleTimeManagement* time_management;
 	//IMPORTERS
 	MaterialImporter* importer_material ;
 	MeshImporter* importer_mesh;
