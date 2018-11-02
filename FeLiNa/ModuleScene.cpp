@@ -16,7 +16,6 @@
 #include "MathGeoLib/Geometry/Frustum.h"
 #include "ComponentCamera.h"
 
-#include "SceneSerialization.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -53,7 +52,7 @@ bool ModuleScene::Start()
 	App->camera->main_camera->SetParent(root_object);
 	std::string output_file;
 
-	//App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
+	App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
 	//App->importer_mesh->Import("BakerHouse.fbx", "Assets/", output_file);
 
 /*	std::string output_file;
@@ -70,7 +69,7 @@ bool ModuleScene::Start()
 	quadtree->SetBoundary(box);
 
 	//FOR SERIALIZATION
-	SceneSerialization s;
+	
 	//s.LoadScene();
 	//s.SaveScene();
 

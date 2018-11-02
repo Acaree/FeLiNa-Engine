@@ -70,9 +70,11 @@ void ComponentTransform :: UpdateMatrix() {
 	if ( parent  != nullptr && parent->GetParent() != nullptr) {
 		ComponentTransform* parent_trans = (ComponentTransform*)parent->GetParent()->GetComponent(Component_Transform);
 
+	
 		math::float4x4 tempmatrix = parent_trans->GetTransformMatrix();
 
 		global_matrix = tempmatrix * local_matrix;
+		
 
 	}
 	else {
@@ -149,6 +151,7 @@ void ComponentTransform::OnLoad(JSON_Object* obj)
 	scale.y = json_object_get_number(obj, "sy");
 	scale.z = json_object_get_number(obj, "sz");
 
+	
 }
 
 

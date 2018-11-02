@@ -65,15 +65,33 @@ bool GameObject::CleanUp()
 	{
 		(*it)->CleanUp();
 	}
-	childrens.clear();
+	components.clear();
 
-	delete name;
+	RELEASE_ARRAY(name);
 	name = nullptr;
 
-	delete parent;
+	//delete parent;
 	parent = nullptr;
 
 	return true;
+}
+
+//Clean all data but not the object
+void GameObject::CleanData()
+{
+	for (std::vector<GameObject*>::const_iterator it = childrens.begin(); it != childrens.end(); ++it)
+	{
+		(*it)->CleanUp();
+	}
+	childrens.clear();
+
+	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
+	{
+		(*it)->CleanUp();
+	}
+	childrens.clear();
+	components.clear();
+
 }
 
 
@@ -404,6 +422,8 @@ void GameObject::OnSave(JSON_Object* obj)
 	}
 
 	json_object_set_value(obj, "Components", arr_components);
+
+	//RECALCULATE BOUNDING BOX?
 
 }
 

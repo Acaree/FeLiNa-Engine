@@ -13,15 +13,18 @@ public:
 
 	void SaveScene();
 
-	void LoadScene();
+	void LoadScene(char* file_name);
 
 	void RecursiveSearchChildrens(GameObject* parent);
 
 	void CreateGameObjectHierarchy(std::vector<GameObject*>& aux_go);
 
+	void ClearActualScene();
 private:
 	std::vector<GameObject*> aux_go;
 
+public:
+	char* save_name_scene = "save_test";
 };
 
 

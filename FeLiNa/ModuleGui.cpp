@@ -84,6 +84,18 @@ update_status ModuleGui::Update(float dt)
 
 	ShowMainMenuBar();
 
+	if (serialization_save_scene)
+	{
+		ImGui::OpenPopup("Save Scene as:");
+		SaveScene();
+	}
+
+	if (serialization_load_scene)
+	{
+		ImGui::OpenPopup("Load Scene:");
+		LoadScene();
+	}
+
 	if(open_configuration)
 		ShowConfigurationWindow();
 
@@ -92,7 +104,6 @@ update_status ModuleGui::Update(float dt)
 
 	/*if (inspector_open)
 		App->renderer3D->DrawMeshInformation();*/ //TO DELETE
-	
 
 	if (About_active) {
 		ShowAboutWindow();
@@ -128,6 +139,16 @@ void ModuleGui::ShowMainMenuBar()
 			if (ImGui::MenuItem("Take Screenshot", "1", false, true))
 			{
 				need_screenshoot = true;
+			}
+
+			if(ImGui::MenuItem("Save Scene", NULL, false, true))
+			{
+				serialization_save_scene = true;
+			}
+
+			if (ImGui::MenuItem("Load Scene", NULL, false, true))
+			{
+				serialization_load_scene = true;
 			}
 
 			if (ImGui::MenuItem("Close FeLiNa", NULL, false, true))
@@ -297,5 +318,80 @@ void ModuleGui::ShowAboutWindow() {
 
 }
 
+void ModuleGui::SaveScene()
+{
+	if (ImGui::BeginPopupModal("Save Scene as:", false, ImGuiWindowFlags_AlwaysAutoResize))
+	{
 
+		ImGui::Text("Scene will be save in: ");
+		ImGui::Separator();
+
+		ImGui::Text("Game/");//TO Changes
+
+		static char save_name[50];
+		ImGui::InputText("###scene_name", save_name, 50);//default buffer size?¿
+
+		if (ImGui::Button("Save Scene", ImVec2(100, 0)))
+		{
+			App->scene->serialization_scene.save_name_scene = save_name;
+			ImGui::CloseCurrentPopup();
+			App->scene->serialization_scene.SaveScene();
+			serialization_save_scene = false;
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			ImGui::CloseCurrentPopup();
+			serialization_save_scene = false;
+		}
+
+		ImGui::SetItemDefaultFocus();
+		ImGui::EndPopup();
+	}
+
+	
+}
+
+void ModuleGui::LoadScene()
+{
+	if (ImGui::BeginPopupModal("Load Scene:", false, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Scene will be searcher in: ");
+		ImGui::Separator();
+
+		ImGui::Text("Game/");//TO Changes
+
+		static char name_load_scene[50]; // Same that saveScene, best default buf size??
+
+		ImGuiInputTextFlags flag = ImGuiInputTextFlags_EnterReturnsTrue;
+		ImGui::PushItemWidth(100.0f);
+		
+
+		ImGui::InputText("###scene_name", name_load_scene, 50, flag);//default buffer size?¿
+
+		if (ImGui::Button("Load", ImVec2(100, 0)))
+		{
+			ImGui::CloseCurrentPopup();
+
+			App->scene->serialization_scene.ClearActualScene();
+			App->scene->serialization_scene.LoadScene(name_load_scene);
+			//clear and load with path
+			
+			
+			serialization_load_scene = false;
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			ImGui::CloseCurrentPopup();
+			serialization_load_scene = false;
+		}
+
+		ImGui::SetItemDefaultFocus();
+		ImGui::EndPopup();
+	}
+
+}
 

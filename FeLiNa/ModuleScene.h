@@ -3,10 +3,12 @@
 
 #include "Module.h"
 #include "mPlane.h"
+#include "SceneSerialization.h"
 #include <list>
 class GameObject;
 enum ComponentType;
 class QuadTree;
+
 
 class ModuleScene : public Module
 {
@@ -45,6 +47,9 @@ public:
 	QuadTree * quadtree = nullptr;
 	bool need_update_quadtree = false;
 	uint quadtree_size = 0;
+
+	SceneSerialization serialization_scene;
+
 };
 
 #endif

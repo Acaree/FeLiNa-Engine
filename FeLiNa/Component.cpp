@@ -26,7 +26,7 @@ void Component::DrawInspector()
 
 void Component::CleanUp()
 {
-	delete parent;
+	//RELEASE(parent);
 	parent = nullptr;
 }
 

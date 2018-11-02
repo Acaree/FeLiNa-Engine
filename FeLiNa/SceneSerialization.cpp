@@ -10,6 +10,7 @@ SceneSerialization::SceneSerialization()
 
 SceneSerialization::~SceneSerialization()
 {
+	aux_go.clear();
 }
 
 void SceneSerialization::SaveScene()
@@ -37,15 +38,22 @@ void SceneSerialization::SaveScene()
 
 	char *serialized_string = json_serialize_to_string_pretty(file_root);
 	puts(serialized_string);
-	json_serialize_to_file(file_root, "save_test.json");
+
+	strcat(save_name_scene, ".json");
+
+	json_serialize_to_file(file_root, save_name_scene);
 	json_free_serialized_string(serialized_string);
 	json_value_free(file_root);
 
 }
 
-void SceneSerialization::LoadScene()
+void SceneSerialization::LoadScene(char* file_name)
 {
-	JSON_Value* file_root = json_parse_file("save_test.json");
+	//TO REVISE and change
+	char* file = file_name;
+	strcat(file,".json");
+
+	JSON_Value* file_root = json_parse_file(file);
 
 	if (file_root != nullptr)
 	{
@@ -144,6 +152,12 @@ void SceneSerialization::CreateGameObjectHierarchy(std::vector<GameObject*>& aux
 		}
 	}
 
+}
 
-
+void SceneSerialization::ClearActualScene()
+{
+	App->scene->root_object->CleanData();
+	aux_go.clear();
+	App->scene->SetSelectedGameObject(nullptr);
+	
 }

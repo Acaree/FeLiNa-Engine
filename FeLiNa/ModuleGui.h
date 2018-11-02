@@ -26,6 +26,9 @@ private:
 	void ShowConfigurationWindow();
 	void ShowAboutWindow();
 
+	void SaveScene();
+	void LoadScene();
+
 public:
 
 	bool close_program = false;
@@ -34,7 +37,8 @@ public:
 	bool need_screenshoot = false; 
 	bool inspector_open = false;
 
-
+	bool serialization_save_scene = false;
+	bool serialization_load_scene = false;
 
 };
 

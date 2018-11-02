@@ -21,7 +21,7 @@ public:
 	void Update(float dt);
 	//bool PostUpdate(float dt);
 	bool CleanUp();
-
+	void CleanData();
 	void SetName(char*name);
 	char* GetName() const;
 
