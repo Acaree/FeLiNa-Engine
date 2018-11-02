@@ -6,7 +6,9 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "MathGeoLib/MathGeoLib.h"
-
+#include "ModuleWindow.h"
+#include "Quadtree.h"
+#include "ModuleRenderer3D.h"
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Camera";
@@ -88,6 +90,26 @@ update_status ModuleCamera3D::Update(float dt)
 	/*if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
 		// TODO-> Focus*/
 
+
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		//Taking screen values.
+		float width = (float)App->window->screen_surface->w;
+		float height = (float)App->window->screen_surface->h;
+
+		//Take mouse position.
+		int mouse_x = App->input->GetMouseX();
+		int mouse_y = App->input->GetMouseY();
+
+		//if stack overflow say :/ Theory: set the 0,0 in middle of screen.
+		float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / width);
+		float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / height;
+
+		math::LineSegment picking = camera_editor->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+		PickObjectSelected(posible_go_intersections, picking);
+	}
+
+
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 
@@ -159,4 +181,71 @@ void ModuleCamera3D::CheckObjectActive(GameObject* go)
 			CheckObjectActive(go->GetChild(i));
 		}
 	}
+}
+
+void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, math::LineSegment ray)
+{
+	candidates.clear(); //Else all time add elements
+
+	App->scene->quadtree->CollectIntersections(candidates, ray); // not order
+
+	float min_distance = FLOAT_INF;
+	float hit_distance = 0.0F;
+
+	Mesh* mesh = nullptr;
+
+	GameObject* selected_object = nullptr;
+
+	for (uint i = 0; i < candidates.size(); ++i)
+	{
+		math::Triangle triangle;
+
+		//To calculate the local space of ray in object
+		math::LineSegment ray_local(ray);
+
+		ComponentTransform* component_transform = (ComponentTransform*)candidates[i]->GetComponent(Component_Transform);
+
+		if (component_transform != nullptr) //Allways is != but...
+		{
+			//Transform to local 
+			ray_local.Transform(component_transform->GetTransformMatrix().Inverted());
+
+			ComponentMesh* component_mesh = (ComponentMesh*)candidates[i]->GetComponent(Component_Mesh);
+			//Set the object mesh
+			mesh = component_mesh->GetMesh();
+
+			if (component_mesh != nullptr)
+			{
+				int j = 0;
+
+				while (j < mesh->num_indices)
+				{
+					math::float3 x = {mesh->vertices[mesh->indices[j++]],mesh->vertices[mesh->indices[j++]] ,mesh->vertices[mesh->indices[j++]] };
+					math::float3 y = { mesh->vertices[mesh->indices[j++]],mesh->vertices[mesh->indices[j++]] ,mesh->vertices[mesh->indices[j++]] };
+					math::float3 z = { mesh->vertices[mesh->indices[j++]],mesh->vertices[mesh->indices[j++]] ,mesh->vertices[mesh->indices[j++]] };
+
+					triangle = { x,y,z };
+					math::float3 hit_point;
+
+					if (ray_local.Intersects(triangle, &hit_distance, &hit_point))
+					{
+						selected_object = candidates[i];
+					}
+
+				}
+
+			}
+
+		}
+
+
+	}
+
+	if (selected_object != nullptr)
+	{
+		App->scene->GetSelectedGameObject()->SetSelected(false);
+		selected_object->SetSelected(true);
+		App->scene->SetSelectedGameObject(selected_object);
+	}
+
 }

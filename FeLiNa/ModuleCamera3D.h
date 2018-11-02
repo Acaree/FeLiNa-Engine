@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "MathGeoLib/MathGeoLib.h"
 
+
 class ComponentCamera;
 class GameObject;
 class ComponentTransform;
@@ -23,6 +24,7 @@ public:
 	void LookAt(const math::float3 &Spot);
 	void CheckObjectActive(GameObject* go);
 	
+	void PickObjectSelected(std::vector<GameObject*> &candidates ,math::LineSegment ray);
 
 public:
 	ComponentCamera* camera_editor = nullptr;
@@ -31,8 +33,11 @@ public:
 
 private:
 	
-	
 	ComponentTransform* transform_camera = nullptr;
+
+	//Mouse picking test
+	math::LineSegment picking;
+	std::vector<GameObject*> posible_go_intersections;
 
 	
 };
