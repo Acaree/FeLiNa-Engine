@@ -20,7 +20,7 @@ void log_global(const char file[], int line, const char* format, ...);
 
 #define MAX_BUF_SIZE 4096
 #define DEFAULT_BUF_SIZE 256
-#define EXTENSION "sln"
+#define EXTENSION "fln"
 
 #define RELEASE( x )\
     {\

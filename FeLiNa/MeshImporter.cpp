@@ -80,7 +80,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 		char* temp = new char[length + 1];
 		strcpy(temp, tmp.c_str());
 		temp[length] = '\0';
-
+		
 		GameObject* obj2 = new GameObject(nullptr);
 		obj2->SetName(temp);
 		if (scene != nullptr)
