@@ -17,6 +17,8 @@ public:
 
 	void RecursiveSearchChildrens(GameObject* parent);
 
+	void CreateGameObjectHierarchy(std::vector<GameObject*>& aux_go);
+
 private:
 	std::vector<GameObject*> aux_go;
 

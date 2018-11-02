@@ -69,6 +69,8 @@ public:
 
 	uint uid = 0;
 
+	GameObject* SearchParentForUID(uint parent_uid);
+
 private:
 	
 	char* name = "No Name";

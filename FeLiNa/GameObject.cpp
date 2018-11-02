@@ -101,6 +101,7 @@ bool GameObject::GetActive() const
 void GameObject::AddChildren(GameObject* child)
 {
 	childrens.push_back(child);
+	child->SetParent(this);
 }
 
 GameObject* GameObject::GetChild(uint position)
@@ -154,7 +155,8 @@ Component* GameObject::AddComponent(ComponentType type)
 		break;
 	}
 
-	components.push_back(component);
+	if(component != nullptr)
+		components.push_back(component);
 
 	return component;
 }
@@ -403,38 +405,52 @@ void GameObject::OnSave(JSON_Object* obj)
 
 	json_object_set_value(obj, "Components", arr_components);
 
-
-	/*JSON_Value* arr_childs = json_value_init_array();
-	JSON_Array* childs_array = json_value_get_array(arr_childs);
-
-	for (uint i = 0; i < childrens.size(); ++i)
-	{
-		JSON_Value* new_value = json_value_init_object();
-		JSON_Object* obj_value = json_value_get_object(new_value);
-
-		childrens[i]->OnSave(obj_value);
-		json_array_append_value(childs_array, new_value);
-	}
-
-	json_object_set_value(obj, "Childs", arr_childs);*/
-	
 }
 
 void GameObject::OnLoad(JSON_Object* obj)
 {
-	//strcpy(name, json_object_get_string( obj, "name"));
 
-	SetName((char*)json_object_get_string(obj, "name"));
+	//WHY???????????? /strcpy(name, (char*)json_object_get_string(obj, "name"));
+	name = (char*)json_object_get_string(obj, "name");
+	strcpy(name, name);
+
 	uid = json_object_get_number(obj, "uid");
 
 	JSON_Array* components_array = json_object_get_array(obj, "Components");
 	JSON_Object* obj_components;
 
-	for (int i = 0; i < json_array_get_count(components_array); i++) {
+	for (int i = 0; i < json_array_get_count(components_array); ++i) {
 
 		obj_components = json_array_get_object(components_array, i);
 		Component* newComponent = AddComponent((ComponentType)(int)json_object_get_number(obj_components, "type"));
-		newComponent->OnLoad(obj_components);
+
+		if(newComponent != nullptr)
+			newComponent->OnLoad(obj_components);
 	}
+
+}
+
+GameObject* GameObject::SearchParentForUID(uint parent_uid)
+{
+	if (parent_uid == uid)
+		return this;
+	else
+	{
+		GameObject* parent_object = nullptr;
+
+		for (uint i = 0; i < childrens.size(); ++i)
+		{
+			parent_object = childrens[i]->SearchParentForUID(parent_uid);
+			
+			if (parent_object != nullptr)
+			{
+				return parent_object;
+			}
+		}
+
+		return nullptr;
+
+	}
+
 
 }

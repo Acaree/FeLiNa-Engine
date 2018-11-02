@@ -50,10 +50,10 @@ bool ModuleScene::Start()
 	root_object->SetComponent(trans);
 
 	root_object->AddChildren(App->camera->main_camera);
-
+	App->camera->main_camera->SetParent(root_object);
 	std::string output_file;
 
-	App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
+	//App->mesh_import->LoadData("Assets\\BakerHouse.fbx");
 	//App->importer_mesh->Import("BakerHouse.fbx", "Assets/", output_file);
 
 /*	std::string output_file;
@@ -68,10 +68,11 @@ bool ModuleScene::Start()
 	box.maxPoint = { 50,50,50 };
 
 	quadtree->SetBoundary(box);
-	SceneSerialization s;
 
+	//FOR SERIALIZATION
+	SceneSerialization s;
 	//s.LoadScene();
-	s.SaveScene();
+	//s.SaveScene();
 
 	return ret;
 }

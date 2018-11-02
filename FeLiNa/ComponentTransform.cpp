@@ -136,18 +136,18 @@ void ComponentTransform::OnSave(JSON_Object* obj)
 
 void ComponentTransform::OnLoad(JSON_Object* obj)
 {
-	position.x = json_object_get_number(obj, "PosX");
-	position.y = json_object_get_number(obj, "PosY");
-	position.z = json_object_get_number(obj, "PosZ");
+	position.x = json_object_get_number(obj, "px");
+	position.y = json_object_get_number(obj, "py");
+	position.z = json_object_get_number(obj, "pz");
 
-	quat_rotation.x = json_object_get_number(obj, "RotX");
-	quat_rotation.y = json_object_get_number(obj, "RotY");
-	quat_rotation.z = json_object_get_number(obj, "RotZ");
-	quat_rotation.w = json_object_get_number(obj, "RotW");
+	quat_rotation.x = json_object_get_number(obj, "rx");
+	quat_rotation.y = json_object_get_number(obj, "ry");
+	quat_rotation.z = json_object_get_number(obj, "rz");
+	quat_rotation.w = json_object_get_number(obj, "rw");
 
-	scale.x = json_object_get_number(obj, "ScaleX");
-	scale.y = json_object_get_number(obj, "ScaleY");
-	scale.z = json_object_get_number(obj, "ScaleZ");
+	scale.x = json_object_get_number(obj, "sx");
+	scale.y = json_object_get_number(obj, "sy");
+	scale.z = json_object_get_number(obj, "sz");
 
 }
 

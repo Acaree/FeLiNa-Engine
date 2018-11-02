@@ -57,8 +57,7 @@ void SceneSerialization::LoadScene()
 			go_vector.reserve(json_array_get_count(go_array));
 
 			
-
-			for (uint i = 0; i <= json_array_get_count(go_array); ++i)
+			for (uint i = 0; i < json_array_get_count(go_array); ++i)
 			{
 				JSON_Object* object = json_array_get_object(go_array, i);
 
@@ -66,8 +65,6 @@ void SceneSerialization::LoadScene()
 				go->OnLoad(object);
 
 				go_vector.push_back(go);
-
-				//NEED FUNCTION SEARCH CHILDS
 
 			}
 
@@ -91,12 +88,13 @@ void SceneSerialization::LoadScene()
 			}
 
 
-			int x = 0;
+			CreateGameObjectHierarchy(go_vector);
 
 		}
 
 
 	}
+	//json_value_free(file_root);
 
 }
 
@@ -112,6 +110,40 @@ void SceneSerialization::RecursiveSearchChildrens(GameObject* parent)
 			RecursiveSearchChildrens(parent->GetChild(i));
 		}
 	}
+
+
+}
+
+void SceneSerialization::CreateGameObjectHierarchy(std::vector<GameObject*>& aux_go)
+{
+	/*Future posible bug: If object don't load with parent good or don't save parent this not work*/
+
+	if (aux_go.size() > 0)
+	{
+		uint uid_root = aux_go[0]->uid;
+
+		for (uint i = 1; i < aux_go.size(); ++i)
+		{
+			if (aux_go[i]->GetParent() != nullptr)
+			{
+				if (aux_go[i]->GetParent()->uid == uid_root)
+					App->scene->root_object->AddChildren(aux_go[i]);
+				else
+				{
+					GameObject* parent_object = nullptr;
+					parent_object = App->scene->root_object->SearchParentForUID(aux_go[i]->GetParent()->uid);
+
+					if (parent_object != nullptr)
+						parent_object->AddChildren(aux_go[i]);
+					else
+						App->scene->root_object->AddChildren(aux_go[i]); // :/
+
+				}
+			}
+
+		}
+	}
+
 
 
 }
