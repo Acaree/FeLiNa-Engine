@@ -17,6 +17,8 @@ Application::Application()
 	random = new math::LCG();
 
 	importer_material = new MaterialImporter();
+	importer_mesh = new MeshImporter();
+
 
 	hardware = new ModuleHardware(this,false);
 	window = new ModuleWindow(this);

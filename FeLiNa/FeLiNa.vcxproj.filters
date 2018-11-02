@@ -199,6 +199,9 @@
     <ClCompile Include="SceneSerialization.cpp">
       <Filter>Modules\Importers</Filter>
     </ClCompile>
+    <ClCompile Include="MeshImporter.cpp">
+      <Filter>Modules\Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -514,6 +517,9 @@
       <Filter>Modules\Importers</Filter>
     </ClInclude>
     <ClInclude Include="SceneSerialization.h">
+      <Filter>Modules\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshImporter.h">
       <Filter>Modules\Importers</Filter>
     </ClInclude>
   </ItemGroup>

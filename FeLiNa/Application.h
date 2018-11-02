@@ -6,6 +6,7 @@
 #include <list>
 #include <vector>
 #include "MaterialImporter.h"
+#include "MeshImporter.h"
 
 class ModuleHardware;
 class ModuleWindow;
@@ -36,6 +37,7 @@ public:
 
 	//IMPORTERS
 	MaterialImporter* importer_material ;
+	MeshImporter* importer_mesh;
 
 	char app_name[20];
 	char organization[20];

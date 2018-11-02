@@ -1,95 +1,111 @@
-#include "ModuleImport.h"
+#include "MeshImporter.h"
+
 #include "Glew/include/glew.h" 
 #include "SDL/include/SDL_opengl.h"
+
 #include "Application.h"
-#include "ModuleRenderer3D.h"
 #include "ModuleFileSystem.h"
-#include "ModuleTexture.h"
+#include "ModuleScene.h"
+#include "ModuleRenderer3D.h"
+
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
-#include "ModuleWindow.h"
-#include <string>
-#include "ModuleScene.h"
-#include "GameObject.h"
-#include "ComponentMesh.h"
-#include "ComponentTransform.h"
-#include "ComponentTexture.h"
+
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
 
+MeshImporter::MeshImporter()
+{
+	
+}
 
-ModuleImport::ModuleImport(Application*app, bool start_enabled) : Module(app, start_enabled)
+
+MeshImporter::~MeshImporter()
 {
 
 }
-
-ModuleImport::~ModuleImport()
+//const char* importFileName, const char* importPath, std::string& outputFileName
+bool MeshImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
 {
+	bool ret = false;
 
+	char* buffer;
+
+	//Check if file is !null
+	if (file_path == nullptr)
+		return ret;
+
+	char importer_path[DEFAULT_BUF_SIZE]; //importFilePath
+
+	strcpy_s(importer_path, strlen(file_path) + 1, file_path);
+
+	if (file_name != nullptr)
+		strcat_s(importer_path, strlen(importer_path) + strlen(file_name) + 1, file_name);
+
+	output_file = App->fs->GetNameFile(importer_path);
+
+	uint size = App->fs->Load(importer_path, &buffer);
+
+	if (size > 0)
+	{
+		LOG("MATERIAL IMPORTER: Successfully");
+
+		ret = Import(buffer, size, output_file);
+		RELEASE_ARRAY(buffer);
+	}
+	else
+		LOG("MATERIAL IMPORTER: Could not load texture ");
+
+	return ret;
 }
 
-void myCallback(const char *msg, char *userData)
+//const void* buffer, uint size, std::string& outputFileName
+bool MeshImporter::Import(const void* buffer, uint size, std::string& output_file)
 {
-	LOG("%s" ,msg);
-}
+	bool ret = false;
 
-bool ModuleImport::Start()
-{
-	aiLogStream stream = aiLogStream();
-	stream.callback = myCallback;
-	aiAttachLogStream(&stream);
-
-
-	return true;
-}
-
-bool ModuleImport::CleanUp()
-{
-	aiDetachAllLogStreams();
-
-	return true;
-}
-
-bool ModuleImport::LoadData(const char* path) 
-{
 	LOG("Inicialization load data model");
 
 
-	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-	
-	
+	const aiScene* scene = aiImportFileFromMemory((const char*)buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
 
-	std::string tmp = path;
-	tmp = tmp.erase(0, tmp.find_last_of("\\") + 1);
-	tmp = tmp.substr(0, tmp.find_last_of("."));
-	//TO REVISE-> ¿Create a function that convert a const char* to char*?
-	int length = strlen(tmp.c_str());
-	char* temp = new char[length + 1];
-	strcpy(temp, tmp.c_str());
-	temp[length] = '\0';
+	if (scene != nullptr) {
 
-	GameObject* obj2 = new GameObject(nullptr);
-	obj2->SetName(temp);
-	if (scene != nullptr)
-	{
-		aiNode* rootNode = scene->mRootNode;
-		ComponentTransform* trans = new ComponentTransform(nullptr);
-		LoadModel(scene, rootNode,path, obj2, trans);
-		obj2->SetComponent(trans);
+		std::string tmp = output_file;
+		tmp = tmp.erase(0, tmp.find_last_of("\\") + 1);
+		tmp = tmp.substr(0, tmp.find_last_of("."));
+		//TO REVISE-> ¿Create a function that convert a const char* to char*?
+		int length = strlen(tmp.c_str());
+		char* temp = new char[length + 1];
+		strcpy(temp, tmp.c_str());
+		temp[length] = '\0';
+
+		GameObject* obj2 = new GameObject(nullptr);
+		obj2->SetName(temp);
+		if (scene != nullptr)
+		{
+			aiNode* rootNode = scene->mRootNode;
+			ComponentTransform* trans = new ComponentTransform(nullptr);
+			LoadModel(scene, rootNode, output_file, obj2, trans);
+			obj2->SetComponent(trans);
+
+
+			//TO REVISE: probably this can be made better
+
+			obj2->SetParent(App->scene->root_object);
+
+			App->scene->root_object->AddChildren(obj2);
+
+			aiReleaseImport(scene);
+		}
+
+
 	}
-
-	obj2->SetParent(App->scene->root_object);
-	
-	App->scene->root_object->AddChildren(obj2);
-
-
-	//To change-> false and show.
-	return true;
-
+	return ret;
 }
 
-void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* path, GameObject* obj, ComponentTransform* trans)
+void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& output_file, GameObject* obj, ComponentTransform* trans)
 {
 
 	//Creating a game object to set data
@@ -113,8 +129,8 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 		ComponentTransform* tr = component_trans;
 
 		tr->SetParent(game_object);
-		
-	
+
+
 
 		Mesh* mesh_data = new Mesh();
 
@@ -166,10 +182,6 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 			}
 
-			component_texture = FindTexturePath(material, path, 0);
-
-
-
 			//Normals
 			if (new_mesh->HasNormals())
 			{
@@ -180,6 +192,8 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 			//Add the mesh component
 			GenerateBufferData(mesh_data);
+
+			//TO REVISE call here to module renderer?
 
 			App->renderer3D->AddDataMesh(mesh_data);
 
@@ -196,6 +210,24 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 		game_object->SetParent(obj);
 		obj->AddChildren(game_object);
 		game_object->RecalculateBoundingBox();
+
+
+		uint ranges[2] = { mesh_data->num_indices, mesh_data->num_vertices };
+		uint size = sizeof(ranges) + sizeof(uint) * mesh_data->num_indices + sizeof(float) * mesh_data->num_vertices * 3;
+		char* data = new char[size]; // Allocate
+		char* cursor = data;
+		uint bytes = sizeof(ranges); // First store ranges
+		memcpy(cursor, ranges, bytes);
+		cursor += bytes; // Store indices
+		bytes = sizeof(uint) * mesh_data->num_indices;
+		memcpy(cursor, mesh_data->indices, bytes);
+
+
+		
+		if (App->fs->SaveTexture((char *)data, size, output_file))
+		{
+			LOG("SCENE IMPORTER: Successfully saved mesh to own format");
+		}
 	}
 	else
 	{
@@ -204,12 +236,12 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
-		LoadModel(scene, node->mChildren[i], path, game_object,component_trans);
+		LoadModel(scene, node->mChildren[i], output_file, game_object, component_trans);
 	}
-	
+
 }
 
-void ModuleImport::GenerateBufferData(Mesh* mesh_data)
+void MeshImporter::GenerateBufferData(Mesh* mesh_data)
 {
 	glGenBuffers(1, (GLuint*) &(mesh_data->id_vertices));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_vertices);
@@ -229,64 +261,8 @@ void ModuleImport::GenerateBufferData(Mesh* mesh_data)
 
 	/*glGenBuffers(1, (GLuint*) &(data->id_color));
 	  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_color);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
+	  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
 	*/
 
 }
 
-//TO REVISION LOGS 
-ComponentTexture* ModuleImport::FindTexturePath(aiMaterial* material, const char *path, int index)
-{
-	ComponentTexture* texture = nullptr;
-	bool succes = false;
-
-	if (material != nullptr)
-	{
-		aiString texture_name;
-		material->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
-
-		std::string fbx_path = path;
-
-		std::string texture_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1)  + texture_name.data;
-		std::string fbx_folder = fbx_path.substr(0, fbx_path.find_last_of("\\") + 1) + texture_name.data;
-		std::string game_folder = fbx_path.substr(0, fbx_path.find("Game\\") + 5) + texture_name.data;
-		std::string felina_folder = fbx_path.substr(0, fbx_path.find("FeLiNa\\") + 7) + texture_name.data;
-
-		std::string output_filepath;
-
-		succes = App->mesh_import->Import("Baker_house.png","Assets/Textures/", output_filepath);
-		
-		texture = App->texture->CreateComponentTexture();
-	}
-
-	return texture;
-}
-
-
-bool ModuleImport::Import(const char* importFileName, const char* importPath, std::string& outputFileName)
-{
-	bool ret = false;
-
-	if (importPath == nullptr)
-		return ret;
-
-	char importFilePath[256]; //256 is default buf size
-	strcpy_s(importFilePath, strlen(importPath) + 1, importPath);
-	if (importFileName != nullptr)
-		strcat_s(importFilePath, strlen(importFilePath) + strlen(importFileName) + 1, importFileName);
-	
-
-	char* buffer;
-	uint size = App->fs->Load(importFilePath, &buffer);
-	if (size > 0)
-	{
-		LOG("MATERIAL IMPORTER: Successfully loaded texture %s (original format)", importFileName);
-		//ret = App->texture->SaveTextureAsDDS(outputFileName, buffer);
-		App->texture->ImportTexture(outputFileName,buffer,size);
-		RELEASE_ARRAY(buffer);
-	}
-	else
-		LOG("MATERIAL IMPORTER: Could not load texture %s (original format)", importFileName);
-
-	return ret;
-}

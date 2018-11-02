@@ -51,7 +51,9 @@ bool ModuleScene::Start()
 
 	root_object->AddChildren(App->camera->main_camera);
 
-	App->mesh_import->LoadData("Assets\\Street environment_V01.fbx");
+	std::string output_file;
+
+	App->importer_mesh->Import("BakerHouse.fbx", "Assets/", output_file);
 
 /*	std::string output_file;
 	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);*/
