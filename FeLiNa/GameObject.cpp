@@ -11,6 +11,7 @@
 #include "ComponentTexture.h"
 #include "ComponentCamera.h"
 
+
 GameObject::GameObject(GameObject* parent)
 {
 	this->parent = parent;
@@ -97,8 +98,10 @@ void GameObject::CleanData()
 
 void GameObject::SetName(char* name)
 {
-	this->name = name;
-	
+	//TO SOLVE BUGS
+
+	this->name = new char[100];
+	strcpy_s(this->name, 100, name);
 }
 
 char* GameObject::GetName() const

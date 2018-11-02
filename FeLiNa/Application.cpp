@@ -103,8 +103,8 @@ bool Application::Awake()
 
 		if (config_app != nullptr)
 		{
-			strcpy(app_name, json_object_get_string(config_app, "Title"));
-			strcpy(organization, json_object_get_string(config_app, "Organization"));
+			//strcpy(app_name, json_object_get_string(config_app, "Title"));
+			//strcpy(organization, json_object_get_string(config_app, "Organization"));
 			vsync = json_object_get_boolean(config_app, "VSYNC");
 			FPS_cap = json_object_get_number(config_app, "Max frames");
 		}
