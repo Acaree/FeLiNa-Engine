@@ -331,17 +331,15 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	glViewport(0, 0, width, height);
-
 	float aspect_ratio = (float)width / (float)height;
 	App->camera->main_camera->camera->SetAspectRatio(aspect_ratio);
 
+	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	//ProjectionMatrix = App->camera->main_camera->camera->GetViewMatrix();
 	glLoadMatrixf(App->camera->main_camera->camera->GetProjectionMatrix());
 	
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
