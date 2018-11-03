@@ -219,14 +219,14 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 		//To calculate the local space of ray in object
 		math::LineSegment ray_local(ray);
 
-		ComponentTransform* component_transform = (ComponentTransform*)candidates[i]->GetComponent(Component_Transform);
+		ComponentTransform* component_transform = candidates[i]->transform;
 
 		if (component_transform != nullptr) //Allways is != but...
 		{
 			//Transform to local 
 			ray_local.Transform(component_transform->GetTransformMatrix().Inverted());
 
-			ComponentMesh* component_mesh = (ComponentMesh*)candidates[i]->GetComponent(Component_Mesh);
+			ComponentMesh* component_mesh = candidates[i]->mesh;
 			//Set the object mesh
 			mesh = component_mesh->GetMesh();
 
@@ -236,9 +236,13 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 
 				while (j < mesh->num_indices)
 				{
-					math::float3 x = {mesh->vertices[mesh->indices[j++]],mesh->vertices[mesh->indices[j++]] ,mesh->vertices[mesh->indices[j++]] };
-					math::float3 y = { mesh->vertices[mesh->indices[j++]],mesh->vertices[mesh->indices[j++]] ,mesh->vertices[mesh->indices[j++]] };
-					math::float3 z = { mesh->vertices[mesh->indices[j++]],mesh->vertices[mesh->indices[j++]] ,mesh->vertices[mesh->indices[j++]] };
+					//0-1-2 1-2-3 2-3-4 :)
+					math::float3 x = {mesh->vertices[mesh->indices[j]*3],mesh->vertices[mesh->indices[j]*3+1] ,mesh->vertices[mesh->indices[j]*3+2] };
+					j++;
+					math::float3 y = { mesh->vertices[mesh->indices[j]*3],mesh->vertices[mesh->indices[j]*3+1] ,mesh->vertices[mesh->indices[j]*3+2] };
+					j++;
+					math::float3 z = { mesh->vertices[mesh->indices[j]*3],mesh->vertices[mesh->indices[j]*3+1] ,mesh->vertices[mesh->indices[j]*3+2] };
+					j++;
 
 					triangle = { x,y,z };
 					math::float3 hit_point;
