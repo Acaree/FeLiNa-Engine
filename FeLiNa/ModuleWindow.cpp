@@ -34,7 +34,7 @@ bool ModuleWindow::Init()
 		/*width = SCREEN_WIDTH * SCREEN_SIZE;
 		height = SCREEN_HEIGHT * SCREEN_SIZE;*/
 		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-
+		
 		//Use OpenGL 2.1
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE); 
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
@@ -67,7 +67,7 @@ bool ModuleWindow::Init()
 
 		SDL_SetWindowBrightness(window, brightness);
 		SDL_UpdateWindowSurface(window);
-
+		
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());

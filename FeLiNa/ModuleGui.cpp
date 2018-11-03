@@ -5,12 +5,13 @@
 #include "ModuleInput.h"
 #include "ModuleHardware.h"
 #include "ModuleScene.h"
+#include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "ModuleTimeManagement.h"
-
+#include "ImGuizmo/ImGuizmo.h"
 #include "mmgr/mmgr.h"
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -57,7 +58,7 @@ update_status ModuleGui::PreUpdate(float dt)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
-
+	ImGuizmo::BeginFrame();
 	return update_return;
 }
 
@@ -96,8 +97,6 @@ update_status ModuleGui::Update(float dt)
 		ImGui::OpenPopup("Load Scene:");
 		LoadScene();
 	}
-
-
 
 	if(open_configuration)
 		ShowConfigurationWindow();
@@ -228,11 +227,11 @@ void ModuleGui::ShowMainMenuBar()
 
 void ModuleGui::ShowConfigurationWindow()
 {
-	ImGui::SetNextWindowSize({600,800});
+	ImGui::SetNextWindowPos(ImVec2(0, 10));
 	
 	ImGuiWindowFlags window_flags = 0;
 
-	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
 	
@@ -400,6 +399,15 @@ void ModuleGui::LoadScene()
 
 void ModuleGui::ShowEditorMenu()
 {
+
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2(width / 3, 17));
+	ImGui::SetNextWindowSize(ImVec2(width / 4, 600 - height));
+
+
 	ImGuiWindowFlags flags = 0;
 
 	ImGui::SetNextWindowSize({ 400,50 });

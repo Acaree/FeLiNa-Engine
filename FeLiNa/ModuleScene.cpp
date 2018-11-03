@@ -82,7 +82,6 @@ bool ModuleScene::CleanUp()
 	LOG("Unloading Intro scene");
 
 	RELEASE(grid_plane);
-	RELEASE(selected);
 	RELEASE(quadtree);
 
 	for (uint i = 0; i < static_go.size(); ++i)
@@ -150,12 +149,20 @@ void ModuleScene::DrawScene()
 
 void ModuleScene::ShowHierarchy()
 {
-	ImGui::SetNextWindowSize({300,500});
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2(0, 17));
+	ImGui::SetNextWindowSize(ImVec2( width / 4, height - 400 ));
+
 	ImGuiWindowFlags window_flags = 0;
 
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	window_flags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
+	window_flags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
 
 	ImGui::Begin("Hierarchy", &hierarchy_open ,window_flags);
 	
@@ -170,13 +177,21 @@ void ModuleScene::ShowHierarchy()
 
 void ModuleScene::ShowInspector()
 {
-	
-	ImGui::SetNextWindowSize({ 400,600 });
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2(width-width/4, 17));
+	ImGui::SetNextWindowSize(ImVec2(width / 4, height - 400));
+
 	ImGuiWindowFlags window_flags = 0;
 
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	window_flags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
+	window_flags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
 
 	ImGui::Begin("Inspector", &inspector_open, window_flags);
 
