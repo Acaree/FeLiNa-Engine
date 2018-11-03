@@ -56,7 +56,7 @@ public:
 	bool wire = false;
 
 	//TO REVISE;
-	bool debug_draw = true;
+	bool debug_draw = false;
 
 private:
 	bool depth_test = false;

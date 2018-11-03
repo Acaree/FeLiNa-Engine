@@ -52,7 +52,7 @@ bool ModuleScene::Start()
 	App->camera->main_camera->SetParent(root_object);
 	std::string output_file;
 
-	App->importer_mesh->Import("Street environment_V01.fbx","Assets/", output_file);
+	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
 	App->importer_mesh->LoadFLN("Assets/PhysfsSave/Street environment_V01.fln");
 
 /*	std::string output_file;
@@ -133,13 +133,18 @@ update_status ModuleScene::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	quadtree->DebugDraw();
+	
 
-	grid_plane->Render();
+	
 
 	return update_return;
 }
 
+void ModuleScene::DrawScene()
+{
+	grid_plane->Render();
+	//quadtree->DebugDraw();
+}
 
 
 
@@ -244,7 +249,7 @@ void ModuleScene::FillStaticGameObjects()
 		static_go[i]->SetActive(false);
 
 	//Get all go that collision with frustum
-	quadtree->CollectIntersections(tmp_go, App->camera->dummy_frustum->frustum);
+	quadtree->CollectIntersections(tmp_go, App->camera->main_camera->camera->frustum);
 
 	for (uint i = 0; i < tmp_go.size(); ++i)
 	{

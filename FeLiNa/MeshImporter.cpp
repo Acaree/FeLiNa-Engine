@@ -119,13 +119,16 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 		//game_object->SetComponent(component_transform);
 
-		ComponentMesh* component_mesh = (ComponentMesh*)game_object->AddComponent(Component_Mesh);
-		ComponentTexture* component_texture = (ComponentTexture*)game_object->AddComponent(Component_Material);
-
 		ComponentTransform* transform = (ComponentTransform*)game_object->AddComponent(Component_Transform);
 		transform->SetPosition(component_transform->GetPosition());
 		transform->SetRotation(component_transform->GetRotation());
 		transform->SetScale(component_transform->GetScale());
+
+
+		ComponentMesh* component_mesh = (ComponentMesh*)game_object->AddComponent(Component_Mesh);
+		ComponentTexture* component_texture = (ComponentTexture*)game_object->AddComponent(Component_Material);
+
+
 		Mesh* mesh_data = component_mesh->GetMesh();
 
 

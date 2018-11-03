@@ -224,11 +224,8 @@ void ModuleRenderer3D::SaveState(JSON_Object* config)
 
 void ModuleRenderer3D::UpdateTransforms(GameObject* go) {
 
-
-	ComponentTransform* go_trans = (ComponentTransform*)go->GetComponent(Component_Transform);
-	if(go_trans != nullptr)
-
-		go_trans->UpdateMatrix();
+	if(go->transform != nullptr)
+		go->transform->UpdateMatrix();
 
 	for (int i = 0; i < go->GetNumChildren(); i++)
 	{
@@ -240,16 +237,12 @@ void ModuleRenderer3D::UpdateTransforms(GameObject* go) {
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->camera_editor->GetViewMatrix());
 	
-	// light 0 on cam pos
-	
-
 	lights[0].SetPos(App->camera->camera_editor->frustum.pos.x, App->camera->camera_editor->frustum.pos.y, App->camera->camera_editor->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
@@ -263,20 +256,34 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-
+	// Recalculate all objects transformations
 	UpdateTransforms(App->scene->root_object);
 
+	//Draw grid
+	App->scene->DrawScene();
+
+	//Draw all meshes if are active
 	for (uint i = 0; i < meshes.size(); ++i)
 	{
 		if(meshes[i]->GetParent()->IsActive())
 			DrawGameObjects(meshes[i]);
-
-		meshes[i]->GetParent()->DrawBoundingBox(); // TO change with debug draw 
 	}
 
+	//Debug
+	if (debug_draw)
+	{
+		for (uint i = 0; i < meshes.size(); ++i)
+		{
+			meshes[i]->GetParent()->DrawBoundingBox(); 
+		}
 
+		App->camera->main_camera->camera->DebugDraw();
 
+		App->scene->quadtree->DebugDraw();
+		
+	}
 
+	//Screenshot and gif-> TO REVISION NOT WORK
 	if (App->gui->need_screenshoot)
 	{
 		img->TakeScreenshoot();
@@ -288,6 +295,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
+	//SDL_GL_MakeCurrent(App->window->window, context);
 	SDL_GL_SwapWindow(App->window->window);
 
 

@@ -30,6 +30,8 @@ public:
 
 	void FillStaticGameObjects();
 
+	void DrawScene();
+
 private:
 
 	mPlane* grid_plane = nullptr;

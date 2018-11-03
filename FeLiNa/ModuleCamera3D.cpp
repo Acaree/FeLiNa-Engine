@@ -44,12 +44,16 @@ bool ModuleCamera3D::Start()
 	main_camera = new GameObject(nullptr);
 	main_camera->SetName("Main Camera");
 
-	transform_camera = new ComponentTransform(main_camera);
-	dummy_frustum = new ComponentCamera(main_camera);
+	ComponentTransform* transform =(ComponentTransform*) main_camera->AddComponent(Component_Transform);
+	//transform_camera = new ComponentTransform(main_camera);
+	game_camera = new ComponentCamera(main_camera);
 
-	main_camera->SetComponent(transform_camera);
-	main_camera->SetComponent(dummy_frustum);
+	/*main_camera->SetComponent(transform_camera);
+	main_camera->SetComponent(game_camera);*/
 	
+	ComponentCamera* camera = (ComponentCamera*)main_camera->AddComponent(Component_Camera);
+	camera = game_camera;
+
 	//Create and Set Edito camera a initial pos
 	camera_editor = new ComponentCamera(nullptr);
 	camera_editor->frustum.Translate(math::float3(5,10,5));
@@ -160,7 +164,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	
 	//TO SCENE
-	dummy_frustum->DebugDraw();
+	//dummy_frustum->DebugDraw();
 
 	return UPDATE_CONTINUE;
 }
@@ -181,7 +185,7 @@ void ModuleCamera3D::CheckObjectActive(GameObject* go)
 {
 	if (!go->static_object)
 	{
-		Culling cull = dummy_frustum->ContainsAaBox(go->GetAABB());
+		Culling cull = main_camera->camera->ContainsAaBox(go->GetAABB());
 
 		if (cull == Culling::CULL_OUT)
 			go->SetActive(false);

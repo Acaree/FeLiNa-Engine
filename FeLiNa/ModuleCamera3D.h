@@ -29,7 +29,7 @@ public:
 public:
 	ComponentCamera* camera_editor = nullptr;
 	GameObject* main_camera = nullptr;
-	ComponentCamera* dummy_frustum = nullptr;
+	ComponentCamera* game_camera = nullptr;
 
 private:
 	
