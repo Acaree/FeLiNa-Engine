@@ -114,9 +114,6 @@
     <ClCompile Include="MathGeoLib\Math\SSEMath.cpp">
       <Filter>Tools\MatGeoLib</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Tools\MatGeoLib</Filter>
-    </ClCompile>
     <ClCompile Include="MathGeoLib\Math\TransformOps.cpp">
       <Filter>Tools\MatGeoLib</Filter>
     </ClCompile>
@@ -213,6 +210,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,9 +419,6 @@
     <ClInclude Include="MathGeoLib\Math\SSEMath.h">
       <Filter>Tools\MatGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Tools\MatGeoLib</Filter>
-    </ClInclude>
     <ClInclude Include="MathGeoLib\Math\TransformOps.h">
       <Filter>Tools\MatGeoLib</Filter>
     </ClInclude>
@@ -545,6 +542,9 @@
     </ClInclude>
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

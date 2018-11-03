@@ -17,17 +17,28 @@ public:
 	bool Start();
 	bool CleanUp();
 
-	float ReadGameClock() const;
-	float ReadRealTimeClock() const;
+	float ReadGameClock();
+	float ReadRealTimeClock();
 
-	void PauseGameClock() const;
+	void StartGameTime();
 	
+	void PlayGameTime();
+
+	void PauseGameClock();
+
+	void FinishUpdate();
+	
+	float Real_Time_Delta_time = 0.0f;
 
 
 private:
 
-	Timer* game_clock = nullptr;
-	Timer* real_time_clock = nullptr;
+	Timer game_clock;
+	Timer real_time_clock;
+	float Time_scale = 1.0f;
+	uint Frame_count = 0;
+
+	float Real_time_start_frame = 0.0f;
 };
 
 
