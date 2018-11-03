@@ -426,7 +426,10 @@ void ModuleGui::ShowEditorMenu()
 		App->time_management->PauseGameClock();
 	}
 	ImGui::SameLine();
-	ImGui::Button("Tick", { 50,30 });
+	if (ImGui::Button("Tick", { 50,30 })) {
+		App->time_management->tick_selected = true;
+		App->time_management->PlayGameTime();
+	}
 	ImGui::SameLine();
 	
 	char game_time[20] = "";

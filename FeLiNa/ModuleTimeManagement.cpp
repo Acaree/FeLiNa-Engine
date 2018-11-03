@@ -44,6 +44,10 @@ void ModuleTimeManagement::FinishUpdate() {
 	Frame_count++;
 	Real_Time_Delta_time = real_time_clock.ReadSec() - Real_time_start_frame;
 	Real_time_start_frame = real_time_clock.ReadSec();
+	if (tick_selected) {
+		game_clock.Pause();
+		tick_selected = false;
+	}
 }
 
 void ModuleTimeManagement::StartGameTime() {

@@ -30,8 +30,11 @@ public:
 	
 	float Real_Time_Delta_time = 0.0f;
 
+	bool tick_selected = false;
 
 private:
+
+
 
 	Timer game_clock;
 	Timer real_time_clock;
