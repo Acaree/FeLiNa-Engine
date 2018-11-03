@@ -8,7 +8,7 @@
 #include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
-#include "ImGui/imgui_impl_opengl2.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 #include "mmgr/mmgr.h"
 
@@ -29,7 +29,7 @@ bool ModuleGui::Start()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
-	ImGui_ImplOpenGL2_Init();
+	ImGui_ImplOpenGL3_Init();
 
 	ImGui::StyleColorsDark();
 
@@ -53,7 +53,7 @@ update_status ModuleGui::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 

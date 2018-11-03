@@ -120,9 +120,6 @@ uint ModuleFileSystem::SaveTexture(char* buffer, uint size, std::string& output_
 
 	ret = SaveBufferData(buffer, new_path, size);
 
-
-
-
 	return ret;
 }
 
