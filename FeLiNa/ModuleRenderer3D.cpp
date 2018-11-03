@@ -243,9 +243,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
+	
 
 	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	glLoadMatrixf(App->camera->camera_editor->GetViewMatrix());
 	
 	lights[0].SetPos(App->camera->camera_editor->frustum.pos.x, App->camera->camera_editor->frustum.pos.y, App->camera->camera_editor->frustum.pos.z);

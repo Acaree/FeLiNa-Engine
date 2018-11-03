@@ -10,6 +10,9 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "ModuleTimeManagement.h"
+#include "ComponentCamera.h"
+#include "ModuleCamera3D.h"
+
 
 #include "mmgr/mmgr.h"
 
@@ -57,6 +60,7 @@ update_status ModuleGui::PreUpdate(float dt)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 	return update_return;
 }
@@ -112,6 +116,8 @@ update_status ModuleGui::Update(float dt)
 		ShowAboutWindow();
 	}
 	
+	CreateGuizmos();
+
 	return update_return;
 }
 
@@ -447,5 +453,17 @@ void ModuleGui::ShowEditorMenu()
 
 	ImGui::End();
 
+	
+}
+
+void ModuleGui::CreateGuizmos() {
+
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	math::float4x4 view = App->camera->camera_editor->frustum.ViewProjMatrix();
+	math::float4x4 proj = App->camera->camera_editor->frustum.ProjectionMatrix();
+
+	ImGuizmo::Manipulate(view.ptr() ,proj.ptr() , ImGuizmo::TRANSLATE, ImGuizmo::LOCAL, App->camera->main_camera->transform->GetGlobalMatrix().ptr());
 	
 }

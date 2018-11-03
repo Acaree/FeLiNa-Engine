@@ -24,6 +24,8 @@ public:
 	void SumRotation(math::float3 new_rotation);
 	void SumScale(math::float3 new_scale);
 
+	math::float4x4 GetGlobalMatrix();
+
 	math::float3 GetPosition()const;
 	math::float3 GetRotation()const;
 	math::float3 GetScale()const;

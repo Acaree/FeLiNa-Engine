@@ -82,7 +82,6 @@ bool ModuleScene::CleanUp()
 	LOG("Unloading Intro scene");
 
 	RELEASE(grid_plane);
-	RELEASE(selected);
 	RELEASE(quadtree);
 
 	for (uint i = 0; i < static_go.size(); ++i)

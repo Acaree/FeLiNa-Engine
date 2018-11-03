@@ -2,7 +2,7 @@
 #define _MODULEGUI_H
 
 #include "Module.h"
-
+#include "ImGuizmo/ImGuizmo.h"
 
 class ModuleGui : public Module
 {
@@ -18,6 +18,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 	void SaveState(JSON_Object* config);
+	void CreateGuizmos();
 
 private:
 	bool About_active = false;
@@ -31,6 +32,11 @@ private:
 	void LoadScene();
 
 public:
+
+	
+
+	//ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+	//ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
 
 	bool close_program = false;
 	bool open_configuration = false;

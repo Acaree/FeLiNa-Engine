@@ -201,3 +201,7 @@ void ComponentTransform::DrawInspector()
 	
 
 }
+
+math::float4x4 ComponentTransform::GetGlobalMatrix() {
+	return global_matrix;
+}
