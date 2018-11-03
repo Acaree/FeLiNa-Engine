@@ -81,11 +81,18 @@ bool ModuleScene::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
-	quadtree->Clear();
+	RELEASE(grid_plane);
+	RELEASE(selected);
 	RELEASE(quadtree);
 
-	delete grid_plane;
-	grid_plane = nullptr;
+	for (uint i = 0; i < static_go.size(); ++i)
+	{
+		RELEASE(static_go[i]);
+	}
+
+	static_go.clear();
+
+	root_object->CleanUp();
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();

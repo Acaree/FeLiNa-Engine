@@ -21,7 +21,8 @@ ModuleHardware::ModuleHardware(Application* app, bool start_enabled) : Module(ap
 }
 ModuleHardware::~ModuleHardware()
 {
-
+	RELEASE(vendor);
+	RELEASE(gpu_name);
 }
 
 void ModuleHardware::FillHardwareInfo()

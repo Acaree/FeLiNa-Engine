@@ -19,8 +19,8 @@ public:
 	~GameObject();
 	
 	void Update(float dt);
-	//bool PostUpdate(float dt);
 	bool CleanUp();
+
 	void CleanData();
 	void SetName(char*name);
 	char* GetName() const;
@@ -78,9 +78,6 @@ private:
 	std::vector<GameObject*> childrens;
 	GameObject* parent = nullptr;
 	bool selected = false;
-
-	
-
 	bool active = false;
 
 };

@@ -17,7 +17,7 @@
 #include "ImGui/imgui_impl_opengl2.h"
 #include "Quadtree.h"
 #include "ImageRecorder.h"
-
+#include "mmgr/mmgr.h"
 
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
@@ -31,7 +31,23 @@ ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Modul
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
-{}
+{
+	//RELEASE(img);
+
+	for (uint i = 0; i < meshes.size(); ++i)
+	{
+		meshes[i]->name.clear();
+		meshes[i]->path.clear();
+		RELEASE_ARRAY(meshes[i]->vertices);
+		RELEASE_ARRAY(meshes[i]->indices);
+		RELEASE_ARRAY(meshes[i]->uv);
+		RELEASE(meshes[i]);
+	}
+
+	meshes.clear();
+
+
+}
 
 // Called before render is available
 bool ModuleRenderer3D::Init()

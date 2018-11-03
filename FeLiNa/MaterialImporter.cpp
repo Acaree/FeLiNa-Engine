@@ -10,7 +10,7 @@
 #pragma comment (lib, "DevIL/libx86/DevIL.lib")
 #pragma comment (lib, "DevIL/libx86/ILU.lib")
 #pragma comment (lib, "DevIL/libx86/ILUT.lib")
-
+#include "mmgr/mmgr.h"
 
 MaterialImporter::MaterialImporter()
 {

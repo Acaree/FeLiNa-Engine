@@ -13,10 +13,8 @@ ImageRecorder::ImageRecorder(int widht, int height) : width(widht), height(heigh
 
 ImageRecorder::~ImageRecorder()
 {
-	delete[] pixels;
-	delete[] pixel_full;
-	pixels = nullptr;
-	pixel_full = nullptr;
+	RELEASE_ARRAY(pixels);
+	RELEASE_ARRAY(pixel_full);
 }
 
 bool ImageRecorder::TakeScreenshoot()

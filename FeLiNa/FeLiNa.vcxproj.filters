@@ -187,9 +187,6 @@
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Quadtree.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="MaterialImporter.cpp">
       <Filter>Modules\Importers</Filter>
     </ClCompile>
@@ -202,8 +199,11 @@
     <ClCompile Include="ModuleTimeManagement.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Quadtree.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
     <ClCompile Include="ImageRecorder.cpp">
-      <Filter>Modules</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -507,9 +507,6 @@
     <ClInclude Include="ModuleFileSystem.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Quadtree.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Importer.h">
       <Filter>Modules\Importers</Filter>
     </ClInclude>
@@ -525,8 +522,11 @@
     <ClInclude Include="ModuleTimeManagement.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Quadtree.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
     <ClInclude Include="ImageRecorder.h">
-      <Filter>Modules</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

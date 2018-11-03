@@ -9,8 +9,8 @@ class mPlane
 {
 public:
 
-	mPlane();
 	mPlane(float x, float y, float z, float d);
+	~mPlane();
 
 	void			Render() const;
 	void			InnerRender() const;

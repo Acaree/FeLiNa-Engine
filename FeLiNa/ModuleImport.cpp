@@ -17,7 +17,7 @@
 #include "ComponentTexture.h"
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
-
+#include "mmgr/mmgr.h"
 
 ModuleImport::ModuleImport(Application*app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -83,6 +83,8 @@ bool ModuleImport::LoadData(const char* path)
 	
 	App->scene->root_object->AddChildren(obj2);
 
+
+	RELEASE_ARRAY(temp);
 
 	//To change-> false and show.
 	return true;
@@ -207,6 +209,7 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 		LoadModel(scene, node->mChildren[i], path, game_object,component_trans);
 	}
 	
+
 }
 
 void ModuleImport::GenerateBufferData(Mesh* mesh_data)

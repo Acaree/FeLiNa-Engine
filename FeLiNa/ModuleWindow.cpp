@@ -13,7 +13,8 @@ ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, s
 // Destructor
 ModuleWindow::~ModuleWindow()
 {
-	
+	RELEASE(window);
+	RELEASE(screen_surface);
 }
 
 // Called before render is available

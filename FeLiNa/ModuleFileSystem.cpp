@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "PhysFS/physfs.h"
 
-
+#include "mmgr/mmgr.h"
 #include <string>
 
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
@@ -100,6 +100,7 @@ const char* ModuleFileSystem::GetNameFile(const char* path) const
 
 	strcpy_s(result, file_name.size() + 1, file_name.data());
 
+	//file_name.clear();
 
 	return result;
 }
@@ -118,6 +119,9 @@ uint ModuleFileSystem::SaveTexture(char* buffer, uint size, std::string& output_
 	sprintf_s(new_path, DEFAULT_BUF_SIZE, "Assets/PhysfsSave/%s.%s", new_name, EXTENSION);
 
 	ret = SaveBufferData(buffer, new_path, size);
+
+
+
 
 	return ret;
 }

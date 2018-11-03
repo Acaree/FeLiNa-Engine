@@ -14,7 +14,7 @@
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
-
+#include "mmgr/mmgr.h"
 MeshImporter::MeshImporter()
 {
 	
@@ -199,6 +199,8 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			component_mesh = App->renderer3D->CreateComponentMesh();
 
+			
+
 		}
 
 		//CREATE AABB
@@ -256,6 +258,13 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		{
 			LOG("SCENE IMPORTER: Successfully saved mesh to own format");
 		}
+
+		//MEM LEAK
+
+		//RELEASE_ARRAY(data);
+		//RELEASE_ARRAY(vertices_);
+
+
 	}
 	else
 	{

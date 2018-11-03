@@ -17,6 +17,10 @@ ModuleTexture::ModuleTexture(Application* app,bool start_enabled): Module(app,st
 
 ModuleTexture::~ModuleTexture()
 {
+	for (uint i = 0; i < textures.size(); ++i)
+		RELEASE(textures[i]);
+
+	textures.clear();
 }
 
 bool ModuleTexture::Init()

@@ -65,6 +65,12 @@ Application::~Application()
 		delete *it;
 	}
 
+	//TO CHANGE THIS DELETE:
+	RELEASE(importer_mesh);
+	RELEASE(importer_material);
+
+
+
 	RELEASE(random);
 
 	RELEASE_ARRAY(name);

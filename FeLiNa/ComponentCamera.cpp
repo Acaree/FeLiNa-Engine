@@ -22,6 +22,8 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
 
 ComponentCamera::~ComponentCamera()
 {
+	
+
 }
 
 void ComponentCamera::Update(float dt)

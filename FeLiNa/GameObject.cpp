@@ -19,8 +19,6 @@ GameObject::GameObject(GameObject* parent)
 	if (parent != nullptr)
 		parent->childrens.push_back(this);
 
-	
-
 	bounding_box.SetNegativeInfinity();
 
 	uid = App->random->Int();
@@ -30,16 +28,8 @@ GameObject::GameObject(GameObject* parent)
 
 GameObject::~GameObject()
 {
-	for (std::vector<GameObject*>::const_iterator it = childrens.begin(); it != childrens.end(); ++it)
-	{
-		(*it)->CleanUp();
-	}
-	childrens.clear();
-
-	delete name;
+	// We don't allocate memory for this pointers.
 	name = nullptr;
-
-	delete parent;
 	parent = nullptr;
 }
 
@@ -56,23 +46,21 @@ void GameObject::Update(float dt)
 
 bool GameObject::CleanUp()
 {
-	for (std::vector<GameObject*>::const_iterator it = childrens.begin(); it != childrens.end(); ++it)
+	for (uint i = 0; i < childrens.size(); ++i)
 	{
-		(*it)->CleanUp();
+		childrens[i]->CleanUp();
+		RELEASE(childrens[i]);
 	}
 	childrens.clear();
 
-	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
+	for (uint i = 0; i < components.size(); ++i)
 	{
-		(*it)->CleanUp();
+		components[i]->CleanUp();
+		RELEASE(components[i]);
 	}
 	components.clear();
 
-	RELEASE_ARRAY(name);
-	name = nullptr;
-
-	//delete parent;
-	parent = nullptr;
+	
 
 	return true;
 }

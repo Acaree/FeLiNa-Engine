@@ -11,6 +11,11 @@ mPlane::mPlane(float x, float y, float z, float d) : transform(math::float4x4::i
 	matGeo_plane = new math::Plane(plane_pos, d);
 }
 
+mPlane::~mPlane()
+{
+	RELEASE(matGeo_plane);
+}
+
 void mPlane::Render() const
 {
 

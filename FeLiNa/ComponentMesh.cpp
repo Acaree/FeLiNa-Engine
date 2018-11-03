@@ -12,7 +12,7 @@ ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 
 ComponentMesh::~ComponentMesh()
 {
-
+	mesh = nullptr;
 }
 
 

@@ -70,8 +70,8 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	math::float3x3 NormalMatrix;
-	math::float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	
+	math::float4x4  ProjectionMatrix;
 
 	std::vector<Mesh*> meshes;
 	bool wire = false;

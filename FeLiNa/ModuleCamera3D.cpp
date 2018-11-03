@@ -9,6 +9,9 @@
 #include "ModuleWindow.h"
 #include "Quadtree.h"
 #include "ModuleRenderer3D.h"
+
+#include "mmgr/mmgr.h"
+
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Camera";
@@ -16,11 +19,20 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 ModuleCamera3D::~ModuleCamera3D()
 {
-	RELEASE(camera_editor);
-	
-	//ALL DUMMY TO SCENE.
-	delete dummy_frustum;
-	dummy_frustum = nullptr;
+	//At this point the components are deleted.
+
+	/*RELEASE(camera_editor);
+	RELEASE(dummy_frustum);
+	RELEASE(main_camera);
+	RELEASE(transform_camera);
+
+	for (uint i = 0; i < posible_go_intersections.size(); ++i)
+	{
+		posible_go_intersections[i]->CleanUp();
+		RELEASE(posible_go_intersections[i]);
+	}
+	posible_go_intersections.clear();*/
+
 }
 
 // -----------------------------------------------------------------

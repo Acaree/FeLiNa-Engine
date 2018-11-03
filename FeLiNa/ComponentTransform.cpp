@@ -20,7 +20,8 @@ ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position
 
 }
 
-ComponentTransform::~ComponentTransform(){
+ComponentTransform::~ComponentTransform()
+{
 
 }
 
