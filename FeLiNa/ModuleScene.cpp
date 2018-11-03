@@ -170,6 +170,7 @@ void ModuleScene::ShowHierarchy()
 
 void ModuleScene::ShowInspector()
 {
+	
 	ImGui::SetNextWindowSize({ 400,600 });
 	ImGuiWindowFlags window_flags = 0;
 

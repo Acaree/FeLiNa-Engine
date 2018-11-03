@@ -158,7 +158,7 @@ bool ModuleRenderer3D::Init()
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION)); 
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	//OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	if (depth_test)
 		glEnable(GL_DEPTH_TEST);
@@ -206,7 +206,12 @@ bool ModuleRenderer3D::Awake(JSON_Object* config)
 	line_smooth = json_object_get_boolean(config, "Line smooth");
 	polygon_smooth = json_object_get_boolean(config, "Polygon smooth");
 
+	return true;
+}
 
+bool ModuleRenderer3D::Start()
+{
+	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	return true;
 }
 
@@ -327,10 +332,13 @@ void ModuleRenderer3D::OnResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
 
+	float aspect_ratio = (float)width / (float)height;
+	App->camera->main_camera->camera->SetAspectRatio(aspect_ratio);
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf((GLfloat*)ProjectionMatrix.ptr());
+	//ProjectionMatrix = App->camera->main_camera->camera->GetViewMatrix();
+	glLoadMatrixf(App->camera->main_camera->camera->GetProjectionMatrix());
 	
 
 	glMatrixMode(GL_MODELVIEW);

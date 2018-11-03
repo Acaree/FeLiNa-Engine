@@ -142,6 +142,17 @@ float* ComponentCamera::GetViewMatrix() const
 	return (float*)matrix.v;
 }
 
+float* ComponentCamera::GetProjectionMatrix() const
+{
+	static math::float4x4 matrix;
+
+	matrix = frustum.ProjectionMatrix();
+	matrix.Transpose();
+
+	return (float*)matrix.v;
+
+}
+
 
 void ComponentCamera::OnSave(JSON_Object* obj)
 {

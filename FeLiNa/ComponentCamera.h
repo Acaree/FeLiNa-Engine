@@ -23,6 +23,7 @@ public:
 	void Update(float dt);
 
 	float* GetViewMatrix() const;
+	float* GetProjectionMatrix() const;
 
 	float GetNear() const;
 	float GetFar() const;
