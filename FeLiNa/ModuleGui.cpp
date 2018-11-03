@@ -228,7 +228,7 @@ void ModuleGui::ShowMainMenuBar()
 
 void ModuleGui::ShowConfigurationWindow()
 {
-	ImGui::SetNextWindowSize({400,800});
+	ImGui::SetNextWindowSize({600,800});
 	
 	ImGuiWindowFlags window_flags = 0;
 
@@ -402,7 +402,7 @@ void ModuleGui::ShowEditorMenu()
 {
 	ImGuiWindowFlags flags = 0;
 
-	ImGui::SetNextWindowSize({ 300,50 });
+	ImGui::SetNextWindowSize({ 400,50 });
 
 	flags |= ImGuiWindowFlags_NoResize;
 	flags |= ImGuiWindowFlags_NoCollapse;
