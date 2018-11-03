@@ -7,7 +7,7 @@
 #include "MathGeoLib/Math/Quat.h"
 #define MAX_LIGHTS 8
 
-class ModuleImage;
+class ImageRecorder;
 class ComponentMesh;
 class Component;
 class GameObject;
@@ -88,7 +88,7 @@ private:
 	bool line_smooth = false;
 	bool polygon_smooth = false;
 	
-	ModuleImage* img = nullptr;
+	ImageRecorder* img = nullptr;
 
 	//Checkers
 	uint checker_id = 0;

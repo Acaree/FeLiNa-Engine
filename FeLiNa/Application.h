@@ -53,8 +53,8 @@ public:
 	MaterialImporter* importer_material ;
 	MeshImporter* importer_mesh;
 
-	char app_name[20];
-	char organization[20];
+	char* app_name = nullptr;
+	char* organization = nullptr;
 
 	int FPS_cap = 60;
 

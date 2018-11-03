@@ -16,7 +16,7 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
 #include "Quadtree.h"
-#include "ModuleImage.h"
+#include "ImageRecorder.h"
 
 
 
@@ -36,7 +36,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-	img = new ModuleImage(App->window->screen_surface->w, App->window->screen_surface->h);
+	img = new ImageRecorder(App->window->screen_surface->w, App->window->screen_surface->h);
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 

@@ -12,6 +12,7 @@
 #include "ModuleTexture.h"
 #include "ModuleTimeManagement.h"
 #include "mmgr/mmgr.h"
+
 Application::Application()
 {
 	name = "Application";
@@ -66,6 +67,9 @@ Application::~Application()
 
 	RELEASE(random);
 
+	RELEASE_ARRAY(name);
+	RELEASE_ARRAY(app_name);
+	RELEASE_ARRAY(organization);
 }
 
 bool Application::Init()
@@ -106,8 +110,12 @@ bool Application::Awake()
 
 		if (config_app != nullptr)
 		{
-			//strcpy(app_name, json_object_get_string(config_app, "Title"));
-			//strcpy(organization, json_object_get_string(config_app, "Organization"));
+			app_name = new char[100];
+			organization = new char[100];
+			
+			strcpy_s(app_name, 100, json_object_get_string(config_app, "Title"));
+			strcpy(organization, json_object_get_string(config_app, "Organization"));
+
 			vsync = json_object_get_boolean(config_app, "VSYNC");
 			FPS_cap = json_object_get_number(config_app, "Max frames");
 		}

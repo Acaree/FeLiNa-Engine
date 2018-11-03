@@ -136,9 +136,6 @@
     <ClCompile Include="Parson\parson.c">
       <Filter>Tools\Parson</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleImage.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Tools\ImGui</Filter>
     </ClCompile>
@@ -203,6 +200,9 @@
       <Filter>Modules\Importers</Filter>
     </ClCompile>
     <ClCompile Include="ModuleTimeManagement.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageRecorder.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -443,9 +443,6 @@
     <ClInclude Include="Parson\parson.h">
       <Filter>Tools\Parson</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleImage.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Gif\gif.h">
       <Filter>Tools\Gif</Filter>
     </ClInclude>
@@ -526,6 +523,9 @@
       <Filter>Modules\Importers</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTimeManagement.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageRecorder.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

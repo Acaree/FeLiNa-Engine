@@ -1,17 +1,17 @@
-#include "ModuleImage.h"
+#include "ImageRecorder.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "Gif/gif.h"
 #include "Devil\include\ilut.h"
 #include <time.h>
 
-ModuleImage::ModuleImage(int widht, int height) : width(widht), height(height)
+ImageRecorder::ImageRecorder(int widht, int height) : width(widht), height(height)
 {
 	pixels = new BYTE[3 * widht*height];
 	pixel_full = new BYTE[width*height * sizeof(unsigned char)*4];
 }
 
-ModuleImage::~ModuleImage()
+ImageRecorder::~ImageRecorder()
 {
 	delete[] pixels;
 	delete[] pixel_full;
@@ -19,7 +19,7 @@ ModuleImage::~ModuleImage()
 	pixel_full = nullptr;
 }
 
-bool ModuleImage::TakeScreenshoot()
+bool ImageRecorder::TakeScreenshoot()
 {
 	
 	ILuint imageID = ilGenImage();
@@ -44,7 +44,7 @@ bool ModuleImage::TakeScreenshoot()
 
 GifWriter writer;
 
-void ModuleImage::TakeScreenGif(float dt)
+void ImageRecorder::TakeScreenGif(float dt)
 {
 
 	switch (state)
@@ -87,11 +87,11 @@ void ModuleImage::TakeScreenGif(float dt)
 	}
 }
 
-bool ModuleImage::CleanUp() {
+bool ImageRecorder::CleanUp() {
 
-	delete[] pixels;
-	delete[] pixel_full;
-	delete filename;
+	RELEASE_ARRAY(pixels);
+	RELEASE_ARRAY(pixel_full);
+	RELEASE(filename);
 
 	return true;
 
