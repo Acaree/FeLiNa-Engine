@@ -3,43 +3,62 @@
 
 ModuleTimeManagement::ModuleTimeManagement(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	game_clock = new Timer();
-	real_time_clock = new Timer();
+	PauseGameClock();
 }
 
 ModuleTimeManagement::~ModuleTimeManagement()
 {
-	RELEASE(game_clock);
-	RELEASE(real_time_clock);
+	
 }
 
 bool ModuleTimeManagement::Start()
 {
-	game_clock->Start();
-	real_time_clock->Start();
+	real_time_clock.Start();
 	
 	return true;
 }
 
 bool ModuleTimeManagement::CleanUp()
 {
-	RELEASE(game_clock);
-	RELEASE(real_time_clock);
-
 	return true;
 }
 
-float ModuleTimeManagement::ReadGameClock() const
+float ModuleTimeManagement::ReadGameClock() 
 {
-	return game_clock->ReadSec();
+	return game_clock.ReadSec();
 }
 
-float ModuleTimeManagement::ReadRealTimeClock() const
+float ModuleTimeManagement::ReadRealTimeClock() 
 {
-	return real_time_clock->Read();
+	return real_time_clock.Read();
 }
 
-void ModuleTimeManagement::PauseGameClock() const
+void ModuleTimeManagement::PauseGameClock() 
 {
-	game_clock->Pause();
+	game_clock.Pause();
+
 }
+
+void ModuleTimeManagement::FinishUpdate() {
+
+	Frame_count++;
+	Real_Time_Delta_time = real_time_clock.ReadSec() - Real_time_start_frame;
+	Real_time_start_frame = real_time_clock.ReadSec();
+	if (tick_selected) {
+		game_clock.Pause();
+		tick_selected = false;
+	}
+}
+
+void ModuleTimeManagement::StartGameTime() {
+
+	game_clock.Start();
+
+}
+
+void ModuleTimeManagement::PlayGameTime() {
+
+	game_clock.Play();
+
+}
+

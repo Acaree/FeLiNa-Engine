@@ -168,6 +168,8 @@ void Application::FinishUpdate()
 
 	}
 
+	App->time_management->FinishUpdate();
+
 	last_ms = ms_timer.ReadMs();
 	last_FPS = 1000.0 / last_ms;
 	dt = 1 / last_FPS;

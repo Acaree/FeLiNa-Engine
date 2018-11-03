@@ -9,6 +9,7 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "ModuleTimeManagement.h"
 
 #include "mmgr/mmgr.h"
 
@@ -227,7 +228,7 @@ void ModuleGui::ShowMainMenuBar()
 
 void ModuleGui::ShowConfigurationWindow()
 {
-	ImGui::SetNextWindowSize({400,800});
+	ImGui::SetNextWindowSize({600,800});
 	
 	ImGuiWindowFlags window_flags = 0;
 
@@ -401,7 +402,7 @@ void ModuleGui::ShowEditorMenu()
 {
 	ImGuiWindowFlags flags = 0;
 
-	ImGui::SetNextWindowSize({ 300,50 });
+	ImGui::SetNextWindowSize({ 400,50 });
 
 	flags |= ImGuiWindowFlags_NoResize;
 	flags |= ImGuiWindowFlags_NoCollapse;
@@ -412,11 +413,29 @@ void ModuleGui::ShowEditorMenu()
 
 	bool a = false;
 	float b = 0.5F;
-	ImGui::Button("Play",{50,30});
+	if (ImGui::Button("Play", { 50,30 })) {
+		App->time_management->PlayGameTime();
+	}
 	ImGui::SameLine();
-	ImGui::Button("Stop", { 50,30 });
+	if (ImGui::Button("Pause", { 50,30 })) {
+		App->time_management->PauseGameClock();
+	}
 	ImGui::SameLine();
-	ImGui::Button("Tick", { 50,30 });
+	if (ImGui::Button("Stop", { 50,30 })) {
+		App->time_management->StartGameTime();
+		App->time_management->PauseGameClock();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Tick", { 50,30 })) {
+		App->time_management->tick_selected = true;
+		App->time_management->PlayGameTime();
+	}
+	ImGui::SameLine();
+	
+	char game_time[20] = "";
+	sprintf_s(game_time,sizeof(game_time), "%f", App->time_management->ReadGameClock());
+	ImGui::Text(game_time);
+	
 	ImGui::SameLine();
 	if(ImGui::Checkbox("Debug Draw", &App->renderer3D->debug_draw))
 	{
