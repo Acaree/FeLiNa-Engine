@@ -13,28 +13,7 @@ class Component;
 class GameObject;
 class ComponentTexture;
 
-struct Mesh
-{
-	std::string name = "";
-	std::string path = "";
-
-	uint id_indices = 0;
-	uint num_indices = 0;
-	uint* indices = nullptr;
-
-	uint id_vertices = 0;
-	uint num_vertices = 0;
-	float* vertices = nullptr;
-
-	uint id_uv = 0;
-	uint num_uv = 0;
-	float* uv = nullptr;
-
-	uint id_normals = 0;
-	uint num_normals = 0;
-	float* normals = nullptr;
-};
-
+struct Mesh;
 
 class ModuleRenderer3D : public Module
 {
@@ -47,6 +26,7 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
+
 	math::float4x4 perspective(float fovy, float aspect, float n, float f);
 
 	void OnResize(int width, int height);
@@ -55,8 +35,9 @@ public:
 
 	void UpdateTransforms(GameObject* go);
 
-	void DrawGameObject(GameObject* go,ComponentMesh* mesh, ComponentTexture* material);
-	void AddDataMesh(Mesh* data_mesh);
+	void DrawGameObjects(ComponentMesh* mesh);
+
+	void AddDataMesh(ComponentMesh* data_mesh);
 	void DeleteAllDataMesh();
 
 	uint CreateCheckers();
@@ -64,8 +45,6 @@ public:
 	void SaveState(JSON_Object* config);
 
 
-
-	ComponentMesh* CreateComponentMesh();
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -73,7 +52,7 @@ public:
 	
 	math::float4x4  ProjectionMatrix;
 
-	std::vector<Mesh*> meshes;
+	std::vector<ComponentMesh*> meshes;
 	bool wire = false;
 
 	//TO REVISE;

@@ -6,11 +6,11 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
-#include "ModuleRenderer3D.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
+
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
@@ -72,36 +72,24 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 	if (scene != nullptr) {
 
-		std::string tmp = output_file;
-		tmp = tmp.erase(0, tmp.find_last_of("\\") + 1);
-		tmp = tmp.substr(0, tmp.find_last_of("."));
-		//TO REVISE-> ¿Create a function that convert a const char* to char*?
-		int length = strlen(tmp.c_str());
-		char* temp = new char[length + 1];
-		strcpy(temp, tmp.c_str());
-		temp[length] = '\0';
-		
-		GameObject* obj2 = new GameObject(nullptr);
-		obj2->SetName(temp);
-		if (scene != nullptr)
-		{
-			aiNode* rootNode = scene->mRootNode;
-			ComponentTransform* trans = new ComponentTransform(nullptr);
-			LoadModel(scene, rootNode, output_file, obj2, trans);
-			obj2->SetComponent(trans);
+		//Create a new Game Object and set the name of file.
+		GameObject* childrens_go = new GameObject(App->scene->root_object);
+		childrens_go->SetName((char*)output_file.data());
 
+		aiNode* rootNode = scene->mRootNode;
 
-			//TO REVISE: probably this can be made better
+		ComponentTransform* trans = (ComponentTransform*)childrens_go->AddComponent(Component_Transform);
 
-			obj2->SetParent(App->scene->root_object);
+		LoadModel(scene, rootNode, output_file, childrens_go, trans);
 
-			App->scene->root_object->AddChildren(obj2);
+		//TO REVISE: I think this can delete
+		//childrens_go->SetParent(App->scene->root_object);
+		//App->scene->root_object->AddChildren(childrens_go);
 
-			aiReleaseImport(scene);
-		}
-
+		aiReleaseImport(scene);
 
 	}
+
 	return ret;
 }
 
@@ -111,28 +99,35 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 	//Creating a game object to set data
 	GameObject* game_object = new GameObject(nullptr);
 	game_object->SetName(node->mName.data);
+
 	aiQuaternion q;
 	aiVector3D scale, pos;
 	node->mTransformation.Decompose(scale, q, pos);
 
-	ComponentTransform* component_trans = new ComponentTransform(nullptr, math::float3(pos.x, pos.y, pos.z), math::float3(q.GetEuler().x, q.GetEuler().y, q.GetEuler().z), math::float3(scale.x, scale.y, scale.z));
-	component_trans->SumPosition(trans->GetPosition());
-	component_trans->SumRotation(trans->GetRotation());
-	component_trans->SumScale(trans->GetScale());
+	ComponentTransform* component_transform = new ComponentTransform(nullptr, math::float3(pos.x, pos.y, pos.z), math::float3(q.GetEuler().x, q.GetEuler().y, q.GetEuler().z), math::float3(scale.x, scale.y, scale.z));
+	component_transform->SumPosition(trans->GetPosition());
+	component_transform->SumRotation(trans->GetRotation());
+	component_transform->SumScale(trans->GetScale());
 
 
 	if (node->mNumMeshes > 0)
 	{
 		//Create a game object components
-		ComponentMesh* component_mesh = nullptr;
-		ComponentTexture* component_texture = nullptr;
-		ComponentTransform* tr = component_trans;
+		//ComponentTransform* tr = component_trans;
 
-		tr->SetParent(game_object);
+		//tr->SetParent(game_object);
 
+		//game_object->SetComponent(component_transform);
 
+		ComponentMesh* component_mesh = (ComponentMesh*)game_object->AddComponent(Component_Mesh);
+		ComponentTexture* component_texture = (ComponentTexture*)game_object->AddComponent(Component_Material);
 
-		Mesh* mesh_data = new Mesh();
+		ComponentTransform* transform = (ComponentTransform*)game_object->AddComponent(Component_Transform);
+		transform->SetPosition(component_transform->GetPosition());
+		transform->SetRotation(component_transform->GetRotation());
+		transform->SetScale(component_transform->GetScale());
+		Mesh* mesh_data = component_mesh->GetMesh();
+
 
 		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
 		{
@@ -143,8 +138,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 			mesh_data->vertices = new float[mesh_data->num_vertices * 3];
 			memcpy(mesh_data->vertices, new_mesh->mVertices, sizeof(float)*mesh_data->num_vertices * 3);
 			LOG("New mesh with %d vertices", mesh_data->num_vertices);
-
-
 
 			//Load Mesh
 			if (new_mesh->HasFaces())
@@ -182,34 +175,25 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			}
 
-			//Normals
-			if (new_mesh->HasNormals())
-			{
-				mesh_data->num_normals = new_mesh->mNumVertices;
-				mesh_data->normals = new float[mesh_data->num_normals * 3];
-				memcpy(mesh_data->normals, new_mesh->mNormals, sizeof(float) * mesh_data->num_normals * 3);
-			}
 
 			//Add the mesh component
 			GenerateBufferData(mesh_data);
 
 			//TO REVISE call here to module renderer?
 
-			App->renderer3D->AddDataMesh(mesh_data);
+			App->renderer3D->AddDataMesh(component_mesh);
 
-			component_mesh = App->renderer3D->CreateComponentMesh();
-
-			
+			//component_mesh = App->renderer3D->CreateComponentMesh();
 
 		}
 
 		//CREATE AABB
 		game_object->AddBoundingBox(mesh_data);
-		game_object->SetComponent(tr);
+		/*game_object->SetComponent(tr);
 		game_object->SetComponent(component_mesh);
-		game_object->SetComponent(component_texture);
+		game_object->SetComponent(component_texture);*/
 
-		game_object->SetParent(obj);
+		//game_object->SetParent(obj);
 		obj->AddChildren(game_object);
 		game_object->RecalculateBoundingBox();
 
@@ -273,7 +257,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
-		LoadModel(scene, node->mChildren[i], output_file, game_object, component_trans);
+		LoadModel(scene, node->mChildren[i], output_file, game_object, component_transform);
 	}
 
 }
@@ -291,15 +275,6 @@ void MeshImporter::GenerateBufferData(Mesh* mesh_data)
 	glGenBuffers(1, (GLuint*) &(mesh_data->id_uv));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_uv);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh_data->num_uv, mesh_data->uv, GL_STATIC_DRAW);
-
-	glGenBuffers(1, (GLuint*)&(mesh_data->id_normals));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_normals);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh_data->num_normals, mesh_data->normals, GL_STATIC_DRAW);
-
-	/*glGenBuffers(1, (GLuint*) &(data->id_color));
-	  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_color);
-	  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
-	*/
 
 }
 

@@ -2,7 +2,7 @@
 #include "Glew/include/glew.h" 
 #include "SDL/include/SDL_opengl.h"
 #include "Application.h"
-#include "ModuleRenderer3D.h"
+#include "MeshImporter.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTexture.h"
 #include "Assimp/include/cimport.h"
@@ -60,17 +60,17 @@ bool ModuleImport::LoadData(const char* path)
 	
 	
 
-	std::string tmp = path;
+	/*std::string tmp = path;
 	tmp = tmp.erase(0, tmp.find_last_of("\\") + 1);
 	tmp = tmp.substr(0, tmp.find_last_of("."));
 	//TO REVISE-> ¿Create a function that convert a const char* to char*?
 	int length = strlen(tmp.c_str());
 	char* temp = new char[length + 1];
 	strcpy(temp, tmp.c_str());
-	temp[length] = '\0';
+	temp[length] = '\0';*/
 
 	GameObject* obj2 = new GameObject(nullptr);
-	obj2->SetName(temp);
+	obj2->SetName((char*) path);
 	if (scene != nullptr)
 	{
 		aiNode* rootNode = scene->mRootNode;
@@ -84,7 +84,7 @@ bool ModuleImport::LoadData(const char* path)
 	App->scene->root_object->AddChildren(obj2);
 
 
-	RELEASE_ARRAY(temp);
+	//RELEASE_ARRAY(temp);
 
 	//To change-> false and show.
 	return true;
@@ -116,8 +116,6 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 		tr->SetParent(game_object);
 		
-	
-
 		Mesh* mesh_data = new Mesh();
 
 		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
@@ -172,20 +170,12 @@ void ModuleImport::LoadModel(const aiScene* scene, aiNode* node, const char* pat
 
 
 
-			//Normals
-			if (new_mesh->HasNormals())
-			{
-				mesh_data->num_normals = new_mesh->mNumVertices;
-				mesh_data->normals = new float[mesh_data->num_normals * 3];
-				memcpy(mesh_data->normals, new_mesh->mNormals, sizeof(float) * mesh_data->num_normals * 3);
-			}
-
 			//Add the mesh component
-			GenerateBufferData(mesh_data);
+			/*GenerateBufferData(mesh_data);
 
 			App->renderer3D->AddDataMesh(mesh_data);
 
-			component_mesh = App->renderer3D->CreateComponentMesh();
+			component_mesh = App->renderer3D->CreateComponentMesh();*/
 
 		}
 
@@ -226,14 +216,6 @@ void ModuleImport::GenerateBufferData(Mesh* mesh_data)
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_uv);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh_data->num_uv, mesh_data->uv, GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*)&(mesh_data->id_normals));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_normals);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh_data->num_normals, mesh_data->normals, GL_STATIC_DRAW);
-
-	/*glGenBuffers(1, (GLuint*) &(data->id_color));
-	  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->id_color);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * data->num_color, data->colors, GL_STATIC_DRAW);
-	*/
 
 }
 

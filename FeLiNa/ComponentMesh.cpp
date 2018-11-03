@@ -1,13 +1,15 @@
 #include "ComponentMesh.h"
 #include "Glew/include/glew.h"
 #include "GameObject.h"
-#include "ModuleRenderer3D.h"
-#include "ComponentTexture.h"
+#include "MeshImporter.h"
 #include "ImGui/imgui.h"
 
 ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 {
 	type = Component_Mesh;
+
+	mesh = new Mesh();
+
 }
 
 ComponentMesh::~ComponentMesh()
@@ -30,8 +32,6 @@ void ComponentMesh::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Mesh"))
 	{
-		ImGui::Text("Name: %s", mesh->name);
-		ImGui::Separator();
 		ImGui::Text("Indices: %i", mesh->num_indices);
 		ImGui::Text("Vertices: %i", mesh->num_vertices);
 		ImGui::Text("Uv's: %i", mesh->num_uv);

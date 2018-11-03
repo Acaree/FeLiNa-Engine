@@ -10,6 +10,11 @@ class Component;
 enum ComponentType;
 struct Mesh;
 
+class ComponentTransform;
+class ComponentTexture;
+class ComponentMesh;
+class ComponentCamera;
+
 class GameObject
 {
 public:
@@ -71,6 +76,13 @@ public:
 
 	GameObject* SearchParentForUID(uint parent_uid);
 
+	// I think this is best 
+	ComponentTransform* transform = nullptr;
+	ComponentTexture* material = nullptr;
+	ComponentMesh* mesh = nullptr;
+	ComponentCamera* camera = nullptr;
+
+
 private:
 	
 	char* name = "No Name";
@@ -79,6 +91,7 @@ private:
 	GameObject* parent = nullptr;
 	bool selected = false;
 	bool active = false;
+
 
 };
 

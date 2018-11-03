@@ -83,7 +83,7 @@ void ComponentCamera::SetAspectRatio(float f_ratio)
 void ComponentCamera::DebugDraw()
 {
 	glBegin(GL_LINES);
-	glLineWidth(10.0f);
+	glLineWidth(50.0f);
 	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 
 	for (uint i = 0; i < 12; i++)

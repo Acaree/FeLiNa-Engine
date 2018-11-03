@@ -19,6 +19,7 @@
 #include "ImageRecorder.h"
 #include "mmgr/mmgr.h"
 
+#include "MeshImporter.h"
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -34,15 +35,14 @@ ModuleRenderer3D::~ModuleRenderer3D()
 {
 	//RELEASE(img);
 
-	for (uint i = 0; i < meshes.size(); ++i)
+	/*for (uint i = 0; i < meshes.size(); ++i)
 	{
-		meshes[i]->name.clear();
-		meshes[i]->path.clear();
+
 		RELEASE_ARRAY(meshes[i]->vertices);
 		RELEASE_ARRAY(meshes[i]->indices);
 		RELEASE_ARRAY(meshes[i]->uv);
 		RELEASE(meshes[i]);
-	}
+	}*/
 
 	meshes.clear();
 
@@ -266,21 +266,16 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	UpdateTransforms(App->scene->root_object);
 
-	for (int i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
+	for (uint i = 0; i < meshes.size(); ++i)
 	{
-		GameObject* go = App->scene->root_object->GetChild(i);
+		if(meshes[i]->GetParent()->IsActive())
+			DrawGameObjects(meshes[i]);
 
-		ComponentMesh* mesh = (ComponentMesh*)go->GetComponent(Component_Mesh);
-		ComponentTexture* material = (ComponentTexture*)go->GetComponent(Component_Material);
-
-		
-		DrawGameObject(go, mesh, material);
-		
-
-		go->DrawBoundingBox();
-		
-	
+		meshes[i]->GetParent()->DrawBoundingBox(); // TO change with debug draw 
 	}
+
+
+
 
 	if (App->gui->need_screenshoot)
 	{
@@ -417,83 +412,68 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 }
 
 
-void ModuleRenderer3D ::DrawGameObject(GameObject* go,ComponentMesh* mesh, ComponentTexture* texture) 
+void ModuleRenderer3D ::DrawGameObjects(ComponentMesh* mesh) 
 {
+
+	ComponentTransform* trans = mesh->GetParent()->transform;
+	ComponentTexture* texture = mesh->GetParent()->material;
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	ComponentTransform* trans = (ComponentTransform*)go->GetComponent(Component_Transform);
+	
 
-	math::float4x4 matrix = math::float4x4::identity;
+	math::float4x4 matrix = trans->GetTransformMatrix();
 
-	if (trans != nullptr) {
-		matrix = trans->GetTransformMatrix();
-	}
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
-	if (mesh != nullptr && go->IsActive() == true)
-	{
-		Mesh* m_mesh = mesh->GetMesh();
+
+	Mesh* m_mesh = mesh->GetMesh();
 
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		if (texture == nullptr || texture->no_texture){
-
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
-		else if (texture->material_checker)
-		{
-			glBindTexture(GL_TEXTURE_2D, checker_id);
-		}
-		else
-		{
-			glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
-		}
-	
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_vertices);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_uv);
-		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_mesh->id_indices);
-
-		glDrawElements(GL_TRIANGLES, m_mesh->num_indices, GL_UNSIGNED_INT, NULL);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
+	if (texture == nullptr || texture->no_texture) {
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-
-		
 	}
+	else if (texture->material_checker)
+	{
+		glBindTexture(GL_TEXTURE_2D, checker_id);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
+	}
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_vertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_uv);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_mesh->id_indices);
+
+	glDrawElements(GL_TRIANGLES, m_mesh->num_indices, GL_UNSIGNED_INT, NULL);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
+
 
 	glPopMatrix();
 
-	for (int i = 0; i < go->GetNumChildren(); ++i)
-	{
-		if (go->GetChild(i)->IsActive())
-		{
-			GameObject* child = go->GetChild(i);
-			ComponentMesh* mesh = (ComponentMesh*)child->GetComponent(Component_Mesh);
-			ComponentTexture* material = (ComponentTexture*)child->GetComponent(Component_Material);
-
-
-			DrawGameObject(child, mesh, material);
-
-			child->DrawBoundingBox();
-		}
-	}
 
 }
 
-void ModuleRenderer3D::AddDataMesh(Mesh* data_mesh) 
+void ModuleRenderer3D::AddDataMesh(ComponentMesh* data_mesh) 
 {
 	meshes.push_back(data_mesh);
 }
@@ -536,32 +516,30 @@ void ModuleRenderer3D::CleanAllDataModel()
 
 	for(int i = 0; i < meshes.size(); ++i)
 	{
-	
-		meshes[i]->name.clear();
-		meshes[i]->path.clear();
+		Mesh* mesh = meshes[i]->GetMesh();
 		
-		glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_vertices));
-		glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_indices));
+		glDeleteBuffers(1, (GLuint*) &(mesh->id_vertices));
+		glDeleteBuffers(1, (GLuint*) &(mesh->id_indices));
 		//glDeleteTextures(1, (GLuint*) &(meshes[i]->texture_id));
-		glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_uv));
+		glDeleteBuffers(1, (GLuint*) &(mesh->id_uv));
 		//glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
 
-		if (meshes[i]->indices != nullptr)
+		if (mesh->indices != nullptr)
 		{
-			delete[] meshes[i]->indices;
-			meshes[i]->indices = nullptr;
+			delete[] mesh->indices;
+			mesh->indices = nullptr;
 		}
 
-		if (meshes[i]->vertices != nullptr)
+		if (mesh->vertices != nullptr)
 		{
-			delete[] meshes[i]->vertices;
-			meshes[i]->vertices = nullptr;
+			delete[] mesh->vertices;
+			mesh->vertices = nullptr;
 		}
 
-		if (meshes[i]->uv != nullptr)
+		if (mesh->uv != nullptr)
 		{
-			delete[] meshes[i]->uv;
-			meshes[i]->uv = nullptr;
+			delete[] mesh->uv;
+			mesh->uv = nullptr;
 		}
 		
 		/*if (meshes[i]->colors != nullptr)
@@ -576,11 +554,4 @@ void ModuleRenderer3D::CleanAllDataModel()
 	
 }
 
-ComponentMesh* ModuleRenderer3D::CreateComponentMesh()
-{
-	ComponentMesh*  c_mesh = new ComponentMesh(nullptr);
-	c_mesh->SetMesh(meshes[meshes.size() - 1]);
-
-	return c_mesh;
-}
 

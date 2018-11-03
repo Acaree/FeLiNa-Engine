@@ -146,16 +146,20 @@ Component* GameObject::AddComponent(ComponentType type)
 	switch (type)
 	{
 	case Component_Transform:
-		component = new ComponentTransform(this);
+		 transform = new ComponentTransform(this);
+		 component = transform;
 		break;
 	case Component_Mesh:
-		component = new ComponentMesh(this);
+		mesh = new ComponentMesh(this);
+		component = mesh;
 		break;
 	case Component_Material:
-		component = new ComponentTexture(this);
+		material = new ComponentTexture(this);
+		component = material;
 		break;
 	case Component_Camera:
-		component = new ComponentCamera(this);
+		camera = new ComponentCamera(this);
+		component = camera;
 		break;
 
 	case Component_Default:
@@ -164,9 +168,11 @@ Component* GameObject::AddComponent(ComponentType type)
 		break;
 	}
 
-	if(component != nullptr)
+	if (component != nullptr)
+	{
 		components.push_back(component);
-
+		component->SetParent(this);
+	}
 	return component;
 }
 

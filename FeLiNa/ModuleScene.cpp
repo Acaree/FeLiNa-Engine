@@ -52,8 +52,8 @@ bool ModuleScene::Start()
 	App->camera->main_camera->SetParent(root_object);
 	std::string output_file;
 
-	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
-	App->importer_mesh->LoadFLN("Assets/PhysfsSave/BakerHouse.fln");
+	App->importer_mesh->Import("Street environment_V01.fbx","Assets/", output_file);
+	App->importer_mesh->LoadFLN("Assets/PhysfsSave/Street environment_V01.fln");
 
 /*	std::string output_file;
 	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);*/
