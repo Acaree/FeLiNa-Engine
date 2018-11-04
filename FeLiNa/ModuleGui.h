@@ -21,7 +21,6 @@ public:
 	bool CleanUp();
 	void SaveState(JSON_Object* config);
 
-
 private:
 	bool About_active = false;
 	
@@ -33,17 +32,10 @@ private:
 	void ShowAssetsWindow();
 	void RecurssiveShowAssets(const char* dir);
 
-	ImGuizmo::OPERATION mCurrentGizmoOperation=ImGuizmo::TRANSLATE;
-
 	void SaveScene();
 	void LoadScene();
 
 public:
-
-	
-
-	//ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-	//ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
 
 	bool close_program = false;
 	bool open_configuration = false;
