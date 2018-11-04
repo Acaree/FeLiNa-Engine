@@ -50,7 +50,7 @@ public:
 	bool need_update_quadtree = false;
 	uint quadtree_size = 0;
 
-	SceneSerialization serialization_scene;
+	SceneSerialization* serialization_scene = nullptr;
 
 };
 
