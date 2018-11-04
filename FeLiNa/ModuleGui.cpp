@@ -416,13 +416,13 @@ void ModuleGui::ShowEditorMenu()
 	static int height;
 	SDL_GetWindowSize(App->window->window, &width, &height);
 
-	ImGui::SetNextWindowPos(ImVec2(width / 3, 17));
-	ImGui::SetNextWindowSize(ImVec2(width / 4, 600 - height));
+	ImGui::SetNextWindowPos(ImVec2(width / 2 - width/4, 17));
+	ImGui::SetNextWindowSize(ImVec2(width/2 , 600 - height));
 
 
 	ImGuiWindowFlags flags = 0;
 
-	ImGui::SetNextWindowSize({ 400,50 });
+	//ImGui::SetNextWindowSize({ 400,50 });
 
 	flags |= ImGuiWindowFlags_NoResize;
 	flags |= ImGuiWindowFlags_NoCollapse;
@@ -432,7 +432,7 @@ void ModuleGui::ShowEditorMenu()
 	ImGui::Begin("##engine_editor",false, flags);
 
 	bool a = false;
-	float b = 0.5F;
+	
 	if (ImGui::Button("Play", { 50,30 })) {
 		App->time_management->PlayGameTime();
 		App->game_states = GAME_STATES::ENGINE_STATE_PLAY;
@@ -467,8 +467,9 @@ void ModuleGui::ShowEditorMenu()
 	{
 
 	}
-	/*ImGui::SameLine();
-	ImGui::SliderFloat("Time scale", &b, 0.0f, 2.0f, "%.0f");*/
+	
+	ImGui::SameLine();
+	ImGui::SliderFloat("Time scale", &App->time_management->time_multiplier, 0.0f, 2.0f, "%0.1f");
 
 
 	ImGui::End();

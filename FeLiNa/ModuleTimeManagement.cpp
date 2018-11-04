@@ -25,12 +25,12 @@ bool ModuleTimeManagement::CleanUp()
 
 float ModuleTimeManagement::ReadGameClock() 
 {
-	return game_time;
+	return game_time/1000;
 }
 
 float ModuleTimeManagement::ReadRealTimeClock() 
 {
-	return real_time;
+	return real_time/1000;
 }
 
 void ModuleTimeManagement::PauseGameClock() 
@@ -42,10 +42,10 @@ void ModuleTimeManagement::PauseGameClock()
 void ModuleTimeManagement::FinishUpdate() {
 
 	Frame_count++;
-	real_time += App->ms_timer.ReadMs()/1000;
+	real_time += App->ms_timer.ReadMs();
 
 	if (game_clock_active) {
-		game_time += App->ms_timer.ReadMs()/1000;
+		game_time += App->ms_timer.ReadMs() * time_multiplier;
 		if (tick_selected) {
 			game_clock_active = false;
 			tick_selected = false;

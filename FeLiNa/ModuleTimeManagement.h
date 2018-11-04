@@ -32,6 +32,8 @@ public:
 
 	bool tick_selected = false;
 
+	float time_multiplier = 1.0f;
+
 private:
 
 	double real_time = 0;
