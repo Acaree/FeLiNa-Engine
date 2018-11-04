@@ -78,10 +78,13 @@ update_status ModuleCamera3D::PreUpdate(float dt)
 
 	//To other module
 	//TO REVISE
-	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
-	{
-		CheckObjectActive(App->scene->root_object->GetChild(i));
-	}
+
+	
+		for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
+		{
+			CheckObjectActive(App->scene->root_object->GetChild(i));
+		}
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -186,20 +189,28 @@ void ModuleCamera3D::LookAt( const math::float3 &position)
 //TO OTHER
 void ModuleCamera3D::CheckObjectActive(GameObject* go)
 {
-	if (!go->static_object)
+	if (main_camera->camera->culling)
 	{
-		Culling cull = main_camera->camera->ContainsAaBox(go->GetAABB());
-
-		if (cull == Culling::CULL_OUT)
-			go->SetActive(false);
-		else
-			go->SetActive(true);
-
-		for (uint i = 0; i < go->GetNumChildren(); ++i)
+		if (!go->static_object)
 		{
-			CheckObjectActive(go->GetChild(i));
+			Culling cull = main_camera->camera->ContainsAaBox(go->GetAABB());
+
+			if (cull == Culling::CULL_OUT)
+				go->SetActive(false);
+			else
+				go->SetActive(true);
 		}
 	}
+	else
+	{
+		go->SetActive(true);
+	}
+
+	for (uint i = 0; i < go->GetNumChildren(); ++i)
+	{
+		CheckObjectActive(go->GetChild(i));
+	}
+
 }
 
 void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, math::LineSegment ray)

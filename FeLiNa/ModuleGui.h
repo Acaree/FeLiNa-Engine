@@ -30,6 +30,9 @@ private:
 	void ShowAboutWindow();
 	void ShowEditorMenu();
 
+	void ShowAssetsWindow();
+	void RecurssiveShowAssets(const char* dir);
+
 	ImGuizmo::OPERATION mCurrentGizmoOperation=ImGuizmo::TRANSLATE;
 
 	void SaveScene();

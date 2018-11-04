@@ -12,6 +12,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "ModuleTimeManagement.h"
 #include "ComponentCamera.h"
+#include "ModuleFileSystem.h"
 #include "ModuleCamera3D.h"
 #include "mmgr/mmgr.h"
 
@@ -86,6 +87,8 @@ update_status ModuleGui::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		App->renderer3D->wire = !App->renderer3D->wire;
 
+	//test
+	ShowAssetsWindow();
 
 	ShowMainMenuBar();
 	ShowEditorMenu();
@@ -489,5 +492,69 @@ void ModuleGui::CreateGuizmos(ComponentTransform* transform)
 
 	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix() , App->camera->camera_editor->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, transform->GetGlobalMatrix().Transposed().ptr());
 	
+}
+
+void ModuleGui::ShowAssetsWindow()
+{
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2( 0 ,height - height/6 ));
+	ImGui::SetNextWindowSize(ImVec2( width,height/6  ));
+	ImGuiWindowFlags flags = 0;
+
+	flags |= ImGuiWindowFlags_NoResize;
+	flags |= ImGuiWindowFlags_NoCollapse;
+	flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+
+	if (ImGui::Begin("Assets", false, flags))
+	{
+		if (ImGui::TreeNodeEx("Assets"))
+		{
+			RecurssiveShowAssets("Assets");
+			ImGui::TreePop();
+
+		}
+	}
+
+	ImGui::End();
+
+
+}
+
+void ModuleGui::RecurssiveShowAssets(const char* dir)
+{
+	ImGuiTreeNodeFlags flags = 0;
+	
+	flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+
+	const char** directory_array = App->fs->GetAllFilesFromDir(dir);
+
+	for (const char** file = directory_array; *file != nullptr; ++file)
+	{
+		if (App->fs->isDirectory(*file))
+		{
+			flags = 0;
+			flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+
+			if (ImGui::TreeNodeEx(*file, flags))
+			{
+				RecurssiveShowAssets(*file);
+
+				ImGui::TreePop();
+			}
+
+		}
+		else
+		{
+			flags = 0;
+			flags |= ImGuiTreeNodeFlags_Leaf;
+
+			ImGui::TreeNodeEx(*file, flags);
+			ImGui::TreePop();
+
+		}
+	}
 
 }

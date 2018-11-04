@@ -24,6 +24,13 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	}
 
+	if (PHYSFS_mount("./Assets/PhysfsSave/", "PhysfsSave", 1) == 0) { 
+
+		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
+	}
+
+
 	if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
 
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
@@ -163,3 +170,12 @@ uint ModuleFileSystem::SaveBufferData(char* buffer, const char* file_path, uint 
 	return count;
 }
 
+const char** ModuleFileSystem::GetAllFilesFromDir(const char* dir) const
+{
+	return (const char**)PHYSFS_enumerateFiles(dir);
+}
+
+bool ModuleFileSystem::isDirectory(const char* file) const
+{
+	return PHYSFS_isDirectory(file);
+}

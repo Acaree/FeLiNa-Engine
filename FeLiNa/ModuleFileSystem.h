@@ -18,6 +18,10 @@ public:
 	uint SaveTexture(char* buffer, uint size, std::string& outputFileName);
 
 	uint SaveBufferData(char* buffer,const char* filePath, uint size);
+
+	const char** GetAllFilesFromDir(const char* dir) const;
+	
+	bool isDirectory(const char* file) const;
 private:
 
 };
