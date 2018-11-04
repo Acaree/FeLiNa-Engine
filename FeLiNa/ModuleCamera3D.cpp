@@ -15,23 +15,12 @@
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Camera";
+
+	
 }
 
 ModuleCamera3D::~ModuleCamera3D()
 {
-	//At this point the components are deleted.
-
-	/*RELEASE(camera_editor);
-	RELEASE(dummy_frustum);
-	RELEASE(main_camera);
-	RELEASE(transform_camera);
-
-	for (uint i = 0; i < posible_go_intersections.size(); ++i)
-	{
-		posible_go_intersections[i]->CleanUp();
-		RELEASE(posible_go_intersections[i]);
-	}
-	posible_go_intersections.clear();*/
 
 }
 
@@ -41,22 +30,9 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
-	main_camera = new GameObject(nullptr);
-	main_camera->SetName("Main Camera");
+	camera = new ComponentCamera(nullptr);
 
-	ComponentTransform* transform =(ComponentTransform*) main_camera->AddComponent(Component_Transform);
-	//transform_camera = new ComponentTransform(main_camera);
-	game_camera = new ComponentCamera(main_camera);
-
-	/*main_camera->SetComponent(transform_camera);
-	main_camera->SetComponent(game_camera);*/
-	
-	ComponentCamera* camera = (ComponentCamera*)main_camera->AddComponent(Component_Camera);
-	camera = game_camera;
-
-	//Create and Set Edito camera a initial pos
-	camera_editor = new ComponentCamera(nullptr);
-	camera_editor->frustum.Translate(math::float3(5,10,5));
+	camera->frustum.Translate(math::float3(5,10,5));
 	LookAt(math::float3::zero);
 
 	return ret;
@@ -68,7 +44,7 @@ bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
 
-	RELEASE(camera_editor);
+	RELEASE(camera);
 
 	return true;
 }
@@ -78,12 +54,6 @@ update_status ModuleCamera3D::PreUpdate(float dt)
 
 	//To other module
 	//TO REVISE
-
-	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
-	{
-		CheckObjectActive(App->scene->root_object->GetChild(i));
-	}
-
 
 
 	return UPDATE_CONTINUE;
@@ -126,7 +96,7 @@ update_status ModuleCamera3D::Update(float dt)
 			float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / width);
 			float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / height;
 
-			math::LineSegment picking = camera_editor->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+			math::LineSegment picking = camera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 			PickObjectSelected(posible_go_intersections, picking);
 		}
 	}
@@ -137,15 +107,15 @@ update_status ModuleCamera3D::Update(float dt)
 
 		//Keyboard Movement with Frustum--------------------------------------
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			new_position += camera_editor->frustum.front * speed;
+			new_position += camera->frustum.front * speed;
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			new_position -= camera_editor->frustum.front * speed;
+			new_position -= camera->frustum.front * speed;
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			new_position -= camera_editor->frustum.WorldRight() * speed;
+			new_position -= camera->frustum.WorldRight() * speed;
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			new_position += camera_editor->frustum.WorldRight() * speed;
+			new_position += camera->frustum.WorldRight() * speed;
 
-		camera_editor->frustum.Translate(new_position);
+		camera->frustum.Translate(new_position);
 		
 
 		//Mouse movement with Frustum---------------------------------------
@@ -155,16 +125,16 @@ update_status ModuleCamera3D::Update(float dt)
 		if (dx != 0.0f)
 		{
 			math::Quat quat = math::Quat::RotateY(dx*dt*0.3); 
-			camera_editor->frustum.front = quat.Mul(camera_editor->frustum.front).Normalized();
-			camera_editor->frustum.up = quat.Mul(camera_editor->frustum.up).Normalized();
+			camera->frustum.front = quat.Mul(camera->frustum.front).Normalized();
+			camera->frustum.up = quat.Mul(camera->frustum.up).Normalized();
 		}
 
 		if (dy != 0.0f)
 		{
-			math::Quat quat = math::Quat::RotateAxisAngle(camera_editor->frustum.WorldRight(), dy * dt *0.3);
-			math::float3 up = quat.Mul(camera_editor->frustum.up).Normalized();
-			camera_editor->frustum.up = up;
-			camera_editor->frustum.front = quat.Mul(camera_editor->frustum.front).Normalized();
+			math::Quat quat = math::Quat::RotateAxisAngle(camera->frustum.WorldRight(), dy * dt *0.3);
+			math::float3 up = quat.Mul(camera->frustum.up).Normalized();
+			camera->frustum.up = up;
+			camera->frustum.front = quat.Mul(camera->frustum.front).Normalized();
 		}
 
 	}
@@ -179,38 +149,15 @@ update_status ModuleCamera3D::Update(float dt)
 // -----------------------------------------------------------------
 void ModuleCamera3D::LookAt( const math::float3 &position)
 {
-	math::float3 direction = position - camera_editor->frustum.pos;
-	math::float3x3 matrix = math::float3x3::LookAt(camera_editor->frustum.front, direction.Normalized(), camera_editor->frustum.up, math::float3(0, 1, 0));
+	math::float3 direction = position - camera->frustum.pos;
+	math::float3x3 matrix = math::float3x3::LookAt(camera->frustum.front, direction.Normalized(), camera->frustum.up, math::float3(0, 1, 0));
 
-	camera_editor->frustum.front = matrix.MulDir(camera_editor->frustum.front).Normalized();
-	camera_editor->frustum.up = matrix.MulDir(camera_editor->frustum.up).Normalized();
+	camera->frustum.front = matrix.MulDir(camera->frustum.front).Normalized();
+	camera->frustum.up = matrix.MulDir(camera->frustum.up).Normalized();
 }
 
-//TO OTHER
-void ModuleCamera3D::CheckObjectActive(GameObject* go)
-{
-	if (main_camera->camera->culling)
-	{
-		if (!go->static_object)
-		{
-		 
-			if (!main_camera->camera->ContainsAaBox(go->GetAABB()))
-				go->SetActive(false);
-			else
-				go->SetActive(true);
-		}
-	}
-	else
-	{
-		go->SetActive(true);
-	}
 
-	for (uint i = 0; i < go->GetNumChildren(); ++i)
-	{
-		CheckObjectActive(go->GetChild(i));
-	}
 
-}
 
 void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, math::LineSegment ray)
 {
@@ -293,7 +240,7 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 void ModuleCamera3D::PosibleObjectsPicked(std::vector<GameObject*> &posible_candidate, GameObject* candidates)
 {
 
-	if (!main_camera->camera->ContainsAaBox(candidates->GetAABB()))
+	if (!camera->ContainsAaBox(candidates->GetAABB()))
 	{
 		posible_candidate.push_back(candidates);
 	}

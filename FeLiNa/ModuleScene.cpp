@@ -47,10 +47,15 @@ bool ModuleScene::Start()
 	root_object = new GameObject(nullptr);
 	root_object->AddComponent(Component_Transform);
 
-	
+	camera_go = new GameObject(root_object);
+	camera_go->AddComponent(Component_Transform);
+	camera_go->AddComponent(Component_Camera);
+	App->renderer3D->game_camera->SetParent(camera_go);
+	//camera_go->camera = App->renderer3D->game_camera;
+	camera_go->SetName("Main Camera");
 
-	root_object->AddChildren(App->camera->main_camera);
-	App->camera->main_camera->SetParent(root_object);
+	//root_object->AddChildren(App->camera->main_camera);
+	//App->camera->main_camera->SetParent(root_object);
 	std::string output_file;
 
 	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
@@ -263,7 +268,7 @@ void ModuleScene::FillStaticGameObjects()
 		static_go[i]->SetActive(false);
 
 	//Get all go that collision with frustum
-	quadtree->CollectIntersections(tmp_go, App->camera->main_camera->camera->frustum);
+	quadtree->CollectIntersections(tmp_go, App->renderer3D->main_camera->frustum);
 
 	for (uint i = 0; i < tmp_go.size(); ++i)
 	{
