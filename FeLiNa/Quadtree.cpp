@@ -29,7 +29,7 @@ QuadTreeNode::~QuadTreeNode()
 
 void QuadTreeNode::Insert(GameObject * go)
 {
-	if (objects.size() < QUADTREE_MAX_ITEMS)
+	if ( isLeaf() == true && objects.size() < QUADTREE_MAX_ITEMS)
 	{
 		objects.push_back(go);
 	}
