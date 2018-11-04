@@ -173,7 +173,6 @@
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleConsole.h" />
     <ClInclude Include="ModuleFileSystem.h" />
-    <ClInclude Include="ModuleImport.h" />
     <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModuleHardware.h" />
     <ClInclude Include="ImageRecorder.h" />
@@ -251,7 +250,6 @@
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleConsole.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
-    <ClCompile Include="ModuleImport.cpp" />
     <ClCompile Include="ModuleGui.cpp" />
     <ClCompile Include="ModuleHardware.cpp" />
     <ClCompile Include="ImageRecorder.cpp" />

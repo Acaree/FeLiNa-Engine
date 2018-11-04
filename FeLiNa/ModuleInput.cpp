@@ -3,7 +3,6 @@
 #include "ModuleTexture.h"
 #include "ModuleCamera3D.h"
 #include "ModuleGui.h"
-#include "ModuleImport.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ImGui/imgui.h"
@@ -148,7 +147,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					App->renderer3D->CleanAllDataModel();
 					App->renderer3D->DeleteAllDataMesh();
-					App->mesh_import->LoadData(dropped_filedir);
+					//App->mesh_import->LoadData(dropped_filedir);
 					
 				}
 

@@ -133,9 +133,6 @@
     <ClCompile Include="Parson\parson.c">
       <Filter>Tools\Parson</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleImport.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -451,9 +448,6 @@
     </ClInclude>
     <ClInclude Include="Gif\gif.h">
       <Filter>Tools\Gif</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleImport.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>

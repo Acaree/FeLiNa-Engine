@@ -17,7 +17,6 @@ class ModuleRenderer3D;
 class ModuleCamera3D;
 class ModuleGui;
 class ModuleConsole;
-class ModuleImport;
 class ModuleFileSystem;
 class ModuleTexture;
 class ModuleTimeManagement;
@@ -49,7 +48,6 @@ public:
 	ModuleGui* gui;
 	ModuleHardware* hardware;
 	ModuleConsole* console;
-	ModuleImport * mesh_import;
 	ModuleFileSystem* fs;
 	ModuleTexture* texture;
 	ModuleTimeManagement* time_management;

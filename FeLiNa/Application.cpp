@@ -7,7 +7,6 @@
 #include "ModuleCamera3D.h"
 #include "ModuleGui.h"
 #include "ModuleConsole.h"
-#include "ModuleImport.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTexture.h"
 #include "ModuleTimeManagement.h"
@@ -30,7 +29,6 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	gui = new ModuleGui(this);
 	console = new ModuleConsole(this);
-	mesh_import = new ModuleImport(this);
 	fs = new ModuleFileSystem(this);
 	texture = new ModuleTexture(this);
 	time_management = new ModuleTimeManagement(this);
@@ -47,7 +45,6 @@ Application::Application()
 	AddModule(input);
 	AddModule(hardware);
 	AddModule(console);
-	AddModule(mesh_import);
 	AddModule(fs);
 	// Scenes
 	AddModule(scene);
