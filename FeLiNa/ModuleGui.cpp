@@ -383,13 +383,15 @@ void ModuleGui::LoadScene()
 
 		ImGui::InputText("###scene_name", name_load_scene, 50, flag);//default buffer size?¿
 
+		ImGui::Text("If you click LOAD the current scene will be deleted ");
 		if (ImGui::Button("Load", ImVec2(100, 0)))
 		{
-			ImGui::CloseCurrentPopup();
 
 			App->scene->serialization_scene.ClearActualScene();
 			App->scene->serialization_scene.LoadScene(name_load_scene);
-			//clear and load with path
+			ImGui::CloseCurrentPopup();
+
+			// TO REVISE: clear and load with path
 			
 			
 			serialization_load_scene = false;

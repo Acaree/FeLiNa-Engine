@@ -565,7 +565,7 @@ void ModuleRenderer3D::CleanAllDataModel()
 
 		delete meshes[i];
 	}
-
+	meshes.clear();
 	
 }
 
