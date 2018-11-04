@@ -5,15 +5,12 @@
 #include "ModuleInput.h"
 #include "ModuleHardware.h"
 #include "ModuleScene.h"
-#include "ModuleWindow.h"
-#include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "ModuleTimeManagement.h"
-#include "ComponentCamera.h"
 #include "ModuleFileSystem.h"
-#include "ModuleCamera3D.h"
+
 #include "mmgr/mmgr.h"
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
