@@ -68,9 +68,12 @@ public:
 	ENGINE_STATES engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 	GAME_STATES game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
 
+
+	PerfTimer	ms_timer;
+
 private:
 	char* name;
-	PerfTimer	ms_timer;
+	
 	float	dt = 0.0f;
 	double last_FPS = 0.0f;
 	double last_ms = 0.0f;

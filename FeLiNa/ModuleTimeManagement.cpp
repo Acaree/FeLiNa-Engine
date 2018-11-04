@@ -13,7 +13,7 @@ ModuleTimeManagement::~ModuleTimeManagement()
 
 bool ModuleTimeManagement::Start()
 {
-	real_time_clock.Start();
+	
 	
 	return true;
 }
@@ -25,40 +25,45 @@ bool ModuleTimeManagement::CleanUp()
 
 float ModuleTimeManagement::ReadGameClock() 
 {
-	return game_clock.ReadSec();
+	return game_time;
 }
 
 float ModuleTimeManagement::ReadRealTimeClock() 
 {
-	return real_time_clock.Read();
+	return real_time;
 }
 
 void ModuleTimeManagement::PauseGameClock() 
 {
-	game_clock.Pause();
+	game_clock_active = false;
 
 }
 
 void ModuleTimeManagement::FinishUpdate() {
 
 	Frame_count++;
-	Real_Time_Delta_time = real_time_clock.ReadSec() - Real_time_start_frame;
-	Real_time_start_frame = real_time_clock.ReadSec();
-	if (tick_selected) {
-		game_clock.Pause();
-		tick_selected = false;
+	real_time += App->ms_timer.ReadMs()/1000;
+
+	if (game_clock_active) {
+		game_time += App->ms_timer.ReadMs()/1000;
+		if (tick_selected) {
+			game_clock_active = false;
+			tick_selected = false;
+		}
 	}
+	
 }
 
 void ModuleTimeManagement::StartGameTime() {
 
-	game_clock.Start();
+	game_clock_active = true;
+	game_time = 0;
 
 }
 
 void ModuleTimeManagement::PlayGameTime() {
 
-	game_clock.Play();
+	game_clock_active = true;
 
 }
 

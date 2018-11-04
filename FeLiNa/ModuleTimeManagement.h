@@ -34,14 +34,11 @@ public:
 
 private:
 
+	double real_time = 0;
+	double game_time = 0;
+	bool game_clock_active = false;
 
-
-	Timer game_clock;
-	Timer real_time_clock;
-	float Time_scale = 1.0f;
 	uint Frame_count = 0;
-
-	float Real_time_start_frame = 0.0f;
 };
 
 
