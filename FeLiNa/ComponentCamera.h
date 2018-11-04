@@ -6,13 +6,6 @@
 #include "MathGeoLib/Geometry/Frustum.h"
 #include "MathGeoLib/Geometry/AABB.h"
 
-enum Culling
-{
-	CULL_IN = 0,
-	CULL_OUT,
-	CULL_INTERSECT
-};
-
 class ComponentCamera : public Component
 {
 public:
@@ -38,7 +31,7 @@ public:
 	void DebugDraw();
 	void DrawInspector();
 
-	Culling ContainsAaBox(const math::AABB refBox) const;
+	bool ContainsAaBox(const math::AABB refBox) const;
 
 	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);

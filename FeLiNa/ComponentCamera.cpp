@@ -97,9 +97,11 @@ void ComponentCamera::DebugDraw()
 
 }
 
-Culling ComponentCamera::ContainsAaBox(const math::AABB refBox) const
+bool ComponentCamera::ContainsAaBox(const math::AABB refBox) const
 {
 	
+	bool ret = true;
+
 	math::float3 corners[8];
 	int total_in = 0;
 	refBox.GetCornerPoints(corners);
@@ -120,17 +122,13 @@ Culling ComponentCamera::ContainsAaBox(const math::AABB refBox) const
 
 		if (In_count == 0)
 		{
-			return CULL_OUT;
+			return false;
 		}
 
 		total_in += point_In;
 	}
 
-	if (total_in == 6)
-		return CULL_IN;
-	
-
-	return CULL_INTERSECT;
+	return ret;
 }
 
 float* ComponentCamera::GetViewMatrix() const

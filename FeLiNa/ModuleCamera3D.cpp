@@ -79,12 +79,12 @@ update_status ModuleCamera3D::PreUpdate(float dt)
 	//To other module
 	//TO REVISE
 
-	
-		for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
-		{
-			CheckObjectActive(App->scene->root_object->GetChild(i));
-		}
-	
+	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
+	{
+		CheckObjectActive(App->scene->root_object->GetChild(i));
+	}
+
+
 
 	return UPDATE_CONTINUE;
 }
@@ -110,7 +110,7 @@ update_status ModuleCamera3D::Update(float dt)
 		// TODO-> Focus*/
 
 
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		if (!ImGui::IsMouseHoveringAnyWindow())
 		{
@@ -193,9 +193,8 @@ void ModuleCamera3D::CheckObjectActive(GameObject* go)
 	{
 		if (!go->static_object)
 		{
-			Culling cull = main_camera->camera->ContainsAaBox(go->GetAABB());
-
-			if (cull == Culling::CULL_OUT)
+		 
+			if (!main_camera->camera->ContainsAaBox(go->GetAABB()))
 				go->SetActive(false);
 			else
 				go->SetActive(true);
@@ -218,6 +217,13 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 	candidates.clear(); //Else all time add elements
 
 	App->scene->quadtree->CollectIntersections(candidates, ray); // not order
+
+	//TO REVISE THAT NOT CLEAN
+	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
+	{
+		PosibleObjectsPicked( candidates , App->scene->root_object->GetChild(i));
+	}
+
 
 	float min_distance = FLOAT_INF;
 	float hit_distance = 0.0F;
@@ -281,5 +287,22 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 		selected_object->SetSelected(true);
 		App->scene->SetSelectedGameObject(selected_object);
 	}
+
+}
+
+void ModuleCamera3D::PosibleObjectsPicked(std::vector<GameObject*> &posible_candidate, GameObject* candidates)
+{
+
+	if (!main_camera->camera->ContainsAaBox(candidates->GetAABB()))
+	{
+		posible_candidate.push_back(candidates);
+	}
+
+
+	for (uint i = 0; i < candidates->GetNumChildren(); ++i)
+	{
+		PosibleObjectsPicked(posible_candidate, candidates->GetChild(i));
+	}
+
 
 }

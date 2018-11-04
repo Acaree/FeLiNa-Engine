@@ -2,7 +2,12 @@
 #include "Globals.h"
 #include "ImGui/imgui.h"
 #include "GameObject.h"
-
+#include "ImGuizmo/ImGuizmo.h"
+#include "Application.h"
+#include "ModuleInput.h"
+#include "ModuleCamera3D.h"
+#include "GameObject.h"
+#include "ComponentCamera.h"
 ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position, math::float3 rotation, math::float3 scale): Component(parent)
 {
 	type = Component_Transform;
@@ -163,6 +168,9 @@ void ComponentTransform::OnLoad(JSON_Object* obj)
 
 void ComponentTransform::DrawInspector()
 {
+
+	ShowGuizmos();
+
 	if (ImGui::TreeNodeEx("Transform"))
 	{
 		ImGui::Text("Position:");
@@ -199,9 +207,62 @@ void ComponentTransform::DrawInspector()
 		ImGui::TreePop();
 	}
 	
-
+	
 }
 
 math::float4x4 ComponentTransform::GetGlobalMatrix() {
+
 	return global_matrix;
+}
+
+
+void ComponentTransform::ShowGuizmos()
+{
+	ImGuizmo::Enable(true);
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+
+	static ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
+	}
+	math::float4x4 matrix = global_matrix.Transposed();
+
+	//DeltaMatrix?¿
+	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix(), App->camera->camera_editor->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, matrix.ptr());
+
+	matrix.Transpose();
+
+	if (ImGuizmo::IsUsing() && parent->static_object == false)
+	{
+		if (parent->GetParent() == nullptr)
+		{
+			local_matrix = matrix;
+		}
+		else
+		{
+
+			local_matrix = parent->GetParent()->transform->GetGlobalMatrix().Inverted() * matrix;//Inverse not traspose :/
+		}
+
+		local_matrix.Decompose(position, quat_rotation, scale);
+		euler_angles = quat_rotation.ToEulerXYZ() * RADTODEG;
+
+		//UpdateMatrix();
+
+	}
+
 }

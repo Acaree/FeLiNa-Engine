@@ -25,6 +25,7 @@ public:
 	void CheckObjectActive(GameObject* go);
 	
 	void PickObjectSelected(std::vector<GameObject*> &candidates ,math::LineSegment ray);
+	void PosibleObjectsPicked(std::vector<GameObject*> &posible_candidates , GameObject* candidate);
 
 public:
 	ComponentCamera* camera_editor = nullptr;

@@ -20,7 +20,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 	void SaveState(JSON_Object* config);
-	void CreateGuizmos(ComponentTransform* transform);
+
 
 private:
 	bool About_active = false;

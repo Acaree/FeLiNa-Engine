@@ -118,9 +118,7 @@ update_status ModuleGui::Update(float dt)
 	}
 	
 	GameObject* go = App->scene->GetSelectedGameObject();
-	if (go != nullptr) {
-		CreateGuizmos(go->transform);
-	}
+
 
 	return update_return;
 }
@@ -468,31 +466,6 @@ void ModuleGui::ShowEditorMenu()
 
 	ImGui::End();
 
-	
-}
-
-void ModuleGui::CreateGuizmos(ComponentTransform* transform)
-{
-
-	ImGuiIO& io = ImGui::GetIO();
-	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-
-		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
-		mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-
-		mCurrentGizmoOperation = ImGuizmo::SCALE;
-	}
-
-	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix() , App->camera->camera_editor->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, transform->GetGlobalMatrix().Transposed().ptr());
 	
 }
 

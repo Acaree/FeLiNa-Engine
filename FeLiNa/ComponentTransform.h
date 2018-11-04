@@ -36,6 +36,7 @@ public:
 	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);
 
+	void ShowGuizmos();
 private:
 
 

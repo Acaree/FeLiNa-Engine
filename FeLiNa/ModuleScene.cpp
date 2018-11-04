@@ -45,15 +45,15 @@ bool ModuleScene::Start()
 
 	
 	root_object = new GameObject(nullptr);
-	ComponentTransform* trans = new ComponentTransform(root_object);
+	root_object->AddComponent(Component_Transform);
 
-	root_object->SetComponent(trans);
+	
 
 	root_object->AddChildren(App->camera->main_camera);
 	App->camera->main_camera->SetParent(root_object);
 	std::string output_file;
 
-	//App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
+	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
 	App->importer_mesh->LoadFLN("Assets/PhysfsSave/Baker_house.felina");
 
 	//std::string output_file;
