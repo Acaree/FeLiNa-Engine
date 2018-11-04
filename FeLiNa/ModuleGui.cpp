@@ -434,10 +434,12 @@ void ModuleGui::ShowEditorMenu()
 	float b = 0.5F;
 	if (ImGui::Button("Play", { 50,30 })) {
 		App->time_management->PlayGameTime();
+		App->game_states = GAME_STATES::ENGINE_STATE_PLAY;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Pause", { 50,30 })) {
 		App->time_management->PauseGameClock();
+		App->game_states = GAME_STATES::ENGINE_STATE_PAUSE;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Stop", { 50,30 })) {
@@ -448,6 +450,7 @@ void ModuleGui::ShowEditorMenu()
 	if (ImGui::Button("Tick", { 50,30 })) {
 		App->time_management->tick_selected = true;
 		App->time_management->PlayGameTime();
+		App->game_states = GAME_STATES::ENGINE_STATE_TICK;
 	}
 	ImGui::SameLine();
 	

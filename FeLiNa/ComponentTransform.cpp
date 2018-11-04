@@ -242,7 +242,7 @@ void ComponentTransform::ShowGuizmos()
 	math::float4x4 matrix = global_matrix.Transposed();
 
 	//DeltaMatrix?¿
-	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix(), App->camera->camera_editor->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, matrix.ptr());
+	ImGuizmo::Manipulate(App->camera->current_camera->GetViewMatrix(), App->camera->current_camera->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, matrix.ptr());
 
 	matrix.Transpose();
 

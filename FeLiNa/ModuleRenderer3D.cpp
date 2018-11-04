@@ -247,9 +247,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glLoadMatrixf(App->camera->camera_editor->GetViewMatrix());
+	glLoadMatrixf(App->camera->current_camera->GetViewMatrix());
 	
-	lights[0].SetPos(App->camera->camera_editor->frustum.pos.x, App->camera->camera_editor->frustum.pos.y, App->camera->camera_editor->frustum.pos.z);
+	lights[0].SetPos(App->camera->current_camera->frustum.pos.x, App->camera->current_camera->frustum.pos.y, App->camera->current_camera->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();

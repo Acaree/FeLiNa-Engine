@@ -24,7 +24,7 @@ class ModuleTimeManagement;
 
 enum ENGINE_STATES
 {
-	ENGINE_STATE_EDITOR_MODE,
+	ENGINE_STATE_EDITOR_MODE = 0,
 	ENGINE_STATE_GAME_MODE
 };
 
@@ -32,7 +32,8 @@ enum GAME_STATES
 {
 	ENGINE_STATE_PLAY = 0,
 	ENGINE_STATE_PAUSE,
-	ENGINE_STATE_TICK, //Advance.
+	ENGINE_STATE_TICK,
+	ENGINE_STATE_DEFAULT//Advance.
 };
 
 
@@ -63,6 +64,9 @@ public:
 
 	bool vsync = false;
 	math::LCG* random = nullptr;
+
+	ENGINE_STATES engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
+	GAME_STATES game_states = GAME_STATES::ENGINE_STATE_PAUSE;
 
 private:
 	char* name;

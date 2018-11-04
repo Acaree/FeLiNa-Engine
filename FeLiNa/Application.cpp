@@ -144,6 +144,55 @@ bool Application::Awake()
 void Application::PrepareUpdate()
 {
 	ms_timer.Start();
+
+
+	switch (engine_states)
+	{
+	case ENGINE_STATE_EDITOR_MODE:
+
+		switch (game_states)
+		{
+		case ENGINE_STATE_PLAY:
+
+			engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
+			camera->current_camera = camera->game_camera;
+			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
+			break;
+		case ENGINE_STATE_PAUSE:
+			break;
+		case ENGINE_STATE_TICK:
+			break;
+		default:
+			break;
+		}
+
+		break;
+
+	case ENGINE_STATE_GAME_MODE:
+
+
+		switch (game_states)
+		{
+		case ENGINE_STATE_PLAY:
+
+			engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
+			camera->current_camera = camera->camera_editor;
+			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
+			break;
+		case ENGINE_STATE_PAUSE:
+
+
+			break;
+		case ENGINE_STATE_TICK:
+			break;
+		default:
+			break;
+		}
+
+		break;
+	default:
+		break;
+	}
 }
 
 // ---------------------------------------------
