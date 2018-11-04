@@ -6,7 +6,7 @@
 
 SceneSerialization::SceneSerialization()
 {
-	
+	save_name_scene= new char[DEFAULT_BUF_SIZE];
 }
 
 SceneSerialization::~SceneSerialization()
@@ -47,20 +47,28 @@ void SceneSerialization::SaveScene()
 
 	char *serialized_string = json_serialize_to_string_pretty(file_root);
 	puts(serialized_string);
+	
+	//TO REVISION: CAN CRash if use strcpy with same_name_scene
+	char name[DEFAULT_BUF_SIZE];
 
-	strcat(save_name_scene, ".json");
+	strcpy_s(name, DEFAULT_BUF_SIZE, save_name_scene );
+	strcat(name, ".json");
+	
 
-	json_serialize_to_file(file_root, save_name_scene);
+	json_serialize_to_file(file_root, name);
 	json_free_serialized_string(serialized_string);
 	json_value_free(file_root);
 
+	save_name_scene = "";
 }
 
 void SceneSerialization::LoadScene(char* file_name)
 {
 	//TO REVISE and change
-	char* file = file_name;
-	strcat(file,".json");
+
+	char file[DEFAULT_BUF_SIZE];
+	strcpy_s(file, DEFAULT_BUF_SIZE, file_name);
+	strcat(file, ".json");
 
 	JSON_Value* file_root = json_parse_file(file);
 
@@ -112,7 +120,7 @@ void SceneSerialization::LoadScene(char* file_name)
 
 	}
 	//json_value_free(file_root);
-
+	save_name_scene = "";
 }
 
 void SceneSerialization::RecursiveSearchChildrens(GameObject* parent)

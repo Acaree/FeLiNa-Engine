@@ -13,7 +13,7 @@ public:
 
 	void SaveScene();
 
-	void LoadScene(char* file_name);
+	void LoadScene(char* file_name = "Autosave");
 
 	void RecursiveSearchChildrens(GameObject* parent);
 
@@ -24,7 +24,7 @@ private:
 	std::vector<GameObject*> aux_go;
 
 public:
-	char* save_name_scene = "save_test";
+	char* save_name_scene = "Auto_Save";
 };
 
 

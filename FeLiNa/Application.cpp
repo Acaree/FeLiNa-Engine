@@ -157,6 +157,8 @@ void Application::PrepareUpdate()
 			engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
 			camera->current_camera = camera->game_camera;
 			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
+			scene->serialization_scene->save_name_scene = "auto";
+			scene->serialization_scene->SaveScene();
 			break;
 		case ENGINE_STATE_PAUSE:
 			break;
@@ -178,6 +180,9 @@ void Application::PrepareUpdate()
 			engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 			camera->current_camera = camera->camera_editor;
 			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
+			scene->serialization_scene->save_name_scene = "auto";
+			scene->serialization_scene->ClearActualScene();
+			scene->serialization_scene->LoadScene(scene->serialization_scene->save_name_scene);
 			break;
 		case ENGINE_STATE_PAUSE:
 
