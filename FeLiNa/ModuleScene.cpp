@@ -53,7 +53,7 @@ bool ModuleScene::Start()
 	std::string output_file;
 
 	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
-	App->importer_mesh->LoadFLN("Assets/PhysfsSave/Baker_house.felina");
+	//App->importer_mesh->LoadFLN("Assets/PhysfsSave/Baker_house.felina");
 
 	//std::string output_file;
 	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);

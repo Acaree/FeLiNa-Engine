@@ -24,21 +24,28 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	}
 
-	if (PHYSFS_mount("./Assets/PhysfsSave/", "PhysfsSave", 1) == 0) { 
+	PHYSFS_mkdir("Assets/Library/Meshes");
+	PHYSFS_mkdir("Assets/Library/Textures");
+
+	if (PHYSFS_mount("./Assets/Library/", "Library", 1) == 0) { 
 
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
 
 	}
 
-
-	if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
+	if (PHYSFS_mount("./Assets/Library/Meshes/", "Meshes", 1) == 0) {
 
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
 
 	}
 
-	PHYSFS_mkdir("Assets/PhysfsSave");
+	if (PHYSFS_mount("./Assets/Library/Materials/", "Materials", 1) == 0) {
 
+		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
+	}
+
+	
 	
 }
 
