@@ -39,8 +39,6 @@ private:
 	bool inspector_open = true;
 	GameObject* selected = nullptr;
 
-
-
 	uint checker_id = 0;
 	bool material_cheker = false;
 	bool no_texture = false;
@@ -53,8 +51,6 @@ public:
 	uint quadtree_size = 0;
 
 	SceneSerialization* serialization_scene = nullptr;
-
-	GameObject* camera_go = nullptr;
 
 };
 

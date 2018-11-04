@@ -5,7 +5,7 @@
 #include "ImGuizmo/ImGuizmo.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
 ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position, math::float3 rotation, math::float3 scale): Component(parent)
@@ -242,7 +242,7 @@ void ComponentTransform::ShowGuizmos()
 	math::float4x4 matrix = global_matrix.Transposed();
 
 	//DeltaMatrix?¿
-	ImGuizmo::Manipulate(App->renderer3D->GetMainCamera()->GetViewMatrix(), App->renderer3D->GetMainCamera()->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, matrix.ptr());
+	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix(), App->camera->camera_editor->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, matrix.ptr());
 
 	matrix.Transpose();
 

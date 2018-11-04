@@ -28,7 +28,6 @@
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Render";
-
 }
 
 // Destructor
@@ -54,10 +53,6 @@ ModuleRenderer3D::~ModuleRenderer3D()
 bool ModuleRenderer3D::Init()
 {
 	img = new ImageRecorder(App->window->screen_surface->w, App->window->screen_surface->h);
-
-	//TO REVISE
-	game_camera = new ComponentCamera(nullptr);
-
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 
@@ -197,9 +192,6 @@ bool ModuleRenderer3D::Init()
 
 	CreateCheckers();
 
-
-
-
 	return ret;
 }
 
@@ -219,9 +211,6 @@ bool ModuleRenderer3D::Awake(JSON_Object* config)
 
 bool ModuleRenderer3D::Start()
 {
-	//Camera Test---------------------
-	main_camera = new ComponentCamera(nullptr);
-	main_camera = App->camera->camera; //editor camera
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	return true;
 }
@@ -258,14 +247,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glLoadMatrixf(main_camera->GetViewMatrix());
+	glLoadMatrixf(App->camera->camera_editor->GetViewMatrix());
 	
-	lights[0].SetPos(main_camera->frustum.pos.x, main_camera->frustum.pos.y, main_camera->frustum.pos.z);
-
-	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
-	{
-		CheckObjectActive(App->scene->root_object->GetChild(i));
-	}
+	lights[0].SetPos(App->camera->camera_editor->frustum.pos.x, App->camera->camera_editor->frustum.pos.y, App->camera->camera_editor->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -299,8 +283,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 			meshes[i]->GetParent()->DrawBoundingBox(); 
 		}
 
-		App->scene->camera_go->camera->DebugDraw();
-		//game_camera->DebugDraw();
+		App->camera->main_camera->camera->DebugDraw();
+
 		App->scene->quadtree->DebugDraw();
 		
 	}
@@ -348,13 +332,13 @@ bool ModuleRenderer3D::CleanUp()
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	float aspect_ratio = (float)width / (float)height;
-	main_camera->SetAspectRatio(aspect_ratio);
+	App->camera->main_camera->camera->SetAspectRatio(aspect_ratio);
 
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	//ProjectionMatrix = App->camera->main_camera->camera->GetViewMatrix();
-	glLoadMatrixf(main_camera->GetProjectionMatrix());
+	glLoadMatrixf(App->camera->main_camera->camera->GetProjectionMatrix());
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -586,47 +570,3 @@ void ModuleRenderer3D::CleanAllDataModel()
 }
 
 
-void ModuleRenderer3D::SetMainCamera(ComponentCamera* camera)
-{
-	main_camera = camera;
-}
-
-ComponentCamera* ModuleRenderer3D::GetMainCamera() const
-{
-	return main_camera;
-}
-
-void ModuleRenderer3D::CheckObjectActive(GameObject* go)
-{
-	if (game_camera->culling)
-	{
-		if (!go->static_object)
-		{
-
-			if (!game_camera->ContainsAaBox(go->GetAABB()))
-				go->SetActive(false);
-			else
-				go->SetActive(true);
-		}
-	}
-	else
-	{
-		go->SetActive(true);
-	}
-
-	for (uint i = 0; i < go->GetNumChildren(); ++i)
-	{
-		CheckObjectActive(go->GetChild(i));
-	}
-
-}
-
-void ModuleRenderer3D::EditorCameraMode()
-{
-	main_camera = App->camera->camera;
-}
-
-void ModuleRenderer3D::GameCameraMode()
-{
-	main_camera = game_camera;
-}

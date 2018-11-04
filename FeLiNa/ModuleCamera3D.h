@@ -22,14 +22,15 @@ public:
 	bool CleanUp();
 
 	void LookAt(const math::float3 &Spot);
-	
+	void CheckObjectActive(GameObject* go);
 	
 	void PickObjectSelected(std::vector<GameObject*> &candidates ,math::LineSegment ray);
 	void PosibleObjectsPicked(std::vector<GameObject*> &posible_candidates , GameObject* candidate);
 
 public:
-
-	ComponentCamera* camera = nullptr;
+	ComponentCamera* camera_editor = nullptr;
+	GameObject* main_camera = nullptr;
+	ComponentCamera* game_camera = nullptr;
 
 private:
 	

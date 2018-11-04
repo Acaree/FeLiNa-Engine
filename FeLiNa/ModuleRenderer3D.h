@@ -12,7 +12,6 @@ class ComponentMesh;
 class Component;
 class GameObject;
 class ComponentTexture;
-class ComponentCamera;
 
 struct Mesh;
 
@@ -46,13 +45,6 @@ public:
 	void CleanAllDataModel();
 	void SaveState(JSON_Object* config);
 
-	void SetMainCamera(ComponentCamera* camera);
-	ComponentCamera* GetMainCamera() const;
-
-	void EditorCameraMode();
-	void GameCameraMode();
-
-	void CheckObjectActive(GameObject* go);
 
 public:
 
@@ -64,12 +56,8 @@ public:
 	std::vector<ComponentMesh*> meshes;
 	bool wire = false;
 
+	//TO REVISE;
 	bool debug_draw = false;
-
-
-	ComponentCamera* editor_camera = nullptr;
-	ComponentCamera* main_camera = nullptr;
-	ComponentCamera* game_camera = nullptr;
 
 private:
 	bool depth_test = false;
