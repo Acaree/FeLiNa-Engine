@@ -69,7 +69,7 @@ bool MaterialImporter::Import(const char* file_name, const char* file_path, std:
 	return ret;
 }
 
-//const void* buffer, uint size, std::string& outputFileName
+
 bool MaterialImporter::Import(const void* buffer, uint size, std::string& output_file)
 {
 	bool ret = false;

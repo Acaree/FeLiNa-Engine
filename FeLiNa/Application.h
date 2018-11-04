@@ -66,7 +66,7 @@ public:
 	math::LCG* random = nullptr;
 
 	ENGINE_STATES engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
-	GAME_STATES game_states = GAME_STATES::ENGINE_STATE_PAUSE;
+	GAME_STATES game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
 
 private:
 	char* name;

@@ -70,55 +70,59 @@ update_status ModuleGui::Update(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-			open_console = !open_console;
-
-		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-			open_configuration = !open_configuration;
-
-		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
-			inspector_open = !inspector_open;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		need_screenshoot = true;
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-		App->renderer3D->wire = !App->renderer3D->wire;
-
-	//test
-	ShowAssetsWindow();
-
-	ShowMainMenuBar();
 	ShowEditorMenu();
-	if (serialization_save_scene)
+
+	if (App->engine_states != ENGINE_STATES::ENGINE_STATE_GAME_MODE)
 	{
-		ImGui::OpenPopup("Save Scene as:");
-		SaveScene();
-	}
+		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+				open_console = !open_console;
 
-	if (serialization_load_scene)
-	{
-		ImGui::OpenPopup("Load Scene:");
-		LoadScene();
-	}
+			if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+				open_configuration = !open_configuration;
 
-	if(open_configuration)
-		ShowConfigurationWindow();
+			if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+				inspector_open = !inspector_open;
+		}
 
-	if (open_console)
-		App->console->DrawConsole();
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			need_screenshoot = true;
+		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+			App->renderer3D->wire = !App->renderer3D->wire;
 
-	/*if (inspector_open)
-		App->renderer3D->DrawMeshInformation();*/ //TO DELETE
+		//test
+		ShowAssetsWindow();
 
-	if (About_active) {
-		ShowAboutWindow();
-	}
+		ShowMainMenuBar();
 	
-	GameObject* go = App->scene->GetSelectedGameObject();
+		if (serialization_save_scene)
+		{
+			ImGui::OpenPopup("Save Scene as:");
+			SaveScene();
+		}
 
+		if (serialization_load_scene)
+		{
+			ImGui::OpenPopup("Load Scene:");
+			LoadScene();
+		}
+
+		if (open_configuration)
+			ShowConfigurationWindow();
+
+		if (open_console)
+			App->console->DrawConsole();
+
+		/*if (inspector_open)
+			App->renderer3D->DrawMeshInformation();*/ //TO DELETE
+
+		if (About_active) {
+			ShowAboutWindow();
+		}
+
+		GameObject* go = App->scene->GetSelectedGameObject();
+	}
 
 	return update_return;
 }
@@ -443,8 +447,11 @@ void ModuleGui::ShowEditorMenu()
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Stop", { 50,30 })) {
+
 		App->time_management->StartGameTime();
 		App->time_management->PauseGameClock();
+		
+
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Tick", { 50,30 })) {

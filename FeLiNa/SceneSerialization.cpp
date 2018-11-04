@@ -18,7 +18,7 @@ SceneSerialization::~SceneSerialization()
 	}*/
 	aux_go.clear();
 
-	RELEASE(save_name_scene);
+	RELEASE_ARRAY(save_name_scene);
 
 }
 

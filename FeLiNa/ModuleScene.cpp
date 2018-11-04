@@ -57,7 +57,7 @@ bool ModuleScene::Start()
 	App->importer_mesh->LoadFLN("Assets/PhysfsSave/Baker_house.felina");
 
 	//std::string output_file;
-	//App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);
+	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);
 
 
 	//TEST FRUSTUM
@@ -119,8 +119,11 @@ update_status ModuleScene::Update(float dt)
 
 	update_status update_return = UPDATE_CONTINUE;
 	
-	ShowHierarchy();
-	ShowInspector();
+	if (App->engine_states != ENGINE_STATES::ENGINE_STATE_GAME_MODE)
+	{
+		ShowHierarchy();
+		ShowInspector();
+	}
 
 	root_object->Update(dt);
 	return update_return;
