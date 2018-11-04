@@ -67,7 +67,7 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 			if (size > 0) {
 				
 				*buffer = new char[size];
-				count = PHYSFS_read(file, *buffer, 1, size);
+				count = PHYSFS_readBytes(file, *buffer, size);
 
 				if (count == size)
 				{

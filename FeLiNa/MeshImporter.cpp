@@ -203,15 +203,35 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		/*******************************************************************/
 
 		//put in a new function savefln
-		uint ranges[2] = { mesh_data->num_indices, mesh_data->num_vertices};
-		uint size = sizeof(ranges) + sizeof(uint) * mesh_data->num_indices + sizeof(float) * mesh_data->num_vertices * 3;
+		uint ranges[3] = { mesh_data->num_vertices, mesh_data->num_indices, mesh_data->num_uv};
+
+		uint size = sizeof(ranges) + sizeof(float) * mesh_data->num_vertices + sizeof(uint) * mesh_data->num_indices + sizeof(float)* mesh_data->num_uv ;// *3;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
-		uint bytes = sizeof(ranges); // First store ranges
+
+		// First store ranges
+		uint bytes = sizeof(ranges); 
 		memcpy(cursor, ranges, bytes);
 
-		float* vertices_ = new float[mesh_data->num_vertices * 3];
+		cursor += bytes;
+
+		//Store vertices
+		bytes = sizeof(float) * mesh_data->num_vertices;
+		memcpy(cursor, mesh_data->vertices, bytes);
+
+		cursor += bytes;
+
+		//Store indices
+		bytes = sizeof(uint) * mesh_data->num_indices;
+		memcpy(cursor, mesh_data->indices, bytes);
+
+		cursor += bytes;
+
+		bytes = sizeof(float)* mesh_data->num_uv;
+		memcpy(cursor, mesh_data->uv, bytes);
+
+		/*float* vertices_ = new float[mesh_data->num_vertices * 3];
 
 		//memcpy(vertices_, mesh_data->vertices, sizeof(float) * mesh_data->num_vertices * 3);
 		
@@ -220,8 +240,8 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 		//TO TEST (delete to assignment)
 		std::vector<float>  test_vector;
-		test_vector.assign(mesh_data->num_vertices * 3, 0.0f);
-		memcpy(test_vector.data(), mesh_data->vertices, sizeof(float)*mesh_data->num_vertices * 3);
+		test_vector.assign(mesh_data->num_vertices , 0.0f);
+		memcpy(test_vector.data(), mesh_data->vertices, sizeof(float)*mesh_data->num_vertices );
 
 		memcpy(cursor, mesh_data->vertices, bytes);
 
@@ -232,7 +252,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		//TO TEST (delete to assignment)
 		std::vector<uint>  test_vector2;
 		test_vector2.assign(mesh_data->num_indices, 0.0f);
-		memcpy(test_vector2.data(), mesh_data->indices, sizeof(uint)*mesh_data->num_indices);
+		memcpy(test_vector2.data(), mesh_data->indices, sizeof(uint)*mesh_data->num_indices);*/
 		
 
 		/***************************************************************************************/
@@ -285,7 +305,36 @@ Mesh* MeshImporter::LoadFLN(const void* buffer, uint size) {
 
 	Mesh* ret = new Mesh;
 	char* cursor = (char*)buffer;
-	// amount of indices / vertices / colors / normals / texture_coords
+
+	uint ranges[3];
+	uint bytes = sizeof(ranges);
+	memcpy(ranges, cursor, bytes);
+
+	cursor += bytes;
+
+	ret->num_vertices = ranges[0];
+	ret->num_indices = ranges[1];
+	ret->num_uv = ranges[2];
+
+	bytes = sizeof(float) * ret->num_vertices;
+	ret->vertices = new float[ret->num_vertices];
+
+	memcpy(ret->vertices, cursor, bytes);
+
+	cursor += bytes;
+
+	bytes = sizeof(uint) * ret->num_indices;
+	ret->indices = new uint[ret->num_indices];
+
+	memcpy(ret->indices, cursor, bytes);
+
+	cursor += bytes;
+
+	bytes = sizeof(float) * ret->num_uv;
+	ret->uv = new float[ret->num_uv];
+	memcpy(ret->uv, cursor, bytes);
+
+	/*// amount of indices / vertices / colors / normals / texture_coords
 	uint ranges[2];
 	uint bytes = sizeof(ranges);
 	memcpy(ranges, cursor, bytes);
@@ -312,7 +361,7 @@ Mesh* MeshImporter::LoadFLN(const void* buffer, uint size) {
 	//TO TEST (delete to assignment)
 	std::vector<uint>  test_vector2;
 	test_vector2.assign(ret->num_indices, 0.0f);
-	memcpy(test_vector2.data(), ret->indices, sizeof(uint)*ret->num_indices);
+	memcpy(test_vector2.data(), ret->indices, sizeof(uint)*ret->num_indices);*/
 	
 
 	return ret;
