@@ -6,7 +6,13 @@
 #include "MathGeoLib/MathGeoLib.h"
 #include "Globals.h"
 
-struct Texture;
+struct Texture
+{
+	uint texture_id = 0;
+	uint width = 0;
+	uint height = 0;
+
+};
 
 class ComponentTexture : public Component
 {

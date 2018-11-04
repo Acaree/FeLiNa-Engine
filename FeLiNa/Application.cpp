@@ -8,7 +8,6 @@
 #include "ModuleGui.h"
 #include "ModuleConsole.h"
 #include "ModuleFileSystem.h"
-#include "ModuleTexture.h"
 #include "ModuleTimeManagement.h"
 #include "mmgr/mmgr.h"
 
@@ -30,7 +29,6 @@ Application::Application()
 	gui = new ModuleGui(this);
 	console = new ModuleConsole(this);
 	fs = new ModuleFileSystem(this);
-	texture = new ModuleTexture(this);
 	time_management = new ModuleTimeManagement(this);
 
 	// The order of calls is very important!
@@ -40,7 +38,6 @@ Application::Application()
 	// Main Modules
 	
 	AddModule(window);
-	AddModule(texture);
 	AddModule(camera);
 	AddModule(input);
 	AddModule(hardware);

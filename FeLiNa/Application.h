@@ -18,7 +18,6 @@ class ModuleCamera3D;
 class ModuleGui;
 class ModuleConsole;
 class ModuleFileSystem;
-class ModuleTexture;
 class ModuleTimeManagement;
 
 enum ENGINE_STATES
@@ -49,7 +48,6 @@ public:
 	ModuleHardware* hardware;
 	ModuleConsole* console;
 	ModuleFileSystem* fs;
-	ModuleTexture* texture;
 	ModuleTimeManagement* time_management;
 	//IMPORTERS
 	MaterialImporter* importer_material ;

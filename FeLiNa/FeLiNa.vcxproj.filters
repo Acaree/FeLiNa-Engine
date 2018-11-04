@@ -139,9 +139,6 @@
     <ClCompile Include="mPlane.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTexture.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Modules\GameObject</Filter>
     </ClCompile>
@@ -454,9 +451,6 @@
     </ClInclude>
     <ClInclude Include="mPlane.h">
       <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTexture.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="OpenGl.h" />
     <ClInclude Include="GameObject.h">
