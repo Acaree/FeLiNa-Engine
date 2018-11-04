@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "ImGuizmo/ImGuizmo.h"
 
+class ComponentTransform;
+
 class ModuleGui : public Module
 {
 public:
@@ -18,7 +20,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 	void SaveState(JSON_Object* config);
-	void CreateGuizmos();
+	void CreateGuizmos(ComponentTransform* transform);
 
 private:
 	bool About_active = false;
@@ -27,6 +29,8 @@ private:
 	void ShowConfigurationWindow();
 	void ShowAboutWindow();
 	void ShowEditorMenu();
+
+	ImGuizmo::OPERATION mCurrentGizmoOperation=ImGuizmo::TRANSLATE;
 
 	void SaveScene();
 	void LoadScene();

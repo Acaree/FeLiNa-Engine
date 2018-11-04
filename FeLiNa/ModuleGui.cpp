@@ -13,7 +13,6 @@
 #include "ModuleTimeManagement.h"
 #include "ComponentCamera.h"
 #include "ModuleCamera3D.h"
-#include "ImGuizmo/ImGuizmo.h"
 #include "mmgr/mmgr.h"
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -115,7 +114,10 @@ update_status ModuleGui::Update(float dt)
 		ShowAboutWindow();
 	}
 	
-	CreateGuizmos();
+	GameObject* go = App->scene->GetSelectedGameObject();
+	if (go != nullptr) {
+		CreateGuizmos(go->transform);
+	}
 
 	return update_return;
 }
@@ -464,15 +466,29 @@ void ModuleGui::ShowEditorMenu()
 	
 }
 
-void ModuleGui::CreateGuizmos() {
+void ModuleGui::CreateGuizmos(ComponentTransform* transform) {
 
 
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 	math::float4x4 view = App->camera->camera_editor->frustum.ViewProjMatrix(); //frustum view matrix is corrupted
 	math::float4x4 proj = App->camera->camera_editor->frustum.ProjectionMatrix();
-	
 
-	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix() ,proj.ptr() , ImGuizmo::TRANSLATE, ImGuizmo::LOCAL, App->camera->main_camera->transform->GetGlobalMatrix().ptr());
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
+	}
+
+	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix() ,proj.ptr() , mCurrentGizmoOperation, ImGuizmo::WORLD, transform->GetGlobalMatrix().ptr());
 	
 }
