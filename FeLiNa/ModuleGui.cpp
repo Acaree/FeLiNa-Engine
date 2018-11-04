@@ -466,13 +466,11 @@ void ModuleGui::ShowEditorMenu()
 	
 }
 
-void ModuleGui::CreateGuizmos(ComponentTransform* transform) {
-
+void ModuleGui::CreateGuizmos(ComponentTransform* transform)
+{
 
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-	math::float4x4 view = App->camera->camera_editor->frustum.ViewProjMatrix(); //frustum view matrix is corrupted
-	math::float4x4 proj = App->camera->camera_editor->frustum.ProjectionMatrix();
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
 
@@ -489,6 +487,7 @@ void ModuleGui::CreateGuizmos(ComponentTransform* transform) {
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
 	}
 
-	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix() ,proj.ptr() , mCurrentGizmoOperation, ImGuizmo::WORLD, transform->GetGlobalMatrix().ptr());
+	ImGuizmo::Manipulate(App->camera->camera_editor->GetViewMatrix() , App->camera->camera_editor->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, transform->GetGlobalMatrix().Transposed().ptr());
 	
+
 }

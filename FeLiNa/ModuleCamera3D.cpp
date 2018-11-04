@@ -9,7 +9,7 @@
 #include "ModuleWindow.h"
 #include "Quadtree.h"
 #include "ModuleRenderer3D.h"
-
+#include "ImGui/imgui.h"
 #include "mmgr/mmgr.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -109,20 +109,23 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
-		//Taking screen values.
-		float width = (float)App->window->screen_surface->w;
-		float height = (float)App->window->screen_surface->h;
+		if (!ImGui::IsMouseHoveringAnyWindow())
+		{
+			//Taking screen values.
+			float width = (float)App->window->screen_surface->w;
+			float height = (float)App->window->screen_surface->h;
 
-		//Take mouse position.
-		int mouse_x = App->input->GetMouseX();
-		int mouse_y = App->input->GetMouseY();
+			//Take mouse position.
+			int mouse_x = App->input->GetMouseX();
+			int mouse_y = App->input->GetMouseY();
 
-		//if stack overflow say :/ Theory: set the 0,0 in middle of screen.
-		float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / width);
-		float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / height;
+			//if stack overflow say :/ Theory: set the 0,0 in middle of screen.
+			float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / width);
+			float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / height;
 
-		math::LineSegment picking = camera_editor->frustum.UnProjectLineSegment(normalized_x, normalized_y);
-		PickObjectSelected(posible_go_intersections, picking);
+			math::LineSegment picking = camera_editor->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+			PickObjectSelected(posible_go_intersections, picking);
+		}
 	}
 
 

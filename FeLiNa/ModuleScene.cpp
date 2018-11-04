@@ -84,10 +84,6 @@ bool ModuleScene::CleanUp()
 	RELEASE(grid_plane);
 	RELEASE(quadtree);
 
-	for (uint i = 0; i < static_go.size(); ++i)
-	{
-		RELEASE(static_go[i]);
-	}
 
 	static_go.clear();
 
