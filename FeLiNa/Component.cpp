@@ -6,7 +6,9 @@
 Component::Component(GameObject* parent)
 {
 	this->parent = parent;
+#ifndef GAME_MODE
 	uid = App->random->Int();
+#endif
 }
 
 Component::~Component()

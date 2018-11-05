@@ -1,6 +1,7 @@
 #ifndef _MODULE_CONSOLE_
 #define _MODULE_CONSOLE_
 
+#ifndef GAME_MODE
 #include "Module.h"
 #include "ImGui/imgui.h"
 
@@ -21,5 +22,6 @@ private:
 	bool console_scroll = false;
 
 };
+#endif
 
 #endif

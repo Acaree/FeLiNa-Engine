@@ -3,7 +3,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
-#include "ModuleGui.h"
+
 #include "ModuleScene.h"
 #include "GameObject.h"
 
@@ -13,13 +13,23 @@
 #include "ComponentTexture.h"
 #include "ComponentMesh.h"
 
+#ifndef GAME_MODE
+
+#include "ModuleGui.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
-#include "Quadtree.h"
 #include "ImageRecorder.h"
-#include "mmgr/mmgr.h"
-
+#include "Quadtree.h"
 #include "MeshImporter.h"
+#include "mmgr/mmgr.h"
+#endif
+
+
+
+
+
+
+
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -52,7 +62,10 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
+#ifndef GAME_MODE
 	img = new ImageRecorder(App->window->screen_surface->w, App->window->screen_surface->h);
+#endif
+
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 
@@ -190,7 +203,9 @@ bool ModuleRenderer3D::Init()
 	else
 		glDisable(GL_POLYGON_SMOOTH);
 
+#ifndef GAME_MODE
 	CreateCheckers();
+#endif
 
 	return ret;
 }
@@ -276,6 +291,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	}
 
 	//Debug
+#ifndef GAME_MODE
 	if (debug_draw)
 	{
 		for (uint i = 0; i < meshes.size(); ++i)
@@ -301,7 +317,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
-	
+
+
+#endif
 
 	//SDL_GL_MakeCurrent(App->window->window, context);
 	SDL_GL_SwapWindow(App->window->window);
@@ -312,10 +330,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+#ifndef GAME_MODE
 	if (App->gui->close_program)
 		update_return = UPDATE_STOP;
+#endif
 
-	
 	return update_return;
 }
 
@@ -365,6 +384,7 @@ math::float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, 
 
 }
 
+#ifndef GAME_MODE
 void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 {
 	if (ImGui::Checkbox("DEPTH_TEST", &depth_test))
@@ -427,7 +447,7 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 	}
 
 }
-
+#endif
 
 void ModuleRenderer3D ::DrawGameObjects(ComponentMesh* mesh) 
 {
@@ -500,6 +520,7 @@ void ModuleRenderer3D::DeleteAllDataMesh()
 	meshes.clear();
 }
 
+#ifndef GAME_MODE
 uint ModuleRenderer3D::CreateCheckers()
 {
 	GLubyte checkImage[36][36][4];
@@ -571,4 +592,4 @@ void ModuleRenderer3D::CleanAllDataModel()
 	
 }
 
-
+#endif

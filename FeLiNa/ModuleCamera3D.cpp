@@ -42,7 +42,7 @@ bool ModuleCamera3D::Start()
 	bool ret = true;
 
 	main_camera = new GameObject(nullptr);
-	main_camera->SetName("Main Camera");
+	
 
 	ComponentTransform* transform =(ComponentTransform*) main_camera->AddComponent(Component_Transform);
 	//transform_camera = new ComponentTransform(main_camera);
@@ -54,15 +54,20 @@ bool ModuleCamera3D::Start()
 	ComponentCamera* camera = (ComponentCamera*)main_camera->AddComponent(Component_Camera);
 	camera = game_camera;
 
-
-
-	//Create and Set Edito camera a initial pos
-	camera_editor = new ComponentCamera(nullptr);
-	camera_editor->frustum.Translate(math::float3(5,10,5));
-
 	current_camera = new ComponentCamera(nullptr);
 
+#ifndef  GAME_MODE
+	//Create and Set Edito camera a initial pos
+	main_camera->SetName("Main Camera");
+
+	camera_editor = new ComponentCamera(nullptr);
+	camera_editor->frustum.Translate(math::float3(5, 10, 5));
 	current_camera = camera_editor;
+#else
+	current_camera = game_camera;
+#endif // ! GAME_MODE
+
+
 
 	LookAt(math::float3::zero);
 
@@ -116,7 +121,7 @@ update_status ModuleCamera3D::Update(float dt)
 	/*if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
 		// TODO-> Focus*/
 
-
+#ifndef GAME_MODE
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		if (!ImGui::IsMouseHoveringAnyWindow())
@@ -137,7 +142,7 @@ update_status ModuleCamera3D::Update(float dt)
 			PickObjectSelected(posible_go_intersections, picking);
 		}
 	}
-
+#endif
 
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{

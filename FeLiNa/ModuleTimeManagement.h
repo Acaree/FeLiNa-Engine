@@ -1,6 +1,7 @@
 #ifndef _MODULE_TIME_MANAGEMENT_
 #define _MODULE_TIME_MANAGEMENT_
 
+#ifndef GAME_MODE
 #include "Module.h"
 #include "Application.h"
 #include "Timer.h"
@@ -45,7 +46,7 @@ private:
 
 
 
-
+#endif
 
 
 

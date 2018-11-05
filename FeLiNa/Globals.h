@@ -1,6 +1,14 @@
 #ifndef _GLOBALS_
 #define _GLOBALS_
 
+
+#ifndef _GAME_MODE_
+
+//#define GAME_MODE
+
+#endif GAME_MODE
+
+
 // Warning disabled ---
 #pragma warning( disable : 4577 ) // Warning that exceptions are disabled
 #pragma warning( disable : 4530 ) // Warning that exceptions are disabled

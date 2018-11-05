@@ -1,11 +1,17 @@
+
 #include "ModuleRenderer3D.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
-#include "ModuleGui.h"
+
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+
+
+
+#include "ModuleGui.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
+
 
 #define MAX_KEYS 300
 
@@ -99,7 +105,9 @@ update_status ModuleInput::PreUpdate(float dt)
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
+#ifndef GAME_MODE
 		ImGui_ImplSDL2_ProcessEvent(&e);
+#endif
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
@@ -127,9 +135,10 @@ update_status ModuleInput::PreUpdate(float dt)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
 
 				break;
-			
+#ifndef GAME_MODE
 			case SDL_DROPFILE:
 			{
+
 				const char* dropped_filedir = e.drop.file;
 				std::string path(dropped_filedir);
 
@@ -151,11 +160,14 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 
 				SDL_free(&dropped_filedir);
+
 				break;
 			}
+#endif
 			default: 
 				break;
 		}
+
 	}
 
 	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
@@ -172,6 +184,10 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
+#ifndef GAME_MODE
+
+
+
 
 void ModuleInput::DrawInputConfiguration() const
 {
@@ -186,3 +202,5 @@ void ModuleInput::DrawInputConfiguration() const
 	ImGui::Text("y: %i", mouse_y_motion);
 
 }
+
+#endif

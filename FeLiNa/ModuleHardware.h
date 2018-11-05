@@ -1,6 +1,8 @@
 #ifndef _MODULE_HARDWARE_
 #define _MODULE_HARDWARE_
 
+#ifndef GAME_MODE
+
 #include "Module.h"
 #include "SDL/include/SDL_opengl.h"
 
@@ -51,6 +53,7 @@ private:
 	bool fill_hardware = false;
 };
 
+#endif
 
 
 #endif

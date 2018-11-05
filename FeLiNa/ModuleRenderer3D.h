@@ -41,10 +41,14 @@ public:
 	void AddDataMesh(ComponentMesh* data_mesh);
 	void DeleteAllDataMesh();
 
-	uint CreateCheckers();
-	void CleanAllDataModel();
+	
+	
 	void SaveState(JSON_Object* config);
 
+#ifndef GAME_MODE
+	void CleanAllDataModel();
+	uint CreateCheckers();
+#endif
 
 public:
 

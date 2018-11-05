@@ -1,6 +1,11 @@
 #ifndef _APPLICATION_
 #define _APPLICATION_
 
+
+
+
+
+#include "Globals.h"
 #include "Module.h"
 #include "MathGeoLib/Algorithm/Random/LCG.h"
 #include <list>
@@ -115,4 +120,4 @@ private:
 
 extern Application* App;
 
-#endif
+#endif 

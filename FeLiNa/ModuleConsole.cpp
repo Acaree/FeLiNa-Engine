@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleGui.h"
 
+#ifndef GAME_MODE
 ModuleConsole::ModuleConsole(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Console";
@@ -40,3 +41,4 @@ void ModuleConsole::DrawConsole()
 	ImGui::End();
 }
 
+#endif

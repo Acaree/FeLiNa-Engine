@@ -14,22 +14,28 @@
 Application::Application()
 {
 	name = "Application";
+	
+
+#ifndef GAME_MODE
 	random = new math::LCG();
+	
+	hardware = new ModuleHardware(this, false);
+	gui = new ModuleGui(this);
+	console = new ModuleConsole(this);
+	time_management = new ModuleTimeManagement(this);
+#endif // !GAME_MODE
 
 	importer_material = new MaterialImporter();
 	importer_mesh = new MeshImporter();
-
-
-	hardware = new ModuleHardware(this,false);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
-	gui = new ModuleGui(this);
-	console = new ModuleConsole(this);
+	
+	
 	fs = new ModuleFileSystem(this);
-	time_management = new ModuleTimeManagement(this);
+	
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -40,13 +46,19 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(hardware);
-	AddModule(console);
+	
 	AddModule(fs);
 	// Scenes
 	AddModule(scene);
+
+#ifndef GAME_MODE
+	AddModule(console);
+	AddModule(hardware);
 	AddModule(time_management); // this good?
 	AddModule(gui);
+#endif // !1
+
+	
 	// Renderer last!
 	AddModule(renderer3D);
 }
@@ -59,13 +71,14 @@ Application::~Application()
 		delete *it;
 	}
 
-	//TO CHANGE THIS DELETE:
+#ifndef GAME_MODE
 	RELEASE(importer_mesh);
 	RELEASE(importer_material);
-
-
-
 	RELEASE(random);
+#endif // !GAME_MODE
+
+	//TO CHANGE THIS DELETE:
+
 
 	RELEASE_ARRAY(name);
 	RELEASE_ARRAY(app_name);
@@ -215,9 +228,9 @@ void Application::FinishUpdate()
 		}
 
 	}
-
+#ifndef GAME_MODE
 	App->time_management->FinishUpdate();
-
+#endif
 	last_ms = ms_timer.ReadMs();
 	last_FPS = 1000.0 / last_ms;
 	dt = 1 / last_FPS;
@@ -314,8 +327,9 @@ float Application::GetFPS() const
 
 void Application::Save()
 {
+#ifndef GAME_MODE
 	Log_app("Saving State....");
-
+#endif
 	//Search data.json
 	JSON_Value* root = json_parse_file("data.json");
 	
@@ -357,10 +371,21 @@ void Application::Save()
 	need_save = false;
 }
 
+void Application::NeedSave()
+{
+	need_save = true;
+}
+
+void Application::NeedLoad()
+{
+	need_load = true;
+}
+
 void Application::Load()
 {
+#ifndef GAME_MODE
 	Log_app("Loading State....");
-
+#endif
 	JSON_Value* root = nullptr;
 	root = json_parse_file("data.json");
 
@@ -391,15 +416,19 @@ void Application::Load()
 		}
 		json_value_free(root);
 
+#ifndef GAME_MODE
 		Log_app("Load succesful");
+#endif
 	}
+#ifndef  GAME_MODE
 	else
 		Log_app("Load failed: can't find root");
+#endif // ! GAME_MODE
 
 	need_load = false;
 }
 
-
+#ifndef GAME_MODE
 void Application::DrawApplicationInformationPanel()
 {
 	if (ImGui::InputText("App name", app_name, 20))
@@ -519,14 +548,7 @@ void Application::DrawModulesTime() {
 void Application::Log_app(const char * text) const
 {
 	console->Log_console(text);
-}
 
-void Application::NeedSave()
-{
-	need_save = true;
 }
+#endif
 
-void Application::NeedLoad()
-{
-	need_load = true;
-}
