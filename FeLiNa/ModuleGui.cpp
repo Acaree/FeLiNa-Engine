@@ -459,7 +459,7 @@ void ModuleGui::ShowEditorMenu()
 	ImGui::SameLine();
 	
 	char game_time[20] = "";
-	sprintf_s(game_time,sizeof(game_time), "%f", App->time_management->ReadGameClock());
+	sprintf_s(game_time,sizeof(game_time), "%.3f", App->time_management->ReadGameClock());
 	ImGui::Text(game_time);
 	
 	ImGui::SameLine();
@@ -469,7 +469,9 @@ void ModuleGui::ShowEditorMenu()
 	}
 	
 	ImGui::SameLine();
-	ImGui::SliderFloat("Time scale", &App->time_management->time_multiplier, 0.0f, 2.0f, "%0.1f");
+
+	ImGui::PushItemWidth(150);
+	ImGui::SliderFloat("Time scale", &App->time_management->time_multiplier, 0.0f, 2.0f, "%.1f");
 
 
 	ImGui::End();

@@ -301,6 +301,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
+	
+
 	//SDL_GL_MakeCurrent(App->window->window, context);
 	SDL_GL_SwapWindow(App->window->window);
 
