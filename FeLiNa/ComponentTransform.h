@@ -10,7 +10,7 @@ public:
 	ComponentTransform(GameObject* parent, math::float3 position = math::float3::zero, math::float3 rotation = math::float3::zero, math::float3 scale = math::float3::one);
 	~ComponentTransform();
 
-
+	;
 	void DrawInspector();
 
 	math::float4x4 GetTransformMatrix() const;

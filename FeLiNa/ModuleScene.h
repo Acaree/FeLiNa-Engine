@@ -32,6 +32,9 @@ public:
 
 	void DrawScene();
 
+	void SearchObjectsToDelete(GameObject*go);
+	void DeleteGameObjects(GameObject* go);
+
 private:
 
 	mPlane* grid_plane = nullptr;

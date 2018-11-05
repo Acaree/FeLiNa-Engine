@@ -35,7 +35,8 @@ public:
 
 	void AddChildren(GameObject* child);
 	GameObject* GetChild(uint position);
-	
+	void DeleteChildren(GameObject* child);
+
 
 	void SetParent(GameObject* parent);
 	GameObject* GetParent()const;
@@ -44,7 +45,9 @@ public:
 	Component* GetComponent(ComponentType type);
 	Component* AddComponent(ComponentType type);
 
+	void CloneComponents(Component* component);
 	bool DeleteComponent(Component* component);
+	void DeleteAllComponents();
 	bool DeleteComponent(ComponentType type);
 
 	std::vector<Component*> components;
@@ -72,6 +75,8 @@ public:
 	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);
 
+	void ShowGameObjectOptions();
+
 	uint uid = 0;
 
 	GameObject* SearchParentForUID(uint parent_uid);
@@ -81,7 +86,7 @@ public:
 	ComponentTexture* material = nullptr;
 	ComponentMesh* mesh = nullptr;
 	ComponentCamera* camera = nullptr;
-
+	bool to_delete = false;
 
 private:
 	

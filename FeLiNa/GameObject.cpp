@@ -18,6 +18,8 @@ GameObject::GameObject(GameObject* parent)
 
 	if (parent != nullptr)
 		parent->childrens.push_back(this);
+	else if (App->scene->root_object != nullptr)
+		App->scene->root_object->childrens.push_back(this); // THAT ARE GOOD?
 
 	bounding_box.SetNegativeInfinity();
 
@@ -245,7 +247,7 @@ void GameObject::ShowObjectHierarchy()
 	if (ImGui::TreeNodeEx(name, flags))
 		node_open = true;
 
-	if (ImGui::IsItemClicked())
+	if (ImGui::IsItemClicked(0))//Left click
 	{
 		GameObject* go = App->scene->GetSelectedGameObject();
 
@@ -256,6 +258,12 @@ void GameObject::ShowObjectHierarchy()
 
 		App->scene->SetSelectedGameObject(this);
 		SetSelected(true);
+	}
+	if (ImGui::BeginPopupContextItem("Create"))
+	{
+		ShowGameObjectOptions();
+	
+		ImGui::EndPopup();
 	}
 
 	if (node_open)
@@ -468,6 +476,59 @@ GameObject* GameObject::SearchParentForUID(uint parent_uid)
 		return nullptr;
 
 	}
+}
 
+void GameObject::ShowGameObjectOptions()
+{
+
+	static bool is_camera = false;
+
+	if (camera == nullptr)
+	{
+		is_camera = true;
+	}
+
+	if (ImGui::MenuItem("Delete",NULL,false, is_camera))
+	{
+		to_delete = true;
+	}
+	
 
 }
+
+void GameObject::DeleteAllComponents()
+{
+	for (uint i = 0; i < components.size(); ++i)
+	{
+		components[i]->CleanUp();
+		RELEASE(components[i]);
+	}
+
+	components.clear();
+}
+
+void GameObject::DeleteChildren(GameObject* go)
+{
+	std::vector<GameObject*>::iterator it = childrens.begin();
+
+	for (uint i = 0; i < childrens.size(); ++i)
+	{
+		if (strcmp(childrens[i]->GetName(), go->name) == 0)
+		{
+			GameObject* tmp = childrens[i];
+
+			RELEASE(tmp);
+			childrens.erase(it);
+			tmp = nullptr;
+
+			break;
+
+		}
+		it++;
+
+	}
+
+}
+
+
+

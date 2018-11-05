@@ -69,3 +69,4 @@ void Component::OnSave(JSON_Object* obj)
 {
 	json_object_set_number(obj, "type", Component_Default);
 }
+

@@ -53,7 +53,7 @@ bool ModuleScene::Start()
 	std::string output_file;
 
 	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
-	//App->importer_mesh->LoadFLN("Assets/PhysfsSave/Baker_house.felina");
+	App->importer_mesh->LoadFLN("Assets/PhysfsSave/Baker_house.felina");
 
 	//std::string output_file;
 	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);
@@ -104,6 +104,12 @@ bool ModuleScene::CleanUp()
 update_status ModuleScene::PreUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
+
+	for (uint i = 0; i < root_object->GetNumChildren(); ++i)
+	{
+		SearchObjectsToDelete(root_object->GetChild(i));
+	}
+
 
 	//To Set and Update all static objects
 	FillStaticGameObjects();
@@ -272,4 +278,47 @@ void ModuleScene::FillStaticGameObjects()
 		tmp_go[i]->SetActive(true);
 	}
 
+}
+
+void ModuleScene::DeleteGameObjects(GameObject* go)
+{
+	if (go->IsSelected())
+	{
+		SetSelectedGameObject(nullptr);
+	}
+
+	for (uint i = 0; i < go->GetNumChildren(); ++i)
+	{
+		DeleteGameObjects(go->GetChild(i));
+	}
+
+	if (go->components.size() > 0)
+	{
+		go->DeleteAllComponents();
+	}
+
+	if (go->GetParent() != nullptr)
+	{
+		GameObject* parent = go->GetParent();
+
+		parent->DeleteChildren(go);
+	}
+	else
+	{
+		//Necessary?? all game objects are parent of root if not have another parent
+	}
+
+}
+
+void ModuleScene::SearchObjectsToDelete(GameObject* go)
+{
+	if (go->to_delete)
+	{
+		DeleteGameObjects(go);
+	}
+
+	for (uint i = 0; i < go->GetNumChildren(); ++i)
+	{
+		SearchObjectsToDelete(go->GetChild(i));
+	}
 }

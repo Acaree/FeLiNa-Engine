@@ -254,11 +254,13 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 			ray_local.Transform(component_transform->GetTransformMatrix().Inverted());
 
 			ComponentMesh* component_mesh = candidates[i]->mesh;
-			//Set the object mesh
-			mesh = component_mesh->GetMesh();
+
 
 			if (component_mesh != nullptr)
 			{
+				//Set the object mesh
+				mesh = component_mesh->GetMesh();
+
 				int j = 0;
 
 				while (j < mesh->num_indices)
@@ -300,7 +302,7 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 void ModuleCamera3D::PosibleObjectsPicked(std::vector<GameObject*> &posible_candidate, GameObject* candidates)
 {
 
-	if (!main_camera->camera->ContainsAaBox(candidates->GetAABB()))
+	if (current_camera->ContainsAaBox(candidates->GetAABB()))
 	{
 		posible_candidate.push_back(candidates);
 	}
