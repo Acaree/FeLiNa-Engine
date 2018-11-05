@@ -111,7 +111,7 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 			// Save to the buffer
 			if (ilSaveL(IL_DDS, data, size) > 0)
 			{
-				if (App->fs->SaveTexture((char*)data, size, output_file) > 0)
+				if (App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE) > 0)
 				{
 					LOG("MATERIAL IMPORTER: Successfully saved texture %s to own format", output_file);
 					ret = true;

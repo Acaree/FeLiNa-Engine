@@ -261,7 +261,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		output_file = node->mName.data;
 
 		
-		if (App->fs->SaveTexture((char *)data, size, output_file))
+		if (App->fs->SaveFile((char *)data, size, output_file,MESH_FILE))
 		{
 			LOG("SCENE IMPORTER: Successfully saved mesh to own format");
 		}

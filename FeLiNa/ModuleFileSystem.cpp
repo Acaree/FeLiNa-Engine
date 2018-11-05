@@ -24,22 +24,22 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	}
 
-	PHYSFS_mkdir("Assets/Library/Meshes");
-	PHYSFS_mkdir("Assets/Library/Textures");
+	PHYSFS_mkdir("Library/Meshes");
+	PHYSFS_mkdir("Library/Materials");
 
-	if (PHYSFS_mount("./Assets/Library/", "Library", 1) == 0) { 
-
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
-
-	}
-
-	if (PHYSFS_mount("./Assets/Library/Meshes/", "Meshes", 1) == 0) {
+	if (PHYSFS_mount("./Library/", "Library", 1) == 0) { 
 
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
 
 	}
 
-	if (PHYSFS_mount("./Assets/Library/Materials/", "Materials", 1) == 0) {
+	if (PHYSFS_mount("./Library/Meshes/", "Meshes", 1) == 0) {
+
+		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
+	}
+
+	if (PHYSFS_mount("./Library/Materials/", "Materials", 1) == 0) {
 
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
 
@@ -119,7 +119,7 @@ const char* ModuleFileSystem::GetNameFile(const char* path) const
 	return result;
 }
 
-uint ModuleFileSystem::SaveTexture(char* buffer, uint size, std::string& output_file)
+uint ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_file, FILE_TYPE file)
 {
 	uint ret = 0;
 
@@ -128,9 +128,22 @@ uint ModuleFileSystem::SaveTexture(char* buffer, uint size, std::string& output_
 	sprintf_s(new_name, DEFAULT_BUF_SIZE, output_file.data());
 	output_file = new_name;
 
-	//COPY PATH
 	char new_path[DEFAULT_BUF_SIZE];
-	sprintf_s(new_path, DEFAULT_BUF_SIZE, "Assets/PhysfsSave/%s.%s", new_name, EXTENSION);
+
+	//COPY PATH
+	switch (file)
+	{
+	case MESH_FILE:
+		sprintf_s(new_path, DEFAULT_BUF_SIZE, "Library/Meshes/%s.%s", new_name, EXTENSION);
+		break;
+	case MATERIAL_FILE:
+		sprintf_s(new_path, DEFAULT_BUF_SIZE, "Library/Materials/%s.%s", new_name, EXTENSION);
+		break;
+	default:
+		break;
+	}
+
+	
 
 	ret = SaveBufferData(buffer, new_path, size);
 

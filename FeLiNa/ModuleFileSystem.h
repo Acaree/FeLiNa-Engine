@@ -3,6 +3,11 @@
 
 #include "Module.h"
 
+enum FILE_TYPE
+{
+	MESH_FILE,
+	MATERIAL_FILE
+};
 
 class ModuleFileSystem : public Module
 {
@@ -15,7 +20,7 @@ public:
 
 	uint Load(const char* path, char** buffer) const;
 
-	uint SaveTexture(char* buffer, uint size, std::string& outputFileName);
+	uint SaveFile(char* buffer, uint size, std::string& outputFileName, FILE_TYPE file);
 
 	uint SaveBufferData(char* buffer,const char* filePath, uint size);
 
