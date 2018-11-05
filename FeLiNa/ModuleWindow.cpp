@@ -1,7 +1,12 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+
+#ifndef GAME_MODE
 #include "ImGui/imgui.h"
+#endif // !GAME_MODE
+
+
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -140,6 +145,7 @@ void ModuleWindow::SetTitle(const char* title) const
 	SDL_SetWindowTitle(window, title);
 }
 
+#ifndef GAME_MODE
 void ModuleWindow::DrawWindowInformationPanel()
 {
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
@@ -191,3 +197,4 @@ void ModuleWindow::DrawWindowInformationPanel()
 	if (ImGui::Checkbox("Resizable", &reasizable));
 
 }
+#endif

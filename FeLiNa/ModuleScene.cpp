@@ -3,9 +3,15 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
+
+#ifndef GAME_MODE
+
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl2.h"
+#endif
+
+
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -104,9 +110,12 @@ bool ModuleScene::CleanUp()
 
 	root_object->CleanUp();
 
+#ifndef GAME_MODE
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+
+#endif
 
 	SDL_GL_DeleteContext(App->renderer3D->context);
 	SDL_DestroyWindow(App->window->window);
@@ -140,8 +149,10 @@ update_status ModuleScene::Update(float dt)
 	
 	if (App->engine_states != ENGINE_STATES::ENGINE_STATE_GAME_MODE)
 	{
+#ifndef GAME_MODE
 		ShowHierarchy();
 		ShowInspector();
+#endif
 	}
 
 	root_object->Update(dt);
@@ -165,7 +176,7 @@ void ModuleScene::DrawScene()
 	//quadtree->DebugDraw();
 }
 
-
+#ifndef GAME_MODE
 
 void ModuleScene::ShowHierarchy()
 {
@@ -225,6 +236,7 @@ void ModuleScene::ShowInspector()
 	ImGui::End();
 
 }
+#endif
 
 void ModuleScene::SetSelectedGameObject(GameObject* go)
 {

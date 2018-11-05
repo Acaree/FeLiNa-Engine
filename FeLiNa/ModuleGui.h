@@ -1,6 +1,7 @@
 #ifndef _MODULEGUI_H
 #define _MODULEGUI_H
 
+#ifndef GAME_MODE
 #include "Module.h"
 #include "ImGuizmo/ImGuizmo.h"
 
@@ -47,6 +48,6 @@ public:
 	bool serialization_load_scene = false;
 
 };
-
+#endif
 
 #endif

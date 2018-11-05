@@ -1,3 +1,5 @@
+
+#ifndef GAME_MODE
 #include "ModuleGui.h"
 #include "Application.h"
 #include "ModuleConsole.h"
@@ -12,6 +14,11 @@
 #include "ModuleFileSystem.h"
 
 #include "mmgr/mmgr.h"
+#endif
+
+#ifndef GAME_MODE
+
+
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -543,3 +550,4 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 	}
 
 }
+#endif
