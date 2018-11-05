@@ -27,10 +27,10 @@ void SceneSerialization::SaveScene()
 	JSON_Value* file_root = json_value_init_array();
 	JSON_Array* go_array = json_value_get_array(file_root);
 
-
-
 	//Root_Object ¿Need save this?
-	aux_go.push_back(App->scene->root_object);
+
+
+	
 	RecursiveSearchChildrens(App->scene->root_object);
 
 	for (uint i = 0; i < aux_go.size(); ++i)

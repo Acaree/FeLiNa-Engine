@@ -184,12 +184,18 @@ void Application::PrepareUpdate()
 		{
 		case ENGINE_STATE_PLAY:
 
+			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
+
+			break;
+
+		case ENGINE_STATE_STOP:
 			engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 			camera->current_camera = camera->camera_editor;
-			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
+
 			scene->serialization_scene->save_name_scene = "auto";
 			scene->serialization_scene->ClearActualScene();
 			scene->serialization_scene->LoadScene(scene->serialization_scene->save_name_scene);
+			camera->main_camera->camera = scene->root_object->GetChild(0)->camera; //TO REVISE: child 0 is main camera allwais but if you don't use this line of code, when load main camera never render.
 			break;
 		case ENGINE_STATE_PAUSE:
 

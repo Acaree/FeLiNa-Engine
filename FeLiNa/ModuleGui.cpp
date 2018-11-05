@@ -454,7 +454,7 @@ void ModuleGui::ShowEditorMenu()
 
 		App->time_management->StartGameTime();
 		App->time_management->PauseGameClock();
-		
+		App->game_states = GAME_STATES::ENGINE_STATE_STOP;
 
 	}
 	ImGui::SameLine();
