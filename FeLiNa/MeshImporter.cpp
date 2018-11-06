@@ -172,11 +172,17 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			strcpy_s(file_name_c, file_name.size() + 1, file_name.data());
 
-			char* path_c = new char[file_name.size() + 1];
+			char* path_c = new char[path.size() + 1];
 
-			strcpy_s(path_c, file_name.size() + 1, file_name.data());
+			strcpy_s(path_c, path.size() + 1, path.data());
 
-			App->importer_material->Import((const char*)file_name_c,(const char*)path_c, texture_generated);
+			Texture* tex = App->importer_material->Import((const char*)file_name_c,(const char*)path_c, texture_generated);
+
+			//Texture* tex = App->importer_material->Import("Baker_house.png", "Assets/Textures/", texture_generated);
+
+			
+			
+			component_texture->SetTexture(tex);
 			
 			if (new_mesh->HasTextureCoords(0))
 			{

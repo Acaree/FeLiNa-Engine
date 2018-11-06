@@ -37,7 +37,10 @@ MaterialImporter::~MaterialImporter()
 //const char* importFileName, const char* importPath, std::string& outputFileName
 Texture* MaterialImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
 {
-	Texture* ret = nullptr;
+	Texture* ret = new Texture;
+	ret->height = 0;
+	ret->texture_id = 0;
+	ret->width = 0;
 
 	char* buffer;
 

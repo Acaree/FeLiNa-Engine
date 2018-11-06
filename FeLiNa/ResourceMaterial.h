@@ -3,6 +3,7 @@
 
 #include "Resource.h"
 #include "MaterialImporter.h"
+#include "ComponentTexture.h"
 
 class ResourceMaterial : public Resource
 {
@@ -14,7 +15,7 @@ public:
 	bool EraseInMemory();
 
 private:
-	Texture_Importer texture;
+	Texture texture;
 };
 
 
