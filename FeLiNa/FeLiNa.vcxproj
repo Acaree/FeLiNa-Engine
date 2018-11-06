@@ -93,6 +93,7 @@
     <ClInclude Include="Glew\include\glxew.h" />
     <ClInclude Include="Glew\include\wglew.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="ImGuizmo\ImSequencer.h" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="mPlane.h" />
     <ClInclude Include="PhysFS\physfs.h" />
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="SceneSerialization.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
@@ -264,6 +266,8 @@
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="ResourceMaterial.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="SceneSerialization.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>

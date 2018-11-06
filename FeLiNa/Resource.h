@@ -6,9 +6,9 @@
 
 enum ResourceType
 {
-	Mesh = 0,
-	Material,
-	Default
+	Resource_Mesh = 0,
+	Resource_Material,
+	Resource_Default
 };
 
 class Resource
@@ -26,7 +26,7 @@ public:
 	uint CountReferences() const;
 
 	virtual bool LoadInMemory() = 0;
-
+	virtual bool EraseInMemory() = 0;
 	/*
 	Save
 	Load
@@ -36,7 +36,7 @@ private:
 	std::string file;
 	std::string exported_file;
 
-	ResourceType type = Default;
+	ResourceType type = Resource_Default;
 	uint loaded = 0;
 };
 
