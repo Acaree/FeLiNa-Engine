@@ -59,11 +59,12 @@ bool ModuleScene::Start()
 	std::string output_file;
 
 	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
-	Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Baker_House.felina");
+	//Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Baker_House.felina");
 
 	//App->importer_mesh->Import("Hierarchy.FBX", "Assets/", output_file);
 	//Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Box001.felina");
 
+	/* Create a game object from .felina file
 	GameObject* go = new GameObject(root_object);
 
 	go->AddComponent(Component_Transform);
@@ -74,6 +75,8 @@ bool ModuleScene::Start()
 	App->renderer3D->meshes.push_back(go->mesh);
 
 	go->AddBoundingBox(new_mesh);
+	*/
+
 
 	//std::string output_file;
 	App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);

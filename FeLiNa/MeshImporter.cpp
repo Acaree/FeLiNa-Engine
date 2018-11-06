@@ -72,13 +72,15 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 	if (scene != nullptr) {
 
+		//Create a new Game Object and set the name of file.
+		GameObject* childrens_go = new GameObject(App->scene->root_object);
+		childrens_go->SetName((char*)output_file.data());
+
 		aiNode* rootNode = scene->mRootNode;
 
-		LoadModel(scene, rootNode, output_file);
+		ComponentTransform* trans = (ComponentTransform*)childrens_go->AddComponent(Component_Transform);
 
-		//TO REVISE: I think this can delete
-		//childrens_go->SetParent(App->scene->root_object);
-		//App->scene->root_object->AddChildren(childrens_go);
+		LoadModel(scene, rootNode, output_file, childrens_go, trans);
 
 		aiReleaseImport(scene);
 
@@ -87,29 +89,54 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 	return ret;
 }
 
-void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& output_file)
+void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& output_file, GameObject* obj, ComponentTransform* trans)
 {
+
+	//Creating a game object to set data
+	GameObject* game_object = new GameObject(nullptr);
+	game_object->SetName(node->mName.data);
+
+	aiQuaternion q;
+	aiVector3D scale, pos;
+	node->mTransformation.Decompose(scale, q, pos);
+
+	ComponentTransform* component_transform = new ComponentTransform(nullptr, math::float3(pos.x, pos.y, pos.z), math::float3(q.GetEuler().x, q.GetEuler().y, q.GetEuler().z), math::float3(scale.x, scale.y, scale.z));
+	component_transform->SumPosition(trans->GetPosition());
+	component_transform->SumRotation(trans->GetRotation());
+	component_transform->SumScale(trans->GetScale());
+
 
 	if (node->mNumMeshes > 0)
 	{
 
-		Mesh mesh_data;
+		ComponentTransform* transform = (ComponentTransform*)game_object->AddComponent(Component_Transform);
+		transform->SetPosition(component_transform->GetPosition());
+		transform->SetRotation(component_transform->GetRotation());
+		transform->SetScale(component_transform->GetScale());
+
+
+		ComponentMesh* component_mesh = (ComponentMesh*)game_object->AddComponent(Component_Mesh);
+		ComponentTexture* component_texture = (ComponentTexture*)game_object->AddComponent(Component_Material);
+
+
+		Mesh* mesh_data = component_mesh->GetMesh();
+
 
 		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
 		{
 			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[num_meshes]];
 
 			//Load Vertices
-			mesh_data.num_vertices = new_mesh->mNumVertices;
-			mesh_data.vertices = new float[mesh_data.num_vertices * 3];
-			memcpy(mesh_data.vertices, new_mesh->mVertices, sizeof(float)*mesh_data.num_vertices * 3);
-			LOG("New mesh with %d vertices", mesh_data.num_vertices);
+			mesh_data->num_vertices = new_mesh->mNumVertices;
+			mesh_data->vertices = new float[mesh_data->num_vertices * 3];
+			memcpy(mesh_data->vertices, new_mesh->mVertices, sizeof(float)*mesh_data->num_vertices * 3);
+			LOG("New mesh with %d vertices", mesh_data->num_vertices);
 
 			//Load Mesh
 			if (new_mesh->HasFaces())
 			{
-				mesh_data.num_indices = new_mesh->mNumFaces * 3;
-				mesh_data.indices = new uint[mesh_data.num_indices];
+				mesh_data->num_indices = new_mesh->mNumFaces * 3;
+				mesh_data->indices = new uint[mesh_data->num_indices];
 
 				for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
 				{
@@ -118,7 +145,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 						LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
 					}
 					else
-						memcpy(&mesh_data.indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
+						memcpy(&mesh_data->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
 
 				}
 
@@ -127,46 +154,48 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			//Texture
 			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+			aiString name;
+			material->GetTexture(aiTextureType_DIFFUSE,0, &name);
+			
 			if (new_mesh->HasTextureCoords(0))
 			{
-				mesh_data.num_uv = new_mesh->mNumVertices;
-				mesh_data.uv = new float[mesh_data.num_uv * 2];
+				mesh_data->num_uv = new_mesh->mNumVertices;
+				mesh_data->uv = new float[mesh_data->num_uv * 2];
 
 				for (uint coords = 0; coords < new_mesh->mNumVertices; ++coords)
 				{
-					memcpy(&mesh_data.uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
-					memcpy(&mesh_data.uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
+					memcpy(&mesh_data->uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
+					memcpy(&mesh_data->uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
 				}
 
 
 			}
 
 
-			//Should be in load fln
-			
+			//Add the mesh component
+			GenerateBufferData(mesh_data);
 
 			//TO REVISE call here to module renderer?
+
+			App->renderer3D->AddDataMesh(component_mesh);
 
 			//component_mesh = App->renderer3D->CreateComponentMesh();
 
 		}
 
 		//CREATE AABB
+		game_object->AddBoundingBox(mesh_data);
+		
 
-		/*game_object->SetComponent(tr);
-		game_object->SetComponent(component_mesh);
-		game_object->SetComponent(component_texture);*/
-
-		//game_object->SetParent(obj);
+		obj->AddChildren(game_object);
+		game_object->RecalculateBoundingBox();
 
 		/*******************************************************************/
 
-
-		
 		//put in a new function savefln
-		uint ranges[3] = { mesh_data.num_vertices, mesh_data.num_indices, mesh_data.num_uv };
+		uint ranges[3] = { mesh_data->num_vertices, mesh_data->num_indices, mesh_data->num_uv };
 
-		uint size = sizeof(ranges) + sizeof(float) * mesh_data.num_vertices * 3 + sizeof(uint) * mesh_data.num_indices + sizeof(float)* mesh_data.num_uv *2;
+		uint size = sizeof(ranges) + sizeof(float) * mesh_data->num_vertices * 3 + sizeof(uint) * mesh_data->num_indices + sizeof(float)* mesh_data->num_uv * 2;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
@@ -178,40 +207,42 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		cursor += bytes;
 
 		//Store vertices
-		bytes = sizeof(float) * mesh_data.num_vertices * 3;
-		memcpy(cursor, mesh_data.vertices, bytes);
+		bytes = sizeof(float) * mesh_data->num_vertices * 3;
+		memcpy(cursor, mesh_data->vertices, bytes);
 
 		cursor += bytes;
 
 		//Store indices
-		bytes = sizeof(uint) * mesh_data.num_indices;
-		memcpy(cursor, mesh_data.indices, bytes);
+		bytes = sizeof(uint) * mesh_data->num_indices;
+		memcpy(cursor, mesh_data->indices, bytes);
 
 		cursor += bytes;
 
-		bytes = sizeof(float)* mesh_data.num_uv * 2;
-		memcpy(cursor, mesh_data.uv, bytes);
+		bytes = sizeof(float)* mesh_data->num_uv * 2;
+		memcpy(cursor, mesh_data->uv, bytes);
 
-		
+
+
 		output_file = node->mName.data;
 
 
 		if (App->fs->SaveFile((char *)data, size, output_file, MESH_FILE))
 		{
-			//LOG("SCENE IMPORTER: Successfully saved mesh to own format");
+			LOG("SCENE IMPORTER: Successfully saved mesh to own format");
 		}
 
-		//MEM LEAK
 
-		//RELEASE_ARRAY(data);
-		//RELEASE_ARRAY(vertices_);
+	}
+	else
+	{
+		RELEASE(game_object);
+		game_object = obj;
 	}
 
-	for (uint i = 0; i < node->mNumChildren; ++i) {
-
-		LoadModel(scene, node->mChildren[i], output_file);
+	for (uint i = 0; i < node->mNumChildren; ++i)
+	{
+		LoadModel(scene, node->mChildren[i], output_file, game_object, component_transform);
 	}
-
 
 }
 
