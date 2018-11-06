@@ -36,7 +36,7 @@ public:
 
 	void UpdateTransforms(GameObject* go);
 
-	void DrawGameObjects(ComponentMesh* mesh);
+	void DrawGameObjects(GameObject* go);
 
 	void AddDataMesh(ComponentMesh* data_mesh);
 	void DeleteAllDataMesh();
