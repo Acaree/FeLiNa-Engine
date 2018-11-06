@@ -179,6 +179,8 @@
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleInput.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleTimeManagement.h" />
     <ClInclude Include="ModuleWindow.h" />
@@ -260,6 +262,8 @@
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="mPlane.cpp" />
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SceneSerialization.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>

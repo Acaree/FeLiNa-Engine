@@ -208,6 +208,12 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Modules\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -534,6 +540,12 @@
     <ClInclude Include="Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Modules\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Modules\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -580,6 +592,9 @@
     </Filter>
     <Filter Include="Tools\ImGuizmo">
       <UniqueIdentifier>{d48f008e-03ae-43d4-892c-100cf03f2402}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Resources">
+      <UniqueIdentifier>{33e45be2-9824-4c6c-9f52-fb961e7a03a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

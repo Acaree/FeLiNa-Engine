@@ -9,6 +9,7 @@
 #include "ModuleConsole.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTimeManagement.h"
+
 #include "mmgr/mmgr.h"
 
 Application::Application()
@@ -24,6 +25,7 @@ Application::Application()
 	console = new ModuleConsole(this);
 	time_management = new ModuleTimeManagement(this);
 #endif // !GAME_MODE
+
 
 	importer_material = new MaterialImporter();
 	importer_mesh = new MeshImporter();

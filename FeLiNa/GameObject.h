@@ -45,7 +45,7 @@ public:
 	Component* GetComponent(ComponentType type);
 	Component* AddComponent(ComponentType type);
 
-	void CloneComponents(Component* component);
+	//void CloneComponents(Component* component);
 	bool DeleteComponent(Component* component);
 	void DeleteAllComponents();
 	bool DeleteComponent(ComponentType type);
