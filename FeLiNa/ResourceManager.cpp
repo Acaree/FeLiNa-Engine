@@ -60,16 +60,16 @@ Resource* ResourceManager::CreateNewResource(ResourceType type)
 {
 	Resource* res = nullptr;
 
-	if (type != ResourceType::Default)
+	if (type != ResourceType::Resource_Default)
 	{
 		uint uid = App->random->Int();
 
 		switch (type)
 		{
-		case Mesh:
+		case Resource_Mesh:
 			// res = new resoucemesh
 			break;
-		case Material:
+		case Resource_Material:
 			//res = new resourcematerial
 			break;
 		default:
