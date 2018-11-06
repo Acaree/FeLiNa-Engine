@@ -7,6 +7,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 
+#include "MaterialImporter.h"
+
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -155,7 +157,26 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 			//Texture
 			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
 			aiString name;
-			material->GetTexture(aiTextureType_DIFFUSE,0, &name);
+			
+			material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
+
+			std::string file_path = name.data;
+
+			std::string file_name = file_path.substr(file_path.find_last_of("\\") + 1, file_path.size());
+
+			std::string path = file_path.erase(file_path.find_last_of("\\") + 1, file_path.size());
+
+			std::string texture_generated;
+		
+			char* file_name_c = new char[file_name.size() + 1];
+
+			strcpy_s(file_name_c, file_name.size() + 1, file_name.data());
+
+			char* path_c = new char[file_name.size() + 1];
+
+			strcpy_s(path_c, file_name.size() + 1, file_name.data());
+
+			App->importer_material->Import((const char*)file_name_c,(const char*)path_c, texture_generated);
 			
 			if (new_mesh->HasTextureCoords(0))
 			{

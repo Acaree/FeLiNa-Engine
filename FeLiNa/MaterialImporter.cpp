@@ -35,9 +35,9 @@ MaterialImporter::~MaterialImporter()
 
 }
 //const char* importFileName, const char* importPath, std::string& outputFileName
-bool MaterialImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
+Texture* MaterialImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
 {
-	bool ret = false;
+	Texture* ret = nullptr;
 
 	char* buffer;
 
@@ -70,9 +70,12 @@ bool MaterialImporter::Import(const char* file_name, const char* file_path, std:
 }
 
 
-bool MaterialImporter::Import(const void* buffer, uint size, std::string& output_file)
+Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& output_file)
 {
-	bool ret = false;
+	Texture* ret = new Texture;
+	ret->height = 0;
+	ret->texture_id = 0;
+	ret->width = 0;
 
 	if (buffer == nullptr || size <= 0)
 	{
@@ -94,6 +97,8 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 		uint size = 0;
 		ILubyte* data = nullptr;
 
+		uint textureID = 0;
+
 		// Pick a specific DXT compression use
 		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
 
@@ -108,13 +113,45 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 			// Allocate the data buffer
 			data = new ILubyte[size];
 
+			ILinfo ImageInfo;
+			iluGetImageInfo(&ImageInfo);
+			if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+			{
+				iluFlipImage();
+			}
+
+			bool success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+
+			if (!success)
+			{
+				LOG("Image conversion failed");
+			}
+
+			glGenTextures(1, &textureID);
+
+			glBindTexture(GL_TEXTURE_2D, textureID);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
+				0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+
 			// Save to the buffer
 			if (ilSaveL(IL_DDS, data, size) > 0)
 			{
+
+				ret->texture_id = textureID;
+				ret->width = ilGetInteger(IL_IMAGE_WIDTH);
+				ret->height = ilGetInteger(IL_IMAGE_HEIGHT);
+
 				if (App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE) > 0)
 				{
 					LOG("MATERIAL IMPORTER: Successfully saved texture %s to own format", output_file);
-					ret = true;
 				}
 				else
 					LOG("MATERIAL IMPORTER: Could not save texture %s to own format", output_file);

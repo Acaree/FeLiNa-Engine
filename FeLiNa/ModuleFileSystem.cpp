@@ -137,7 +137,7 @@ uint ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_fil
 		sprintf_s(new_path, DEFAULT_BUF_SIZE, "Library/Meshes/%s.%s", new_name, EXTENSION);
 		break;
 	case MATERIAL_FILE:
-		sprintf_s(new_path, DEFAULT_BUF_SIZE, "Library/Materials/%s.%s", new_name, EXTENSION);
+		sprintf_s(new_path, DEFAULT_BUF_SIZE, "Library/Materials/%s.%s", new_name, ".dds");
 		break;
 	default:
 		break;
