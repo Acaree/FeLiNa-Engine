@@ -25,6 +25,7 @@ class ModuleConsole;
 class ModuleFileSystem;
 class ModuleTimeManagement;
 
+
 enum ENGINE_STATES
 {
 	ENGINE_STATE_EDITOR_MODE = 0,
@@ -58,6 +59,8 @@ public:
 	//IMPORTERS
 	MaterialImporter* importer_material ;
 	MeshImporter* importer_mesh;
+
+
 
 	char* app_name = nullptr;
 	char* organization = nullptr;
