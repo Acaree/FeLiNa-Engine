@@ -68,7 +68,7 @@ private:
 	bool cull_face = false;
 	bool lighting = false;
 	bool color_material = false;;
-	bool texture2D = false;
+	bool texture2D = true;
 	bool line_smooth = false;
 	bool polygon_smooth = false;
 	

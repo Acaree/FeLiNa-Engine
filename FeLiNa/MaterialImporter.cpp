@@ -118,7 +118,8 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 
 			ILinfo ImageInfo;
 			iluGetImageInfo(&ImageInfo);
-			if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+
+			if (ImageInfo.Origin != IL_ORIGIN_UPPER_LEFT)
 			{
 				iluFlipImage();
 			}

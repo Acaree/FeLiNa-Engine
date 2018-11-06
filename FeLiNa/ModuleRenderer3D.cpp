@@ -173,25 +173,11 @@ bool ModuleRenderer3D::Init()
 	// Projection matrix for
 	//OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	if (depth_test)
-		glEnable(GL_DEPTH_TEST);
-	else
-		glDisable(GL_DEPTH_TEST);
-
-	if (cull_face)
-		glEnable(GL_CULL_FACE);
-	else
-		glDisable(GL_CULL_FACE);
 	
 	if (lighting)
 		glEnable(GL_LIGHTING);
 	else
 		glDisable(GL_LIGHTING);
-
-	if (texture2D)
-		glEnable(GL_TEXTURE_2D);
-	else
-		glDisable(GL_TEXTURE_2D);
 
 	if (line_smooth)
 		glEnable(GL_LINE_SMOOTH);
@@ -202,6 +188,10 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_POLYGON_SMOOTH);
 	else
 		glDisable(GL_POLYGON_SMOOTH);
+
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
 #ifndef GAME_MODE
 	CreateCheckers();
