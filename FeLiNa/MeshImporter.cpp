@@ -176,7 +176,11 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			strcpy_s(path_c, path.size() + 1, path.data());
 
-			Texture* tex = App->importer_material->Import((const char*)file_name_c,(const char*)path_c, texture_generated);
+			char add [DEFAULT_BUF_SIZE] = "Assets\\";
+
+			sprintf_s(add, DEFAULT_BUF_SIZE, "%s%s", add, path_c);
+
+			Texture* tex = App->importer_material->Import((const char*)file_name_c,(const char*)add, texture_generated);
 
 			//Texture* tex = App->importer_material->Import("Baker_house.png", "Assets/Textures/", texture_generated);
 
