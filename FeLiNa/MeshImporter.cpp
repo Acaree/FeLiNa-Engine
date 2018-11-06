@@ -164,7 +164,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			std::string file_name = file_path.substr(file_path.find_last_of("\\") + 1, file_path.size());
 
-			std::string path = file_path.erase(file_path.find_last_of("\\") + 1, file_path.size());
+			std::string path = file_path.erase(file_path.find_last_of("\\"), file_path.size());
 
 			std::string texture_generated;
 		
@@ -176,9 +176,9 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			strcpy_s(path_c, path.size() + 1, path.data());
 
-			char add [DEFAULT_BUF_SIZE] = "Assets\\";
+			char add [DEFAULT_BUF_SIZE] = "Assets";
 
-			sprintf_s(add, DEFAULT_BUF_SIZE, "%s%s", add, path_c);
+			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/", add, path_c);
 
 			Texture* tex = App->importer_material->Import((const char*)file_name_c,(const char*)add, texture_generated);
 
