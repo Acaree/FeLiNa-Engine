@@ -81,7 +81,7 @@ bool ModuleScene::Start()
 
 
 	//std::string output_file;
-	//Texture* tex = App->importer_material->Import("Baker_house.png","Assets/Textures/", output_file);
+	//Texture* tex = App->importer_material->LoadDDS("Library/Materials/Baker_house.dds");
 
 
 	//TEST FRUSTUM

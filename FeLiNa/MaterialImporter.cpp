@@ -172,3 +172,72 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 
 	return ret;
 }
+
+Texture* MaterialImporter::LoadDDS(char* path) {
+
+	Texture* ret = new Texture;
+
+	uint imageID = 0;
+
+	uint textureID = 0;
+
+	bool success = false;
+
+	ILenum error;
+
+	ilGenImages(1, &imageID);
+
+	ilBindImage(imageID);
+
+	success = ilLoadImage(path);
+
+
+	if (success)
+	{
+
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
+
+		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+
+		if (!success)
+		{
+			error = ilGetError();
+			LOG("Image conversion failed - IL reports error: %i %s ", error, iluErrorString(error));
+			exit(-1);
+		}
+
+		glGenTextures(1, &textureID);
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
+			0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+		ret->felina_path = path;
+
+		ret->height = ilGetInteger(IL_IMAGE_HEIGHT);
+		ret->width = ilGetInteger(IL_IMAGE_WIDTH);
+		ret->texture_id = textureID;
+
+		if (success)
+			LOG("Texture creation successful.");
+	}
+	else
+		LOG("Texture creation failed.");
+
+	ilDeleteImages(1, &imageID);
+
+	return ret;
+
+}

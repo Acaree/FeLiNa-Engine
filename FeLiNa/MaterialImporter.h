@@ -17,6 +17,8 @@ public:
 	Texture* Import(const char* file_name, const char* file_path, std::string& output_file);
 	Texture* Import(const void* buffer, uint size, std::string& output_file);
 
+	Texture* LoadDDS(char* path);
+
 	//bool Load(const char* file_name, Texture* output_texture);
 	//bool Load(const void* buffer, uint size, Texture* output_texture);
 
