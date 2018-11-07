@@ -153,12 +153,9 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 				ret->width = ilGetInteger(IL_IMAGE_WIDTH);
 				ret->height = ilGetInteger(IL_IMAGE_HEIGHT);
 
-				if (App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE) > 0)
-				{
-					LOG("MATERIAL IMPORTER: Successfully saved texture %s to own format", output_file);
-				}
-				else
-					LOG("MATERIAL IMPORTER: Could not save texture %s to own format", output_file);
+				ret->felina_path = App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);
+				
+				
 			}
 
 			RELEASE_ARRAY(data);

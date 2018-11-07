@@ -40,3 +40,9 @@ void ComponentMesh::DrawInspector()
 		ImGui::TreePop();
 	}
 }
+
+void ComponentMesh::SetPath(char* path) {
+
+	mesh->felina_path = path;
+
+}

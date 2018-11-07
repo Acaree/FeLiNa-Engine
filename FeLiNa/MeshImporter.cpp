@@ -224,6 +224,9 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		/*******************************************************************/
 
 		//put in a new function savefln
+
+
+
 		uint ranges[3] = { mesh_data->num_vertices, mesh_data->num_indices, mesh_data->num_uv };
 
 		uint size = sizeof(ranges) + sizeof(float) * mesh_data->num_vertices * 3 + sizeof(uint) * mesh_data->num_indices + sizeof(float)* mesh_data->num_uv * 2;
@@ -257,10 +260,11 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		output_file = node->mName.data;
 
 
-		if (App->fs->SaveFile((char *)data, size, output_file, MESH_FILE))
-		{
-			LOG("SCENE IMPORTER: Successfully saved mesh to own format");
-		}
+		char* final_path = App->fs->SaveFile((char *)cursor, size, output_file, MESH_FILE);
+		
+
+
+		game_object->mesh->SetPath(final_path);
 
 
 	}

@@ -20,7 +20,7 @@ public:
 
 	uint Load(const char* path, char** buffer) const;
 
-	uint SaveFile(char* buffer, uint size, std::string& outputFileName, FILE_TYPE file);
+	char* SaveFile(char* buffer, uint size, std::string& outputFileName, FILE_TYPE file);
 
 	uint SaveBufferData(char* buffer,const char* filePath, uint size);
 

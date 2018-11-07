@@ -12,6 +12,8 @@ struct Texture
 	uint width = 0;
 	uint height = 0;
 
+	char* felina_path;
+
 };
 
 class ComponentTexture : public Component
@@ -28,6 +30,7 @@ public:
 	uint GetTextureWidth() const;
 
 	void DrawInspector();
+	void SetPath(char* path);
 
 	//void OnSave(JSON_Object* obj); //What we save? :/
 	//void OnLoad(JSON_Object* obj);
@@ -38,6 +41,7 @@ public:
 private:
 
 	Texture* texture = nullptr;
+
 
 };
 

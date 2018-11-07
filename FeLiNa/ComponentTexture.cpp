@@ -66,3 +66,9 @@ void ComponentTexture::DrawInspector()
 
 
 }
+
+void ComponentTexture::SetPath(char* path) {
+
+	texture->felina_path = path;
+
+}

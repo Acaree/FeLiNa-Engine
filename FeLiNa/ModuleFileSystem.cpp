@@ -119,9 +119,9 @@ const char* ModuleFileSystem::GetNameFile(const char* path) const
 	return result;
 }
 
-uint ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_file, FILE_TYPE file)
+char* ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_file, FILE_TYPE file)
 {
-	uint ret = 0;
+	
 
 	//COPY NAME
 	char new_name[DEFAULT_BUF_SIZE];
@@ -143,11 +143,10 @@ uint ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_fil
 		break;
 	}
 
-	
 
-	ret = SaveBufferData(buffer, new_path, size);
+	SaveBufferData(buffer, new_path, size);
 
-	return ret;
+	return new_path;
 }
 
 uint ModuleFileSystem::SaveBufferData(char* buffer, const char* file_path, uint size)
