@@ -198,3 +198,24 @@ bool ModuleFileSystem::isDirectory(const char* file) const
 {
 	return PHYSFS_isDirectory(file);
 }
+
+FILE_TYPE ModuleFileSystem::FindTypeFile(const char* file)
+{
+	FILE_TYPE file_type = FILE_TYPE::UKNOWN_FILE;
+
+	std::string file_extension = file;
+
+	file_extension = file_extension.erase(0, file_extension.find_last_of("."));
+
+	
+	if (strcmp(file_extension.c_str(), ".felina") == 0 )
+	{
+		file_type = FILE_TYPE::MESH_FILE;
+	}
+	else if( strcmp(file_extension.c_str(), ".dds") == 0 )
+	{
+		file_type = FILE_TYPE::MATERIAL_FILE;
+	}
+
+	return file_type;
+}

@@ -8,8 +8,11 @@
 class ResourceMaterial : public Resource
 {
 public:
-	ResourceMaterial(uint uid, ResourceType type);
+	ResourceMaterial(uint uid, RESOURCE_TYPE type);
 	~ResourceMaterial();
+
+	void SetTexture(Texture* texture);
+	Texture GetTexture() const;
 
 	bool LoadInMemory();
 	bool EraseInMemory();

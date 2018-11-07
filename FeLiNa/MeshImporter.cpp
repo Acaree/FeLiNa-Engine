@@ -84,6 +84,12 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 		LoadModel(scene, rootNode, output_file, childrens_go, trans);
 
+		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
+		App->serialization_scene->save_name_scene = "test_auto_save";
+		App->serialization_scene->SaveScene();
+		App->serialization_scene->ClearActualScene();
+		App->serialization_scene->save_name_scene = "test_auto_save";
+		App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
 		aiReleaseImport(scene);
 
 	}
@@ -182,7 +188,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/", add, path_c);
 
-			Texture* tex = App->importer_material->Import((const char*)file_name_c,(const char*)add, texture_generated);
+ 			Texture* tex = App->importer_material->Import((const char*)file_name_c,(const char*)add, texture_generated);
 
 			//Texture* tex = App->importer_material->Import("Baker_house.png", "Assets/Textures/", texture_generated);
 

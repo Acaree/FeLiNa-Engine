@@ -1,7 +1,7 @@
 #include "Resource.h"
 
 
-Resource::Resource(uint uid, ResourceType type)
+Resource::Resource(uint uid, RESOURCE_TYPE type)
 {
 	this->uid = uid;
 	this->type = type;
@@ -11,7 +11,7 @@ Resource::~Resource()
 {
 }
 
-ResourceType Resource::GetType() const
+RESOURCE_TYPE Resource::GetType() const
 {
 	return type;
 }
@@ -47,4 +47,9 @@ uint Resource::LoadToMemory()
 uint Resource::CountReferences() const
 {
 	return loaded;
+}
+
+void Resource::SetExportedFile(const char* exported_file)
+{
+	this->exported_file = exported_file;
 }

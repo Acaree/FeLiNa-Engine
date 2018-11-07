@@ -9,7 +9,7 @@
 #include "ModuleConsole.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTimeManagement.h"
-
+#include "SceneSerialization.h"
 #include "mmgr/mmgr.h"
 
 Application::Application()
@@ -26,7 +26,7 @@ Application::Application()
 	time_management = new ModuleTimeManagement(this);
 #endif // !GAME_MODE
 
-
+	serialization_scene = new SceneSerialization();
 	importer_material = new MaterialImporter();
 	importer_mesh = new MeshImporter();
 	window = new ModuleWindow(this);
@@ -51,6 +51,7 @@ Application::Application()
 	
 	AddModule(fs);
 	// Scenes
+
 	AddModule(scene);
 
 #ifndef GAME_MODE

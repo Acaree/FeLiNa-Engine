@@ -352,9 +352,9 @@ void ModuleGui::SaveScene()
 
 		if (ImGui::Button("Save Scene", ImVec2(100, 0)))
 		{
-			App->scene->serialization_scene->save_name_scene = save_name;
+			App->serialization_scene->save_name_scene = save_name;
 			ImGui::CloseCurrentPopup();
-			App->scene->serialization_scene->SaveScene();
+			App->serialization_scene->SaveScene();
 			serialization_save_scene = false;
 		}
 		ImGui::SameLine();
@@ -393,8 +393,8 @@ void ModuleGui::LoadScene()
 		if (ImGui::Button("Load", ImVec2(100, 0)))
 		{
 
-			App->scene->serialization_scene->ClearActualScene();
-			App->scene->serialization_scene->LoadScene(name_load_scene);
+			App->serialization_scene->ClearActualScene();
+			App->serialization_scene->LoadScene(name_load_scene);
 			ImGui::CloseCurrentPopup();
 
 			// TO REVISE: clear and load with path

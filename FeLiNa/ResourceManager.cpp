@@ -2,6 +2,10 @@
 #include "ModuleFileSystem.h"
 #include "ResourceManager.h"
 #include "Resource.h"
+#include "ResourceMesh.h"
+#include "ResourceMaterial.h"
+#include "MeshImporter.h"
+#include "MaterialImporter.h"
 
 
 ResourceManager::ResourceManager()
@@ -36,9 +40,42 @@ uint ResourceManager::ImportFile(const char* new_file)
 
 	if (ret == 0)
 	{
-		//std::string file = App->fs-> NEED A FUNCTION.
-		
+		LOG("Don't find in resources, need load from path...");
 
+		FILE_TYPE file_type = App->fs->FindTypeFile(new_file);
+
+		Resource* resource = nullptr;
+
+		switch (file_type)
+		{
+		case MESH_FILE:
+		{
+			LOG("Mesh file detected, creating...");
+			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
+			resource->SetExportedFile(new_file);
+			Mesh* mesh = App->importer_mesh->LoadFLN(new_file);
+			SetResourceData(mesh, resource);
+			break;
+		}
+		case MATERIAL_FILE:
+			LOG("Material file detected, creating...");
+			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MATERIAL);
+			//Same that mesh.
+
+			break;
+		case UKNOWN_FILE:
+			LOG("Can't recognize type of file");
+			break;
+		}
+
+		if (resource != nullptr)
+			ret = resource->GetUID();
+		else
+			ret = 0;
+	}
+	else
+	{
+		LOG("Find file in resources with uid: %i", ret);
 	}
 
 	return ret;
@@ -56,31 +93,34 @@ const Resource* ResourceManager::Get(uint uid)
 	return res;
 }
 
-Resource* ResourceManager::CreateNewResource(ResourceType type)
+Resource* ResourceManager::CreateNewResource(RESOURCE_TYPE type)
 {
-	Resource* res = nullptr;
+	Resource* resource = nullptr;
 
-	if (type != ResourceType::Resource_Default)
+	if (type != RESOURCE_TYPE::RESOURCE_DEFAULT)
 	{
 		uint uid = App->random->Int();
 
 		switch (type)
 		{
-		case Resource_Mesh:
-			// res = new resoucemesh
+		case RESOURCE_MESH:
+			resource = (Resource*) new ResourceMesh(uid, RESOURCE_MESH);
 			break;
-		case Resource_Material:
-			//res = new resourcematerial
+		case RESOURCE_MATERIAL:
+			resource = (Resource*) new ResourceMaterial(uid, RESOURCE_MATERIAL);
 			break;
 		default:
 			break;
 		}
 
-		if (res != nullptr)
-			resources[uid] = res;
-
-
+		if (resource != nullptr)
+		{
+			LOG("NEW RESOURCE GENERATED");
+			resources[uid] = resource;
+		}
+		else
+			LOG("Can't generate new resource :(");
 	}
 
-	return res;
+	return resource;
 }

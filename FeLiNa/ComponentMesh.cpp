@@ -9,7 +9,7 @@ ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 	type = Component_Mesh;
 
 	mesh = new Mesh();
-
+	mesh->felina_path = new char[DEFAULT_BUF_SIZE];
 }
 
 ComponentMesh::~ComponentMesh()
@@ -44,5 +44,21 @@ void ComponentMesh::DrawInspector()
 void ComponentMesh::SetPath(char* path) {
 
 	mesh->felina_path = path;
+
+}
+
+void ComponentMesh::OnSave(JSON_Object* obj)
+{
+	json_object_set_number(obj, "type", type);
+	json_object_set_string(obj, "path", mesh->felina_path);
+}
+
+void ComponentMesh::OnLoad(JSON_Object* obj)
+{
+
+	
+	memcpy(mesh->felina_path, (char*)json_object_get_string(obj, "path"), DEFAULT_BUF_SIZE);
+
+
 
 }

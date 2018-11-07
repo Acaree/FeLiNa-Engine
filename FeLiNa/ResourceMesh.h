@@ -8,13 +8,14 @@
 class ResourceMesh : public Resource
 {
 public:
-	ResourceMesh(uint uid, ResourceType type);
+	ResourceMesh(uint uid, RESOURCE_TYPE type);
 	~ResourceMesh();
 
 	bool LoadInMemory();
 	bool EraseInMemory();
 
-
+	void SetMesh(Mesh* mesh);
+	Mesh GetMesh() const;
 
 private:
 

@@ -1,7 +1,7 @@
 #include "ResourceMesh.h"
 
 
-ResourceMesh::ResourceMesh(uint uid, ResourceType type) : Resource(uid,type)
+ResourceMesh::ResourceMesh(uint uid, RESOURCE_TYPE type) : Resource(uid,type)
 {
 }
 
@@ -27,4 +27,14 @@ bool ResourceMesh::EraseInMemory()
 	return ret;
 
 
+}
+
+void ResourceMesh::SetMesh(Mesh* mesh)
+{
+	this->mesh = *mesh;
+}
+
+Mesh ResourceMesh::GetMesh() const
+{
+	return mesh;
 }

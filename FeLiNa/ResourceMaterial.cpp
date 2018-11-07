@@ -1,6 +1,6 @@
 #include "ResourceMaterial.h"
 
-ResourceMaterial::ResourceMaterial(uint uid, ResourceType type) : Resource(uid, type)
+ResourceMaterial::ResourceMaterial(uint uid, RESOURCE_TYPE type) : Resource(uid, type)
 {
 }
 
@@ -20,4 +20,14 @@ bool ResourceMaterial::EraseInMemory()
 	bool ret = false;
 
 	return ret;
+}
+
+void ResourceMaterial::SetTexture(Texture* texture)
+{
+	this->texture = *texture;
+}
+
+Texture ResourceMaterial::GetTexture() const
+{
+	return texture;
 }

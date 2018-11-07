@@ -75,7 +75,7 @@ Texture* MaterialImporter::Import(const char* file_name, const char* file_path, 
 
 Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& output_file)
 {
-	Texture* ret = new Texture;
+	Texture* ret = new Texture();
 	ret->height = 0;
 	ret->texture_id = 0;
 	ret->width = 0;
@@ -153,7 +153,11 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 				ret->width = ilGetInteger(IL_IMAGE_WIDTH);
 				ret->height = ilGetInteger(IL_IMAGE_HEIGHT);
 
-				ret->felina_path = App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);
+				ret->felina_path = new char[DEFAULT_BUF_SIZE];
+				char* tmp =  App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);
+				//TO REVISE TO BAD
+				
+				memcpy(ret->felina_path, tmp, DEFAULT_BUF_SIZE);
 				
 				
 			}

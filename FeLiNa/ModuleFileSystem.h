@@ -6,7 +6,8 @@
 enum FILE_TYPE
 {
 	MESH_FILE,
-	MATERIAL_FILE
+	MATERIAL_FILE,
+	UKNOWN_FILE
 };
 
 class ModuleFileSystem : public Module
@@ -17,6 +18,7 @@ public:
 
 	const char* GetNameFile(const char* path) const;
 
+	FILE_TYPE FindTypeFile(const char* file);
 
 	uint Load(const char* path, char** buffer) const;
 

@@ -94,7 +94,7 @@ bool ModuleScene::Start()
 	quadtree->SetBoundary(box);
 
 	//FOR SERIALIZATION
-	serialization_scene = new SceneSerialization();
+
 	//s.LoadScene();
 	//s.SaveScene();
 
@@ -109,7 +109,7 @@ bool ModuleScene::CleanUp()
 	RELEASE(grid_plane);
 	RELEASE(quadtree);
 
-	RELEASE(serialization_scene);
+	
 
 	static_go.clear();
 
