@@ -267,6 +267,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
+	LOG("post %s", name);
 	// Recalculate all objects transformations
 	UpdateTransforms(App->scene->root_object);
 
@@ -284,9 +285,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 #ifndef GAME_MODE
 	if (debug_draw)
 	{
-		for (uint i = 0; i < meshes.size(); ++i)
+		for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
 		{
-			meshes[i]->GetParent()->DrawBoundingBox(); 
+			App->scene->root_object->GetChild(i)->DrawBoundingBox();
 		}
 
 		App->camera->main_camera->camera->DebugDraw();

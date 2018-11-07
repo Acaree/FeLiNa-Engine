@@ -3,6 +3,10 @@
 #include "GameObject.h"
 #include "MeshImporter.h"
 #include "ImGui/imgui.h"
+#include "Resource.h"
+#include "Application.h"
+#include "ResourceManager.h"
+#include "ResourceMesh.h"
 
 ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 {
@@ -43,7 +47,8 @@ void ComponentMesh::DrawInspector()
 
 void ComponentMesh::SetPath(char* path) {
 
-	mesh->felina_path = path;
+	//mesh->felina_path = path;
+	strcpy(mesh->felina_path, path);
 
 }
 
@@ -55,10 +60,15 @@ void ComponentMesh::OnSave(JSON_Object* obj)
 
 void ComponentMesh::OnLoad(JSON_Object* obj)
 {
+	char* tmp = (char*)json_object_get_string(obj, "path");
+	uint uid = App->resource_manager->ImportFile(tmp);
 
+	ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->Get(uid);
 	
-	memcpy(mesh->felina_path, (char*)json_object_get_string(obj, "path"), DEFAULT_BUF_SIZE);
-
-
-
+	
+	mesh = resource_mesh->GetMesh();
+	
+	parent->bounding_box.Enclose((math::float3 *)mesh->vertices, mesh->num_vertices);
+	
+	parent->RecalculateBoundingBox();
 }

@@ -15,11 +15,11 @@ public:
 	bool EraseInMemory();
 
 	void SetMesh(Mesh* mesh);
-	Mesh GetMesh() const;
+	Mesh* GetMesh() const;
 
 private:
 
-	Mesh mesh;
+	Mesh* mesh;
 
 };
 

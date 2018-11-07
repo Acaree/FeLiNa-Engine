@@ -84,7 +84,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 		LoadModel(scene, rootNode, output_file, childrens_go, trans);
 
-		/*
+		
 		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
 		App->serialization_scene->save_name_scene = "test_auto_save";
 		App->serialization_scene->SaveScene();
@@ -92,7 +92,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 		App->serialization_scene->save_name_scene = "test_auto_save";
 		App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
 		aiReleaseImport(scene);
-		*/
+		
 	}
 
 	return ret;
@@ -268,7 +268,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 		char* final_path = App->fs->SaveFile((char *)data, size, output_file, MESH_FILE);
 		
-
+		
 
 		game_object->mesh->SetPath(final_path);
 
@@ -338,6 +338,8 @@ Mesh* MeshImporter::LoadFLN(const void* buffer, uint size) {
 	bytes = sizeof(float) * ret->num_uv * 2;
 	ret->uv = new float[ret->num_uv * 2];
 	memcpy(ret->uv, cursor, bytes);
+
+	ret->felina_path = new char[DEFAULT_BUF_SIZE];
 
 	GenerateBufferData(ret);
 

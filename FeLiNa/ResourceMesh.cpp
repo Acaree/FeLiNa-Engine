@@ -3,6 +3,7 @@
 
 ResourceMesh::ResourceMesh(uint uid, RESOURCE_TYPE type) : Resource(uid,type)
 {
+	mesh = new Mesh();
 }
 
 ResourceMesh::~ResourceMesh()
@@ -31,10 +32,10 @@ bool ResourceMesh::EraseInMemory()
 
 void ResourceMesh::SetMesh(Mesh* mesh)
 {
-	this->mesh = *mesh;
+	this->mesh = mesh;
 }
 
-Mesh ResourceMesh::GetMesh() const
+Mesh* ResourceMesh::GetMesh() const
 {
 	return mesh;
 }

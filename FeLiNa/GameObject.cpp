@@ -349,7 +349,10 @@ void GameObject::DrawBoundingBox()
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	
-	
+	for (uint i = 0; i < childrens.size(); ++i)
+	{
+		childrens[i]->DrawBoundingBox();
+	}
 
 }
 
@@ -374,16 +377,13 @@ void GameObject::RecalculateBoundingBox()
 {
 	bounding_box.SetNegativeInfinity();
 
-	ComponentTransform* tr = (ComponentTransform*)GetComponent(Component_Transform);
-	ComponentMesh* mesh = (ComponentMesh*)GetComponent(Component_Mesh);
-
 
 	if (mesh != nullptr)
 		bounding_box.Enclose((const math::float3*)mesh->GetMesh()->vertices, mesh->GetMesh()->num_vertices);
 
-	if (tr != nullptr)
+	if (transform != nullptr)
 	{
-		math::OBB obb = bounding_box.Transform(tr->GetTransformMatrix());
+		math::OBB obb = bounding_box.Transform(transform->GetTransformMatrix());
 
 		if (obb.IsFinite())
 			bounding_box = obb.MinimalEnclosingAABB();

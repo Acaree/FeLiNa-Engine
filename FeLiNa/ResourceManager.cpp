@@ -54,6 +54,7 @@ uint ResourceManager::ImportFile(const char* new_file)
 			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
 			resource->SetExportedFile(new_file);
 			Mesh* mesh = App->importer_mesh->LoadFLN(new_file);
+			memcpy(mesh->felina_path, new_file,DEFAULT_BUF_SIZE);
 			SetResourceData(mesh, resource);
 			break;
 		}
@@ -69,7 +70,12 @@ uint ResourceManager::ImportFile(const char* new_file)
 		}
 
 		if (resource != nullptr)
+		{
+			//If the resource create and assign her data , call LoadToMemory for bind data or sum the number of loaded
+			resource->LoadToMemory();
+			//Get the uid 
 			ret = resource->GetUID();
+		}
 		else
 			ret = 0;
 	}

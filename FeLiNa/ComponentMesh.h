@@ -21,7 +21,7 @@ struct Mesh
 	uint num_uv = 0;
 	float* uv = nullptr;
 
-	char* felina_path;
+	char* felina_path = nullptr;
 
 };
 
