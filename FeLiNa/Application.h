@@ -25,6 +25,7 @@ class ModuleConsole;
 class ModuleFileSystem;
 class ModuleTimeManagement;
 
+class SceneSerialization;
 
 enum ENGINE_STATES
 {
@@ -59,7 +60,7 @@ public:
 	//IMPORTERS
 	MaterialImporter* importer_material ;
 	MeshImporter* importer_mesh;
-
+	SceneSerialization* serialization_scene;
 
 
 	char* app_name = nullptr;

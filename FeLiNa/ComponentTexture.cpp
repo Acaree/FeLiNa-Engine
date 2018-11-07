@@ -5,10 +5,14 @@
 ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
 
 	type = Component_Material;
+	texture = new Texture();
+	texture->felina_path = new char[DEFAULT_BUF_SIZE];
 }
 
-ComponentTexture::~ComponentTexture() {
-
+ComponentTexture::~ComponentTexture()
+{
+	RELEASE_ARRAY(texture->felina_path);
+	RELEASE(texture);
 }
 
 
@@ -71,4 +75,15 @@ void ComponentTexture::SetPath(char* path) {
 
 	texture->felina_path = path;
 
+}
+
+void ComponentTexture::OnSave(JSON_Object* obj)
+{
+	json_object_set_number(obj, "type", type);
+	json_object_set_string(obj, "path", texture->felina_path);
+}
+
+void ComponentTexture::OnLoad(JSON_Object* obj)
+{
+	memcpy(texture->felina_path , (char*)json_object_get_string(obj, "path"), DEFAULT_BUF_SIZE);
 }

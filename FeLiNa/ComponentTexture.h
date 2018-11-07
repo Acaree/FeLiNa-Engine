@@ -32,8 +32,8 @@ public:
 	void DrawInspector();
 	void SetPath(char* path);
 
-	//void OnSave(JSON_Object* obj); //What we save? :/
-	//void OnLoad(JSON_Object* obj);
+	void OnSave(JSON_Object* obj); //What we save? :/
+	void OnLoad(JSON_Object* obj);
 
 	bool material_checker = false;
 	bool no_texture = false;

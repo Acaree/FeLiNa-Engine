@@ -41,8 +41,8 @@ public:
 
 	void SetPath(char* path);
 
-	/*void OnSave(JSON_Object* obj); // Same that Texture :/
-	void OnLoad(JSON_Object* obj);*/
+	void OnSave(JSON_Object* obj); // Same that Texture :/
+	void OnLoad(JSON_Object* obj);
 
 private:
 	
