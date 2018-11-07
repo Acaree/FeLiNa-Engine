@@ -9,7 +9,7 @@ ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 	type = Component_Mesh;
 
 	mesh = new Mesh();
-
+	mesh->felina_path = new char[DEFAULT_BUF_SIZE];
 }
 
 ComponentMesh::~ComponentMesh()
@@ -55,5 +55,10 @@ void ComponentMesh::OnSave(JSON_Object* obj)
 
 void ComponentMesh::OnLoad(JSON_Object* obj)
 {
+
+	
 	memcpy(mesh->felina_path, (char*)json_object_get_string(obj, "path"), DEFAULT_BUF_SIZE);
+
+
+
 }

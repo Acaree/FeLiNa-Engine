@@ -145,26 +145,24 @@ void SceneSerialization::CreateGameObjectHierarchy(std::vector<GameObject*>& aux
 
 	if (aux_go.size() > 0)
 	{
-		uint uid_root = aux_go[0]->uid;
 
-		for (uint i = 1; i < aux_go.size(); ++i)
+		for (uint i = 0; i < aux_go.size(); ++i)
 		{
 			if (aux_go[i]->GetParent() != nullptr)
 			{
-				if (aux_go[i]->GetParent()->uid == uid_root)
-					App->scene->root_object->AddChildren(aux_go[i]);
+				
+				GameObject* parent_object = nullptr;
+				parent_object = App->scene->root_object->SearchParentForUID(aux_go[i]->GetParent()->uid);
+
+				if (parent_object != nullptr)
+					parent_object->AddChildren(aux_go[i]);
 				else
-				{
-					GameObject* parent_object = nullptr;
-					parent_object = App->scene->root_object->SearchParentForUID(aux_go[i]->GetParent()->uid);
+					App->scene->root_object->AddChildren(aux_go[i]); // :/
 
-					if (parent_object != nullptr)
-						parent_object->AddChildren(aux_go[i]);
-					else
-						App->scene->root_object->AddChildren(aux_go[i]); // :/
-
-				}
+				
 			}
+			else
+				App->scene->root_object->AddChildren(aux_go[i]);
 
 		}
 	}
