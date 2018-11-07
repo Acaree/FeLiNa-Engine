@@ -7,7 +7,7 @@
 #include <map>
 
 class Resource;
-enum ResourceType;
+enum RESOURCE_TYPE;
 
 class ResourceManager //: publc Module ??
 {
@@ -19,7 +19,8 @@ public:
 	uint Find(const char* file) const;
 	uint ImportFile(const char* new_file);
 	const Resource* Get(uint uid);
-	Resource* CreateNewResource(ResourceType type);
+	Resource* CreateNewResource(RESOURCE_TYPE type);
+	
 
 private:
 	

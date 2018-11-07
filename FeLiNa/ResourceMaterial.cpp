@@ -1,6 +1,6 @@
 #include "ResourceMaterial.h"
 
-ResourceMaterial::ResourceMaterial(uint uid, ResourceType type) : Resource(uid, type)
+ResourceMaterial::ResourceMaterial(uint uid, RESOURCE_TYPE type) : Resource(uid, type)
 {
 }
 

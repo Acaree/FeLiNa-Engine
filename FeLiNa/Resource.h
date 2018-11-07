@@ -4,20 +4,20 @@
 #include "Globals.h"
 #include <string>
 
-enum ResourceType
+enum RESOURCE_TYPE
 {
-	Resource_Mesh = 0,
-	Resource_Material,
-	Resource_Default
+	RESOURCE_MESH = 0,
+	RESOURCE_MATERIAL,
+	RESOURCE_DEFAULT
 };
 
 class Resource
 {
 public:
-	Resource(uint uid, ResourceType type);
+	Resource(uint uid, RESOURCE_TYPE type);
 	virtual ~Resource();
 
-	ResourceType GetType() const;
+	RESOURCE_TYPE GetType() const;
 	uint GetUID() const;
 	const char* GetFile() const;
 	const char* GetExportedFile() const;
@@ -36,7 +36,7 @@ private:
 	std::string file;
 	std::string exported_file;
 
-	ResourceType type = Resource_Default;
+	RESOURCE_TYPE type = RESOURCE_TYPE::RESOURCE_DEFAULT;
 	uint loaded = 0;
 };
 
