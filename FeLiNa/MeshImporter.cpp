@@ -84,6 +84,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 		LoadModel(scene, rootNode, output_file, childrens_go, trans);
 
+		/*
 		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
 		App->serialization_scene->save_name_scene = "test_auto_save";
 		App->serialization_scene->SaveScene();
@@ -91,7 +92,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 		App->serialization_scene->save_name_scene = "test_auto_save";
 		App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
 		aiReleaseImport(scene);
-
+		*/
 	}
 
 	return ret;

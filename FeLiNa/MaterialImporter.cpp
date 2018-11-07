@@ -25,7 +25,7 @@ MaterialImporter::MaterialImporter()
 		ilInit();
 		iluInit();
 		ilutInit();
-		ilutRenderer(ILUT_OPENGL); 
+		ilutRenderer(ILUT_OPENGL);
 	}
 }
 
@@ -38,19 +38,18 @@ MaterialImporter::~MaterialImporter()
 Texture* MaterialImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
 {
 	Texture* ret = new Texture;
-	ret->height = 0;
-	ret->texture_id = 0;
-	ret->width = 0;
 
 	char* buffer;
 
 	//Check if file is !null
-	if (file_path == nullptr)
+	if (file_path == nullptr) {
+		LOG("MATERIAL IMPORTER: Texture imported path is not correct");
 		return ret;
+	}
 
 	char importer_path[DEFAULT_BUF_SIZE]; //importFilePath
 
-	strcpy_s(importer_path, strlen(file_path) + 1, file_path); 
+	strcpy_s(importer_path, strlen(file_path) + 1, file_path);
 
 	if (file_name != nullptr)
 		strcat_s(importer_path, strlen(importer_path) + strlen(file_name) + 1, file_name);
@@ -61,7 +60,7 @@ Texture* MaterialImporter::Import(const char* file_name, const char* file_path, 
 
 	if (size > 0)
 	{
-		LOG("MATERIAL IMPORTER: Successfully");
+		LOG("MATERIAL IMPORTER: Texture load succesful ");
 
 		ret = Import(buffer, size, output_file);
 		RELEASE_ARRAY(buffer);
@@ -76,9 +75,6 @@ Texture* MaterialImporter::Import(const char* file_name, const char* file_path, 
 Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& output_file)
 {
 	Texture* ret = new Texture();
-	ret->height = 0;
-	ret->texture_id = 0;
-	ret->width = 0;
 
 	if (buffer == nullptr || size <= 0)
 	{
@@ -154,12 +150,12 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 				ret->height = ilGetInteger(IL_IMAGE_HEIGHT);
 
 				ret->felina_path = new char[DEFAULT_BUF_SIZE];
-				char* tmp =  App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);
+				char* tmp = App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);
 				//TO REVISE TO BAD
-				
+
 				memcpy(ret->felina_path, tmp, DEFAULT_BUF_SIZE);
-				
-				
+
+
 			}
 
 			RELEASE_ARRAY(data);
