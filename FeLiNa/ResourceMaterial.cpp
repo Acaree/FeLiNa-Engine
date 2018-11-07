@@ -21,3 +21,13 @@ bool ResourceMaterial::EraseInMemory()
 
 	return ret;
 }
+
+void ResourceMaterial::SetTexture(Texture* texture)
+{
+	this->texture = *texture;
+}
+
+Texture ResourceMaterial::GetTexture() const
+{
+	return texture;
+}

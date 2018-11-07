@@ -21,6 +21,7 @@ public:
 	uint GetUID() const;
 	const char* GetFile() const;
 	const char* GetExportedFile() const;
+	void SetExportedFile(const char* exported_file);
 	bool isLoadedToMemory() const;
 	uint LoadToMemory();
 	uint CountReferences() const;

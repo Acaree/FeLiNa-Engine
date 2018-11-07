@@ -28,3 +28,13 @@ bool ResourceMesh::EraseInMemory()
 
 
 }
+
+void ResourceMesh::SetMesh(Mesh* mesh)
+{
+	this->mesh = *mesh;
+}
+
+Mesh ResourceMesh::GetMesh() const
+{
+	return mesh;
+}

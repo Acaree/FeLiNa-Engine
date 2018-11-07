@@ -14,7 +14,8 @@ public:
 	bool LoadInMemory();
 	bool EraseInMemory();
 
-
+	void SetMesh(Mesh* mesh);
+	Mesh GetMesh() const;
 
 private:
 

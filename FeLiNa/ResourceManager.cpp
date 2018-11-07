@@ -4,6 +4,8 @@
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "MeshImporter.h"
+#include "MaterialImporter.h"
 
 
 ResourceManager::ResourceManager()
@@ -47,13 +49,18 @@ uint ResourceManager::ImportFile(const char* new_file)
 		switch (file_type)
 		{
 		case MESH_FILE:
+		{
 			LOG("Mesh file detected, creating...");
 			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
-			
+			resource->SetExportedFile(new_file);
+			Mesh* mesh = App->importer_mesh->LoadFLN(new_file);
+			SetResourceData(mesh, resource);
 			break;
+		}
 		case MATERIAL_FILE:
 			LOG("Material file detected, creating...");
-			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
+			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MATERIAL);
+			//Same that mesh.
 
 			break;
 		case UKNOWN_FILE:

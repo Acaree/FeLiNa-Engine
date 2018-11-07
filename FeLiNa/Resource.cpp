@@ -48,3 +48,8 @@ uint Resource::CountReferences() const
 {
 	return loaded;
 }
+
+void Resource::SetExportedFile(const char* exported_file)
+{
+	this->exported_file = exported_file;
+}
