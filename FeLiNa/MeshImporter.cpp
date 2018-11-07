@@ -111,6 +111,8 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 	if (node->mNumMeshes > 0)
 	{
 
+		output_file = node->mName.data;
+
 		ComponentTransform* transform = (ComponentTransform*)game_object->AddComponent(Component_Transform);
 		transform->SetPosition(component_transform->GetPosition());
 		transform->SetRotation(component_transform->GetRotation());
@@ -231,7 +233,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 		uint size = sizeof(ranges) + sizeof(float) * mesh_data->num_vertices * 3 + sizeof(uint) * mesh_data->num_indices + sizeof(float)* mesh_data->num_uv * 2;
 
-		char* data = new char[size]; // Allocate
+		char* data = new char[size]; // Why if the variable is cursor physfs crashes? 
 		char* cursor = data;
 
 		// First store ranges
@@ -255,12 +257,9 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		bytes = sizeof(float)* mesh_data->num_uv * 2;
 		memcpy(cursor, mesh_data->uv, bytes);
 
+		int i = sizeof(bytes);
 
-
-		output_file = node->mName.data;
-
-
-		char* final_path = App->fs->SaveFile((char *)cursor, size, output_file, MESH_FILE);
+		char* final_path = App->fs->SaveFile((char *)data, size, output_file, MESH_FILE);
 		
 
 
@@ -274,7 +273,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		game_object = obj;
 	}
 
-	for (uint i = 0; i < node->mNumChildren; ++i)
+	for (uint i = 0; i < node->mNumChildren; i++)
 	{
 		LoadModel(scene, node->mChildren[i], output_file, game_object, component_transform);
 	}
