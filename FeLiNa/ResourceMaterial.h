@@ -12,13 +12,13 @@ public:
 	~ResourceMaterial();
 
 	void SetTexture(Texture* texture);
-	Texture GetTexture() const;
+	Texture* GetTexture() const;
 
 	bool LoadInMemory();
 	bool EraseInMemory();
 
 private:
-	Texture texture;
+	Texture* texture;
 };
 
 

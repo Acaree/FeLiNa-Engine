@@ -1,6 +1,8 @@
 #include "ComponentTexture.h"
 #include "ImGui/imgui.h"
-
+#include "Application.h"
+#include "ResourceManager.h"
+#include "ResourceMaterial.h"
 
 ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
 
@@ -85,5 +87,10 @@ void ComponentTexture::OnSave(JSON_Object* obj)
 
 void ComponentTexture::OnLoad(JSON_Object* obj)
 {
-	memcpy(texture->felina_path , (char*)json_object_get_string(obj, "path"), DEFAULT_BUF_SIZE);
+	char* tmp = (char*)json_object_get_string(obj, "path");
+	uint uid = App->resource_manager->ImportFile(tmp);
+	ResourceMaterial* resource_material = (ResourceMaterial*)App->resource_manager->Get(uid);
+
+	texture = resource_material->GetTexture();
+;
 }

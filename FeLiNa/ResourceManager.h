@@ -46,6 +46,7 @@ inline void ResourceManager::SetResourceData(DATA* data, Resource* resource)
 	case RESOURCE_MATERIAL:
 	{
 		ResourceMaterial* resource_material = (ResourceMaterial*)resource;
+		resource_material->SetTexture((Texture*)data);
 	}
 		break;
 	case RESOURCE_DEFAULT:

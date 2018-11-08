@@ -1,7 +1,8 @@
 #include "ResourceMaterial.h"
-
+#include "MaterialImporter.h"
 ResourceMaterial::ResourceMaterial(uint uid, RESOURCE_TYPE type) : Resource(uid, type)
 {
+	texture = new Texture();
 }
 
 ResourceMaterial::~ResourceMaterial()
@@ -24,10 +25,10 @@ bool ResourceMaterial::EraseInMemory()
 
 void ResourceMaterial::SetTexture(Texture* texture)
 {
-	this->texture = *texture;
+	this->texture = texture;
 }
 
-Texture ResourceMaterial::GetTexture() const
+Texture* ResourceMaterial::GetTexture() const
 {
 	return texture;
 }

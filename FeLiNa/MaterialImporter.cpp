@@ -193,10 +193,10 @@ Texture* MaterialImporter::LoadDDS(char* path) {
 
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
-		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		{
-			iluFlipImage();
-		}
+	//	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+	//	{
+		//	iluFlipImage();
+	//	}
 
 		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 
