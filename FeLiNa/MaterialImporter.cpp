@@ -37,7 +37,7 @@ MaterialImporter::~MaterialImporter()
 //const char* importFileName, const char* importPath, std::string& outputFileName
 Texture* MaterialImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
 {
-	Texture* ret = new Texture;
+	Texture* ret = nullptr;
 
 	char* buffer;
 
@@ -74,7 +74,7 @@ Texture* MaterialImporter::Import(const char* file_name, const char* file_path, 
 
 Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& output_file)
 {
-	Texture* ret = new Texture();
+	Texture* ret = new Texture;  //this must be desalocated outside here
 
 	if (buffer == nullptr || size <= 0)
 	{
@@ -149,7 +149,7 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 				ret->width = ilGetInteger(IL_IMAGE_WIDTH);
 				ret->height = ilGetInteger(IL_IMAGE_HEIGHT);
 
-				ret->felina_path = new char[DEFAULT_BUF_SIZE];
+				ret->felina_path = new char[DEFAULT_BUF_SIZE]; //this must be desalocated outside here
 				char* tmp = App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);
 				//TO REVISE TO BAD
 
@@ -171,7 +171,7 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 
 Texture* MaterialImporter::LoadDDS(char* path) {
 
-	Texture* ret = new Texture;
+	Texture* ret = new Texture; //this must be desalocated outside here
 
 	uint imageID = 0;
 
