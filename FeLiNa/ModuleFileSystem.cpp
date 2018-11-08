@@ -219,3 +219,48 @@ FILE_TYPE ModuleFileSystem::FindTypeFile(const char* file)
 
 	return file_type;
 }
+
+bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & new_file)
+{
+	bool ret = false;
+	
+	//Really similar function that gui::RecurssiveShowAssets...
+
+	new_file.append(directory);
+	
+	const char** files_array = GetAllFilesFromDir(directory);
+
+	for (const char** file = files_array; *file != nullptr; ++file)
+	{
+		if (isDirectory(*file))
+		{
+			if (FindNewAssetsFiles(*file, new_file))
+				if (int position = new_file.rfind(*file) != std::string::npos) //That condition work as espected?
+					new_file = new_file.substr(0, position);
+		}
+		else
+		{
+			std::string extension = *file;
+			extension = extension.substr(extension.find_last_of("."));
+
+			//TO REVISE THIS JSON HAS A .sceneFelina
+			if (strcmp(extension.data(), "json") == 0 || strcmp(extension.data(), "meta") == 0)
+				continue;
+
+			char meta[DEFAULT_BUF_SIZE];
+
+			strcpy(meta, new_file.data());
+			strcat(meta, *file);
+			strcat(meta, extension.data());
+
+			if (!PHYSFS_exists(meta))
+			{
+				new_file.append(*file);
+				ret = true;
+				break;
+			}
+		}
+	}
+
+	return ret;
+}

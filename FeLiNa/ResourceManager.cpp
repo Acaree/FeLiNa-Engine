@@ -6,7 +6,7 @@
 #include "ResourceMaterial.h"
 #include "MeshImporter.h"
 #include "MaterialImporter.h"
-
+#include "ModuleTimeManagement.h"
 
 ResourceManager::ResourceManager(Application* app, bool start_enabled ): Module(app,start_enabled)
 {
@@ -34,6 +34,19 @@ update_status ResourceManager::PreUpdate(float dt)
 			break;
 		}
 	}
+
+	refresh_time += dt;
+	if (refresh_time >= time_to_refresh)
+	{
+		// FOR SEARCH META: when we implemented, testing with .felina and works pecfect
+		/*std::string new_file;
+		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO Change -> assets a Macro?
+			ImportFile(new_file.data());*/
+
+		refresh_time = 0.0F;
+	}
+
+
 	return UPDATE_CONTINUE;
 }
 

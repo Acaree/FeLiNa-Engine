@@ -27,6 +27,8 @@ public:
 	uint SaveBufferData(char* buffer,const char* filePath, uint size);
 
 	const char** GetAllFilesFromDir(const char* dir) const;
+
+	bool FindNewAssetsFiles(const char* directory, std::string& file);
 	
 	bool isDirectory(const char* file) const;
 private:
