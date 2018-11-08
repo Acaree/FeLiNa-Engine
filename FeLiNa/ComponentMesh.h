@@ -34,6 +34,8 @@ public:
 	ComponentMesh(GameObject* parent);
 	~ComponentMesh();
 
+	void CleanUp();
+
 	void DrawInspector();
 
 	void SetMesh(Mesh* mesh);

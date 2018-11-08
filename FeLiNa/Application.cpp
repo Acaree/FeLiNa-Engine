@@ -27,7 +27,7 @@ Application::Application()
 	time_management = new ModuleTimeManagement(this);
 #endif // !GAME_MODE
 
-	resource_manager = new ResourceManager();
+	resource_manager = new ResourceManager(this);
 	serialization_scene = new SceneSerialization();
 	importer_material = new MaterialImporter();
 	importer_mesh = new MeshImporter();
@@ -51,7 +51,9 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	
+
 	AddModule(fs);
+	AddModule(resource_manager);
 	// Scenes
 
 	AddModule(scene);

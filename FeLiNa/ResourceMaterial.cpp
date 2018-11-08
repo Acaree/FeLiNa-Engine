@@ -22,7 +22,7 @@ bool ResourceMaterial::EraseInMemory()
 {
 	bool ret = true;
 	glDeleteTextures(1, (GLuint*) &(texture->texture_id));
-
+	RELEASE(texture);
 	return ret;
 }
 

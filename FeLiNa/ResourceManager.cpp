@@ -8,8 +8,9 @@
 #include "MaterialImporter.h"
 
 
-ResourceManager::ResourceManager()
+ResourceManager::ResourceManager(Application* app, bool start_enabled ): Module(app,start_enabled)
 {
+
 }
 
 ResourceManager::~ResourceManager()
@@ -18,8 +19,24 @@ ResourceManager::~ResourceManager()
 		RELEASE(it->second);
 
 	resources.clear();
-
 }
+
+update_status ResourceManager::PreUpdate(float dt)
+{
+	
+	for (std::map<uint, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->CountReferences() == 0)
+		{
+			RELEASE(it->second);
+			resources.erase(it);
+			
+			break;
+		}
+	}
+	return UPDATE_CONTINUE;
+}
+
 
 //The file need to load in ModuleFileSystem
 uint ResourceManager::Find(const char* file) const

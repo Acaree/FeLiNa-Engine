@@ -25,7 +25,7 @@ void ComponentTexture::CleanUp()
 		ResourceMaterial* resource_material = (ResourceMaterial*)App->resource_manager->Get(uid);
 		resource_material->EraseToMemory();
 	}
-	//RELEASE(texture);
+	
 }
 
 void ComponentTexture::SetTexture(Texture* tex)
