@@ -289,7 +289,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 void MeshImporter::GenerateBufferData(Mesh* mesh_data)
 {
-	glGenBuffers(1, (GLuint*) &(mesh_data->id_vertices));
+	/*glGenBuffers(1, (GLuint*) &(mesh_data->id_vertices));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_vertices);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh_data->num_vertices, mesh_data->vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -302,7 +302,7 @@ void MeshImporter::GenerateBufferData(Mesh* mesh_data)
 	glGenBuffers(1, (GLuint*) &(mesh_data->id_uv));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_uv);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh_data->num_uv, mesh_data->uv, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 
 }
 

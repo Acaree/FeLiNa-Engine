@@ -1,5 +1,6 @@
 #include "ResourceMesh.h"
-
+#include "Glew/include/glew.h"
+#include <gl/GL.h>
 
 ResourceMesh::ResourceMesh(uint uid, RESOURCE_TYPE type) : Resource(uid,type)
 {
@@ -14,7 +15,21 @@ bool ResourceMesh::LoadInMemory()
 {
 	bool ret = false;
 
-	//We load the mesh and bind the buffers or only the buffers :/
+	glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glGenBuffers(1, (GLuint*) &(mesh->id_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glGenBuffers(1, (GLuint*) &(mesh->id_uv));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_uv, mesh->uv, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
 	return ret;
 }
@@ -23,7 +38,29 @@ bool ResourceMesh::EraseInMemory()
 {
 	bool ret = false;
 
-	//Same than load.
+	glDeleteBuffers(1, (GLuint*) &(mesh->id_vertices));
+	glDeleteBuffers(1, (GLuint*) &(mesh->id_indices));
+	glDeleteBuffers(1, (GLuint*) &(mesh->id_uv));
+
+	if (mesh->indices != nullptr)
+	{
+		delete[] mesh->indices;
+		mesh->indices = nullptr;
+	}
+
+	if (mesh->vertices != nullptr)
+	{
+		delete[] mesh->vertices;
+		mesh->vertices = nullptr;
+	}
+
+	if (mesh->uv != nullptr)
+	{
+		delete[] mesh->uv;
+		mesh->uv = nullptr;
+	}
+
+	delete mesh;
 
 	return ret;
 
