@@ -4,11 +4,12 @@
 #include "SDL/include/SDL_opengl.h"
 
 #include "Application.h"
+#include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 
 #include "MaterialImporter.h"
-
+#include "Resource.h"
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -368,3 +369,24 @@ Mesh* MeshImporter::LoadFLN(const char* path) {
 
 }
 
+void MeshImporter::CreateFileMeta(Resource* resource)
+{
+	JSON_Value* root_value = json_value_init_object();
+	JSON_Object* root_object = json_value_get_object(root_value);
+
+	json_object_set_number(root_object, "Time", App->time_management->ReadRealTimeClock());
+	json_object_set_number(root_object, "UID", resource->GetUID());
+
+	/* OPTIONS IMPORTER :/*/
+
+	char path[DEFAULT_BUF_SIZE];
+	strcpy(path, resource->GetExportedFile());
+	strcat(path, ".meta");
+
+	uint size = json_serialization_size_pretty(root_value);
+	char* buffer = new char[size];
+
+	json_serialize_to_buffer_pretty(root_value, buffer, size);
+
+	App->fs->SaveBufferData(buffer, path, size);
+}

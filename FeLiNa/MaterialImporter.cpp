@@ -1,8 +1,9 @@
 #include "MaterialImporter.h"
 
 #include "Application.h"
+#include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
-
+#include "Resource.h"
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
@@ -235,5 +236,28 @@ Texture* MaterialImporter::LoadDDS(char* path) {
 	ilDeleteImages(1, &imageID);
 
 	return ret;
+
+}
+
+void MaterialImporter::CreateFileMeta(Resource* resource)
+{
+	JSON_Value* root_value = json_value_init_object();
+	JSON_Object* root_object = json_value_get_object(root_value);
+
+	json_object_set_number(root_object, "Time", App->time_management->ReadRealTimeClock());
+	json_object_set_number(root_object, "UID", resource->GetUID());
+
+	/* OPTIONS IMPORTER :/*/
+
+	char path[DEFAULT_BUF_SIZE];
+	strcpy(path, resource->GetExportedFile());
+	strcat(path, ".meta");
+
+	uint size = json_serialization_size_pretty(root_value);
+	char* buffer = new char[size];
+
+	json_serialize_to_buffer_pretty(root_value, buffer, size);
+
+	App->fs->SaveBufferData(buffer,path,size); 
 
 }

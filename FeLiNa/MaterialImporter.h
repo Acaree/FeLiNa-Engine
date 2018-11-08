@@ -4,6 +4,7 @@
 #include "Importer.h"
 #include "ComponentTexture.h"
 
+class Resource;
 
 class MaterialImporter 
 {
@@ -19,6 +20,7 @@ public:
 
 	Texture* LoadDDS(char* path);
 
+	void CreateFileMeta(Resource* resource);
 	//bool Load(const char* file_name, Texture* output_texture);
 	//bool Load(const void* buffer, uint size, Texture* output_texture);
 

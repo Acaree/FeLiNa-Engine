@@ -86,6 +86,7 @@ uint ResourceManager::ImportFile(const char* new_file)
 			Mesh* mesh = App->importer_mesh->LoadFLN(new_file);
 			memcpy(mesh->felina_path, new_file,DEFAULT_BUF_SIZE);
 			SetResourceData(mesh, resource);
+			App->importer_mesh->CreateFileMeta(resource);
 			break;
 		}
 		case MATERIAL_FILE:
@@ -96,6 +97,7 @@ uint ResourceManager::ImportFile(const char* new_file)
 			Texture* texture = App->importer_material->LoadDDS((char*)new_file); // To revise function not const char*??
 			memcpy(texture->felina_path, new_file, DEFAULT_BUF_SIZE);
 			SetResourceData(texture, resource);
+			App->importer_mesh->CreateFileMeta(resource);
 			break;
 		}
 		case UKNOWN_FILE:
