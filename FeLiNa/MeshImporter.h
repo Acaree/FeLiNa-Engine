@@ -13,7 +13,7 @@ class aiScene;
 class aiNode;
 struct aiLogStream;
 struct aiMaterial;
-
+class Resource;
 
 
 class MeshImporter :public Importer
@@ -34,6 +34,8 @@ public:
 
 	Mesh* LoadFLN(const char* path);
 	Mesh* LoadFLN(const void* buffer, uint size);
+
+	void CreateFileMeta(Resource* resource);
 
 	//bool Load(const char* file_name, Texture* output_texture);
 	//bool Load(const void* buffer, uint size, Texture* output_texture);

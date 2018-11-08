@@ -44,23 +44,22 @@ bool ResourceMesh::EraseInMemory()
 
 	if (mesh->indices != nullptr)
 	{
-		delete[] mesh->indices;
-		mesh->indices = nullptr;
+		RELEASE_ARRAY(mesh->indices);
 	}
 
 	if (mesh->vertices != nullptr)
 	{
-		delete[] mesh->vertices;
-		mesh->vertices = nullptr;
+		RELEASE_ARRAY(mesh->vertices);
 	}
 
 	if (mesh->uv != nullptr)
 	{
-		delete[] mesh->uv;
-		mesh->uv = nullptr;
+		RELEASE_ARRAY(mesh->uv);
+
 	}
 
-	delete mesh;
+	RELEASE_ARRAY(mesh->felina_path);
+	RELEASE(mesh);
 
 	return ret;
 

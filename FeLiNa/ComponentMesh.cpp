@@ -22,6 +22,18 @@ ComponentMesh::~ComponentMesh()
 }
 
 
+void ComponentMesh::CleanUp()
+{
+	uint uid = App->resource_manager->Find(mesh->felina_path);
+
+	if (uid != 0)
+	{
+		ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->Get(uid);
+		resource_mesh->EraseToMemory();
+	}
+
+}
+
 void ComponentMesh::SetMesh(Mesh* mesh)
 {
 	this->mesh = mesh;

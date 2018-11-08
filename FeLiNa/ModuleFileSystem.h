@@ -29,6 +29,8 @@ public:
 	char* MoveFileToAssets(char* path);
 
 	const char** GetAllFilesFromDir(const char* dir) const;
+
+	bool FindNewAssetsFiles(const char* directory, std::string& file);
 	
 	bool isDirectory(const char* file) const;
 private:
