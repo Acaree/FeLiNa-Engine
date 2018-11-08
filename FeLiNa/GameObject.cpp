@@ -53,14 +53,14 @@ bool GameObject::CleanUp()
 	for (uint i = 0; i < childrens.size(); ++i)
 	{
 		childrens[i]->CleanUp();
-		RELEASE(childrens[i]);
+		//RELEASE(childrens[i]);
 	}
 	childrens.clear();
 
 	for (uint i = 0; i < components.size(); ++i)
 	{
 		components[i]->CleanUp();
-		RELEASE(components[i]);
+		//RELEASE(components[i]);
 	}
 	components.clear();
 
