@@ -14,7 +14,7 @@ public:
 
 	//¿LOAD CHECKERS?
 
-	Texture* Import(const char* file_name, const char* file_path, std::string& output_file);
+	Texture* Import(const char* file_path, std::string& output_file);
 	Texture* Import(const void* buffer, uint size, std::string& output_file);
 
 	Texture* LoadDDS(char* path);

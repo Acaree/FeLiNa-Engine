@@ -187,14 +187,10 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			char add [DEFAULT_BUF_SIZE] = "Assets";
 
-			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/", add, path_c);
+			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c,file_name.data());
 
- 			Texture* tex = App->importer_material->Import((const char*)file_name_c,(const char*)add, texture_generated);
+ 			Texture* tex = App->importer_material->Import((const char*)add, texture_generated);
 
-			//Texture* tex = App->importer_material->Import("Baker_house.png", "Assets/Textures/", texture_generated);
-
-			
-			
 			component_texture->SetTexture(tex);
 			
 			if (new_mesh->HasTextureCoords(0))

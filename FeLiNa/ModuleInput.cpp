@@ -2,7 +2,7 @@
 #include "ModuleRenderer3D.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
-
+#include "ModuleFileSystem.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 
@@ -139,16 +139,16 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE:
 			{
 
-				const char* dropped_filedir = e.drop.file;
+				char* dropped_filedir = e.drop.file;
 				std::string path(dropped_filedir);
 
 				if (path.substr(path.find_last_of(".")) == ".png" || path.substr(path.find_last_of(".")) == ".PNG" || path.substr(path.find_last_of(".")) == ".jpg" ||
 					path.substr(path.find_last_of(".")) == ".JPG" || path.substr(path.find_last_of(".")) == ".dds" || path.substr(path.find_last_of(".")) == ".DDS"
 					|| path.substr(path.find_last_of(".")) == ".tga" || path.substr(path.find_last_of(".")) == ".TGA")
 				{
-					if (App->renderer3D->meshes.size() > 0) {
-						//App->texture->LoadTexture(path.c_str(),-1);
-					}
+					std::string output_file;
+					App->fs->MoveFileToAssets(dropped_filedir);
+					Texture* tex = App->importer_material->Import(dropped_filedir, output_file);
 				}
 				
 				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX")

@@ -91,8 +91,31 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 					LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
 			}
 		}
-		else
-			LOG("FILE SYSTEM: Could not open file '%s' to read. ERROR: %s", filePath, PHYSFS_getLastError());
+
+		else {
+
+			PHYSFS_sint64 size = PHYSFS_fileLength(file);
+
+			if (size > 0) {
+
+				*buffer = new char[size];
+				count = PHYSFS_readBytes(file, *buffer, size);
+
+				if (count == size)
+				{
+					LOG("FILE SYSTEM: Read %u bytes from file '%s'", count, filePath);
+
+				}
+				else
+				{
+					RELEASE(buffer);
+					LOG("FILE SYSTEM: Could not read from file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
+				}
+
+				if (PHYSFS_close(file) == 0)
+					LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
+			}
+		}
 	}
 	else
 		LOG("FILE SYSTEM: Could not load file '%s' to read because it doesn't exist", filePath);
@@ -218,4 +241,19 @@ FILE_TYPE ModuleFileSystem::FindTypeFile(const char* file)
 	}
 
 	return file_type;
+}
+
+
+char* ModuleFileSystem::MoveFileToAssets(char* path) {
+
+	std::string filename = path;
+	filename.erase(0, filename.find_last_of("\\") + 1);
+
+	char* ret = new char [DEFAULT_BUF_SIZE];
+
+	sprintf_s(ret, DEFAULT_BUF_SIZE, "Assets/%s",filename.data());
+	
+	CopyFile(path,ret,0);
+
+	return ret;
 }

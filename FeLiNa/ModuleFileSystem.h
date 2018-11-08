@@ -26,6 +26,8 @@ public:
 
 	uint SaveBufferData(char* buffer,const char* filePath, uint size);
 
+	char* MoveFileToAssets(char* path);
+
 	const char** GetAllFilesFromDir(const char* dir) const;
 	
 	bool isDirectory(const char* file) const;

@@ -35,7 +35,7 @@ MaterialImporter::~MaterialImporter()
 
 }
 //const char* importFileName, const char* importPath, std::string& outputFileName
-Texture* MaterialImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
+Texture* MaterialImporter::Import(const char* file_path, std::string& output_file)
 {
 	Texture* ret = nullptr;
 
@@ -47,16 +47,13 @@ Texture* MaterialImporter::Import(const char* file_name, const char* file_path, 
 		return ret;
 	}
 
-	char importer_path[DEFAULT_BUF_SIZE]; //importFilePath
+	else {
 
-	strcpy_s(importer_path, strlen(file_path) + 1, file_path);
+		output_file = App->fs->GetNameFile(file_path);
 
-	if (file_name != nullptr)
-		strcat_s(importer_path, strlen(importer_path) + strlen(file_name) + 1, file_name);
-
-	output_file = App->fs->GetNameFile(importer_path);
-
-	uint size = App->fs->Load(importer_path, &buffer);
+	}
+	
+	uint size = App->fs->Load(file_path, &buffer);
 
 	if (size > 0)
 	{

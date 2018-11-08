@@ -267,7 +267,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	LOG("post %s", name);
+	//LOG("post %s", name);
 	// Recalculate all objects transformations
 	UpdateTransforms(App->scene->root_object);
 

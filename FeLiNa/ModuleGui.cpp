@@ -548,6 +548,10 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			flags |= ImGuiTreeNodeFlags_Leaf;
 
 			ImGui::TreeNodeEx(*file, flags);
+			if (ImGui::IsItemClicked(0))//Left click
+			{
+				//here the file must be loaded
+			}
 			ImGui::TreePop();
 
 		}
