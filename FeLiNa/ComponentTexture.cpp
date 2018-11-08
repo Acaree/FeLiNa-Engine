@@ -17,6 +17,16 @@ ComponentTexture::~ComponentTexture()
 	RELEASE(texture);
 }
 
+void ComponentTexture::CleanUp()
+{
+	uint uid = App->resource_manager->Find(texture->felina_path);
+	if (uid != 0)
+	{
+		ResourceMaterial* resource_material = (ResourceMaterial*)App->resource_manager->Get(uid);
+		resource_material->EraseToMemory();
+	}
+	//RELEASE(texture);
+}
 
 void ComponentTexture::SetTexture(Texture* tex)
 {

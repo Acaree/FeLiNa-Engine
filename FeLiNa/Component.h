@@ -22,7 +22,7 @@ public:
 
 	Component(GameObject* parent);
 
-	void CleanUp();
+	virtual void CleanUp();
 
 	~Component();
 

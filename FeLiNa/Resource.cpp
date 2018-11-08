@@ -33,15 +33,25 @@ const char* Resource::GetExportedFile() const
 
 bool Resource::isLoadedToMemory() const
 {
-	return loaded != 0;
+	return loaded == 0;
 }
 
 uint Resource::LoadToMemory()
 {
-	if (!isLoadedToMemory())
+	if (isLoadedToMemory())
 		LoadInMemory();
 
 	return loaded++;
+}
+
+uint Resource::EraseToMemory()
+{
+	loaded--;
+
+	if (isLoadedToMemory())
+		EraseInMemory();
+
+	return loaded;
 }
 
 uint Resource::CountReferences() const

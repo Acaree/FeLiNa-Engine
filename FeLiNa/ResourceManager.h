@@ -18,7 +18,7 @@ public:
 
 	uint Find(const char* file) const;
 	uint ImportFile(const char* new_file);
-	const Resource* Get(uint uid);
+	Resource* Get(uint uid);
 	Resource* CreateNewResource(RESOURCE_TYPE type);
 
 	template<typename DATA>

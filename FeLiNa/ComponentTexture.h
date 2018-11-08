@@ -23,6 +23,8 @@ public:
 	ComponentTexture(GameObject* parent);
 	~ComponentTexture();
 	
+	void CleanUp();
+
 	void SetTexture(Texture* texture);
 	Texture* GetTexture() const;
 	uint GetTextureID() const;

@@ -86,12 +86,16 @@ uint ResourceManager::ImportFile(const char* new_file)
 	else
 	{
 		LOG("Find file in resources with uid: %i", ret);
+
+		//Get the resource that are create and sum loaded+1
+		Resource* resource = Get(ret);
+		resource->LoadToMemory();
 	}
 
 	return ret;
 }
 
-const Resource* ResourceManager::Get(uint uid)
+ Resource* ResourceManager::Get(uint uid)
 {
 	Resource* res = nullptr;
 

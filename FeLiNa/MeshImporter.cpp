@@ -213,11 +213,11 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 
 			//Add the mesh component
-			GenerateBufferData(mesh_data);
+			//GenerateBufferData(mesh_data);
 
 			//TO REVISE call here to module renderer?
 
-			App->renderer3D->AddDataMesh(component_mesh);
+			//App->renderer3D->AddDataMesh(component_mesh);
 
 			//component_mesh = App->renderer3D->CreateComponentMesh();
 

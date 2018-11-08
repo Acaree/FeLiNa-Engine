@@ -24,6 +24,7 @@ public:
 	void SetExportedFile(const char* exported_file);
 	bool isLoadedToMemory() const;
 	uint LoadToMemory();
+	uint EraseToMemory();
 	uint CountReferences() const;
 
 	virtual bool LoadInMemory() = 0;

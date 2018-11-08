@@ -171,7 +171,7 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 
 Texture* MaterialImporter::LoadDDS(char* path) {
 
-	Texture* ret = new Texture; //this must be desalocated outside here
+	Texture* ret = new Texture(); //this must be desalocated outside here
 
 	uint imageID = 0;
 
