@@ -12,6 +12,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
+#include "ModuleCamera3D.h"
 
 #include "mmgr/mmgr.h"
 #endif
@@ -443,6 +444,8 @@ void ModuleGui::ShowEditorMenu()
 	if (ImGui::Button("Play", { 50,30 })) {
 		App->time_management->PlayGameTime();
 		App->game_states = GAME_STATES::ENGINE_STATE_PLAY;
+		App->engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
+		
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Pause", { 50,30 })) {
@@ -455,6 +458,7 @@ void ModuleGui::ShowEditorMenu()
 		App->time_management->StartGameTime();
 		App->time_management->PauseGameClock();
 		App->game_states = GAME_STATES::ENGINE_STATE_STOP;
+		App->engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 
 	}
 	ImGui::SameLine();
