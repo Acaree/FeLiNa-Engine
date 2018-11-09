@@ -46,7 +46,9 @@ bool MeshImporter::Import(const char* file_name, const char* file_path, std::str
 	if (file_name != nullptr)
 		strcat_s(importer_path, strlen(importer_path) + strlen(file_name) + 1, file_name);
 
-	output_file = App->fs->GetNameFile(importer_path);
+	//output_file.append(App->fs->GetNameFile(importer_path));
+	std::string tmp = file_name;
+	output_file = tmp.substr(0, tmp.find_last_of("."));
 
 	uint size = App->fs->Load(importer_path, &buffer);
 
@@ -56,10 +58,11 @@ bool MeshImporter::Import(const char* file_name, const char* file_path, std::str
 
 		ret = Import(buffer, size, output_file);
 		RELEASE_ARRAY(buffer);
-	}
+	}	
 	else
 		LOG("MATERIAL IMPORTER: Could not load texture ");
 
+	
 	return ret;
 }
 
@@ -135,7 +138,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 
 		Mesh* mesh_data = component_mesh->GetMesh();
-
+		
 
 		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
 		{
@@ -193,6 +196,10 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c,file_name.data());
 
+
+
+ 			Texture* tex = App->importer_material->Import((const char*)add, texture_generated);
+
 			RELEASE_ARRAY(path_c);
 			RELEASE_ARRAY(file_name_c);
 
@@ -200,8 +207,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 			file_name.clear();
 			path.clear();
 			texture_generated.clear();
-
- 			Texture* tex = App->importer_material->Import((const char*)add, texture_generated);
 
 			component_texture->SetTexture(tex);
 			

@@ -18,7 +18,15 @@ ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 
 ComponentMesh::~ComponentMesh()
 {
-	mesh = nullptr;
+	uint uid = App->resource_manager->Find(mesh->felina_path);
+
+	if (uid != 0)
+	{
+		ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->Get(uid);
+		resource_mesh->EraseToMemory();
+	}
+
+
 }
 
 

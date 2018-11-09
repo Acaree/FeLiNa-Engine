@@ -127,24 +127,6 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 	return count;
 }
 
-const char* ModuleFileSystem::GetNameFile(const char* path) const
-{
-	//Erase folder and extension from path
-
-	std::string file_name = path;
-	
-	
-	file_name = file_name.substr(file_name.find_last_of("//") + 1, file_name.size());
-	file_name = file_name.substr(0, file_name.find_last_of("."));
-
-	char* result = new char[file_name.size() + 1];
-
-	strcpy_s(result, file_name.size() + 1, file_name.data());
-
-	file_name.clear();
-
-	return result;
-}
 
 char* ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_file, FILE_TYPE file)
 {
@@ -180,7 +162,9 @@ uint ModuleFileSystem::SaveBufferData(char* buffer, const char* file_path, uint 
 {
 	uint count = 0;
 
-	const char* file_name = GetNameFile(file_path);
+	std::string tmp = file_path;
+	tmp = tmp.substr(tmp.find_last_of("//") + 1, tmp.size());
+	tmp = tmp.substr(0, tmp.find_last_of(".")).c_str();
 
 	bool exists = PHYSFS_exists(file_path);
 
@@ -205,13 +189,13 @@ uint ModuleFileSystem::SaveBufferData(char* buffer, const char* file_path, uint 
 				LOG("FILE SYSTEM: FAIL");
 		}
 		else
-			LOG("FILE SYSTEM: Could not write to file '%s'. ERROR: %s", file_name, PHYSFS_getLastError());
+			LOG("FILE SYSTEM: Could not write to file '%s'. ERROR: %s", tmp.c_str(), PHYSFS_getLastError());
 
 		if (PHYSFS_close(file) == 0)
-			LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", file_name, PHYSFS_getLastError());
+			LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", tmp.c_str(), PHYSFS_getLastError());
 	}
 	else
-		LOG("FILE SYSTEM: Could not open file '%s' to write. ERROR: %s", file_name, PHYSFS_getLastError());
+		LOG("FILE SYSTEM: Could not open file '%s' to write. ERROR: %s", tmp.c_str(), PHYSFS_getLastError());
 
 	return count;
 }

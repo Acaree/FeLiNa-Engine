@@ -16,8 +16,6 @@ public:
 	ModuleFileSystem(Application* app, bool start_enabled = true);
 	~ModuleFileSystem();
 
-	const char* GetNameFile(const char* path) const;
-
 	FILE_TYPE FindTypeFile(const char* file);
 
 	uint Load(const char* path, char** buffer) const;

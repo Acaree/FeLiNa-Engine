@@ -7,8 +7,8 @@
 ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
 
 	type = Component_Material;
-	texture = new Texture();
-	texture->felina_path = new char[DEFAULT_BUF_SIZE];
+	//texture = new Texture();
+	//texture->felina_path = new char[DEFAULT_BUF_SIZE];
 }
 
 ComponentTexture::~ComponentTexture()

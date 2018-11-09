@@ -50,7 +50,9 @@ Texture* MaterialImporter::Import(const char* file_path, std::string& output_fil
 
 	else {
 
-		output_file = App->fs->GetNameFile(file_path);
+		std::string file_name = file_path;
+		file_name = file_name.substr(file_name.find_last_of("//") + 1, file_name.size());
+		output_file = file_name.substr(0, file_name.find_last_of("."));
 
 	}
 	
@@ -72,7 +74,7 @@ Texture* MaterialImporter::Import(const char* file_path, std::string& output_fil
 
 Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& output_file)
 {
-	Texture* ret = new Texture;  //this must be desalocated outside here
+	Texture* ret = new Texture();  //this must be desalocated outside here
 
 	if (buffer == nullptr || size <= 0)
 	{
@@ -153,7 +155,7 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 
 				memcpy(ret->felina_path, tmp, DEFAULT_BUF_SIZE);
 
-
+				RELEASE_ARRAY(tmp);
 			}
 
 			RELEASE_ARRAY(data);
