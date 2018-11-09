@@ -547,12 +547,25 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			flags = 0;
 			flags |= ImGuiTreeNodeFlags_Leaf;
 
-			ImGui::TreeNodeEx(*file, flags);
-			if (ImGui::IsItemClicked(0))//Left click
-			{
-				//here the file must be loaded
+			if (ImGui::TreeNodeEx(*file, flags)) {
+				if (ImGui::IsItemClicked(0))//Left click
+				{
+					//here the file must be loaded
+				}
+				ImGui::TreePop();
 			}
-			ImGui::TreePop();
+
+			if (ImGui::BeginPopupContextItem("Create"))
+			{
+				if (ImGui::MenuItem("Delete", NULL, false, true))
+				{
+					char* file_path = new char[DEFAULT_BUF_SIZE];
+					sprintf_s(file_path, DEFAULT_BUF_SIZE, "%s/%s", dir, *file);
+					remove((const char*)file_path);
+				}
+
+				ImGui::EndPopup();
+			}
 
 		}
 	}
