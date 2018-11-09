@@ -43,7 +43,6 @@ bool ModuleCamera3D::Start()
 
 	main_camera = new GameObject(nullptr);
 	
-
 	ComponentTransform* transform =(ComponentTransform*) main_camera->AddComponent(Component_Transform);
 	//transform_camera = new ComponentTransform(main_camera);
 	game_camera = new ComponentCamera(main_camera);
@@ -87,15 +86,6 @@ bool ModuleCamera3D::CleanUp()
 
 update_status ModuleCamera3D::PreUpdate(float dt)
 {
-
-	//To other module
-	//TO REVISE
-
-	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
-	{
-		CheckObjectActive(App->scene->root_object->GetChild(i));
-	}
-
 
 
 	return UPDATE_CONTINUE;
@@ -198,31 +188,6 @@ void ModuleCamera3D::LookAt( const math::float3 &position)
 	current_camera->frustum.up = matrix.MulDir(current_camera->frustum.up).Normalized();
 }
 
-//TO OTHER
-void ModuleCamera3D::CheckObjectActive(GameObject* go)
-{
-	if (main_camera->camera->culling)
-	{
-		if (!go->static_object)
-		{
-		 
-			if (!main_camera->camera->ContainsAaBox(go->GetAABB()))
-				go->SetActive(false);
-			else
-				go->SetActive(true);
-		}
-	}
-	else
-	{
-		go->SetActive(true);
-	}
-
-	for (uint i = 0; i < go->GetNumChildren(); ++i)
-	{
-		CheckObjectActive(go->GetChild(i));
-	}
-
-}
 
 void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, math::LineSegment ray)
 {
@@ -317,6 +282,5 @@ void ModuleCamera3D::PosibleObjectsPicked(std::vector<GameObject*> &posible_cand
 	{
 		PosibleObjectsPicked(posible_candidate, candidates->GetChild(i));
 	}
-
 
 }

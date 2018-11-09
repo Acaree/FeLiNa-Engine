@@ -28,7 +28,7 @@ public:
 	void SetSelectedGameObject(GameObject* go);
 	GameObject* GetSelectedGameObject() const;
 
-	void FillStaticGameObjects();
+	void UpdateStaticObjectsVector();
 
 	void DrawScene();
 

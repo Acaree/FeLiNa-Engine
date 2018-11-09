@@ -6,6 +6,8 @@
 #include "MathGeoLib/Geometry/Frustum.h"
 #include "MathGeoLib/Geometry/AABB.h"
 
+class GameObject;
+
 class ComponentCamera : public Component
 {
 public:
@@ -35,6 +37,10 @@ public:
 
 	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);
+
+	void CullingObjects();
+	void CullingStaticObjects();
+	void CullingDynamicObjects(GameObject* obj);
 
 public:
 

@@ -95,7 +95,7 @@ private:
 	std::vector<GameObject*> childrens;
 	GameObject* parent = nullptr;
 	bool selected = false;
-	bool active = false;
+	bool active = true;
 
 
 };

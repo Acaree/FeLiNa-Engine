@@ -1,8 +1,11 @@
+#include "Glew/include/glew.h"
 #include "ComponentCamera.h"
 #include "Component.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
-#include "Glew/include/glew.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "Quadtree.h"
 #include "ImGui/imgui.h"
 #include "mmgr/mmgr.h"
 ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
@@ -38,6 +41,55 @@ void ComponentCamera::Update(float dt)
 	frustum.pos = matrix.TranslatePart();
 	frustum.front = matrix.WorldZ().Normalized();
 	frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();
+
+	if (culling)
+	{
+		CullingObjects();
+	}
+}
+
+void ComponentCamera::CullingObjects()
+{
+	CullingStaticObjects();
+
+	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
+	{
+		CullingDynamicObjects(App->scene->root_object->GetChild(i));
+	}
+}
+
+void ComponentCamera::CullingStaticObjects()
+{
+	std::vector<GameObject*> tmp_go;
+
+	//Set all static objects to  false
+	for (uint i = 0; i < App->scene->static_go.size(); ++i)
+		App->scene->static_go[i]->SetActive(false);
+
+	//Get all go that collision with frustum
+	App->scene->quadtree->CollectIntersections(tmp_go, frustum);
+
+	for (uint i = 0; i < tmp_go.size(); ++i)
+	{
+		tmp_go[i]->SetActive(true);
+	}
+}
+
+void ComponentCamera::CullingDynamicObjects(GameObject * obj)
+{
+	
+	if (!obj->static_object)
+	{
+		if (!ContainsAaBox(obj->GetAABB()))
+			obj->SetActive(false);
+		else
+			obj->SetActive(true);
+	}
+	
+	for (uint i = 0; i < obj->GetNumChildren(); ++i)
+	{
+		CullingDynamicObjects(obj->GetChild(i));
+	}
 }
 
 float ComponentCamera::GetNear() const
