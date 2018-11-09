@@ -4,7 +4,7 @@
 #include "Gif/gif.h"
 #include "Devil\include\ilut.h"
 #include <time.h>
-
+#include "mmgr/mmgr.h"
 ImageRecorder::ImageRecorder(int widht, int height) : width(widht), height(height)
 {
 	pixels = new BYTE[3 * widht*height];

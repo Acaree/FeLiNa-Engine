@@ -10,7 +10,7 @@
 #include "Quadtree.h"
 #include "ComponentTexture.h"
 #include "ComponentCamera.h"
-
+#include "mmgr/mmgr.h"
 
 GameObject::GameObject(GameObject* parent)
 {

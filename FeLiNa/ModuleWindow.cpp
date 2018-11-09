@@ -5,7 +5,7 @@
 #ifndef GAME_MODE
 #include "ImGui/imgui.h"
 #endif // !GAME_MODE
-
+#include "mmgr/mmgr.h"
 
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)

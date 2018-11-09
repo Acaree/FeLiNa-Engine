@@ -7,7 +7,7 @@
 #include "Application.h"
 #include "ResourceManager.h"
 #include "ResourceMesh.h"
-
+#include "mmgr/mmgr.h"
 ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 {
 	type = Component_Mesh;

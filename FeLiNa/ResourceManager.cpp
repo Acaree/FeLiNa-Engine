@@ -7,7 +7,7 @@
 #include "MeshImporter.h"
 #include "MaterialImporter.h"
 #include "ModuleTimeManagement.h"
-
+#include "mmgr/mmgr.h"
 ResourceManager::ResourceManager(Application* app, bool start_enabled ): Module(app,start_enabled)
 {
 

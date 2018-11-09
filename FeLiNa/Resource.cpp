@@ -1,5 +1,5 @@
 #include "Resource.h"
-
+#include "mmgr/mmgr.h"
 
 Resource::Resource(uint uid, RESOURCE_TYPE type)
 {
