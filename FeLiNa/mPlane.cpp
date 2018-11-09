@@ -2,7 +2,7 @@
 #include "mPlane.h"
 #include "Glew/include/glew.h" 
 #include "SDL/include/SDL_opengl.h"
-
+#include "mmgr/mmgr.h"
 
 mPlane::mPlane(float x, float y, float z, float d) : transform(math::float4x4::identity), color(White), axis(false)
 {

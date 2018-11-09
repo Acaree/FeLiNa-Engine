@@ -1,6 +1,7 @@
 #include "ResourceMesh.h"
 #include "Glew/include/glew.h"
 #include <gl/GL.h>
+#include "mmgr/mmgr.h"
 
 ResourceMesh::ResourceMesh(uint uid, RESOURCE_TYPE type) : Resource(uid,type)
 {

@@ -8,6 +8,7 @@
 #include "ModuleCamera3D.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "mmgr/mmgr.h"
 ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position, math::float3 rotation, math::float3 scale): Component(parent)
 {
 	type = Component_Transform;

@@ -1,7 +1,7 @@
 #include "ModuleConsole.h"
 #include "Application.h"
 #include "ModuleGui.h"
-
+#include "mmgr/mmgr.h"
 #ifndef GAME_MODE
 ModuleConsole::ModuleConsole(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

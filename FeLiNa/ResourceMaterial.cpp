@@ -1,7 +1,7 @@
 #include "ResourceMaterial.h"
 #include "MaterialImporter.h"
 #include "Glew/include/glew.h"
-
+#include "mmgr/mmgr.h"
 ResourceMaterial::ResourceMaterial(uint uid, RESOURCE_TYPE type) : Resource(uid, type)
 {
 	texture = new Texture();

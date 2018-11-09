@@ -4,10 +4,10 @@
 #include "SDL/include/SDL_version.h"
 #include "ImGui/imgui.h"
 #include "MathGeoLib/MathGeoLib.h"
-#include "mmgr/mmgr.h"
+
 #include "Devil/include/il.h"
 #include "Assimp/include/version.h"
-
+#include "mmgr/mmgr.h"
 
 #define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX			0x9047
 #define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX		0x9048

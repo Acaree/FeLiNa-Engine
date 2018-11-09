@@ -20,7 +20,7 @@
 #include "Quadtree.h"
 #include "MathGeoLib/Geometry/Frustum.h"
 #include "ComponentCamera.h"
-
+#include "mmgr/mmgr.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

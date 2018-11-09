@@ -1,9 +1,9 @@
 #include "ModuleFileSystem.h"
 #include "Application.h"
 #include "PhysFS/physfs.h"
+#include <string>
 
 #include "mmgr/mmgr.h"
-#include <string>
 
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 

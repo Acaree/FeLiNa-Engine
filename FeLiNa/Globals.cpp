@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "mmgr/mmgr.h"
 
 #ifndef GAME_MODE
 

@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "ResourceManager.h"
 #include "ResourceMaterial.h"
-
+#include "mmgr/mmgr.h"
 ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
 
 	type = Component_Material;

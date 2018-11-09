@@ -4,7 +4,7 @@
 #include "ComponentTransform.h"
 #include "Glew/include/glew.h"
 #include "ImGui/imgui.h"
-
+#include "mmgr/mmgr.h"
 ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
 {
 	type = Component_Camera;

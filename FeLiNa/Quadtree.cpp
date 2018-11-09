@@ -1,7 +1,7 @@
 #include "Quadtree.h"
 #include "GameObject.h"
 #include "Glew/include/glew.h"
-
+#include "mmgr/mmgr.h"
 QuadTreeNode::QuadTreeNode(const math::AABB &bounding_box, QuadTreeNode* parent)
 {
 	this->bounding_box = bounding_box;
