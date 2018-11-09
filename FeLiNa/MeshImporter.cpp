@@ -126,6 +126,8 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		transform->SetRotation(component_transform->GetRotation());
 		transform->SetScale(component_transform->GetScale());
 
+		RELEASE(component_transform);
+
 
 		ComponentMesh* component_mesh = (ComponentMesh*)game_object->AddComponent(Component_Mesh);
 		ComponentTexture* component_texture = (ComponentTexture*)game_object->AddComponent(Component_Material);
@@ -190,6 +192,9 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c,file_name.data());
 
+			delete[](path_c);
+			delete[](file_name_c);
+
  			Texture* tex = App->importer_material->Import((const char*)add, texture_generated);
 
 			component_texture->SetTexture(tex);
@@ -208,15 +213,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			}
 
-
-			//Add the mesh component
-			//GenerateBufferData(mesh_data);
-
-			//TO REVISE call here to module renderer?
-
-			//App->renderer3D->AddDataMesh(component_mesh);
-
-			//component_mesh = App->renderer3D->CreateComponentMesh();
 
 		}
 
@@ -265,8 +261,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 		char* final_path = App->fs->SaveFile((char *)data, size, output_file, MESH_FILE);
 		
-		
-
 		game_object->mesh->SetPath(final_path);
 
 

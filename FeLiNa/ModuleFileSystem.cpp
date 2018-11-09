@@ -137,7 +137,7 @@ const char* ModuleFileSystem::GetNameFile(const char* path) const
 
 	strcpy_s(result, file_name.size() + 1, file_name.data());
 
-	//file_name.clear();
+	file_name.clear();
 
 	return result;
 }
