@@ -22,6 +22,8 @@ GameObject::GameObject(GameObject* parent)
 	//else if (App->scene->root_object != nullptr)
 		//App->scene->root_object->childrens.push_back(this); // THAT ARE GOOD?
 
+	
+
 	bounding_box.SetNegativeInfinity();
 
 #ifndef GAME_MODE
@@ -33,7 +35,26 @@ GameObject::GameObject(GameObject* parent)
 GameObject::~GameObject()
 {
 	// We don't allocate memory for this pointers.
-	name = nullptr;
+	if (name != nullptr)
+		RELEASE_ARRAY(name);
+
+	for (uint i = 0; i < childrens.size(); ++i)
+	{
+		RELEASE(childrens[i]);
+
+	}
+	childrens.clear();
+
+
+	if (mesh != nullptr)
+		RELEASE(mesh);
+	if (material != nullptr)
+		RELEASE(material);
+	if (camera != nullptr)
+		RELEASE(camera);
+
+	components.clear();
+
 	parent = nullptr;
 }
 
@@ -52,19 +73,22 @@ bool GameObject::CleanUp()
 {
 	for (uint i = 0; i < childrens.size(); ++i)
 	{
-		childrens[i]->CleanUp();
+
+		RELEASE(childrens[i]);
 
 	}
 	childrens.clear();
 
 	for (uint i = 0; i < components.size(); ++i)
 	{
-		components[i]->CleanUp();
+	
+		RELEASE(components[i]);
 	
 	}
 	components.clear();
 
-	
+	//if (name != nullptr)
+		//RELEASE_ARRAY(name);
 
 	return true;
 }
@@ -78,11 +102,16 @@ void GameObject::CleanData()
 	}
 	childrens.clear();
 
-	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
-	{
-		(*it)->CleanUp();
-	}
-	childrens.clear();
+	//if (name != nullptr)
+		//RELEASE_ARRAY(name);
+
+	if (mesh != nullptr)
+		RELEASE(mesh);
+	if (material != nullptr)
+		RELEASE(material);
+	if (camera != nullptr)
+		RELEASE(camera);
+
 	components.clear();
 
 }

@@ -14,7 +14,9 @@ ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
 ComponentTexture::~ComponentTexture()
 {
 	RELEASE_ARRAY(texture->felina_path);
-	RELEASE(texture);
+
+
+	
 }
 
 void ComponentTexture::CleanUp()

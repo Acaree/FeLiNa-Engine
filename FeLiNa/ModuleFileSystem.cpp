@@ -89,6 +89,8 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 
 				if (PHYSFS_close(file) == 0)
 					LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
+				
+				RELEASE_ARRAY(buffer);
 			}
 		}
 
@@ -114,6 +116,8 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 
 				if (PHYSFS_close(file) == 0)
 					LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
+
+				RELEASE_ARRAY(buffer)
 			}
 		}
 	}

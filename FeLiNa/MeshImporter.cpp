@@ -94,6 +94,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 		App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
 		aiReleaseImport(scene);
 		
+		RELEASE(childrens_go);
 	}
 
 	return ret;
@@ -192,8 +193,13 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c,file_name.data());
 
-			delete[](path_c);
-			delete[](file_name_c);
+			RELEASE_ARRAY(path_c);
+			RELEASE_ARRAY(file_name_c);
+
+			file_path.clear();
+			file_name.clear();
+			path.clear();
+			texture_generated.clear();
 
  			Texture* tex = App->importer_material->Import((const char*)add, texture_generated);
 
@@ -212,6 +218,8 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 
 
 			}
+
+			
 
 
 		}
@@ -263,7 +271,8 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		
 		game_object->mesh->SetPath(final_path);
 
-
+		RELEASE_ARRAY(data);
+	
 	}
 	else
 	{
@@ -276,6 +285,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		LoadModel(scene, node->mChildren[i], output_file, game_object, component_transform);
 	}
 
+	RELEASE(component_transform);
 }
 
 void MeshImporter::GenerateBufferData(Mesh* mesh_data)
@@ -379,4 +389,6 @@ void MeshImporter::CreateFileMeta(Resource* resource)
 	json_serialize_to_buffer_pretty(root_value, buffer, size);
 
 	App->fs->SaveBufferData(buffer, path, size);
+
+	RELEASE_ARRAY(buffer);
 }
