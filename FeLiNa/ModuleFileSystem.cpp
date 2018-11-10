@@ -27,6 +27,17 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	}
 
+	if (PHYSFS_mount("./Assets/Settings/", "Settings", 1) == 0) { //Add paths to physfs to search throught
+
+		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
+	}
+	if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
+
+		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
+	}
+
 	PHYSFS_mkdir("Library/Meshes");
 	PHYSFS_mkdir("Library/Materials");
 
@@ -246,6 +257,7 @@ bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & n
 
 	for (const char** file = files_array; *file != nullptr; ++file)
 	{
+		
 		if (isDirectory(*file))
 		{
 			if (FindNewAssetsFiles(*file, new_file))
@@ -258,7 +270,7 @@ bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & n
 			extension = extension.substr(extension.find_last_of("."));
 
 			//TO REVISE THIS JSON HAS A .sceneFelina
-			if (strcmp(extension.data(), "json") == 0 || strcmp(extension.data(), "meta") == 0)
+			if (strcmp(extension.data(), ".json") == 0 || strcmp(extension.data(), ".meta") == 0)
 				continue;
 
 			char meta[DEFAULT_BUF_SIZE];

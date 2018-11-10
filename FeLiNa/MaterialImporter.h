@@ -7,7 +7,7 @@
 class Resource;
 
 
-struct MaterialSettings //We use this for load/save .meta
+struct MaterialSettings : public ImporterSettings //We use this for load/save .meta
 {
 	// We use the same hexadecimal direction than GL and devil
 	enum DXCT_DEFINITION { DXTC_FORMAT = 0x0705, DXT1 = 0x0706, DXT2 = 0x0707,DXT3 = 0x0708,DXT4 = 0x0709,DXT5 = 0x070A};
@@ -37,9 +37,9 @@ public:
 	Texture* LoadDDS(char* path);
 
 	void CreateFileMeta(Resource* resource, MaterialSettings* settings);
+	void ReadFileMeta(const char* file, MaterialSettings* settings);
 	//bool Load(const char* file_name, Texture* output_texture);
 	//bool Load(const void* buffer, uint size, Texture* output_texture);
-
 
 };
 

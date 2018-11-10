@@ -251,11 +251,11 @@ void MaterialImporter::CreateFileMeta(Resource* resource, MaterialSettings* sett
 
 	json_object_set_value(root_object, "Import Settings", material_import);
 
-	json_object_set_boolean(settings_import, "DXCT Compression",settings->dxct_compression); //If not are a bool can save it i don't know why:/
+	json_object_set_boolean(settings_import, "DXCT Compression",settings->dxct_compression); //If we save as number , when we rean can convet the type :/
 	json_object_set_boolean(settings_import, "WRAP Mode S", settings->wrap_mode_s);
 	json_object_set_boolean(settings_import, "WRAP Mode T", settings->wrap_mode_t);
 	json_object_set_boolean(settings_import, "MAG FILTER", settings->mag_filter);
-
+	
 
 	char path[DEFAULT_BUF_SIZE];
 	strcpy(path, resource->GetExportedFile());
@@ -270,4 +270,32 @@ void MaterialImporter::CreateFileMeta(Resource* resource, MaterialSettings* sett
 
 	RELEASE_ARRAY(buffer);
 
+}
+
+void MaterialImporter::ReadFileMeta(const char* file, MaterialSettings* settings)
+{
+	char* buffer = nullptr;
+
+	uint size = App->fs->Load(file, &buffer);
+
+	if (size > 0)
+	{
+		LOG("Can load Mesh meta file: %s", file);
+
+		JSON_Value* root = json_parse_string(buffer);
+		JSON_Object* root_object = json_value_get_object(root);
+
+		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
+
+		settings->dxct_compression = (MaterialSettings::DXCT_DEFINITION)json_object_get_boolean(import_settings, "DXCT Compression");
+		settings->wrap_mode_s = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode S");
+		settings->wrap_mode_s = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode T");
+		settings->mag_filter = (MaterialSettings::TextureMagFilter)json_object_get_boolean(import_settings, "MAG FILTER");
+
+		json_value_free(root);
+	}
+	else
+		LOG("Error reading mesh meta file: %s", file);
+
+	RELEASE_ARRAY(buffer);
 }

@@ -63,40 +63,65 @@ uint ResourceManager::ImportFile(const char* new_file)
 {
 	uint ret = 0;
 
-	LOG("Don't find in resources, need load from path...");
+	LOG("Importing file: %s", new_file);
 
 	//Find the type of file from it's extension
 	FILE_TYPE file_type = App->fs->FindTypeFile(new_file);
 
-	//Generate .meta path
+	//Generate path .meta 
 	std::string meta_file = new_file;
 	meta_file += ".meta";
 
-	//Search if exist meta
+	//Search if exist meta: are a new file
 	if (!PHYSFS_exists(meta_file.c_str()))
 	{
 		//if not exist and not exist resource create all:
 		Resource* resource;
+		ImporterSettings* settings = nullptr;
+
+		//Create Resource only with path and generate standar .meta.
 		switch (file_type)
 		{
 		case MESH_FILE:
 		{
 			LOG("Mesh file detected, creating...");
+			settings = new MeshSettings(); //Mesh Settings are public ImporterSettings
 			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
 			resource->SetExportedFile(new_file);
-			//App->importer_mesh->CreateFileMeta(resource);
+			App->importer_mesh->CreateFileMeta(resource,(MeshSettings*)settings); //TO REVISE: we save options as bool, we don't know if work
 			break;
 		}
 		case MATERIAL_FILE:
 		{
 			LOG("Material file detected, creating...");
+			settings = new MaterialSettings(); //Material Settings are public ImporterSettings
 			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MATERIAL);
 			resource->SetExportedFile(new_file);
-			//App->importer_mesh->CreateFileMeta(resource);
+			App->importer_material->CreateFileMeta(resource, (MaterialSettings*)settings);
 			break;
 		}
 		case UKNOWN_FILE:
 			LOG("Can't recognize type of file");
+			break;
+		}
+
+		RELEASE(settings);
+	}
+	else
+	{
+		ImporterSettings* settings = nullptr;
+		//if the new file has .meta associate read the meta and add in settings 
+		switch (file_type)
+		{
+		case MESH_FILE:
+			settings = new MeshSettings(); 
+			App->importer_mesh->ReadFileMeta(meta_file.data(),(MeshSettings*)settings);
+			break;
+		case MATERIAL_FILE:
+			settings = new MaterialSettings(); 
+			App->importer_material->ReadFileMeta(meta_file.data(), (MaterialSettings*)settings);
+			break;
+		default:
 			break;
 		}
 

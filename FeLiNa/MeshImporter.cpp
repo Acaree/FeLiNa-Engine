@@ -387,7 +387,7 @@ void MeshImporter::CreateFileMeta(Resource* resource, MeshSettings* settings)
 
 	json_object_set_value(root_object, "Import Settings", mesh_import);
 
-	json_object_set_boolean(settings_import, "Ai PROCCES", settings->procces_node); //If not are a bool can save it i don't know why:/
+	json_object_set_boolean(settings_import, "Ai PROCCES", settings->procces_node);
 
 	char path[DEFAULT_BUF_SIZE];
 	strcpy(path, resource->GetExportedFile());
@@ -399,6 +399,31 @@ void MeshImporter::CreateFileMeta(Resource* resource, MeshSettings* settings)
 	json_serialize_to_buffer_pretty(root_value, buffer, size);
 
 	App->fs->SaveBufferData(buffer, path, size);
+
+	RELEASE_ARRAY(buffer);
+}
+
+void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
+{
+	char* buffer = nullptr;
+
+	uint size = App->fs->Load(file, &buffer);
+
+	if (size > 0)
+	{
+		LOG("Can load Mesh meta file: %s",file);
+
+		JSON_Value* root = json_parse_string(buffer);
+		JSON_Object* root_object = json_value_get_object(root);
+
+		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
+
+		settings->procces_node = (MeshSettings::ProceesNode)json_object_get_boolean(import_settings, "Ai PROCCES");
+
+		json_value_free(root);
+	}
+	else
+		LOG("Error reading mesh meta file: %s", file);
 
 	RELEASE_ARRAY(buffer);
 }
