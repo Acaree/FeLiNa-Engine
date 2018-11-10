@@ -18,6 +18,8 @@ public:
 
 	FILE_TYPE FindTypeFile(const char* file);
 
+	FILE_TYPE FindOwnTypeFile(const char* file);
+
 	uint Load(const char* path, char** buffer) const;
 
 	char* SaveFile(char* buffer, uint size, std::string& outputFileName, FILE_TYPE file);

@@ -81,7 +81,7 @@ void ComponentMesh::OnSave(JSON_Object* obj)
 void ComponentMesh::OnLoad(JSON_Object* obj)
 {
 	char* tmp = (char*)json_object_get_string(obj, "path");
-	uint uid = App->resource_manager->ImportFile(tmp);
+	uint uid = App->resource_manager->ImportOwnFile(tmp);
 
 	ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->Get(uid);
 	

@@ -100,7 +100,7 @@ void ComponentTexture::OnSave(JSON_Object* obj)
 void ComponentTexture::OnLoad(JSON_Object* obj)
 {
 	char* tmp = (char*)json_object_get_string(obj, "path");
-	uint uid = App->resource_manager->ImportFile(tmp);
+	uint uid = App->resource_manager->ImportOwnFile(tmp);
 	ResourceMaterial* resource_material = (ResourceMaterial*)App->resource_manager->Get(uid);
 
 	texture = resource_material->GetTexture();
