@@ -26,10 +26,7 @@ ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position
 
 }
 
-ComponentTransform::~ComponentTransform()
-{
 
-}
 
 math::float4x4 ComponentTransform::GetTransformMatrix() const {
 

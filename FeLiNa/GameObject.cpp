@@ -45,7 +45,8 @@ GameObject::~GameObject()
 	}
 	childrens.clear();
 
-
+	if (transform != nullptr)
+		RELEASE(transform);
 	if (mesh != nullptr)
 		RELEASE(mesh);
 	if (material != nullptr)
@@ -53,7 +54,8 @@ GameObject::~GameObject()
 	if (camera != nullptr)
 		RELEASE(camera);
 
-	components.clear();
+
+	
 
 	parent = nullptr;
 }
@@ -79,16 +81,7 @@ bool GameObject::CleanUp()
 	}
 	childrens.clear();
 
-	for (uint i = 0; i < components.size(); ++i)
-	{
-	
-		RELEASE(components[i]);
-	
-	}
 	components.clear();
-
-	//if (name != nullptr)
-		//RELEASE_ARRAY(name);
 
 	return true;
 }
@@ -119,8 +112,6 @@ void GameObject::CleanData()
 
 void GameObject::SetName(char* name)
 {
-	//TO SOLVE BUGS
-
 	this->name = new char[100];
 	strcpy_s(this->name, 100, name);
 }

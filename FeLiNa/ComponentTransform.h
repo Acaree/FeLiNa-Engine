@@ -8,7 +8,7 @@ class ComponentTransform : public Component
 {
 public:
 	ComponentTransform(GameObject* parent, math::float3 position = math::float3::zero, math::float3 rotation = math::float3::zero, math::float3 scale = math::float3::one);
-	~ComponentTransform();
+	//~ComponentTransform();
 
 	;
 	void DrawInspector();

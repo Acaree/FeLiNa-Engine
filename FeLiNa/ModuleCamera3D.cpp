@@ -19,20 +19,6 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 ModuleCamera3D::~ModuleCamera3D()
 {
-	//At this point the components are deleted.
-
-	/*RELEASE(current_camera);
-	RELEASE(dummy_frustum);
-	RELEASE(main_camera);
-	RELEASE(transform_camera);
-
-	for (uint i = 0; i < posible_go_intersections.size(); ++i)
-	{
-		posible_go_intersections[i]->CleanUp();
-		RELEASE(posible_go_intersections[i]);
-	}
-	posible_go_intersections.clear();*/
-
 }
 
 // -----------------------------------------------------------------
@@ -41,29 +27,15 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
-	main_camera = new GameObject(nullptr);
-	
-	ComponentTransform* transform =(ComponentTransform*) main_camera->AddComponent(Component_Transform);
-	//transform_camera = new ComponentTransform(main_camera);
-	game_camera = new ComponentCamera(main_camera);
-
-	/*main_camera->SetComponent(transform_camera);
-	main_camera->SetComponent(game_camera);*/
-	
-	ComponentCamera* camera = (ComponentCamera*)main_camera->AddComponent(Component_Camera);
-	camera = game_camera;
-
-	current_camera = new ComponentCamera(nullptr);
+	//current_camera;
 
 #ifndef  GAME_MODE
 	//Create and Set Edito camera a initial pos
-	main_camera->SetName("Main Camera");
-
 	camera_editor = new ComponentCamera(nullptr);
 	camera_editor->frustum.Translate(math::float3(5, 10, 5));
 	current_camera = camera_editor;
-#else
-	current_camera = game_camera;
+
+
 #endif // ! GAME_MODE
 
 

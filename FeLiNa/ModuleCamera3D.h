@@ -36,9 +36,6 @@ public:
 	*/
 
 	ComponentCamera* camera_editor = nullptr;
-	GameObject* main_camera = nullptr;
-	ComponentCamera* game_camera = nullptr;
-
 	ComponentCamera* current_camera = nullptr;
 
 private:

@@ -24,7 +24,7 @@ ResourceManager::~ResourceManager()
 update_status ResourceManager::PreUpdate(float dt)
 {
 	
-	for (std::map<uint, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	/*for (std::map<uint, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
 		if (it->second->CountReferences() == 0)
 		{
@@ -33,7 +33,7 @@ update_status ResourceManager::PreUpdate(float dt)
 			
 			break;
 		}
-	}
+	}*/
 
 	refresh_time += dt;
 	if (refresh_time >= time_to_refresh)

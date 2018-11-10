@@ -32,6 +32,8 @@ public:
 
 	void DrawScene();
 
+	void CreateMainCamera();
+
 	void SearchObjectsToDelete(GameObject*go);
 	void DeleteGameObjects(GameObject* go);
 

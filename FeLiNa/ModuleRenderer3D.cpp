@@ -290,8 +290,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 			App->scene->root_object->GetChild(i)->DrawBoundingBox();
 		}
 
-		App->camera->main_camera->camera->DebugDraw();
-
+		App->scene->root_object->GetChild(0)->camera->DebugDraw(); //always child 0 is camera.
 		App->scene->quadtree->DebugDraw();
 		
 	}
@@ -344,13 +343,13 @@ bool ModuleRenderer3D::CleanUp()
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	float aspect_ratio = (float)width / (float)height;
-	App->camera->main_camera->camera->SetAspectRatio(aspect_ratio);
+
 
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	//ProjectionMatrix = App->camera->main_camera->camera->GetViewMatrix();
-	glLoadMatrixf(App->camera->main_camera->camera->GetProjectionMatrix());
+	glLoadMatrixf(App->camera->current_camera->GetProjectionMatrix());
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

@@ -30,7 +30,7 @@ ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, sta
 
 ModuleScene::~ModuleScene()
 {
-	
+	RELEASE(root_object);
 }
 
 // Load assets
@@ -52,13 +52,10 @@ bool ModuleScene::Start()
 	root_object = new GameObject(nullptr);
 	root_object->AddComponent(Component_Transform);
 
-	
-
-	root_object->AddChildren(App->camera->main_camera);
-	App->camera->main_camera->SetParent(root_object);
+	CreateMainCamera();
 	std::string output_file;
 
-	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
+	//App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
 	
 	
 	//Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Baker_House.felina");
@@ -66,25 +63,7 @@ bool ModuleScene::Start()
 	//App->importer_mesh->Import("Hierarchy.FBX", "Assets/", output_file);
 	//Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Box001.felina");
 
-	/* Create a game object from .felina file
-	GameObject* go = new GameObject(root_object);
 
-	go->AddComponent(Component_Transform);
-	go->AddComponent(Component_Mesh);
-
-	go->mesh->SetMesh(new_mesh);
-
-	App->renderer3D->meshes.push_back(go->mesh);
-
-	go->AddBoundingBox(new_mesh);
-	*/
-
-
-	//std::string output_file;
-	//Texture* tex = App->importer_material->LoadDDS("Library/Materials/Baker_house.dds");
-
-
-	//TEST FRUSTUM
 	quadtree = new QuadTree();
 	math::AABB box;
 	
@@ -93,10 +72,6 @@ bool ModuleScene::Start()
 
 	quadtree->SetBoundary(box);
 
-	//FOR SERIALIZATION
-
-	//s.LoadScene();
-	//s.SaveScene();
 
 	return ret;
 }
@@ -334,4 +309,24 @@ void ModuleScene::SearchObjectsToDelete(GameObject* go)
 	{
 		SearchObjectsToDelete(go->GetChild(i));
 	}
+}
+
+void ModuleScene::CreateMainCamera()
+{
+	GameObject* obj_camera = new GameObject(nullptr);
+	
+	
+	std::string name = "Main Camera";
+	char* name_str = new char[name.size() + 1];
+	strcpy(name_str, name.c_str());
+	obj_camera->SetName(name_str);
+
+
+	ComponentTransform* transform = (ComponentTransform*)obj_camera->AddComponent(Component_Transform);
+	ComponentCamera* camera = (ComponentCamera*)obj_camera->AddComponent(Component_Camera);
+	
+	root_object->AddChildren(obj_camera);
+
+
+	RELEASE_ARRAY(name_str);
 }

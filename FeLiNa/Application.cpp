@@ -86,7 +86,7 @@ Application::~Application()
 
 	//TO CHANGE THIS DELETE:
 
-
+	RELEASE(serialization_scene);
 	RELEASE_ARRAY(name);
 	RELEASE_ARRAY(app_name);
 	RELEASE_ARRAY(organization);
@@ -169,7 +169,6 @@ void Application::PrepareUpdate()
 		case ENGINE_STATE_PLAY:
 
 			engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
-			camera->current_camera = camera->game_camera;
 			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
 			scene->serialization_scene->save_name_scene = "auto";
 			scene->serialization_scene->SaveScene();
@@ -202,7 +201,6 @@ void Application::PrepareUpdate()
 			scene->serialization_scene->save_name_scene = "auto";
 			scene->serialization_scene->ClearActualScene();
 			scene->serialization_scene->LoadScene(scene->serialization_scene->save_name_scene);
-			camera->main_camera->camera = scene->root_object->GetChild(0)->camera; //TO REVISE: child 0 is main camera allwais but if you don't use this line of code, when load main camera never render.
 			break;
 		case ENGINE_STATE_PAUSE:
 
