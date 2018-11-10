@@ -13,6 +13,7 @@
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "ModuleCamera3D.h"
+#include "Resource.h"
 #include "ResourceManager.h"
 #include "mmgr/mmgr.h"
 #endif
@@ -563,7 +564,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				}
 				if (ImGui::BeginPopupContextItem("Create"))
 				{
-					if (ImGui::MenuItem("Delete", NULL, false, true))
+					if (ImGui::MenuItem("See Import Options", NULL, false, true))
 					{
 						file_focus = *file;
 					}
@@ -604,9 +605,36 @@ void ModuleGui::ShowImportOptions()
 
 	ImGui::Begin("Inspector", &inspector_open, window_flags);
 	ImGui::Text("Import options");
+	ImGui::Separator();
 
 	uint uid = App->resource_manager->Find(file_focus.c_str());
+	Resource* resource = App->resource_manager->Get(uid);
+	
+	switch (resource->type)
+	{
+	case RESOURCE_TYPE::RESOURCE_MESH:
+		ShowMeshImport(resource);
+		break;
+
+	case RESOURCE_TYPE::RESOURCE_MATERIAL:
+		ShowMaterialImport(resource);
+		break;
+	default:
+		break;
+	}
+
+	ImGui::End();
 
 }
 
+
+void ModuleGui::ShowMeshImport(Resource* resource)
+{
+	//TODO
+}
+
+void ModuleGui::ShowMaterialImport(Resource* resource)
+{
+	//TODO
+}
 #endif

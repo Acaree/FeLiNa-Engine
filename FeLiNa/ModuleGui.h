@@ -36,6 +36,8 @@ private:
 	void SaveScene();
 	void LoadScene();
 	void ShowImportOptions();
+	void ShowMeshImport(Resource* resource);
+	void ShowMaterialImport(Resource* resource);
 public:
 
 	bool close_program = false;

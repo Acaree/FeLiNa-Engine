@@ -33,7 +33,7 @@ public:
 	Save
 	Load
 	*/
-private:
+public:
 	uint uid = 0;
 	std::string file;
 	std::string exported_file;
