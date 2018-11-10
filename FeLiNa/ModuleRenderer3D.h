@@ -3,8 +3,7 @@
 
 #include "Module.h"
 #include "Light.h"
-#include "Assimp/include/cfileio.h"
-#include "MathGeoLib/Math/Quat.h"
+
 #define MAX_LIGHTS 8
 
 class ImageRecorder;
@@ -37,16 +36,10 @@ public:
 	void UpdateTransforms(GameObject* go);
 
 	void DrawGameObjects(GameObject* go);
-
-	void AddDataMesh(ComponentMesh* data_mesh);
-	void DeleteAllDataMesh();
-
-	
 	
 	void SaveState(JSON_Object* config);
 
 #ifndef GAME_MODE
-	void CleanAllDataModel();
 	uint CreateCheckers();
 #endif
 
@@ -57,7 +50,6 @@ public:
 	
 	math::float4x4  ProjectionMatrix;
 
-	std::vector<ComponentMesh*> meshes;
 	bool wire = false;
 
 	//TO REVISE;
@@ -76,8 +68,6 @@ private:
 
 	//Checkers
 	uint checker_id = 0;
-
-
 };
 
 #endif

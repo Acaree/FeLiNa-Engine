@@ -3,33 +3,20 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
-
 #include "ModuleScene.h"
-#include "GameObject.h"
-
-#include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentTexture.h"
 #include "ComponentMesh.h"
 
 #ifndef GAME_MODE
-
 #include "ModuleGui.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
 #include "ImageRecorder.h"
 #include "Quadtree.h"
-#include "MeshImporter.h"
 #include "mmgr/mmgr.h"
 #endif
-
-
-
-
-
-
-
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -43,20 +30,6 @@ ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Modul
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
 {
-	//RELEASE(img);
-
-	/*for (uint i = 0; i < meshes.size(); ++i)
-	{
-
-		RELEASE_ARRAY(meshes[i]->vertices);
-		RELEASE_ARRAY(meshes[i]->indices);
-		RELEASE_ARRAY(meshes[i]->uv);
-		RELEASE(meshes[i]);
-	}*/
-
-	meshes.clear();
-
-
 }
 
 // Called before render is available
@@ -94,13 +67,7 @@ bool ModuleRenderer3D::Init()
 		LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 		
 		//Use Vsync
-		if (App->vsync) {
-			SDL_GL_SetSwapInterval(1);
-		}
-
-		else {
-			SDL_GL_SetSwapInterval(0);
-		}
+		(App->vsync) ? SDL_GL_SetSwapInterval(1) : SDL_GL_SetSwapInterval(0);
 			
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -157,45 +124,21 @@ bool ModuleRenderer3D::Init()
 		
 		lights[0].Active(true);
 
+		(lighting) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+		(line_smooth) ? glEnable(GL_LINE_SMOOTH) : glDisable(GL_LINE_SMOOTH);
+		(polygon_smooth) ? glEnable(GL_POLYGON_SMOOTH) : glDisable(GL_POLYGON_SMOOTH);
 
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_COLOR_MATERIAL);
+		// By default : true
 		glEnable(GL_TEXTURE_2D);
-	}
-
-
-	LOG("Vendor: %s", glGetString(GL_VENDOR));
-	LOG("Renderer: %s", glGetString(GL_RENDERER)); 
-	LOG("OpenGL version supported %s", glGetString(GL_VERSION)); 
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-	// Projection matrix for
-	//OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-	
-	if (lighting)
-		glEnable(GL_LIGHTING);
-	else
-		glDisable(GL_LIGHTING);
-
-	if (line_smooth)
-		glEnable(GL_LINE_SMOOTH);
-	else
-		glDisable(GL_LINE_SMOOTH);
-
-	if (polygon_smooth)
-		glEnable(GL_POLYGON_SMOOTH);
-	else
-		glDisable(GL_POLYGON_SMOOTH);
-
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_COLOR_MATERIAL);
 
 #ifndef GAME_MODE
-	CreateCheckers();
+		CreateCheckers();
 #endif
+
+	}
 
 	return ret;
 }
@@ -249,12 +192,13 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	
 	glLoadMatrixf(App->camera->current_camera->GetViewMatrix());
 	
 	lights[0].SetPos(App->camera->current_camera->frustum.pos.x, App->camera->current_camera->frustum.pos.y, App->camera->current_camera->frustum.pos.z);
+
+	UpdateTransforms(App->scene->root_object);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -266,11 +210,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
-
-	//LOG("post %s", name);
-	// Recalculate all objects transformations
-	UpdateTransforms(App->scene->root_object);
-
+	
 	//Draw grid
 	App->scene->DrawScene();
 
@@ -307,18 +247,13 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
-
-
 #endif
 
 	//SDL_GL_MakeCurrent(App->window->window, context);
 	SDL_GL_SwapWindow(App->window->window);
 
 
-	if (wire)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	else
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	(wire) ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE): glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		
 
 #ifndef GAME_MODE
 	if (App->gui->close_program)
@@ -332,10 +267,10 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
-	delete img;
+
+	RELEASE(img);
 	SDL_GL_DeleteContext(context);
 	
-
 	return true;
 }
 
@@ -379,61 +314,33 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 {
 	if (ImGui::Checkbox("DEPTH_TEST", &depth_test))
 	{
-		if (!depth_test)
-			glDisable(GL_DEPTH_TEST);
-		else
-			glEnable(GL_DEPTH_TEST);
-
+		(!depth_test) ? glDisable(GL_DEPTH_TEST): glEnable(GL_DEPTH_TEST);
 	}
 	if (ImGui::Checkbox("CULL FACE", &cull_face))
 	{
-		if (!cull_face)
-			glDisable(GL_CULL_FACE);
-		else
-			glEnable(GL_CULL_FACE);
+		(!cull_face) ? glDisable(GL_CULL_FACE) : glEnable(GL_CULL_FACE);
 
 	}
 	if (ImGui::Checkbox("LIGHTING", &lighting))
 	{
-
-		if (!lighting)
-			glDisable(GL_LIGHTING);
-		else
-			glEnable(GL_LIGHTING);
-
-
+		(!lighting) ? glDisable(GL_LIGHTING) : glEnable(GL_LIGHTING);
 	}
 	if (ImGui::Checkbox("COLOR MATERIAL", &color_material))
 	{
-		if (!color_material)
-			glDisable(GL_COLOR_MATERIAL);
-		else
-			glEnable(GL_COLOR_MATERIAL);
-
+		(!color_material) ? glDisable(GL_COLOR_MATERIAL) : glEnable(GL_COLOR_MATERIAL);
 	}
 	if (ImGui::Checkbox("TEXTURE 2D", &texture2D))
 	{
-		if (!texture2D)
-			glDisable(GL_TEXTURE_2D);
-		else
-			glEnable(GL_TEXTURE_2D);
-
+		(!texture2D) ? glDisable(GL_TEXTURE_2D) : glEnable(GL_TEXTURE_2D);
 	}
 	if (ImGui::Checkbox("LINE SMOOTH", &line_smooth))
 	{
-		if (!line_smooth)
-			glDisable(GL_LINE_SMOOTH);
-		else
-			glEnable(GL_LINE_SMOOTH);
+		(!line_smooth) ? glDisable(GL_LINE_SMOOTH) : glEnable(GL_LINE_SMOOTH);
 
 	}
 	if (ImGui::Checkbox("POLYGON SMOOTH", &polygon_smooth))
 	{
-		if (!polygon_smooth)
-			glDisable(GL_POLYGON_SMOOTH);
-		else
-			glEnable(GL_POLYGON_SMOOTH);
-
+		(!polygon_smooth) ? glDisable(GL_POLYGON_SMOOTH) : glEnable(GL_POLYGON_SMOOTH);
 	}
 
 }
@@ -493,10 +400,6 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-
-
-
-
 		glPopMatrix();
 	}
 
@@ -510,15 +413,6 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 
 }
 
-void ModuleRenderer3D::AddDataMesh(ComponentMesh* data_mesh) 
-{
-	meshes.push_back(data_mesh);
-}
-
-void ModuleRenderer3D::DeleteAllDataMesh()
-{
-	meshes.clear();
-}
 
 #ifndef GAME_MODE
 uint ModuleRenderer3D::CreateCheckers()
@@ -548,48 +442,5 @@ uint ModuleRenderer3D::CreateCheckers()
 	return checker_id;
 }
 
-
-void ModuleRenderer3D::CleanAllDataModel()
-{
-
-	for(int i = 0; i < meshes.size(); ++i)
-	{
-		Mesh* mesh = meshes[i]->GetMesh();
-		
-		glDeleteBuffers(1, (GLuint*) &(mesh->id_vertices));
-		glDeleteBuffers(1, (GLuint*) &(mesh->id_indices));
-		//glDeleteTextures(1, (GLuint*) &(meshes[i]->texture_id));
-		glDeleteBuffers(1, (GLuint*) &(mesh->id_uv));
-		//glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
-
-		if (mesh->indices != nullptr)
-		{
-			delete[] mesh->indices;
-			mesh->indices = nullptr;
-		}
-
-		if (mesh->vertices != nullptr)
-		{
-			delete[] mesh->vertices;
-			mesh->vertices = nullptr;
-		}
-
-		if (mesh->uv != nullptr)
-		{
-			delete[] mesh->uv;
-			mesh->uv = nullptr;
-		}
-		
-		/*if (meshes[i]->colors != nullptr)
-		{
-			delete[] meshes[i]->colors;
-			meshes[i]->colors = nullptr;
-		}*/
-
-		delete meshes[i];
-	}
-	meshes.clear();
-	
-}
 
 #endif

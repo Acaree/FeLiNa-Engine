@@ -1,12 +1,9 @@
-
 #include "ModuleRenderer3D.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
 #include "ModuleFileSystem.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
-
-
 
 #include "ModuleGui.h"
 #include "ImGui/imgui.h"
@@ -153,9 +150,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				
 				else if (path.substr(path.find_last_of(".")) == ".fbx" || path.substr(path.find_last_of(".")) == ".FBX")
 				{
-					App->renderer3D->CleanAllDataModel();
-					App->renderer3D->DeleteAllDataMesh();
-					//App->mesh_import->LoadData(dropped_filedir);
+				
 					
 				}
 
