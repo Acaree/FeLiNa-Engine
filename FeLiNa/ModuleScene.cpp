@@ -55,7 +55,7 @@ bool ModuleScene::Start()
 	game_camera = CreateMainCamera();
 	std::string output_file;
 
-	//App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
+	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
 	
 	
 	//Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Baker_House.felina");

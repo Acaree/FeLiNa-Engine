@@ -171,7 +171,7 @@ void Application::PrepareUpdate()
 			engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
 			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
 			scene->serialization_scene->save_name_scene = "auto";
-			scene->serialization_scene->SaveScene();
+			scene->serialization_scene->SaveScene(App->scene->root_object);
 			break;
 		case ENGINE_STATE_PAUSE:
 			break;

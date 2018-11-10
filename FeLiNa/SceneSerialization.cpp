@@ -22,7 +22,7 @@ SceneSerialization::~SceneSerialization()
 
 }
 
-void SceneSerialization::SaveScene()
+void SceneSerialization::SaveScene(GameObject* go)
 {
 	JSON_Value* file_root = json_value_init_array();
 	JSON_Array* go_array = json_value_get_array(file_root);
@@ -31,7 +31,7 @@ void SceneSerialization::SaveScene()
 
 
 	
-	RecursiveSearchChildrens(App->scene->root_object);
+	RecursiveSearchChildrens(go);
 
 	for (uint i = 0; i < aux_go.size(); ++i)
 	{
@@ -125,6 +125,11 @@ void SceneSerialization::LoadScene(char* file_name)
 
 void SceneSerialization::RecursiveSearchChildrens(GameObject* parent)
 {
+
+	if (parent != App->scene->root_object) {
+
+		aux_go.push_back(parent);
+	}
 
 	for (uint i = 0; i < parent->GetNumChildren(); ++i)
 	{

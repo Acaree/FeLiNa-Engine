@@ -11,7 +11,7 @@ public:
 	SceneSerialization();
 	~SceneSerialization();
 
-	void SaveScene();
+	void SaveScene(GameObject* go);
 
 	void LoadScene(char* file_name = "Autosave");
 

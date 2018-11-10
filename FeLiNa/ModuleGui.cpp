@@ -363,7 +363,7 @@ void ModuleGui::SaveScene()
 		{
 			App->serialization_scene->save_name_scene = save_name;
 			ImGui::CloseCurrentPopup();
-			App->serialization_scene->SaveScene();
+			App->serialization_scene->SaveScene(App->scene->root_object);
 			serialization_save_scene = false;
 		}
 		ImGui::SameLine();

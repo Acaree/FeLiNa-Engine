@@ -6,6 +6,7 @@
 #include "ImGuizmo/ImGuizmo.h"
 
 class ComponentTransform;
+class Resource;
 
 class ModuleGui : public Module
 {
