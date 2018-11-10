@@ -9,17 +9,14 @@
 class Resource;
 enum RESOURCE_TYPE;
 
-class ResourceManager: public Module //: publc Module ??
+class ResourceManager: public Module 
 {
 public:
 
 	ResourceManager(Application* app, bool start_enabled = true);
 	~ResourceManager();
 
-	//bool Start();
 	update_status PreUpdate(float dt);
-	//update_status Update(float dt);
-//	bool CleanUp();
 
 	uint Find(const char* file) const;
 	uint ImportFile(const char* new_file);

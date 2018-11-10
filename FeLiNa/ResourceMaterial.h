@@ -18,7 +18,7 @@ public:
 	bool EraseInMemory();
 
 private:
-	Texture* texture;
+	Texture* texture = nullptr;
 };
 
 

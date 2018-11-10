@@ -23,18 +23,6 @@ ResourceManager::~ResourceManager()
 
 update_status ResourceManager::PreUpdate(float dt)
 {
-	
-	/*for (std::map<uint, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		if (it->second->CountReferences() == 0)
-		{
-			RELEASE(it->second);
-			resources.erase(it);
-			
-			break;
-		}
-	}*/
-
 	refresh_time += dt;
 	if (refresh_time >= time_to_refresh)
 	{
@@ -45,7 +33,6 @@ update_status ResourceManager::PreUpdate(float dt)
 
 		refresh_time = 0.0F;
 	}
-
 
 	return UPDATE_CONTINUE;
 }

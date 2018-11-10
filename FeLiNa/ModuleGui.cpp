@@ -96,7 +96,7 @@ update_status ModuleGui::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			App->renderer3D->wire = !App->renderer3D->wire;
 
-		//test
+
 		ShowAssetsWindow();
 
 		ShowMainMenuBar();
@@ -118,9 +118,6 @@ update_status ModuleGui::Update(float dt)
 
 		if (open_console)
 			App->console->DrawConsole();
-
-		/*if (inspector_open)
-			App->renderer3D->DrawMeshInformation();*/ //TO DELETE
 
 		if (About_active) {
 			ShowAboutWindow();

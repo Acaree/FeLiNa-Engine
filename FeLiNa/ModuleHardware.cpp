@@ -106,11 +106,6 @@ void ModuleHardware::DrawHardwareInformationPanel()
 	ImGui::SameLine();
 	ImGui::TextColored(ImVec4(0, 1, 0, 100), "1.5");
 
-
-
-
-
-
 	ImGui::Separator();
 
 	ImGui::Text("CPUs: ");

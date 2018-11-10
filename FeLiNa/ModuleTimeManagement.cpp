@@ -13,8 +13,6 @@ ModuleTimeManagement::~ModuleTimeManagement()
 
 bool ModuleTimeManagement::Start()
 {
-	
-	
 	return true;
 }
 

@@ -18,11 +18,6 @@ GameObject::GameObject(GameObject* parent)
 
 	if (parent != nullptr)
 		parent->childrens.push_back(this);
-	 
-	//else if (App->scene->root_object != nullptr)
-		//App->scene->root_object->childrens.push_back(this); // THAT ARE GOOD?
-
-	
 
 	bounding_box.SetNegativeInfinity();
 
@@ -54,8 +49,6 @@ GameObject::~GameObject()
 	if (camera != nullptr)
 		RELEASE(camera);
 
-
-	
 
 	parent = nullptr;
 }

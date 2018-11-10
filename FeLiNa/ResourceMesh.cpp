@@ -5,7 +5,7 @@
 
 ResourceMesh::ResourceMesh(uint uid, RESOURCE_TYPE type) : Resource(uid,type)
 {
-	mesh = new Mesh();
+	mesh = new Mesh;
 }
 
 ResourceMesh::~ResourceMesh()

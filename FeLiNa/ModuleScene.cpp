@@ -84,8 +84,6 @@ bool ModuleScene::CleanUp()
 	RELEASE(grid_plane);
 	RELEASE(quadtree);
 
-	
-
 	static_go.clear();
 
 	root_object->CleanUp();
@@ -291,11 +289,6 @@ void ModuleScene::DeleteGameObjects(GameObject* go)
 
 		parent->DeleteChildren(go);
 	}
-	else
-	{
-		//Necessary?? all game objects are parent of root if not have another parent
-	}
-
 }
 
 void ModuleScene::SearchObjectsToDelete(GameObject* go)

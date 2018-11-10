@@ -28,25 +28,13 @@ public:
 
 public:
 
-	/* Camera editor: see in editor mode
-		Game Camera: see in game mode
-		Main Camera: GameObject for print and move in editor and game mode
-		Current Camera: all logic.
-	
-	*/
-
 	ComponentCamera* camera_editor = nullptr;
 	ComponentCamera* current_camera = nullptr;
 
 private:
-	
-	ComponentTransform* transform_camera = nullptr;
-
 	//Mouse picking test
 	math::LineSegment picking;
 	std::vector<GameObject*> posible_go_intersections;
-
-	
 };
 
 #endif

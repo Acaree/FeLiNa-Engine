@@ -1,6 +1,5 @@
 #ifndef _GAME_OBJECT_
 #define _GAME_OBJECT_
-
 #include "Globals.h"
 #include "Parson/parson.h"
 #include "MathGeoLib/MathGeoLib.h"

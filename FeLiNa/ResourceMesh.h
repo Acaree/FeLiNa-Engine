@@ -19,7 +19,7 @@ public:
 
 private:
 
-	Mesh* mesh;
+	Mesh* mesh = nullptr;
 
 };
 
