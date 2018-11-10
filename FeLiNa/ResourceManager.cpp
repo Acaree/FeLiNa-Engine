@@ -127,9 +127,17 @@ uint ResourceManager::ImportFile(const char* new_file)
 
 
 	}
+	
+	return ret;
+}
 
+uint ResourceManager::ImportOwnFile(const char* new_file) {
+	
+	uint uid = Find(new_file);
 
-	/*	Resource* resource = nullptr;
+	if (uid == 0) {
+		Resource* resource = nullptr;
+		FILE_TYPE file_type = App->fs->FindOwnTypeFile(new_file);
 
 		switch (file_type)
 		{
@@ -139,9 +147,9 @@ uint ResourceManager::ImportFile(const char* new_file)
 			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
 			resource->SetExportedFile(new_file);
 			Mesh* mesh = App->importer_mesh->LoadFLN(new_file);
-			memcpy(mesh->felina_path, new_file,DEFAULT_BUF_SIZE);
+			memcpy(mesh->felina_path, new_file, DEFAULT_BUF_SIZE);
 			SetResourceData(mesh, resource);
-			App->importer_mesh->CreateFileMeta(resource);
+			
 			break;
 		}
 		case MATERIAL_FILE:
@@ -152,7 +160,7 @@ uint ResourceManager::ImportFile(const char* new_file)
 			Texture* texture = App->importer_material->LoadDDS((char*)new_file); // To revise function not const char*??
 			memcpy(texture->felina_path, new_file, DEFAULT_BUF_SIZE);
 			SetResourceData(texture, resource);
-			App->importer_mesh->CreateFileMeta(resource);
+			
 			break;
 		}
 		case UKNOWN_FILE:
@@ -165,21 +173,21 @@ uint ResourceManager::ImportFile(const char* new_file)
 			//If the resource create and assign her data , call LoadToMemory for bind data or sum the number of loaded
 			resource->LoadToMemory();
 			//Get the uid 
-			ret = resource->GetUID();
+			uid = resource->GetUID();
 		}
 		else
-			ret = 0;
+			uid = 0;
 	}
 	else
 	{
-		LOG("Find file in resources with uid: %i", ret);
+		LOG("Find file in resources with uid: %i", uid);
 
 		//Get the resource that are create and sum loaded+1
-		Resource* resource = Get(ret);
+		Resource* resource = Get(uid);
 		resource->LoadToMemory();
-	}*/
+	}
 
-	return ret;
+	return uid;
 }
 
  Resource* ResourceManager::Get(uint uid)

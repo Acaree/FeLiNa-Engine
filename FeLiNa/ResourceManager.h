@@ -21,6 +21,7 @@ public:
 
 	uint Find(const char* file) const;
 	uint ImportFile(const char* new_file);
+	uint ImportOwnFile(const char* new_file);
 	Resource* Get(uint uid);
 	Resource* CreateNewResource(RESOURCE_TYPE type);
 

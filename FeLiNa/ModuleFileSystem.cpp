@@ -239,6 +239,30 @@ FILE_TYPE ModuleFileSystem::FindTypeFile(const char* file)
 	{
 		file_type = FILE_TYPE::MATERIAL_FILE;
 	}
+	//else file type is unknown
+	return file_type;
+}
+
+
+FILE_TYPE ModuleFileSystem::FindOwnTypeFile(const char* file)
+{
+	FILE_TYPE file_type = FILE_TYPE::UKNOWN_FILE;
+
+	std::string file_extension = file;
+
+	file_extension = file_extension.erase(0, file_extension.find_last_of("."));
+
+
+	if (strcmp(file_extension.c_str(), ".felina") == 0)
+	{
+		file_type = FILE_TYPE::MESH_FILE;
+	}
+	else if (strcmp(file_extension.c_str(), ".dds") == 0)
+	{
+		file_type = FILE_TYPE::MATERIAL_FILE;
+	}
+
+	//else file type is unknown
 
 	return file_type;
 }
@@ -248,45 +272,56 @@ bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & n
 {
 	bool ret = false;
 	
+	//TO REVISE
+
 	/*1- Check if is directory : true: recursive
 	2-chech if are asociate the .meta in the soma folder: yes continue, no create
 	 */
 	new_file.append(directory);
 	
 	const char** files_array = GetAllFilesFromDir(directory);
+	static uint last_count = 0;
+	uint count = 0;
+	for (const char** file = files_array; *file != nullptr; ++file) {
+		count++;
+	}
 
-	for (const char** file = files_array; *file != nullptr; ++file)
-	{
-		
-		if (isDirectory(*file))
+	if (count != last_count) {
+		for (const char** file = files_array; *file != nullptr; ++file)
 		{
-			if (FindNewAssetsFiles(*file, new_file))
-				if (int position = new_file.rfind(*file) != std::string::npos) //That condition work as espected?
-					new_file = new_file.substr(0, position);
-		}
-		else
-		{
-			std::string extension = *file;
-			extension = extension.substr(extension.find_last_of("."));
 
-			//TO REVISE THIS JSON HAS A .sceneFelina
-			if (strcmp(extension.data(), ".json") == 0 || strcmp(extension.data(), ".meta") == 0)
-				continue;
-
-			char meta[DEFAULT_BUF_SIZE];
-
-			strcpy(meta, new_file.data());
-			strcat(meta, *file);
-			strcat(meta, ".meta");
-
-			if (!PHYSFS_exists(meta))
+			if (isDirectory(*file))
 			{
-				new_file.append(*file);
-				ret = true;
-				break;
+				if (FindNewAssetsFiles(*file, new_file))
+					if (int position = new_file.rfind(*file) != std::string::npos) //That condition work as espected?
+						new_file = new_file.substr(0, position);
+			}
+			else
+			{
+				std::string extension = *file;
+				extension = extension.substr(extension.find_last_of("."));
+
+				//TO REVISE THIS JSON HAS A .sceneFelina
+				if (strcmp(extension.data(), ".json") == 0 || strcmp(extension.data(), ".meta") == 0)
+					continue;
+
+				char meta[DEFAULT_BUF_SIZE];
+
+				strcpy(meta, new_file.data());
+				strcat(meta, *file);
+				strcat(meta, ".meta");
+
+				if (!PHYSFS_exists(meta))
+				{
+					new_file.append(*file);
+					ret = true;
+					break;
+				}
 			}
 		}
 	}
+
+	last_count = count;
 
 	return ret;
 }
