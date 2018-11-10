@@ -442,7 +442,7 @@ void ModuleGui::ShowEditorMenu()
 		App->time_management->PlayGameTime();
 		App->game_states = GAME_STATES::ENGINE_STATE_PLAY;
 		App->engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
-		
+		App->camera->current_camera = App->scene->game_camera;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Pause", { 50,30 })) {
@@ -456,6 +456,7 @@ void ModuleGui::ShowEditorMenu()
 		App->time_management->PauseGameClock();
 		App->game_states = GAME_STATES::ENGINE_STATE_STOP;
 		App->engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
+		App->camera->current_camera = App->camera->camera_editor;
 
 	}
 	ImGui::SameLine();

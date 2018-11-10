@@ -32,7 +32,7 @@ public:
 
 	void DrawScene();
 
-	void CreateMainCamera();
+	ComponentCamera* CreateMainCamera();
 
 	void SearchObjectsToDelete(GameObject*go);
 	void DeleteGameObjects(GameObject* go);
@@ -54,6 +54,8 @@ public:
 	QuadTree * quadtree = nullptr;
 	bool need_update_quadtree = false;
 	uint quadtree_size = 0;
+
+	ComponentCamera* game_camera = nullptr;
 
 	SceneSerialization* serialization_scene = nullptr;
 

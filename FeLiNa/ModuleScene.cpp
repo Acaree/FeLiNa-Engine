@@ -52,7 +52,7 @@ bool ModuleScene::Start()
 	root_object = new GameObject(nullptr);
 	root_object->AddComponent(Component_Transform);
 
-	CreateMainCamera();
+	game_camera = CreateMainCamera();
 	std::string output_file;
 
 	//App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
@@ -305,7 +305,7 @@ void ModuleScene::SearchObjectsToDelete(GameObject* go)
 	}
 }
 
-void ModuleScene::CreateMainCamera()
+ComponentCamera* ModuleScene::CreateMainCamera()
 {
 	GameObject* obj_camera = new GameObject(nullptr);
 	
@@ -323,4 +323,6 @@ void ModuleScene::CreateMainCamera()
 
 
 	RELEASE_ARRAY(name_str);
+
+	return camera;
 }
