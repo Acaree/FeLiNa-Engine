@@ -35,7 +35,7 @@ private:
 
 	void SaveScene();
 	void LoadScene();
-
+	void ShowImportOptions();
 public:
 
 	bool close_program = false;
@@ -47,6 +47,7 @@ public:
 	bool serialization_save_scene = false;
 	bool serialization_load_scene = false;
 
+	std::string file_focus;
 };
 #endif
 

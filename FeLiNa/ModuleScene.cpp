@@ -125,13 +125,7 @@ update_status ModuleScene::Update(float dt)
 
 	update_status update_return = UPDATE_CONTINUE;
 	
-	if (App->engine_states != ENGINE_STATES::ENGINE_STATE_GAME_MODE)
-	{
-#ifndef GAME_MODE
-		ShowHierarchy();
-		ShowInspector();
-#endif
-	}
+
 
 	root_object->Update(dt);
 	return update_return;

@@ -13,7 +13,7 @@
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "ModuleCamera3D.h"
-
+#include "ResourceManager.h"
 #include "mmgr/mmgr.h"
 #endif
 
@@ -123,7 +123,17 @@ update_status ModuleGui::Update(float dt)
 			ShowAboutWindow();
 		}
 
-		GameObject* go = App->scene->GetSelectedGameObject();
+		if (App->engine_states != ENGINE_STATES::ENGINE_STATE_GAME_MODE)
+		{
+#ifndef GAME_MODE
+			App->scene->ShowHierarchy();
+
+			if (file_focus.size() == 0)
+				App->scene->ShowInspector();
+			else
+				ShowImportOptions();
+#endif		
+		}
 	}
 
 	return update_return;
@@ -553,7 +563,10 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				}
 				if (ImGui::BeginPopupContextItem("Create"))
 				{
-
+					if (ImGui::MenuItem("Delete", NULL, false, true))
+					{
+						file_focus = *file;
+					}
 					if (ImGui::MenuItem("Delete", NULL, false, true))
 					{
 						char* file_path = new char[DEFAULT_BUF_SIZE];
@@ -566,13 +579,34 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 				ImGui::TreePop();
 			}
-
-
-
-			
-
 		}
 	}
 
 }
+
+void ModuleGui::ShowImportOptions()
+{
+	static int width;
+	static int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2(width - width / 4, 17));
+	ImGui::SetNextWindowSize(ImVec2(width / 4, height - 400));
+
+	ImGuiWindowFlags window_flags = 0;
+
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	window_flags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
+	window_flags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
+
+	ImGui::Begin("Inspector", &inspector_open, window_flags);
+	ImGui::Text("Import options");
+
+	uint uid = App->resource_manager->Find(file_focus.c_str());
+
+}
+
 #endif

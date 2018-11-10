@@ -36,7 +36,7 @@ public:
 
 	void SearchObjectsToDelete(GameObject*go);
 	void DeleteGameObjects(GameObject* go);
-
+	
 private:
 
 	mPlane* grid_plane = nullptr;
