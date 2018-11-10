@@ -521,7 +521,6 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 {
 	ImGuiTreeNodeFlags flags = 0;
 	
-	flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 
 	const char** directory_array = App->fs->GetAllFilesFromDir(dir);
 
@@ -542,28 +541,35 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 		}
 		else
 		{
+
 			flags = 0;
 			flags |= ImGuiTreeNodeFlags_Leaf;
+
 
 			if (ImGui::TreeNodeEx(*file, flags)) {
 				if (ImGui::IsItemClicked(0))//Left click
 				{
 					//here the file must be loaded
 				}
+				if (ImGui::BeginPopupContextItem("Create"))
+				{
+
+					if (ImGui::MenuItem("Delete", NULL, false, true))
+					{
+						char* file_path = new char[DEFAULT_BUF_SIZE];
+						sprintf_s(file_path, DEFAULT_BUF_SIZE, "%s/%s", dir, *file);
+						remove((const char*)file_path);
+					}
+					ImGui::EndPopup();
+				}
+
+
 				ImGui::TreePop();
 			}
 
-			if (ImGui::BeginPopupContextItem("Create"))
-			{
-				if (ImGui::MenuItem("Delete", NULL, false, true))
-				{
-					char* file_path = new char[DEFAULT_BUF_SIZE];
-					sprintf_s(file_path, DEFAULT_BUF_SIZE, "%s/%s", dir, *file);
-					remove((const char*)file_path);
-				}
 
-				ImGui::EndPopup();
-			}
+
+			
 
 		}
 	}
