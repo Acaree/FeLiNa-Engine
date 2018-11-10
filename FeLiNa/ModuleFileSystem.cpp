@@ -219,11 +219,12 @@ FILE_TYPE ModuleFileSystem::FindTypeFile(const char* file)
 	file_extension = file_extension.erase(0, file_extension.find_last_of("."));
 
 	
-	if (strcmp(file_extension.c_str(), ".felina") == 0 )
+	if (strcmp(file_extension.c_str(), ".FBX") == 0 || strcmp(file_extension.c_str(), ".fbx") == 0 || strcmp(file_extension.c_str(), ".obj") == 0 || strcmp(file_extension.c_str(), ".OBJ") == 0)
 	{
 		file_type = FILE_TYPE::MESH_FILE;
 	}
-	else if( strcmp(file_extension.c_str(), ".dds") == 0 )
+	else if( strcmp(file_extension.c_str(), ".dds") == 0 || strcmp(file_extension.c_str(), ".DDS") == 0 || strcmp(file_extension.c_str(), ".png") == 0 || strcmp(file_extension.c_str(), ".PNG") == 0 ||
+		strcmp(file_extension.c_str(), ".jpg") == 0 || strcmp(file_extension.c_str(), ".JPG") == 0 || strcmp(file_extension.c_str(), ".tga") == 0 || strcmp(file_extension.c_str(), ".TGA") == 0)
 	{
 		file_type = FILE_TYPE::MATERIAL_FILE;
 	}
@@ -236,8 +237,9 @@ bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & n
 {
 	bool ret = false;
 	
-	//Really similar function that gui::RecurssiveShowAssets...
-
+	/*1- Check if is directory : true: recursive
+	2-chech if are asociate the .meta in the soma folder: yes continue, no create
+	 */
 	new_file.append(directory);
 	
 	const char** files_array = GetAllFilesFromDir(directory);
@@ -263,7 +265,7 @@ bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & n
 
 			strcpy(meta, new_file.data());
 			strcat(meta, *file);
-			strcat(meta, extension.data());
+			strcat(meta, ".meta");
 
 			if (!PHYSFS_exists(meta))
 			{

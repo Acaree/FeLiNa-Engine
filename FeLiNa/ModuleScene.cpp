@@ -277,11 +277,12 @@ void ModuleScene::DeleteGameObjects(GameObject* go)
 	{
 		DeleteGameObjects(go->GetChild(i));
 	}
-
+	go->childrens.clear();
 	if (go->components.size() > 0)
 	{
 		go->DeleteAllComponents();
 	}
+	go->components.clear();
 
 	if (go->GetParent() != nullptr)
 	{

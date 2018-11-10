@@ -10,7 +10,24 @@ ResourceMesh::ResourceMesh(uint uid, RESOURCE_TYPE type) : Resource(uid,type)
 
 ResourceMesh::~ResourceMesh()
 {	
-	
+	if (mesh->indices != nullptr)
+	{
+		RELEASE_ARRAY(mesh->indices);
+	}
+
+	if (mesh->vertices != nullptr)
+	{
+		RELEASE_ARRAY(mesh->vertices);
+	}
+
+	if (mesh->uv != nullptr)
+	{
+		RELEASE_ARRAY(mesh->uv);
+
+	}
+
+	RELEASE_ARRAY(mesh->felina_path);
+	RELEASE(mesh);
 }
 
 bool ResourceMesh::LoadInMemory()
@@ -44,28 +61,7 @@ bool ResourceMesh::EraseInMemory()
 	glDeleteBuffers(1, (GLuint*) &(mesh->id_indices));
 	glDeleteBuffers(1, (GLuint*) &(mesh->id_uv));
 
-	if (mesh->indices != nullptr)
-	{
-		RELEASE_ARRAY(mesh->indices);
-	}
-
-	if (mesh->vertices != nullptr)
-	{
-		RELEASE_ARRAY(mesh->vertices);
-	}
-
-	if (mesh->uv != nullptr)
-	{
-		RELEASE_ARRAY(mesh->uv);
-
-	}
-
-	RELEASE_ARRAY(mesh->felina_path);
-	RELEASE(mesh);
-
 	return ret;
-
-
 }
 
 void ResourceMesh::SetMesh(Mesh* mesh)

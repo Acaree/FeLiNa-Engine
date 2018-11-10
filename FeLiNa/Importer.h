@@ -4,7 +4,10 @@
 #include "Globals.h"
 #include <string>
 
+struct ImporterSettings //We use this for load/save .meta
+{
 
+};
 
 class Importer
 {

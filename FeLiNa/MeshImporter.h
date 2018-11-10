@@ -15,6 +15,13 @@ struct aiLogStream;
 struct aiMaterial;
 class Resource;
 
+struct MeshSettings //We use this for load/save .meta
+{
+	enum ProceesNode { TargetRealtime_MaxQuality = 0, TargetRealtime_Quality, TargetRealtime_Fast, ConvertToLeftHanded };
+	ProceesNode procces_node = TargetRealtime_MaxQuality;
+	//TO REVISE: TO COMPLETE.
+};
+
 
 class MeshImporter :public Importer
 {
@@ -35,7 +42,7 @@ public:
 	Mesh* LoadFLN(const char* path);
 	Mesh* LoadFLN(const void* buffer, uint size);
 
-	void CreateFileMeta(Resource* resource);
+	void CreateFileMeta(Resource* resource, MeshSettings* settings);
 
 	//bool Load(const char* file_name, Texture* output_texture);
 	//bool Load(const void* buffer, uint size, Texture* output_texture);

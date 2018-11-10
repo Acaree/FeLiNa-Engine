@@ -7,6 +7,7 @@
 #include "MeshImporter.h"
 #include "MaterialImporter.h"
 #include "ModuleTimeManagement.h"
+#include "PhysFS/physfs.h"
 #include "mmgr/mmgr.h"
 ResourceManager::ResourceManager(Application* app, bool start_enabled ): Module(app,start_enabled)
 {
@@ -21,15 +22,24 @@ ResourceManager::~ResourceManager()
 	resources.clear();
 }
 
+bool ResourceManager::Start()
+{
+	std::string new_file;
+	if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO Change -> assets a Macro?
+		ImportFile(new_file.data());
+
+	return true;
+}
+
 update_status ResourceManager::PreUpdate(float dt)
 {
 	refresh_time += dt;
 	if (refresh_time >= time_to_refresh)
 	{
 		// FOR SEARCH META: when we implemented, testing with .felina and works pecfect
-		/*std::string new_file;
+		std::string new_file;
 		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO Change -> assets a Macro?
-			ImportFile(new_file.data());*/
+			ImportFile(new_file.data());
 
 		refresh_time = 0.0F;
 	}
@@ -53,15 +63,48 @@ uint ResourceManager::ImportFile(const char* new_file)
 {
 	uint ret = 0;
 
-	ret = Find(new_file);
+	LOG("Don't find in resources, need load from path...");
 
-	if (ret == 0)
+	//Find the type of file from it's extension
+	FILE_TYPE file_type = App->fs->FindTypeFile(new_file);
+
+	//Generate .meta path
+	std::string meta_file = new_file;
+	meta_file += ".meta";
+
+	//Search if exist meta
+	if (!PHYSFS_exists(meta_file.c_str()))
 	{
-		LOG("Don't find in resources, need load from path...");
+		//if not exist and not exist resource create all:
+		Resource* resource;
+		switch (file_type)
+		{
+		case MESH_FILE:
+		{
+			LOG("Mesh file detected, creating...");
+			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
+			resource->SetExportedFile(new_file);
+			//App->importer_mesh->CreateFileMeta(resource);
+			break;
+		}
+		case MATERIAL_FILE:
+		{
+			LOG("Material file detected, creating...");
+			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MATERIAL);
+			resource->SetExportedFile(new_file);
+			//App->importer_mesh->CreateFileMeta(resource);
+			break;
+		}
+		case UKNOWN_FILE:
+			LOG("Can't recognize type of file");
+			break;
+		}
 
-		FILE_TYPE file_type = App->fs->FindTypeFile(new_file);
 
-		Resource* resource = nullptr;
+	}
+
+
+	/*	Resource* resource = nullptr;
 
 		switch (file_type)
 		{
@@ -109,7 +152,7 @@ uint ResourceManager::ImportFile(const char* new_file)
 		//Get the resource that are create and sum loaded+1
 		Resource* resource = Get(ret);
 		resource->LoadToMemory();
-	}
+	}*/
 
 	return ret;
 }

@@ -80,6 +80,7 @@ public:
 
 	GameObject* SearchParentForUID(uint parent_uid);
 
+	std::vector<GameObject*> childrens;
 	// I think this is best 
 	ComponentTransform* transform = nullptr;
 	ComponentTexture* material = nullptr;
@@ -91,7 +92,7 @@ private:
 	
 	char* name = "No Name";
 	
-	std::vector<GameObject*> childrens;
+
 	GameObject* parent = nullptr;
 	bool selected = false;
 	bool active = true;

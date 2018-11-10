@@ -90,11 +90,11 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 		
 		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
-		/*App->serialization_scene->save_name_scene = "test_auto_save";
+		App->serialization_scene->save_name_scene = "test_auto_save";
 		App->serialization_scene->SaveScene();
 		App->serialization_scene->ClearActualScene();
 		App->serialization_scene->save_name_scene = "test_auto_save";
-		App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);*/
+		App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
 		aiReleaseImport(scene);
 		
 		//RELEASE(childrens_go);
@@ -374,7 +374,7 @@ Mesh* MeshImporter::LoadFLN(const char* path) {
 
 }
 
-void MeshImporter::CreateFileMeta(Resource* resource)
+void MeshImporter::CreateFileMeta(Resource* resource, MeshSettings* settings)
 {
 	JSON_Value* root_value = json_value_init_object();
 	JSON_Object* root_object = json_value_get_object(root_value);
@@ -382,7 +382,12 @@ void MeshImporter::CreateFileMeta(Resource* resource)
 	json_object_set_number(root_object, "Time", App->time_management->ReadRealTimeClock());
 	json_object_set_number(root_object, "UID", resource->GetUID());
 
-	/* OPTIONS IMPORTER :/*/
+	JSON_Value* mesh_import = json_value_init_object();
+	JSON_Object* settings_import = json_value_get_object(mesh_import);
+
+	json_object_set_value(root_object, "Import Settings", mesh_import);
+
+	json_object_set_boolean(settings_import, "Ai PROCCES", settings->procces_node); //If not are a bool can save it i don't know why:/
 
 	char path[DEFAULT_BUF_SIZE];
 	strcpy(path, resource->GetExportedFile());

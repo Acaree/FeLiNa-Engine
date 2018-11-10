@@ -238,7 +238,7 @@ Texture* MaterialImporter::LoadDDS(char* path) {
 
 }
 
-void MaterialImporter::CreateFileMeta(Resource* resource)
+void MaterialImporter::CreateFileMeta(Resource* resource, MaterialSettings* settings)
 {
 	JSON_Value* root_value = json_value_init_object();
 	JSON_Object* root_object = json_value_get_object(root_value);
@@ -246,7 +246,16 @@ void MaterialImporter::CreateFileMeta(Resource* resource)
 	json_object_set_number(root_object, "Time", App->time_management->ReadRealTimeClock());
 	json_object_set_number(root_object, "UID", resource->GetUID());
 
-	/* OPTIONS IMPORTER :/*/
+	JSON_Value* material_import = json_value_init_object();
+	JSON_Object* settings_import = json_value_get_object(material_import);
+
+	json_object_set_value(root_object, "Import Settings", material_import);
+
+	json_object_set_boolean(settings_import, "DXCT Compression",settings->dxct_compression); //If not are a bool can save it i don't know why:/
+	json_object_set_boolean(settings_import, "WRAP Mode S", settings->wrap_mode_s);
+	json_object_set_boolean(settings_import, "WRAP Mode T", settings->wrap_mode_t);
+	json_object_set_boolean(settings_import, "MAG FILTER", settings->mag_filter);
+
 
 	char path[DEFAULT_BUF_SIZE];
 	strcpy(path, resource->GetExportedFile());
@@ -258,5 +267,7 @@ void MaterialImporter::CreateFileMeta(Resource* resource)
 	json_serialize_to_buffer_pretty(root_value, buffer, size);
 
 	App->fs->SaveBufferData(buffer,path,size); 
+
+	RELEASE_ARRAY(buffer);
 
 }

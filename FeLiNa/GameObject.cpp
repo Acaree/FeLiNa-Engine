@@ -513,11 +513,11 @@ void GameObject::ShowGameObjectOptions()
 
 void GameObject::DeleteAllComponents()
 {
-	for (uint i = 0; i < components.size(); ++i)
-	{
-		components[i]->CleanUp();
-		RELEASE(components[i]);
-	}
+
+	RELEASE(transform);
+	RELEASE(mesh);
+	RELEASE(material);
+	RELEASE(camera);
 
 	components.clear();
 }
