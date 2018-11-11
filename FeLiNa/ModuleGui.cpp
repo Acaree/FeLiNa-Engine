@@ -544,7 +544,10 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 			if (ImGui::TreeNodeEx(*file, flags))
 			{
-				RecurssiveShowAssets(*file);
+				std::string tmp = dir;
+				tmp += "/";
+				tmp += *file;
+				RecurssiveShowAssets(tmp.c_str());
 
 				ImGui::TreePop();
 			}
@@ -566,6 +569,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				{
 					if (ImGui::MenuItem("See Import Options", NULL, false, true))
 					{
+						//To Revise
 						file_focus = dir;
 						file_focus += "/";
 						file_focus += *file;

@@ -8,7 +8,7 @@
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
-
+#include "ResourceManager.h"
 #include "MaterialImporter.h"
 #include "Resource.h"
 #include "Assimp/include/cimport.h"
@@ -433,6 +433,10 @@ void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
 		JSON_Value* root = json_parse_string(buffer);
 		JSON_Object* root_object = json_value_get_object(root);
 
+		Resource* resource = App->resource_manager->CreateNewResource(RESOURCE_MESH);
+		resource->uid = json_object_get_number(root_object, "UID");
+		resource->exported_file = App->gui->file_focus.c_str();
+
 		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
 
 		settings->process_node = (MeshSettings::ProcessNode)json_object_get_boolean(import_settings, "Ai PROCCES");
@@ -493,9 +497,13 @@ void MeshImporter::ShowMeshImport()
 	ImGui::Checkbox("Optimize Meshes:", &mesh_settings->OptimizeMeshes);
 	ImGui::Checkbox("Flip UVs:", &mesh_settings->FlipUVs);
 
-	if (ImGui::Button("IMPORT ###importmesh", { 70,50 }))
+	if (ImGui::Button("Apply ###importmesh", { 70,50 }))
 	{
+		uint uid = App->resource_manager->Find(App->gui->file_focus.c_str());
+		Resource* resource = App->resource_manager->Get(uid);
 
+		CreateFileMeta(resource, mesh_settings);
+		App->gui->file_focus.clear();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Cancel ###savemesh", { 70,50 }))
