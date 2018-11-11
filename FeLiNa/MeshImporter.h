@@ -14,12 +14,29 @@ class aiNode;
 struct aiLogStream;
 struct aiMaterial;
 class Resource;
+enum FILE_TYPE;
 
 struct MeshSettings: public ImporterSettings //We use this for load/save .meta
 {
-	enum ProceesNode { TargetRealtime_MaxQuality = 0, TargetRealtime_Quality, TargetRealtime_Fast, ConvertToLeftHanded };
-	ProceesNode procces_node = TargetRealtime_MaxQuality;
-	//TO REVISE: TO COMPLETE.
+	enum ProcessNode { TargetRealtime_MaxQuality = 0, TargetRealtime_Quality, TargetRealtime_Fast, ConvertToLeftHanded };
+	ProcessNode process_node = TargetRealtime_MaxQuality;
+	
+	bool CalcTangentSpace = true;
+	bool JoinIdenticalVertices = true;
+	bool MakeLeftHanded = false;
+	bool Triangulate = true;
+	bool RemoveComponent = false;
+	bool GenNormals = false;
+	bool GenSmoothNormals = true;
+	bool SplitLargeMeshes = true;
+	bool PreTransformVertices = false;
+	bool LimitBoneWeights = true;
+	bool ValidateDataStructure = true;
+	bool RemoveRedundantMaterials = true;
+	bool SortByPType = true;
+	bool GenUvCoords = true;
+	bool OptimizeMeshes = true;
+	bool FlipUVs = false;
 };
 
 
@@ -44,9 +61,14 @@ public:
 
 	void CreateFileMeta(Resource* resource, MeshSettings* settings);
 	void ReadFileMeta(const char* file, MeshSettings* settings);
+
+	void ShowMeshImport();
+	void RefreshMeshOptions();
+
 	//bool Load(const char* file_name, Texture* output_texture);
 	//bool Load(const void* buffer, uint size, Texture* output_texture);
-
+public:
+	MeshSettings* mesh_settings = nullptr;
 
 };
 

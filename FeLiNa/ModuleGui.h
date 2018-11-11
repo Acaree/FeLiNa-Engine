@@ -8,6 +8,7 @@
 class ComponentTransform;
 class Resource;
 
+enum FILE_TYPE;
 class ModuleGui : public Module
 {
 public:
@@ -37,8 +38,11 @@ private:
 	void SaveScene();
 	void LoadScene();
 	void ShowImportOptions();
-	void ShowMeshImport(Resource* resource);
-	void ShowMaterialImport(Resource* resource);
+
+	void ShowMaterialImport();
+
+
+
 public:
 
 	bool close_program = false;
@@ -51,6 +55,7 @@ public:
 	bool serialization_load_scene = false;
 
 	std::string file_focus;
+	FILE_TYPE type;
 };
 #endif
 

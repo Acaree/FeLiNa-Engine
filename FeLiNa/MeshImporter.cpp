@@ -2,7 +2,8 @@
 
 #include "Glew/include/glew.h" 
 #include "SDL/include/SDL_opengl.h"
-
+#include "ModuleGui.h"
+#include "ImGui/imgui.h"
 #include "Application.h"
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
@@ -20,13 +21,13 @@
 #include "mmgr/mmgr.h"
 MeshImporter::MeshImporter()
 {
-	
+	mesh_settings = new MeshSettings();
 }
 
 
 MeshImporter::~MeshImporter()
 {
-
+	RELEASE(mesh_settings);
 }
 //const char* importFileName, const char* importPath, std::string& outputFileName
 bool MeshImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
@@ -387,7 +388,23 @@ void MeshImporter::CreateFileMeta(Resource* resource, MeshSettings* settings)
 
 	json_object_set_value(root_object, "Import Settings", mesh_import);
 
-	json_object_set_boolean(settings_import, "Ai PROCCES", settings->procces_node);
+	json_object_set_boolean(settings_import, "Ai PROCCES", settings->process_node);
+	json_object_set_boolean(settings_import, "Tangent", settings->CalcTangentSpace);
+	json_object_set_boolean(settings_import, "Identical Vertices", settings->JoinIdenticalVertices);
+	json_object_set_boolean(settings_import, "Left Handed", settings->MakeLeftHanded);
+	json_object_set_boolean(settings_import, "Triangulate", settings->Triangulate);
+	json_object_set_boolean(settings_import, "Remove Components", settings->RemoveComponent);
+	json_object_set_boolean(settings_import, "Generate Normals", settings->GenNormals);
+	json_object_set_boolean(settings_import, "Smooth Normals", settings->GenSmoothNormals);
+	json_object_set_boolean(settings_import, "Split Meshes", settings->SplitLargeMeshes);
+	json_object_set_boolean(settings_import, "Pre Transform", settings->PreTransformVertices);
+	json_object_set_boolean(settings_import, "Limit Bone", settings->LimitBoneWeights);
+	json_object_set_boolean(settings_import, "Validate Data", settings->ValidateDataStructure);
+	json_object_set_boolean(settings_import, "Remove Redundants", settings->RemoveRedundantMaterials);
+	json_object_set_boolean(settings_import, "Sort by Type", settings->SortByPType);
+	json_object_set_boolean(settings_import, "Generate Uv", settings->GenUvCoords);
+	json_object_set_boolean(settings_import, "Optimize Meshes", settings->OptimizeMeshes);
+	json_object_set_boolean(settings_import, "Flip Uvs", settings->FlipUVs);
 
 	char path[DEFAULT_BUF_SIZE];
 	strcpy(path, resource->GetExportedFile());
@@ -418,7 +435,23 @@ void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
 
 		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
 
-		settings->procces_node = (MeshSettings::ProceesNode)json_object_get_boolean(import_settings, "Ai PROCCES");
+		settings->process_node = (MeshSettings::ProcessNode)json_object_get_boolean(import_settings, "Ai PROCCES");
+		settings->CalcTangentSpace= json_object_get_boolean(import_settings, "Tangent");
+		settings->JoinIdenticalVertices = json_object_get_boolean(import_settings, "Identical Vertices");
+		settings->MakeLeftHanded = json_object_get_boolean(import_settings, "Left Handed");
+		settings->Triangulate = json_object_get_boolean(import_settings, "Triangulate");
+		settings->RemoveComponent = json_object_get_boolean(import_settings, "Remove Components");
+		settings->GenNormals = json_object_get_boolean(import_settings, "Generate Normals");
+		settings->GenSmoothNormals = json_object_get_boolean(import_settings, "Smooth Normals");
+		settings->SplitLargeMeshes = json_object_get_boolean(import_settings, "Split Meshes");
+		settings->PreTransformVertices = json_object_get_boolean(import_settings, "Pre Transform");
+		settings->LimitBoneWeights = json_object_get_boolean(import_settings, "Limit Bone");
+		settings->ValidateDataStructure = json_object_get_boolean(import_settings, "Validate Data");
+		settings->RemoveRedundantMaterials = json_object_get_boolean(import_settings, "Remove Redundants");
+		settings->SortByPType = json_object_get_boolean(import_settings, "Sort by Type");
+		settings->GenUvCoords = json_object_get_boolean(import_settings, "Generate Uv");
+		settings->OptimizeMeshes = json_object_get_boolean(import_settings, "Optimize Meshes");
+		settings->FlipUVs = json_object_get_boolean(import_settings, "Flip Uvs");
 
 		json_value_free(root);
 	}
@@ -426,4 +459,132 @@ void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
 		LOG("Error reading mesh meta file: %s", file);
 
 	RELEASE_ARRAY(buffer);
+}
+
+void MeshImporter::ShowMeshImport()
+{
+
+	static int current_procces = mesh_settings->process_node;
+	const char* process_elements[] = { " TargetRealtime_MaxQuality" , "TargetRealtime_Quality", "TargetRealtime_Fast", "ConvertToLeftHanded " };
+
+
+	ImGui::Text("Procces:");
+	ImGui::SameLine();
+	if (ImGui::Combo("###procces2", &current_procces, process_elements, ((int)(sizeof(process_elements) / sizeof(*process_elements)))))
+	{
+		mesh_settings->process_node = (MeshSettings::ProcessNode)current_procces;
+		RefreshMeshOptions();
+	}
+
+	ImGui::Checkbox("Calculate Tangent Space:", &mesh_settings->CalcTangentSpace);
+	ImGui::Checkbox("Join Identical Vertices:", &mesh_settings->JoinIdenticalVertices);
+	ImGui::Checkbox("Make Left Handed:", &mesh_settings->MakeLeftHanded);
+	ImGui::Checkbox("Triangulate Vertices:", &mesh_settings->Triangulate);
+	ImGui::Checkbox("Remove Components:", &mesh_settings->RemoveComponent);
+	ImGui::Checkbox("Generate Normals:", &mesh_settings->GenNormals);
+	ImGui::Checkbox("Generate Smooth Normals:", &mesh_settings->GenSmoothNormals);
+	ImGui::Checkbox("Split Large Meshes:", &mesh_settings->SplitLargeMeshes);
+	ImGui::Checkbox("Pre Transform Vertices:", &mesh_settings->PreTransformVertices);
+	ImGui::Checkbox("Limit Bone Weights:", &mesh_settings->LimitBoneWeights);
+	ImGui::Checkbox("Validate Data Structure:", &mesh_settings->ValidateDataStructure);
+	ImGui::Checkbox("Remove Redundant Materials:", &mesh_settings->RemoveRedundantMaterials);
+	ImGui::Checkbox("Sort by Type:", &mesh_settings->SortByPType);
+	ImGui::Checkbox("Generate Uvs Coords:", &mesh_settings->GenUvCoords);
+	ImGui::Checkbox("Optimize Meshes:", &mesh_settings->OptimizeMeshes);
+	ImGui::Checkbox("Flip UVs:", &mesh_settings->FlipUVs);
+
+	if (ImGui::Button("IMPORT ###importmesh", { 70,50 }))
+	{
+
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Cancel ###savemesh", { 70,50 }))
+	{
+		App->gui->file_focus.clear();
+	}
+
+}
+
+void MeshImporter::RefreshMeshOptions()
+{
+	switch (mesh_settings->process_node)
+	{
+	case MeshSettings::ProcessNode::TargetRealtime_MaxQuality:
+		mesh_settings->CalcTangentSpace = true;
+		mesh_settings->JoinIdenticalVertices = true;
+		mesh_settings->MakeLeftHanded = false;
+		mesh_settings->Triangulate = true;
+		mesh_settings->RemoveComponent = false;
+		mesh_settings->GenNormals = false;
+		mesh_settings->GenSmoothNormals = true;
+		mesh_settings->SplitLargeMeshes = true;
+		mesh_settings->PreTransformVertices = false;
+		mesh_settings->LimitBoneWeights = true;
+		mesh_settings->ValidateDataStructure = true;
+		mesh_settings->RemoveRedundantMaterials = true;
+		mesh_settings->SortByPType = true;
+		mesh_settings->GenUvCoords = true;
+		mesh_settings->OptimizeMeshes = true;
+		mesh_settings->FlipUVs = false;
+		break;
+	case MeshSettings::ProcessNode::TargetRealtime_Quality:
+		mesh_settings->CalcTangentSpace = true;
+		mesh_settings->JoinIdenticalVertices = true;
+		mesh_settings->MakeLeftHanded = false;
+		mesh_settings->Triangulate = true;
+		mesh_settings->RemoveComponent = false;
+		mesh_settings->GenNormals = false;
+		mesh_settings->GenSmoothNormals = true;
+		mesh_settings->SplitLargeMeshes = true;
+		mesh_settings->PreTransformVertices = false;
+		mesh_settings->LimitBoneWeights = true;
+		mesh_settings->ValidateDataStructure = false;
+		mesh_settings->RemoveRedundantMaterials = true;
+		mesh_settings->SortByPType = true;
+		mesh_settings->GenUvCoords = true;
+		mesh_settings->OptimizeMeshes = false;
+		mesh_settings->FlipUVs = false;
+		break;
+	case MeshSettings::ProcessNode::TargetRealtime_Fast:
+		mesh_settings->CalcTangentSpace = true;
+		mesh_settings->JoinIdenticalVertices = true;
+		mesh_settings->MakeLeftHanded = false;
+		mesh_settings->Triangulate = true;
+		mesh_settings->RemoveComponent = false;
+		mesh_settings->GenNormals = true;
+		mesh_settings->GenSmoothNormals = false;
+		mesh_settings->SplitLargeMeshes = false;
+		mesh_settings->PreTransformVertices = false;
+		mesh_settings->LimitBoneWeights = false;
+		mesh_settings->ValidateDataStructure = false;
+		mesh_settings->RemoveRedundantMaterials = false;
+		mesh_settings->SortByPType = true;
+		mesh_settings->GenUvCoords = true;
+		mesh_settings->OptimizeMeshes = false;
+		mesh_settings->FlipUVs = false;
+		break;
+	case MeshSettings::ProcessNode::ConvertToLeftHanded:
+		mesh_settings->CalcTangentSpace = false;
+		mesh_settings->JoinIdenticalVertices = false;
+		mesh_settings->MakeLeftHanded = true;
+		mesh_settings->Triangulate = false;
+		mesh_settings->RemoveComponent = false;
+		mesh_settings->GenNormals = false;
+		mesh_settings->GenSmoothNormals = false;
+		mesh_settings->SplitLargeMeshes = false;
+		mesh_settings->PreTransformVertices = false;
+		mesh_settings->LimitBoneWeights = false;
+		mesh_settings->ValidateDataStructure = false;
+		mesh_settings->RemoveRedundantMaterials = false;
+		mesh_settings->SortByPType = false;
+		mesh_settings->GenUvCoords = false;
+		mesh_settings->OptimizeMeshes = false;
+		mesh_settings->FlipUVs = true;
+		break;
+	default:
+		break;
+	}
+
+
+
 }

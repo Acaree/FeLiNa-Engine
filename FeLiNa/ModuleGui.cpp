@@ -566,7 +566,14 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				{
 					if (ImGui::MenuItem("See Import Options", NULL, false, true))
 					{
-						file_focus = *file;
+						file_focus = dir;
+						file_focus += "/";
+						file_focus += *file;
+						std::string tmp = file_focus;
+						tmp += ".meta";
+
+						App->importer_mesh->ReadFileMeta(tmp.c_str(), App->importer_mesh->mesh_settings);
+						type = App->fs->FindTypeFile(file_focus.c_str());
 					}
 
 					if (ImGui::MenuItem("Rename", NULL, false, true))
@@ -640,17 +647,18 @@ void ModuleGui::ShowImportOptions()
 	ImGui::Text("Import options");
 	ImGui::Separator();
 
-	uint uid = App->resource_manager->Find(file_focus.c_str());
-	Resource* resource = App->resource_manager->Get(uid);
+	//uint uid = App->resource_manager->Find(file_focus.c_str());
+	//Resource* resource = App->resource_manager->Get(uid);
 	
-	switch (resource->type)
+
+	switch (type)
 	{
-	case RESOURCE_TYPE::RESOURCE_MESH:
-		ShowMeshImport(resource);
+	case MESH_FILE:
+		App->importer_mesh->ShowMeshImport();
 		break;
 
-	case RESOURCE_TYPE::RESOURCE_MATERIAL:
-		ShowMaterialImport(resource);
+	case MATERIAL_FILE:
+		ShowMaterialImport();
 		break;
 	default:
 		break;
@@ -661,12 +669,9 @@ void ModuleGui::ShowImportOptions()
 }
 
 
-void ModuleGui::ShowMeshImport(Resource* resource)
-{
-	//TODO
-}
 
-void ModuleGui::ShowMaterialImport(Resource* resource)
+
+void ModuleGui::ShowMaterialImport()
 {
 	//TODO
 }
