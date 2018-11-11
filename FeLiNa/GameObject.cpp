@@ -423,7 +423,9 @@ math::AABB GameObject::GetAABB() const
 
 void GameObject::OnSave(JSON_Object* obj)
 {
+
 	json_object_set_string(obj, "name", name);
+
 	json_object_set_number(obj, "uid", uid);
 
 	if(parent != nullptr)

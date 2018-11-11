@@ -25,12 +25,6 @@ ComponentMesh::~ComponentMesh()
 		ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->Get(uid);
 		resource_mesh->EraseToMemory();
 	}
-
-	if (mesh != nullptr)
-	{
-		RELEASE_ARRAY(mesh->felina_path);
-		RELEASE(mesh);
-	}
 }
 
 

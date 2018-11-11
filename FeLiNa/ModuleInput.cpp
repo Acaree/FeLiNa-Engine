@@ -5,9 +5,11 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ResourceManager.h"
+#include "Resource.h"
 #include "ModuleGui.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
+#include <algorithm>
 #include "mmgr/mmgr.h"
 
 #define MAX_KEYS 300
@@ -136,10 +138,36 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE:
 			{
 
-				char* dropped_filedir = e.drop.file;
-				//std::string path(dropped_filedir);
+				char* dropped_filedir = App->fs->MoveFileToAssets(e.drop.file);
+				
+				uint uid = App->resource_manager->ImportFile(dropped_filedir);
+				
+				Resource* resource = App->resource_manager->Get(uid);
 
-				//App->resource_manager->ImportFile(dropped_filedir);
+				std::string path = dropped_filedir;
+				path = path.substr(0, path.find_last_of("/")+1);
+
+				std::string file_name = dropped_filedir;
+				file_name = file_name.substr(file_name.find_last_of("/")+1, file_name.size());
+
+				std::string output_file;
+
+				switch (resource->type)
+				{
+				case RESOURCE_TYPE::RESOURCE_MESH:
+				{
+					MeshSettings* default_settings = new MeshSettings();
+					App->importer_mesh->Import(file_name.c_str(), path.c_str(),output_file,default_settings);
+					RELEASE(default_settings);
+				}
+					break;
+				case RESOURCE_TYPE::RESOURCE_MATERIAL:
+					MaterialSettings* default_settings = new MaterialSettings();
+					App->importer_material->Import(dropped_filedir, output_file, default_settings);
+					break;
+				}
+				//Texture* tex = App->importer_material->Import(dropped_filedir, output_file);
+				//App->resource_manager->ImportFile("Assets/Hierarchy.FBX");
 
 				SDL_free(&dropped_filedir);
 

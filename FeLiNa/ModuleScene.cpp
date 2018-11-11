@@ -58,8 +58,8 @@ bool ModuleScene::Start()
 
 	//App->importer_material->Import("Assets/Textures/Baker_house.dds", output_file);
 
-	MeshSettings* mesh = new MeshSettings();
-	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file,mesh);
+	//MeshSettings* mesh = new MeshSettings();
+	//App->importer_mesh->Import("PenguinMesh.fbx","Assets/", output_file,mesh);
 	
 	
 	//Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Baker_House.felina");

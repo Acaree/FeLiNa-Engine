@@ -133,7 +133,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		transform->SetRotation(component_transform->GetRotation());
 		transform->SetScale(component_transform->GetScale());
 
-		RELEASE(component_transform); // this last line of function?
+		//RELEASE(component_transform); // this last line of function?
 
 
 		ComponentMesh* component_mesh = (ComponentMesh*)game_object->AddComponent(Component_Mesh);
@@ -179,46 +179,48 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 			
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
 
-			std::string file_path = name.data;
+			if (name.length != 0) // if are 0 don't have asociated texture
+			{
+				std::string file_path = name.data;
 
-			std::string file_name = file_path.substr(file_path.find_last_of("\\") + 1, file_path.size());
+				std::string file_name = file_path.substr(file_path.find_last_of("\\") + 1, file_path.size());
 
-			std::string path = file_path.erase(file_path.find_last_of("\\"), file_path.size());
+				std::string path = file_path.erase(file_path.find_last_of("\\"), file_path.size());
 
-			std::string texture_generated;
-		
-			char* file_name_c = new char[file_name.size() + 1];
+				std::string texture_generated;
 
-			strcpy_s(file_name_c, file_name.size() + 1, file_name.data());
+				char* file_name_c = new char[file_name.size() + 1];
 
-			char* path_c = new char[path.size() + 1];
+				strcpy_s(file_name_c, file_name.size() + 1, file_name.data());
 
-			strcpy_s(path_c, path.size() + 1, path.data());
+				char* path_c = new char[path.size() + 1];
 
-			char add [DEFAULT_BUF_SIZE] = "Assets";
+				strcpy_s(path_c, path.size() + 1, path.data());
 
-			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c,file_name.data());
+				char add[DEFAULT_BUF_SIZE] = "Assets";
+
+				sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c, file_name.data());
 
 
 
-			MaterialSettings* settings = new MaterialSettings();
-			App->importer_material->Import((const char*)add, texture_generated, settings);
-			
-			
-			
-			component_texture->SetPath(add);
-			
-			
-			RELEASE_ARRAY(path_c);
-			RELEASE_ARRAY(file_name_c);
-			
+				MaterialSettings* settings = new MaterialSettings();
+				App->importer_material->Import((const char*)add, texture_generated, settings);
 
-			file_path.clear();
-			file_name.clear();
-			path.clear();
-			texture_generated.clear();
 
-		
+
+				component_texture->SetPath(add);
+
+
+				RELEASE_ARRAY(path_c);
+				RELEASE_ARRAY(file_name_c);
+
+
+				file_path.clear();
+				file_name.clear();
+				path.clear();
+				texture_generated.clear();
+
+			}
 			
 			if (new_mesh->HasTextureCoords(0))
 			{
@@ -425,7 +427,11 @@ void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
 
 		Resource* resource = App->resource_manager->CreateNewResource(RESOURCE_MESH);
 		resource->uid = json_object_get_number(root_object, "UID");
-		resource->exported_file = App->gui->file_focus.c_str();
+
+		std::string tmp = file;
+		tmp = tmp.substr(0, tmp.find_last_of("."));
+
+		resource->exported_file = tmp.c_str();
 
 		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
 

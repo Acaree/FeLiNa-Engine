@@ -109,23 +109,29 @@ uint ResourceManager::ImportFile(const char* new_file)
 	}
 	else
 	{
-		ImporterSettings* settings = nullptr;
+		
 		//if the new file has .meta associate read the meta and add in settings 
 		switch (file_type)
 		{
 		case MESH_FILE:
-			settings = new MeshSettings(); 
-			App->importer_mesh->ReadFileMeta(meta_file.data(),(MeshSettings*)settings);
+		{			
+			MeshSettings* settings = new MeshSettings();
+			App->importer_mesh->ReadFileMeta(meta_file.data(), (MeshSettings*)settings);
+			RELEASE(settings);
 			break;
+		}
 		case MATERIAL_FILE:
-			settings = new MaterialSettings(); 
+		{
+			MaterialSettings* settings = new MaterialSettings();
 			App->importer_material->ReadFileMeta(meta_file.data(), (MaterialSettings*)settings);
+			RELEASE(settings);
 			break;
+		}
 		default:
 			break;
 		}
 
-
+		ret = Find(new_file);
 	}
 	
 	return ret;

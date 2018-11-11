@@ -389,10 +389,11 @@ void MaterialImporter::ReadFileMeta(const char* file,  MaterialSettings* setting
 		JSON_Value* root = json_parse_string(buffer);
 		JSON_Object* root_object = json_value_get_object(root);
 
-
+		std::string tmp = file;
+		tmp = tmp.substr(0, tmp.find_last_of("."));
 
 		resource->uid = json_object_get_number(root_object, "UID");
-		resource->exported_file = App->gui->file_focus.c_str();
+		resource->exported_file = tmp.c_str();
 
 		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
 
