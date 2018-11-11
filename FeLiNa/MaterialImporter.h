@@ -41,6 +41,10 @@ public:
 	//bool Load(const char* file_name, Texture* output_texture);
 	//bool Load(const void* buffer, uint size, Texture* output_texture);
 
+	void ShowMaterialImport();
+public:
+
+	MaterialSettings* material_settings = nullptr;
 };
 
 

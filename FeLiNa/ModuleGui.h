@@ -39,10 +39,6 @@ private:
 	void LoadScene();
 	void ShowImportOptions();
 
-	void ShowMaterialImport();
-
-
-
 public:
 
 	bool close_program = false;

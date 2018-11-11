@@ -572,8 +572,19 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 						std::string tmp = file_focus;
 						tmp += ".meta";
 
-						App->importer_mesh->ReadFileMeta(tmp.c_str(), App->importer_mesh->mesh_settings);
 						type = App->fs->FindTypeFile(file_focus.c_str());
+
+						switch (type)
+						{
+						case MESH_FILE:
+							App->importer_mesh->ReadFileMeta(tmp.c_str(), App->importer_mesh->mesh_settings);
+							break;
+						case MATERIAL_FILE:
+							App->importer_material->ReadFileMeta(tmp.c_str(), App->importer_material->material_settings);
+							break;
+						}
+
+					
 					}
 
 					if (ImGui::MenuItem("Rename", NULL, false, true))
@@ -658,7 +669,7 @@ void ModuleGui::ShowImportOptions()
 		break;
 
 	case MATERIAL_FILE:
-		ShowMaterialImport();
+		App->importer_material->ShowMaterialImport();
 		break;
 	default:
 		break;
@@ -671,8 +682,5 @@ void ModuleGui::ShowImportOptions()
 
 
 
-void ModuleGui::ShowMaterialImport()
-{
-	//TODO
-}
+
 #endif

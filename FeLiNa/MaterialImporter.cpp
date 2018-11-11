@@ -7,7 +7,7 @@
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
-
+#include "ImGui/imgui.h"
 #pragma comment (lib, "DevIL/libx86/DevIL.lib")
 #pragma comment (lib, "DevIL/libx86/ILU.lib")
 #pragma comment (lib, "DevIL/libx86/ILUT.lib")
@@ -28,14 +28,17 @@ MaterialImporter::MaterialImporter()
 		ilutInit();
 		ilutRenderer(ILUT_OPENGL);
 	}
+
+	material_settings = new MaterialSettings();
 }
 
 
 MaterialImporter::~MaterialImporter()
 {
-
+	RELEASE(material_settings);
 }
-//const char* importFileName, const char* importPath, std::string& outputFileName
+
+
 Texture* MaterialImporter::Import(const char* file_path, std::string& output_file)
 {
 	Texture* ret = nullptr;
@@ -298,4 +301,39 @@ void MaterialImporter::ReadFileMeta(const char* file, MaterialSettings* settings
 		LOG("Error reading mesh meta file: %s", file);
 
 	RELEASE_ARRAY(buffer);
+}
+
+void MaterialImporter::ShowMaterialImport()
+{
+
+	static int current_compression = material_settings->dxct_compression;
+	const char* compression_elements[] = {"DXTC_FORMAT" , "DXT1" , "DXT2" ,"DXT3" ,"DXT4" ,"DXT5"  };
+
+	if (ImGui::Combo("###compression2", &current_compression, compression_elements, ((int)(sizeof(compression_elements) / sizeof(*compression_elements)))))
+	{
+		material_settings->dxct_compression = (MaterialSettings::DXCT_DEFINITION)current_compression;
+	}
+
+	static int current_wrap_s = material_settings->wrap_mode_s;
+	static int current_wrap_t = material_settings->wrap_mode_t;
+	const char* wrap_elements[] = { "CLAMP" , "REPEAT"  };
+
+	if (ImGui::Combo("###wrap_s", &current_wrap_s, wrap_elements, ((int)(sizeof(wrap_elements) / sizeof(*wrap_elements)))))
+	{
+		material_settings->wrap_mode_s = (MaterialSettings::TextureWrapMode)current_wrap_s;
+	}
+
+	if (ImGui::Combo("###wrap_t", &current_wrap_t, wrap_elements, ((int)(sizeof(wrap_elements) / sizeof(*wrap_elements)))))
+	{
+		material_settings->wrap_mode_t = (MaterialSettings::TextureWrapMode)current_wrap_t;
+	}
+
+	static int current_mag = material_settings->mag_filter;
+	const char* mag_elements[] = { "NEAREST" ,"LINEAR" };
+
+	if (ImGui::Combo("###mag_filter", &current_mag, mag_elements, ((int)(sizeof(mag_elements) / sizeof(*mag_elements)))))
+	{
+		material_settings->mag_filter = (MaterialSettings::TextureMagFilter)current_mag;
+	}
+
 }
