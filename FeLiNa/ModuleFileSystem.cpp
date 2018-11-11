@@ -358,19 +358,34 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 		
 		file_path_s.erase(file_path_s.find_last_of("."), file_path_s.size());
-		file_path_s.append(".json");
-
-
+		file_path_s +=".json";
 
 		//charge json -> get his dependencies (.felina) -> delete it
-
-		/*
-		file_path_s.append(".json");
-
-		JSON_Value* file_root = json_parse_file(file_path_s.c_str());
-		JSON_Object* js_obj = json_value_get_object(file_root);
+		
+		JSON_Value* file_root = json_parse_file(file_path_s.data());
+		
 		JSON_Array* go_array = json_value_get_array(file_root);
-		*/
+		
+		int w = json_array_get_count(go_array);
+
+		for (uint i = 0; i < json_array_get_count(go_array); i++) {
+			
+			JSON_Object* obj = json_array_get_object(go_array, i);
+
+			JSON_Array* components_array = json_object_get_array(obj, "Components");
+			
+			for (uint i = 0; i < json_array_get_count(components_array); i++) {
+
+
+				JSON_Object* obj2 = json_array_get_object(components_array, i);
+
+				if (json_object_get_number(obj2, "type") == 1 || json_object_get_number(obj2, "type") == 2) {
+					char* temp = (char*)json_object_get_string(obj2, "path");
+					remove((const char*)temp);
+				}
+			}
+
+		}
 
 		//delete .json
 		remove((const char*)file_path_s.c_str());

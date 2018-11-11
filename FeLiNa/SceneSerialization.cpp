@@ -176,7 +176,7 @@ void SceneSerialization::CreateGameObjectHierarchy(std::vector<GameObject*>& aux
 
 void SceneSerialization::ClearActualScene()
 {
-	App->scene->root_object->CleanData();
+	//App->scene->root_object->CleanData();
 	aux_go.clear();
 	App->scene->SetSelectedGameObject(nullptr);
 }
