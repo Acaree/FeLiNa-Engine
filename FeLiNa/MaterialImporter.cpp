@@ -1,6 +1,7 @@
 #include "MaterialImporter.h"
 
 #include "Application.h"
+#include "ResourceManager.h"
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "Resource.h"
@@ -286,17 +287,28 @@ void MaterialImporter::ReadFileMeta(const char* file, MaterialSettings* settings
 	{
 		LOG("Can load Mesh meta file: %s", file);
 
+		Resource* resource = App->resource_manager->CreateNewResource(RESOURCE_MATERIAL);
+		
+
 		JSON_Value* root = json_parse_string(buffer);
 		JSON_Object* root_object = json_value_get_object(root);
 
+
+
+		resource->uid = json_object_get_number(root_object, "UID");
+		resource->exported_file = App->gui->file_focus.c_str();
+
 		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
 
+	
 		settings->dxct_compression = (MaterialSettings::DXCT_DEFINITION)json_object_get_boolean(import_settings, "DXCT Compression");
 		settings->wrap_mode_s = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode S");
 		settings->wrap_mode_t = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode T");
 		settings->mag_filter = (MaterialSettings::TextureMagFilter)json_object_get_boolean(import_settings, "MAG FILTER");
 
 		json_value_free(root);
+
+		
 	}
 	else
 		LOG("Error reading mesh meta file: %s", file);
@@ -337,8 +349,13 @@ void MaterialImporter::ShowMaterialImport()
 		material_settings->mag_filter = (MaterialSettings::TextureMagFilter)current_mag;
 	}
 	
-	if (ImGui::Button("IMPORT ###importmaterial", { 70,50 }))
+	if (ImGui::Button("Apply ###importmaterial", { 70,50 }))
 	{
+		uint uid = App->resource_manager->Find(App->gui->file_focus.c_str());
+		Resource* resource = App->resource_manager->Get(uid);
+
+		CreateFileMeta(resource,material_settings);
+		App->gui->file_focus.clear();
 
 	}
 	ImGui::SameLine();
