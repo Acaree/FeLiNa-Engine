@@ -4,6 +4,7 @@
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "Resource.h"
+#include "ModuleGui.h"
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
@@ -292,7 +293,7 @@ void MaterialImporter::ReadFileMeta(const char* file, MaterialSettings* settings
 
 		settings->dxct_compression = (MaterialSettings::DXCT_DEFINITION)json_object_get_boolean(import_settings, "DXCT Compression");
 		settings->wrap_mode_s = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode S");
-		settings->wrap_mode_s = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode T");
+		settings->wrap_mode_t = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode T");
 		settings->mag_filter = (MaterialSettings::TextureMagFilter)json_object_get_boolean(import_settings, "MAG FILTER");
 
 		json_value_free(root);
@@ -334,6 +335,16 @@ void MaterialImporter::ShowMaterialImport()
 	if (ImGui::Combo("###mag_filter", &current_mag, mag_elements, ((int)(sizeof(mag_elements) / sizeof(*mag_elements)))))
 	{
 		material_settings->mag_filter = (MaterialSettings::TextureMagFilter)current_mag;
+	}
+	
+	if (ImGui::Button("IMPORT ###importmaterial", { 70,50 }))
+	{
+
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Cancel ###savematerial", { 70,50 }))
+	{
+		App->gui->file_focus.clear();
 	}
 
 }
