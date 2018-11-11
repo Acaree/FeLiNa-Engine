@@ -49,12 +49,12 @@ public:
 
 	//¿LOAD CHECKERS?
 
-	bool Import(const char* file_name, const char* file_path, std::string& output_file);
-	bool Import(const void* buffer, uint size, std::string& output_file);
+	bool Import(const char* file_name, const char* file_path, std::string& output_file, const MeshSettings* import_settings);
+
+	bool Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings);
 
 	void LoadModel(const aiScene* scene, aiNode* node, std::string& output_file, GameObject* obj, ComponentTransform* trans);
 
-	void GenerateBufferData(Mesh* mesh_data);
 
 	Mesh* LoadFLN(const char* path);
 	Mesh* LoadFLN(const void* buffer, uint size);
@@ -65,8 +65,8 @@ public:
 	void ShowMeshImport();
 	void RefreshMeshOptions();
 
-	//bool Load(const char* file_name, Texture* output_texture);
-	//bool Load(const void* buffer, uint size, Texture* output_texture);
+	uint SetPostProccesConfiguration(const MeshSettings* import_settings);
+
 public:
 	MeshSettings* mesh_settings = nullptr;
 

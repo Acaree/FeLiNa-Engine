@@ -17,6 +17,8 @@ struct MaterialSettings : public ImporterSettings //We use this for load/save .m
 	TextureWrapMode wrap_mode_s = CLAMP;
 	TextureWrapMode wrap_mode_t = CLAMP;
 
+	// TO CHANGE : need min_filter
+
 	enum TextureMagFilter {NEAREST = 0x2600,LINEAR = 0x2601};
 	TextureMagFilter mag_filter = NEAREST;
 
@@ -31,15 +33,16 @@ public:
 
 	//¿LOAD CHECKERS?
 
-	Texture* Import(const char* file_path, std::string& output_file);
-	Texture* Import(const void* buffer, uint size, std::string& output_file);
+	bool Import(const char* file_path, std::string& output_file, const MaterialSettings* material);
+	bool Import(const void* buffer, uint size, std::string& output_file, const MaterialSettings* material);
 
 	Texture* LoadDDS(char* path);
 
-	void CreateFileMeta(Resource* resource, MaterialSettings* settings);
-	void ReadFileMeta(const char* file, MaterialSettings* settings);
-	//bool Load(const char* file_name, Texture* output_texture);
-	//bool Load(const void* buffer, uint size, Texture* output_texture);
+	void CreateFileMeta(Resource* resource,  MaterialSettings* settings);
+	void ReadFileMeta(const char* file,  MaterialSettings* settings);
+
+	bool Load(const char* file_name, Texture* output_texture, const MaterialSettings* settings);
+	bool Load(const void* buffer, uint size, Texture* output_texture, const MaterialSettings* material_setting);
 
 	void ShowMaterialImport();
 public:

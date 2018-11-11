@@ -115,14 +115,14 @@ bool ModuleRenderer3D::Init()
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
 		lights[0].SetPos(0.0f, 0.0f, 2.5f);
 		lights[0].Init();
-		
+		lights[0].Active(true);
+
 		GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MaterialAmbient);
 
 		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 		
-		lights[0].Active(true);
 
 		(lighting) ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
 		(line_smooth) ? glEnable(GL_LINE_SMOOTH) : glDisable(GL_LINE_SMOOTH);
@@ -191,7 +191,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+	glLoadIdentity();
+
 	glMatrixMode(GL_MODELVIEW);
 	
 	glLoadMatrixf(App->camera->current_camera->GetViewMatrix());
@@ -277,13 +278,15 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
+	glViewport(0, 0, width, height);
+
 	float aspect_ratio = (float)width / (float)height;
 
-
-	glViewport(0, 0, width, height);
+	App->camera->current_camera->SetAspectRatio(aspect_ratio);
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	//ProjectionMatrix = App->camera->main_camera->camera->GetViewMatrix();
+
 	glLoadMatrixf(App->camera->current_camera->GetProjectionMatrix());
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -348,14 +351,15 @@ void ModuleRenderer3D::DrawCheckBoxEdgeGLPanel()
 
 void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 {
+	glPushMatrix();
 	if (go->mesh != nullptr)
 	{
 		ComponentMesh* mesh = go->mesh;
 		ComponentTransform* trans = go->transform;
 		ComponentTexture* texture = go->material;
 
-		glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
+		
+		
 
 
 		math::float4x4 matrix = trans->GetTransformMatrix();
@@ -400,9 +404,9 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		glPopMatrix();
+		
 	}
-
+	glPopMatrix();
 	for (uint i = 0; i < go->GetNumChildren(); ++i)
 	{
 		if (go->GetChild(i)->IsActive())

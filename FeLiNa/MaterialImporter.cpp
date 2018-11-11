@@ -41,9 +41,9 @@ MaterialImporter::~MaterialImporter()
 }
 
 
-Texture* MaterialImporter::Import(const char* file_path, std::string& output_file)
+bool MaterialImporter::Import(const char* file_path, std::string& output_file, const MaterialSettings* material)
 {
-	Texture* ret = nullptr;
+	bool ret = false;
 
 	char* buffer;
 
@@ -67,7 +67,7 @@ Texture* MaterialImporter::Import(const char* file_path, std::string& output_fil
 	{
 		LOG("MATERIAL IMPORTER: Texture load succesful ");
 
-		ret = Import(buffer, size, output_file);
+		ret = Import(buffer, size, output_file, material);
 		RELEASE_ARRAY(buffer);
 	}
 	else
@@ -77,16 +77,13 @@ Texture* MaterialImporter::Import(const char* file_path, std::string& output_fil
 }
 
 
-Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& output_file)
+bool MaterialImporter::Import(const void* buffer, uint size, std::string& output_file, const MaterialSettings* material)
 {
-	Texture* ret = new Texture();  //this must be desalocated outside here
+	bool ret = false;
 
-	if (buffer == nullptr || size <= 0)
-	{
-		LOG("BUFFER IS NULL OR SIZE <= 0");
+	if (buffer == nullptr || size <= 0 || material == nullptr)
 		return ret;
-	}
-
+		
 	// Generate the image name
 	uint image_id = 0;
 	ilGenImages(1, &image_id);
@@ -96,15 +93,37 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 	// Load the image
 	if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size))
 	{
-		ilEnable(IL_FILE_OVERWRITE);
+		//ilEnable(IL_FILE_OVERWRITE);
 
 		uint size = 0;
 		ILubyte* data = nullptr;
 
-		uint textureID = 0;
+		int compression_format = 0;
 
-		// Pick a specific DXT compression use
-		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+		switch (material->dxct_compression)
+		{
+		case MaterialSettings::DXTC_FORMAT:
+			compression_format = IL_DXTC_FORMAT;
+			break;
+		case MaterialSettings::DXT1:
+			compression_format = IL_DXT1;
+			break;
+		case MaterialSettings::DXT2:
+			compression_format = IL_DXT2;
+			break;
+		case MaterialSettings::DXT3:
+			compression_format = IL_DXT3;
+			break;
+		case MaterialSettings::DXT4:
+			compression_format = IL_DXT4;
+			break;
+		case MaterialSettings::DXT5:
+			compression_format = IL_DXT5;
+			break;
+		}
+
+		// Pick a specific DXT compression use: set in importsettings
+		ilSetInteger(IL_DXTC_FORMAT, compression_format);
 
 		// Get the size of the data buffer
 		size = ilSaveL(IL_DDS, NULL, 0);
@@ -117,51 +136,14 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 			// Allocate the data buffer
 			data = new ILubyte[size];
 
-			ILinfo ImageInfo;
-			iluGetImageInfo(&ImageInfo);
-
-			if (ImageInfo.Origin != IL_ORIGIN_UPPER_LEFT)
-			{
-				iluFlipImage();
-			}
-
-			bool success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
-
-			if (!success)
-			{
-				LOG("Image conversion failed");
-			}
-
-			glGenTextures(1, &textureID);
-
-			glBindTexture(GL_TEXTURE_2D, textureID);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
-				0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
-
-
-			// Save to the buffer
 			if (ilSaveL(IL_DDS, data, size) > 0)
 			{
-
-				ret->texture_id = textureID;
-				ret->width = ilGetInteger(IL_IMAGE_WIDTH);
-				ret->height = ilGetInteger(IL_IMAGE_HEIGHT);
-
-				ret->felina_path = new char[DEFAULT_BUF_SIZE]; //this must be desalocated outside here
-				char* tmp = App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);
-				//TO REVISE TO BAD
-
-				memcpy(ret->felina_path, tmp, DEFAULT_BUF_SIZE);
-
-				RELEASE_ARRAY(tmp);
+				App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);//TO Revise ret and uint or bool?
+				ret = true;
 			}
+			else
+				LOG("Can't save texture int own format");
+			
 
 			RELEASE_ARRAY(data);
 		}
@@ -173,6 +155,120 @@ Texture* MaterialImporter::Import(const void* buffer, uint size, std::string& ou
 
 	return ret;
 }
+
+bool MaterialImporter::Load(const char* file_name, Texture* output_texture, const MaterialSettings* settings)
+{
+	bool ret = false;
+
+	if (file_name == nullptr || output_texture == nullptr || settings == nullptr)
+		return ret;
+
+	char* buffer;
+	uint size = App->fs->Load(file_name,&buffer);
+
+	if (size > 0)
+	{
+		LOG("LOAD MATERIAL IMPORT GOOD");
+		ret = Load(buffer, size, output_texture, settings);
+		RELEASE(buffer);
+	}
+
+	return ret;
+	
+}
+
+bool MaterialImporter::Load(const void* buffer, uint size, Texture* output_texture, const MaterialSettings* material_setting)
+{
+	bool ret = false;
+
+	if (buffer == nullptr || output_texture == nullptr || material_setting == nullptr)
+		return ret;
+
+	uint image_name = 0;
+	ilGenImages(1, &image_name);
+	ilBindImage(image_name);
+
+	if (ilLoadL(IL_DDS, buffer, size))
+	{
+		ILinfo imageInfo;
+		iluGetImageInfo(&imageInfo);
+
+		if (imageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+			iluFlipImage();
+
+		if (ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE))
+		{
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+			int wrap_mode_s = 0;
+			int wrap_mode_t = 0;
+			int mag_filter = 0;
+
+			switch (material_setting->wrap_mode_s)
+			{
+			case MaterialSettings::TextureWrapMode::CLAMP:
+				wrap_mode_s = GL_CLAMP;
+				break;
+			case MaterialSettings::TextureWrapMode::REPEAT:
+				wrap_mode_s = GL_REPEAT;
+				break;
+			default:
+				break;
+			}
+
+			switch (material_setting->wrap_mode_t)
+			{
+			case MaterialSettings::TextureWrapMode::CLAMP:
+				wrap_mode_t = GL_CLAMP;
+				break;
+			case MaterialSettings::TextureWrapMode::REPEAT:
+				wrap_mode_t = GL_REPEAT;
+				break;
+			default:
+				break;
+			}
+
+			switch (material_setting->mag_filter)
+			{
+			case MaterialSettings::TextureMagFilter::NEAREST:
+				wrap_mode_t = GL_NEAREST;
+				break;
+			case MaterialSettings::TextureMagFilter::LINEAR:
+				wrap_mode_t = GL_LINEAR;
+				break;
+			default:
+				break;
+			}
+
+			uint tex_id= 0;
+
+			glGenTextures(1, &tex_id);
+			glBindTexture(GL_TEXTURE_2D, tex_id);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_mode_s);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_mode_t);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mag_filter);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter);
+
+			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
+				0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+			output_texture->texture_id = tex_id;
+			output_texture->height = ilGetInteger(IL_IMAGE_HEIGHT);
+			output_texture->width = ilGetInteger(IL_IMAGE_WIDTH);
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			ret = true;
+		}
+
+		ilDeleteImages(1, &image_name);
+	}
+
+	return ret;
+}
+
 
 Texture* MaterialImporter::LoadDDS(char* path) {
 
@@ -277,7 +373,7 @@ void MaterialImporter::CreateFileMeta(Resource* resource, MaterialSettings* sett
 
 }
 
-void MaterialImporter::ReadFileMeta(const char* file, MaterialSettings* settings)
+void MaterialImporter::ReadFileMeta(const char* file,  MaterialSettings* settings)
 {
 	char* buffer = nullptr;
 
