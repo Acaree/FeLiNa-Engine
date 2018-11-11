@@ -26,7 +26,10 @@ public:
 
 private:
 	bool About_active = false;
-	
+	bool want_to_rename = false;
+
+	std::string file_to_rename;
+
 	void ShowMainMenuBar();
 	void ShowConfigurationWindow();
 	void ShowAboutWindow();
@@ -38,6 +41,7 @@ private:
 	void SaveScene();
 	void LoadScene();
 	void ShowImportOptions();
+	void Rename();
 
 public:
 

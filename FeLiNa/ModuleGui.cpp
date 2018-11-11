@@ -114,6 +114,13 @@ update_status ModuleGui::Update(float dt)
 			LoadScene();
 		}
 
+		if (want_to_rename)
+		{
+			file_to_rename = "Assets/BakerHouse.fbx";
+			ImGui::OpenPopup("Rename as:");
+			Rename();
+		}
+
 		if (open_configuration)
 			ShowConfigurationWindow();
 
@@ -129,7 +136,7 @@ update_status ModuleGui::Update(float dt)
 #ifndef GAME_MODE
 			App->scene->ShowHierarchy();
 
-			if (file_focus.size() == 0)
+			if (file_focus.size() == 0 && want_to_rename == false)
 				App->scene->ShowInspector();
 			else
 				ShowImportOptions();
@@ -589,30 +596,8 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 					if (ImGui::MenuItem("Rename", NULL, false, true))
 					{
-						ImGui::OpenPopup("Rename as:");
-
-						if (ImGui::BeginPopupModal("Rename as:", false, ImGuiWindowFlags_AlwaysAutoResize))
-						{
-
-							ImGui::Text("New name: ");
-							ImGui::Separator();
-
-							ImGui::InputText("###scene_name", "", 50);
-
-							if (ImGui::Button("Rename", ImVec2(100, 0)))
-							{
-								
-							}
-							
-							ImGui::SameLine();
-
-							if (ImGui::Button("Cancel", ImVec2(120, 0)))
-							{
-								ImGui::CloseCurrentPopup();
-							}
-
-							ImGui::EndPopup();
-						}
+						want_to_rename = true;
+						//change file name & reimport
 					}
 
 					if (ImGui::MenuItem("Delete", NULL, false, true))
@@ -679,6 +664,44 @@ void ModuleGui::ShowImportOptions()
 
 }
 
+void ModuleGui::Rename()
+{
+	if (ImGui::BeginPopupModal("Rename as:", false, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+
+		static char new_save_name[50];
+		ImGui::InputText("###scene_name", new_save_name, 50);//default buffer size?¿
+
+		if (ImGui::Button("Rename", ImVec2(100, 0)))
+		{
+			std::string new_save_name_s = file_to_rename;
+			std::string extension = file_to_rename;
+
+			extension.erase(0, extension.find_last_of("."));
+
+			new_save_name_s.erase(new_save_name_s.find_last_of("/")+1, new_save_name_s.size());
+
+			new_save_name_s += new_save_name;
+			new_save_name_s += extension;
+
+			rename(file_to_rename.c_str(), new_save_name_s.c_str());
+
+			want_to_rename = false;
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			ImGui::CloseCurrentPopup();
+			want_to_rename = false;
+		}
+
+		ImGui::SetItemDefaultFocus();
+		ImGui::EndPopup();
+	}
+
+
+}
 
 
 
