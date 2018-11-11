@@ -139,9 +139,6 @@ update_status ModuleScene::PostUpdate(float dt)
 {
 	update_status update_return = UPDATE_CONTINUE;
 
-	
-
-	
 
 	return update_return;
 }

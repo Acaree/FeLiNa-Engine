@@ -10,6 +10,7 @@
 #include "Quadtree.h"
 #include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"
+#include "ImGuizmo/ImGuizmo.h"
 #include "mmgr/mmgr.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -86,7 +87,7 @@ update_status ModuleCamera3D::Update(float dt)
 #ifndef GAME_MODE
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		if (!ImGui::IsMouseHoveringAnyWindow())
+		if (!ImGui::IsMouseHoveringAnyWindow() && !ImGuizmo::IsOver())
 		{
 			//Taking screen values.
 			float width = (float)App->window->screen_surface->w;
