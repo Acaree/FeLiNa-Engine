@@ -26,7 +26,11 @@ ComponentMesh::~ComponentMesh()
 		resource_mesh->EraseToMemory();
 	}
 
-
+	if (mesh != nullptr)
+	{
+		RELEASE_ARRAY(mesh->felina_path);
+		RELEASE(mesh);
+	}
 }
 
 

@@ -7,16 +7,17 @@
 ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
 
 	type = Component_Material;
-	//texture = new Texture();
-	//texture->felina_path = new char[DEFAULT_BUF_SIZE];
+	texture = new Texture();
+	texture->felina_path = new char[DEFAULT_BUF_SIZE];
 }
 
 ComponentTexture::~ComponentTexture()
 {
-	RELEASE_ARRAY(texture->felina_path);
-
-
-	
+	if (texture != nullptr)
+	{
+		RELEASE_ARRAY(texture->felina_path);
+		RELEASE(texture);
+	}
 }
 
 void ComponentTexture::CleanUp()
@@ -79,15 +80,12 @@ void ComponentTexture::DrawInspector()
 
 		ImGui::TreePop();
 	}
-
-
-
-
 }
 
 void ComponentTexture::SetPath(char* path) {
 
-	texture->felina_path = path;
+	//texture->felina_path = path;
+	memcpy(texture->felina_path, path,DEFAULT_BUF_SIZE);
 
 }
 

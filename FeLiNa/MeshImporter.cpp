@@ -204,14 +204,14 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 			MaterialSettings* settings = new MaterialSettings();
 			App->importer_material->Import((const char*)add, texture_generated, settings);
 			
-			Texture * tex = new Texture();
-			tex->felina_path = add;
-			component_texture->SetTexture(tex);
+			
+			
+			component_texture->SetPath(add);
 			
 			
 			RELEASE_ARRAY(path_c);
 			RELEASE_ARRAY(file_name_c);
-			RELEASE(settings);
+			
 
 			file_path.clear();
 			file_name.clear();
@@ -287,7 +287,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		game_object->mesh->SetPath(final_path);
 
 		RELEASE_ARRAY(data);
-	
 	}
 	else
 	{
