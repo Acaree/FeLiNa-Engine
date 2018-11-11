@@ -572,7 +572,11 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 					{
 						char* file_path = new char[DEFAULT_BUF_SIZE];
 						sprintf_s(file_path, DEFAULT_BUF_SIZE, "%s/%s", dir, *file);
+						App->fs->RemoveAllDependencies(file_path);
 						remove((const char*)file_path);
+
+
+
 					}
 					ImGui::EndPopup();
 				}

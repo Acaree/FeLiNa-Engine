@@ -339,3 +339,33 @@ char* ModuleFileSystem::MoveFileToAssets(char* path) {
 
 	return ret;
 }
+
+void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
+
+	std::string file_path_s = file_path;
+	file_path_s.erase(file_path_s.find_last_of("."), file_path_s.size());
+	file_path_s.append(".json");
+	
+
+
+	//charge json -> get his dependencies-> delete it
+
+	/*
+  	file_path_s.append(".json");
+
+	JSON_Value* file_root = json_parse_file(file_path_s.c_str());
+	JSON_Object* js_obj = json_value_get_object(file_root);
+	JSON_Array* go_array = json_value_get_array(file_root);
+	*/
+	
+	//delete .json
+	remove((const char*)file_path_s.c_str());
+
+	file_path_s = file_path;
+	file_path_s.append(".meta");
+	remove((const char*)file_path_s.c_str());
+	
+	//delete .meta
+	remove((const char*)file_path_s.c_str());
+
+}

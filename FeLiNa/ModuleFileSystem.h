@@ -33,6 +33,8 @@ public:
 	bool FindNewAssetsFiles(const char* directory, std::string& file);
 	
 	bool isDirectory(const char* file) const;
+
+	void RemoveAllDependencies(char* file_path);
 private:
 
 };
