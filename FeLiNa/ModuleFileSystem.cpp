@@ -280,21 +280,29 @@ bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & n
 	new_file.append(directory);
 	
 	const char** files_array = GetAllFilesFromDir(directory);
-	static uint last_count = 0;
+	/*static uint last_count = 0;
 	uint count = 0;
 	for (const char** file = files_array; *file != nullptr; ++file) {
 		count++;
-	}
+	}*/
 
-	if (count != last_count) {
+	//if (count != last_count) {
 		for (const char** file = files_array; *file != nullptr; ++file)
 		{
 
 			if (isDirectory(*file))
 			{
-				if (FindNewAssetsFiles(*file, new_file))
-					if (int position = new_file.rfind(*file) != std::string::npos) //That condition work as espected?
-						new_file = new_file.substr(0, position);
+				std::string tmp = *file;
+				tmp += "/";
+				if (FindNewAssetsFiles(tmp.c_str(), new_file))
+				{
+					return true;
+				}
+				else
+				{
+					new_file = new_file.substr(0, new_file.find_first_of("/")+1);
+				}
+
 			}
 			else
 			{
@@ -319,9 +327,9 @@ bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & n
 				}
 			}
 		}
-	}
+	//}
 
-	last_count = count;
+	//last_count = count;
 
 	return ret;
 }
