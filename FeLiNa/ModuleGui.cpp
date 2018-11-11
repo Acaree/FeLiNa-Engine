@@ -568,6 +568,35 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 					{
 						file_focus = *file;
 					}
+
+					if (ImGui::MenuItem("Rename", NULL, false, true))
+					{
+						ImGui::OpenPopup("Rename as:");
+
+						if (ImGui::BeginPopupModal("Rename as:", false, ImGuiWindowFlags_AlwaysAutoResize))
+						{
+
+							ImGui::Text("New name: ");
+							ImGui::Separator();
+
+							ImGui::InputText("###scene_name", "", 50);
+
+							if (ImGui::Button("Rename", ImVec2(100, 0)))
+							{
+								
+							}
+							
+							ImGui::SameLine();
+
+							if (ImGui::Button("Cancel", ImVec2(120, 0)))
+							{
+								ImGui::CloseCurrentPopup();
+							}
+
+							ImGui::EndPopup();
+						}
+					}
+
 					if (ImGui::MenuItem("Delete", NULL, false, true))
 					{
 						char* file_path = new char[DEFAULT_BUF_SIZE];

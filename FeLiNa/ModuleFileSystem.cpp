@@ -342,30 +342,52 @@ char* ModuleFileSystem::MoveFileToAssets(char* path) {
 
 void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
+
+	FILE_TYPE type = FindTypeFile((const char*)file_path);
 	std::string file_path_s = file_path;
-	file_path_s.erase(file_path_s.find_last_of("."), file_path_s.size());
-	file_path_s.append(".json");
-	
+
+	if (type == MESH_FILE) {
+
+		
+		file_path_s.erase(file_path_s.find_last_of("."), file_path_s.size());
+		file_path_s.append(".json");
 
 
-	//charge json -> get his dependencies-> delete it
 
-	/*
-  	file_path_s.append(".json");
+		//charge json -> get his dependencies (.felina) -> delete it
 
-	JSON_Value* file_root = json_parse_file(file_path_s.c_str());
-	JSON_Object* js_obj = json_value_get_object(file_root);
-	JSON_Array* go_array = json_value_get_array(file_root);
-	*/
-	
-	//delete .json
-	remove((const char*)file_path_s.c_str());
+		/*
+		file_path_s.append(".json");
 
-	file_path_s = file_path;
-	file_path_s.append(".meta");
-	remove((const char*)file_path_s.c_str());
-	
-	//delete .meta
-	remove((const char*)file_path_s.c_str());
+		JSON_Value* file_root = json_parse_file(file_path_s.c_str());
+		JSON_Object* js_obj = json_value_get_object(file_root);
+		JSON_Array* go_array = json_value_get_array(file_root);
+		*/
 
+		//delete .json
+		remove((const char*)file_path_s.c_str());
+
+		file_path_s = file_path;
+		file_path_s.append(".meta");
+		remove((const char*)file_path_s.c_str());
+
+		//delete .meta
+		remove((const char*)file_path_s.c_str());
+	}
+
+	else if (type == MATERIAL_FILE) {
+
+		file_path_s.erase(file_path_s.find_last_of("."), file_path_s.size());
+		file_path_s.erase(0,file_path_s.find_last_of("/"));
+		file_path_s.append(".dds");
+
+		char* library_file;
+
+		sprintf_s(library_file, DEFAULT_BUF_SIZE, "Library/Materials/%s",file_path_s.c_str());
+
+		remove((const char*)file_path_s.c_str());
+
+		file_path_s.append(".meta"); //this meta should be generated in assets
+
+	}
 }

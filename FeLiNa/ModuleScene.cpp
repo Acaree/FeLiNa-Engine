@@ -55,6 +55,9 @@ bool ModuleScene::Start()
 	game_camera = CreateMainCamera();
 	std::string output_file;
 
+
+	//App->importer_material->Import("Assets/Textures/Baker_house.dds", output_file);
+
 	App->importer_mesh->Import("BakerHouse.fbx","Assets/", output_file);
 	
 	
