@@ -116,7 +116,6 @@ update_status ModuleGui::Update(float dt)
 
 		if (want_to_rename)
 		{
-			file_to_rename = "Assets/BakerHouse.fbx";
 			ImGui::OpenPopup("Rename as:");
 			Rename();
 		}
@@ -601,7 +600,14 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 					if (ImGui::MenuItem("Rename", NULL, false, true))
 					{
 						want_to_rename = true;
-						//change file name & reimport
+						
+						file_focus = dir;
+						file_focus += "/";
+						file_focus += *file;
+						std::string tmp = file_focus;
+
+						file_to_rename = file_focus;
+						//reimport
 					}
 
 					if (ImGui::MenuItem("Delete", NULL, false, true))
@@ -678,8 +684,8 @@ void ModuleGui::Rename()
 
 		if (ImGui::Button("Rename", ImVec2(100, 0)))
 		{
-			std::string new_save_name_s = file_to_rename;
-			std::string extension = file_to_rename;
+			std::string new_save_name_s = file_focus;
+			std::string extension = file_focus;
 
 			extension.erase(0, extension.find_last_of("."));
 
@@ -688,9 +694,11 @@ void ModuleGui::Rename()
 			new_save_name_s += new_save_name;
 			new_save_name_s += extension;
 
-			rename(file_to_rename.c_str(), new_save_name_s.c_str());
+			rename(file_focus.c_str(), new_save_name_s.c_str());
 
 			want_to_rename = false;
+			//file_to_rename.clear();
+			file_focus.clear();
 		}
 		ImGui::SameLine();
 
@@ -698,6 +706,8 @@ void ModuleGui::Rename()
 		{
 			ImGui::CloseCurrentPopup();
 			want_to_rename = false;
+			//file_to_rename.clear();
+			file_focus.clear();
 		}
 
 		ImGui::SetItemDefaultFocus();
