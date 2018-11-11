@@ -13,10 +13,12 @@ ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
 
 ComponentTexture::~ComponentTexture()
 {
-	if (texture != nullptr)
+	uint uid = App->resource_manager->Find(texture->felina_path);
+
+	if (uid != 0)
 	{
-		RELEASE_ARRAY(texture->felina_path);
-		RELEASE(texture);
+		ResourceMaterial* resource_mesh = (ResourceMaterial*)App->resource_manager->Get(uid);
+		resource_mesh->EraseToMemory();
 	}
 }
 
@@ -65,6 +67,11 @@ void ComponentTexture::DrawInspector()
 
 	if (ImGui::TreeNodeEx("Material"))
 	{
+		uint uid = App->resource_manager->Find(texture->felina_path);
+		Resource* resource = App->resource_manager->Get(uid);
+
+		ImGui::Text("Refernce counting: %i", resource->loaded);
+
 		ImGui::Text("Texture ID: %i", texture->texture_id);
 		ImGui::Separator();
 
