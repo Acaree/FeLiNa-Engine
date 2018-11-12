@@ -587,12 +587,14 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 					file_focus += "/";
 					file_focus += *file;
 
-					std::string json_path = file_focus;
-					json_path.erase(json_path.find_last_of("."), json_path.size());
-					
-					App->serialization_scene->LoadScene((char*)json_path.c_str());
+					if (ImGui::IsMouseDoubleClicked(0)) {
+						std::string json_path = file_focus;
+						json_path.erase(json_path.find_last_of("."), json_path.size());
 
-					json_path.clear();
+						App->serialization_scene->LoadScene((char*)json_path.c_str());
+
+						json_path.clear();
+					}
 					file_focus.clear();
 
 				}
@@ -609,7 +611,11 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 		
 	}
 
+
+	file_to_rename = file_focus;
+
 }
+
 
 void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 {
