@@ -707,17 +707,36 @@ void ModuleGui::Rename()
 
 		if (ImGui::Button("Rename", ImVec2(100, 0)))
 		{
+			std::string old_name = file_focus;
 			std::string new_save_name_s = file_focus;
 			std::string extension = file_focus;
 
 			extension.erase(0, extension.find_last_of("."));
 
 			new_save_name_s.erase(new_save_name_s.find_last_of("/")+1, new_save_name_s.size());
-
 			new_save_name_s += new_save_name;
 			new_save_name_s += extension;
 
 			rename(file_focus.c_str(), new_save_name_s.c_str());
+
+			new_save_name_s += ".meta";
+
+			old_name += ".meta";
+
+			rename(old_name.c_str(), new_save_name_s.c_str());
+
+			FILE_TYPE type = App->fs->FindTypeFile(file_focus.c_str());
+
+			if (type == MESH_FILE) { //only fbxs generates a .json
+
+				new_save_name_s.erase(new_save_name_s.find_first_of("."), new_save_name_s.size()); //remove extension and change it
+				new_save_name_s += ".json";
+
+				old_name.erase(old_name.find_first_of("."), old_name.size()); //remove extension and change it
+				old_name += ".json";
+
+				rename(old_name.c_str(), new_save_name_s.c_str());
+			}
 
 			want_to_rename = false;
 			
