@@ -44,7 +44,7 @@ private:
 	void ShowImportOptions();
 	void Rename();
 	void CreateFolder();
-
+	void ShowAssetsOptions(const char* file, const char* dir);
 public:
 
 	bool close_program = false;

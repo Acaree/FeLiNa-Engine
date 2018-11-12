@@ -544,6 +544,8 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 {
 	ImGuiTreeNodeFlags flags = 0;
 	
+	static const char* tmp_file = "";
+	static const char* tmp_dir = "";
 
 	const char** directory_array = App->fs->GetAllFilesFromDir(dir);
 
@@ -554,16 +556,22 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			flags = 0;
 			flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 
+			
 			if (ImGui::TreeNodeEx(*file, flags))
 			{
+				
+
 				std::string tmp = dir;
 				tmp += "/";
 				tmp += *file;
 				RecurssiveShowAssets(tmp.c_str());
 
+				
 				ImGui::TreePop();
-			}
 
+			}
+			
+			ShowAssetsOptions(*file, dir);
 		}
 		else
 		{
@@ -588,70 +596,85 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 					file_focus.clear();
 
 				}
-				if (ImGui::BeginPopupContextItem("Create"))
-				{
-					if (ImGui::MenuItem("See Import Options", NULL, false, true))
-					{
-						//To Revise
-						file_focus = dir;
-						file_focus += "/";
-						file_focus += *file;
-						std::string tmp = file_focus;
-						tmp += ".meta";
 
-						type = App->fs->FindTypeFile(file_focus.c_str());
-
-						switch (type)
-						{
-						case MESH_FILE:
-							App->importer_mesh->ReadFileMeta(tmp.c_str(), App->importer_mesh->mesh_settings);
-							break;
-						case MATERIAL_FILE:
-							App->importer_material->ReadFileMeta(tmp.c_str(), App->importer_material->material_settings);
-							break;
-						}
-
-					
-					}
-
-					if (ImGui::MenuItem("Rename", NULL, false, true))
-					{
-						want_to_rename = true;
-						
-						file_focus = dir;
-						file_focus += "/";
-						file_focus += *file;
-						std::string tmp = file_focus;
-
-						file_to_rename = file_focus;
-						//reimport
-					}
-
-					if (ImGui::MenuItem("Delete", NULL, false, true))
-					{
-						char* file_path = new char[DEFAULT_BUF_SIZE];
-						sprintf_s(file_path, DEFAULT_BUF_SIZE, "%s/%s", dir, *file);
-						App->fs->RemoveAllDependencies(file_path);
-						remove((const char*)file_path);
-
-
-
-					}
-
-					if (ImGui::MenuItem("Create new folder", NULL, false, true))
-					{
-						creating_folder = true;
-
-					}
-					ImGui::EndPopup();
-				}
-
-
+				ShowAssetsOptions(tmp_file, tmp_dir);
+			
 				ImGui::TreePop();
 			}
+
+			
+	
+			
 		}
+		
 	}
 
+}
+
+void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
+{
+	if (ImGui::BeginPopupContextItem(file))
+	{
+		bool directory = App->fs->isDirectory(dir);
+
+		if (ImGui::MenuItem("See Import Options", NULL, false, !directory))
+		{
+			//To Revise
+			file_focus = dir;
+			file_focus += "/";
+			file_focus += *file;
+			std::string tmp = file_focus;
+			tmp += ".meta";
+
+			type = App->fs->FindTypeFile(file_focus.c_str());
+
+			switch (type)
+			{
+			case MESH_FILE:
+				App->importer_mesh->ReadFileMeta(tmp.c_str(), App->importer_mesh->mesh_settings);
+				break;
+			case MATERIAL_FILE:
+				App->importer_material->ReadFileMeta(tmp.c_str(), App->importer_material->material_settings);
+				break;
+			}
+
+
+		}
+
+		if (ImGui::MenuItem("Rename", NULL, false, true))
+		{
+			want_to_rename = true;
+
+			file_focus = dir;
+			file_focus += "/";
+			file_focus += file;
+			std::string tmp = file_focus;
+
+			//if (directory)
+				//App->fs->CreateFolder();
+
+			file_to_rename = file_focus;
+			//reimport
+		}
+
+		if (ImGui::MenuItem("Delete", NULL, false, true))
+		{
+			char* file_path = new char[DEFAULT_BUF_SIZE];
+			sprintf_s(file_path, DEFAULT_BUF_SIZE, "%s/%s", dir, *file);
+			App->fs->RemoveAllDependencies(file_path);
+			remove((const char*)file_path);
+
+
+
+		}
+
+		if (ImGui::MenuItem("Create new folder", NULL, false, true))
+		{
+			creating_folder = true;
+
+		}
+		ImGui::EndPopup();
+	}
 }
 
 void ModuleGui::ShowImportOptions()
@@ -708,34 +731,58 @@ void ModuleGui::Rename()
 		if (ImGui::Button("Rename", ImVec2(100, 0)))
 		{
 			std::string old_name = file_focus;
-			std::string new_save_name_s = file_focus;
-			std::string extension = file_focus;
 
-			extension.erase(0, extension.find_last_of("."));
+			//TO CHANGE ALL THIS ARE.. are.
+			if (!App->fs->isDirectory(old_name.c_str()))
+			{
 
-			new_save_name_s.erase(new_save_name_s.find_last_of("/")+1, new_save_name_s.size());
-			new_save_name_s += new_save_name;
-			new_save_name_s += extension;
+				const char* tmp_file = old_name.erase(0, old_name.find_last_of("/") + 1).c_str();
 
-			rename(file_focus.c_str(), new_save_name_s.c_str());
+				// TO CHANGE 
+				std::string new_save_name_s = file_focus;
+				std::string extension = file_focus;
 
-			new_save_name_s += ".meta";
+				extension.erase(0, extension.find_last_of("."));
 
-			old_name += ".meta";
+				new_save_name_s.erase(new_save_name_s.find_last_of("/") + 1, new_save_name_s.size());
+				new_save_name_s += new_save_name;
+				new_save_name_s += extension;
 
-			rename(old_name.c_str(), new_save_name_s.c_str());
+				rename(file_focus.c_str(), new_save_name_s.c_str());
 
-			FILE_TYPE type = App->fs->FindTypeFile(file_focus.c_str());
 
-			if (type == MESH_FILE) { //only fbxs generates a .json
 
-				new_save_name_s.erase(new_save_name_s.find_first_of("."), new_save_name_s.size()); //remove extension and change it
-				new_save_name_s += ".json";
+				new_save_name_s += ".meta";
 
-				old_name.erase(old_name.find_first_of("."), old_name.size()); //remove extension and change it
-				old_name += ".json";
+				old_name += ".meta";
 
 				rename(old_name.c_str(), new_save_name_s.c_str());
+
+				FILE_TYPE type = App->fs->FindTypeFile(file_focus.c_str());
+
+				if (type == MESH_FILE) { //only fbxs generates a .json
+
+					new_save_name_s.erase(new_save_name_s.find_first_of("."), new_save_name_s.size()); //remove extension and change it
+					new_save_name_s += ".json";
+
+					old_name.erase(old_name.find_first_of("."), old_name.size()); //remove extension and change it
+					old_name += ".json";
+
+					rename(old_name.c_str(), new_save_name_s.c_str());
+				}
+			}
+			else
+			{
+				const char* tmp_file = old_name.erase(0, old_name.find_last_of("/") + 1).c_str();
+
+				// TO CHANGE 
+				std::string new_save_name_s = file_focus;
+				new_save_name_s.erase(new_save_name_s.find_last_of("/") + 1, new_save_name_s.size());
+				new_save_name_s += new_save_name;
+			
+				rename(file_focus.c_str(), new_save_name_s.c_str());
+				
+				App->fs->CreateFolder(new_save_name_s.c_str());
 			}
 
 			want_to_rename = false;
