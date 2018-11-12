@@ -21,11 +21,32 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 	if (PHYSFS_setWriteDir(".") == 0) // create a directory (if it's point it take game as base directory)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
+
+
 	if (PHYSFS_mount("./Assets/", "Assets", 1)==0) { //Add paths to physfs to search throught
 	
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
 
 	}
+
+	const char** tmp = GetAllFilesFromDir("/Assets");
+
+	for (const char** file = tmp; *file != nullptr; ++file)
+	{
+		// TO revise 
+		std::string dir = "Assets/";
+		dir += *file;
+		PHYSFS_Stat* stat = new PHYSFS_Stat();
+		PHYSFS_stat(dir.c_str(), stat);
+		
+		if(stat->filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY)
+			if(PHYSFS_mount(dir.c_str(), *file, 1) == 0)
+				LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
+		RELEASE(stat);
+	}
+
+	;
 
 	if (PHYSFS_mount("./Assets/Settings/", "Settings", 1) == 0) { //Add paths to physfs to search throught
 
