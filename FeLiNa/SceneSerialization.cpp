@@ -125,6 +125,7 @@ void SceneSerialization::LoadScene(char* file_name)
 
 void SceneSerialization::RecursiveSearchChildrens(GameObject* parent)
 {
+	aux_go.clear();
 
 	if (parent != App->scene->root_object) {
 

@@ -29,35 +29,30 @@ MeshImporter::~MeshImporter()
 {
 	RELEASE(mesh_settings);
 }
-//const char* importFileName, const char* importPath, std::string& outputFileName
-bool MeshImporter::Import(const char* file_name, const char* file_path, std::string& output_file)
+//CONST????
+bool MeshImporter::Import(const char* file_name, const char* file_path, std::string& output_file, const MeshSettings* import_settings)
 {
 	bool ret = false;
 
-	char* buffer;
-
-	//Check if file is !null
-	if (file_path == nullptr)
+	if (file_name == nullptr || file_path == nullptr || import_settings == nullptr)
 		return ret;
-
-	char importer_path[DEFAULT_BUF_SIZE]; //importFilePath
-
+	
+	char importer_path[DEFAULT_BUF_SIZE];
 	strcpy_s(importer_path, strlen(file_path) + 1, file_path);
 
 	if (file_name != nullptr)
 		strcat_s(importer_path, strlen(importer_path) + strlen(file_name) + 1, file_name);
 
-	//output_file.append(App->fs->GetNameFile(importer_path));
 	std::string tmp = file_name;
 	output_file = tmp.substr(0, tmp.find_last_of("."));
 
+	char* buffer;
 	uint size = App->fs->Load(importer_path, &buffer);
 
 	if (size > 0)
 	{
 		LOG("MATERIAL IMPORTER: Successfully");
-
-		ret = Import(buffer, size, output_file);
+		ret = Import(buffer, size, output_file,import_settings);
 		RELEASE_ARRAY(buffer);
 	}	
 	else
@@ -67,25 +62,28 @@ bool MeshImporter::Import(const char* file_name, const char* file_path, std::str
 	return ret;
 }
 
-//const void* buffer, uint size, std::string& outputFileName
-bool MeshImporter::Import(const void* buffer, uint size, std::string& output_file)
+// same that other this is const?
+bool MeshImporter::Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings)
 {
 	bool ret = false;
 
 	LOG("Inicialization load data model");
 
+	if (buffer == nullptr || import_settings == nullptr)
+		return ret;
 
-	const aiScene* scene = aiImportFileFromMemory((const char*)buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
+	uint flags = SetPostProccesConfiguration(import_settings);
+
+	const aiScene* scene = aiImportFileFromMemory((const char*)buffer, size, flags, nullptr);
 
 	if (scene != nullptr) {
 
-		//Create a new Game Object and set the name of file.
-		GameObject* childrens_go = new GameObject(App->scene->root_object);
+		GameObject* childrens_go = new GameObject(nullptr);
 		childrens_go->SetName((char*)output_file.data());
 
-		aiNode* rootNode = scene->mRootNode;
-
 		ComponentTransform* trans = (ComponentTransform*)childrens_go->AddComponent(Component_Transform);
+
+		aiNode* rootNode = scene->mRootNode;
 
 		LoadModel(scene, rootNode, output_file, childrens_go, trans);
 
@@ -93,12 +91,16 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
 		App->serialization_scene->save_name_scene = childrens_go->GetName();
 		App->serialization_scene->SaveScene(childrens_go);
-		App->serialization_scene->ClearActualScene();
-		App->serialization_scene->save_name_scene = childrens_go->GetName();
-		App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
-		aiReleaseImport(scene);
 		
 		//RELEASE(childrens_go);
+		//App->serialization_scene->ClearActualScene();
+		//App->serialization_scene->save_name_scene = childrens_go->GetName();
+		//App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
+
+		aiReleaseImport(scene);
+		RELEASE(childrens_go);
+
+		ret = true;
 	}
 
 	return ret;
@@ -131,7 +133,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		transform->SetRotation(component_transform->GetRotation());
 		transform->SetScale(component_transform->GetScale());
 
-		RELEASE(component_transform);
+		//RELEASE(component_transform); // this last line of function?
 
 
 		ComponentMesh* component_mesh = (ComponentMesh*)game_object->AddComponent(Component_Mesh);
@@ -177,39 +179,48 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 			
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
 
-			std::string file_path = name.data;
+			if (name.length != 0) // if are 0 don't have asociated texture
+			{
+				std::string file_path = name.data;
 
-			std::string file_name = file_path.substr(file_path.find_last_of("\\") + 1, file_path.size());
+				std::string file_name = file_path.substr(file_path.find_last_of("\\") + 1, file_path.size());
 
-			std::string path = file_path.erase(file_path.find_last_of("\\"), file_path.size());
+				std::string path = file_path.erase(file_path.find_last_of("\\"), file_path.size());
 
-			std::string texture_generated;
-		
-			char* file_name_c = new char[file_name.size() + 1];
+				std::string texture_generated;
 
-			strcpy_s(file_name_c, file_name.size() + 1, file_name.data());
+				char* file_name_c = new char[file_name.size() + 1];
 
-			char* path_c = new char[path.size() + 1];
+				strcpy_s(file_name_c, file_name.size() + 1, file_name.data());
 
-			strcpy_s(path_c, path.size() + 1, path.data());
+				char* path_c = new char[path.size() + 1];
 
-			char add [DEFAULT_BUF_SIZE] = "Assets";
+				strcpy_s(path_c, path.size() + 1, path.data());
 
-			sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c,file_name.data());
+				char add[DEFAULT_BUF_SIZE] = "Assets";
+
+				sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c, file_name.data());
 
 
 
- 			Texture* tex = App->importer_material->Import((const char*)add, texture_generated);
+				MaterialSettings* settings = new MaterialSettings();
+				App->importer_material->Import((const char*)add, texture_generated, settings);
 
-			RELEASE_ARRAY(path_c);
-			RELEASE_ARRAY(file_name_c);
 
-			file_path.clear();
-			file_name.clear();
-			path.clear();
-			texture_generated.clear();
 
-			component_texture->SetTexture(tex);
+				component_texture->SetPath(add);
+
+
+				RELEASE_ARRAY(path_c);
+				RELEASE_ARRAY(file_name_c);
+
+
+				file_path.clear();
+				file_name.clear();
+				path.clear();
+				texture_generated.clear();
+
+			}
 			
 			if (new_mesh->HasTextureCoords(0))
 			{
@@ -278,7 +289,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		game_object->mesh->SetPath(final_path);
 
 		RELEASE_ARRAY(data);
-	
 	}
 	else
 	{
@@ -294,24 +304,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 	RELEASE(component_transform);
 }
 
-void MeshImporter::GenerateBufferData(Mesh* mesh_data)
-{
-	/*glGenBuffers(1, (GLuint*) &(mesh_data->id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh_data->num_vertices, mesh_data->vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glGenBuffers(1, (GLuint*) &(mesh_data->id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_data->id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh_data->num_indices, mesh_data->indices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glGenBuffers(1, (GLuint*) &(mesh_data->id_uv));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh_data->id_uv);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh_data->num_uv, mesh_data->uv, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
-
-}
 
 Mesh* MeshImporter::LoadFLN(const void* buffer, uint size) {
 
@@ -348,7 +340,7 @@ Mesh* MeshImporter::LoadFLN(const void* buffer, uint size) {
 
 	ret->felina_path = new char[DEFAULT_BUF_SIZE];
 
-	GenerateBufferData(ret);
+	
 
 
 	return ret;
@@ -435,7 +427,11 @@ void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
 
 		Resource* resource = App->resource_manager->CreateNewResource(RESOURCE_MESH);
 		resource->uid = json_object_get_number(root_object, "UID");
-		resource->exported_file = App->gui->file_focus.c_str();
+
+		std::string tmp = file;
+		tmp = tmp.substr(0, tmp.find_last_of("."));
+
+		resource->exported_file = tmp.c_str();
 
 		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
 
@@ -592,7 +588,60 @@ void MeshImporter::RefreshMeshOptions()
 	default:
 		break;
 	}
+}
 
+uint MeshImporter::SetPostProccesConfiguration(const MeshSettings* import_settings)
+{
+	uint flags = 0;
 
+	switch (import_settings->process_node)
+	{
+	case MeshSettings::ProcessNode::TargetRealtime_MaxQuality:
+		flags |= aiProcessPreset_TargetRealtime_MaxQuality;
+		break;
+	case MeshSettings::ProcessNode::TargetRealtime_Quality:
+		flags |= aiProcessPreset_TargetRealtime_Quality;
+		break;
+	case MeshSettings::ProcessNode::TargetRealtime_Fast:
+		flags |= aiProcessPreset_TargetRealtime_Fast;
+		break;
+	case MeshSettings::ProcessNode::ConvertToLeftHanded:
+		flags |= aiProcess_ConvertToLeftHanded;
+		break;
+	}
 
+	if (import_settings->CalcTangentSpace)
+		flags |= aiPostProcessSteps::aiProcess_CalcTangentSpace;
+	if (import_settings->JoinIdenticalVertices)
+		flags |= aiPostProcessSteps::aiProcess_JoinIdenticalVertices;
+	if (import_settings->MakeLeftHanded)
+		flags |= aiPostProcessSteps::aiProcess_MakeLeftHanded;
+	if (import_settings->Triangulate)
+		flags |= aiPostProcessSteps::aiProcess_Triangulate;
+	if (import_settings->RemoveComponent)
+		flags |= aiPostProcessSteps::aiProcess_RemoveComponent;
+	if (import_settings->GenNormals)
+		flags |= aiPostProcessSteps::aiProcess_GenNormals;
+	if (import_settings->GenSmoothNormals)
+		flags |= aiPostProcessSteps::aiProcess_GenSmoothNormals;
+	if (import_settings->SplitLargeMeshes)
+		flags |= aiPostProcessSteps::aiProcess_SplitLargeMeshes;
+	if (import_settings->PreTransformVertices)
+		flags |= aiPostProcessSteps::aiProcess_PreTransformVertices;
+	if (import_settings->LimitBoneWeights)
+		flags |= aiPostProcessSteps::aiProcess_LimitBoneWeights;
+	if (import_settings->ValidateDataStructure)
+		flags |= aiPostProcessSteps::aiProcess_ValidateDataStructure;
+	if (import_settings->RemoveRedundantMaterials)
+		flags |= aiPostProcessSteps::aiProcess_RemoveRedundantMaterials;
+	if (import_settings->SortByPType)
+		flags |= aiPostProcessSteps::aiProcess_SortByPType;
+	if (import_settings->GenUvCoords)
+		flags |= aiPostProcessSteps::aiProcess_GenUVCoords;
+	if (import_settings->OptimizeMeshes)
+		flags |= aiPostProcessSteps::aiProcess_OptimizeMeshes;
+	if (import_settings->FlipUVs)
+		flags |= aiPostProcessSteps::aiProcess_FlipUVs;
+
+	return flags;
 }
