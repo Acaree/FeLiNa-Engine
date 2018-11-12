@@ -175,6 +175,23 @@ void ModuleScene::ShowHierarchy()
 		root_object->GetChild(i)->ShowObjectHierarchy();
 		ImGui::PopID();
 	}
+	if (ImGui::IsMouseClicked(1) && ImGui::IsWindowHovered())
+	{
+		ImGui::OpenPopup("Hierarchy Options");
+	}
+
+	if (ImGui::BeginPopupContextItem("Hierarchy Options"))
+	{
+		if (ImGui::MenuItem("Create Empty"))
+		{
+			GameObject* go = new GameObject(nullptr);
+			go->AddComponent(Component_Transform);
+			root_object->AddChildren(go);
+		}
+		ImGui::EndPopup();
+	}
+
+
 	ImGui::End();
 }
 
@@ -203,7 +220,37 @@ void ModuleScene::ShowInspector()
 	if (go != nullptr)
 	{
 		go->ShowObjectInspector();
+
+
+		if (ImGui::Button("Add Component", ImVec2(100, 25)))
+		{
+			ImGui::OpenPopup("New Component");
+		}
+		if (ImGui::BeginPopupContextItem("New Component"))
+		{
+			bool mesh_selectable = true;
+			bool material_selectable = true;
+
+			if (go->mesh != nullptr)
+				mesh_selectable = false;
+			if (go->material != nullptr)
+				material_selectable = false;
+
+			if (ImGui::MenuItem("Add Component Mesh", NULL, false,mesh_selectable))
+			{
+				go->AddComponent(Component_Mesh);
+			}
+
+			if (ImGui::MenuItem("Add Component Material", NULL, false,material_selectable))
+			{
+				go->AddComponent(Component_Material);
+			}
+
+			ImGui::EndPopup();
+		}
+
 	}
+
 
 	ImGui::End();
 

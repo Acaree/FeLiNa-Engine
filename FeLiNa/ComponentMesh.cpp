@@ -55,10 +55,12 @@ void ComponentMesh::DrawInspector()
 	if (ImGui::TreeNodeEx("Mesh"))
 	{
 		uint uid = App->resource_manager->Find(mesh->felina_path);
-		Resource* resource = App->resource_manager->Get(uid);
-		
-		ImGui::Text("Refernce counting: %i", resource->loaded);
+		if (uid != 0)
+		{
+			Resource* resource = App->resource_manager->Get(uid);
 
+			ImGui::Text("Refernce counting: %i", resource->loaded);
+		}
 		ImGui::Text("Indices: %i", mesh->num_indices);
 		ImGui::Text("Vertices: %i", mesh->num_vertices);
 		ImGui::Text("Uv's: %i", mesh->num_uv);

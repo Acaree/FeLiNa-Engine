@@ -90,7 +90,7 @@ public:
 
 private:
 	
-	char* name = "No Name";
+	char name[DEFAULT_BUF_SIZE];
 	
 
 	GameObject* parent = nullptr;

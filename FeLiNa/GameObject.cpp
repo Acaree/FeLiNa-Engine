@@ -21,6 +21,9 @@ GameObject::GameObject(GameObject* parent)
 
 	bounding_box.SetNegativeInfinity();
 
+	//Set default name
+	strcpy(name, "No Name");
+
 #ifndef GAME_MODE
 	uid = App->random->Int();
 #endif
@@ -30,8 +33,8 @@ GameObject::GameObject(GameObject* parent)
 GameObject::~GameObject()
 {
 	// We don't allocate memory for this pointers.
-	if (name != nullptr)
-		RELEASE_ARRAY(name);
+	/*if (name != nullptr)
+		RELEASE_ARRAY(name);*/
 
 	for (uint i = 0; i < childrens.size(); ++i)
 	{
@@ -105,13 +108,13 @@ void GameObject::CleanData()
 
 void GameObject::SetName(char* name)
 {
-	this->name = new char[100];
+	//this->name = new char[100];
 	strcpy_s(this->name, 100, name);
 }
 
 char* GameObject::GetName() const
 {
-	return name;
+	return (char*)name;
 }
 
 void GameObject::SetActive(bool* active)
@@ -327,7 +330,7 @@ void GameObject::ShowObjectInspector()
 			App->scene->need_update_quadtree = true;
 		}
 
-		ImGui::InputText("##name", name, 30);
+		ImGui::InputText("##name", name, DEFAULT_BUF_SIZE);
 
 		ImGui::TreePop();
 	}
@@ -452,9 +455,7 @@ void GameObject::OnSave(JSON_Object* obj)
 void GameObject::OnLoad(JSON_Object* obj)
 {
 
-	//WHY???????????? /strcpy(name, (char*)json_object_get_string(obj, "name"));
-	name = (char*)json_object_get_string(obj, "name");
-	strcpy(name, name);
+	strcpy(name, (char*)json_object_get_string(obj, "name"));
 
 	uid = json_object_get_number(obj, "uid");
 
