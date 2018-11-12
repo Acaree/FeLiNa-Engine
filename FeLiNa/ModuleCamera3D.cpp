@@ -85,7 +85,7 @@ update_status ModuleCamera3D::Update(float dt)
 		// TODO-> Focus*/
 
 #ifndef GAME_MODE
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN )
 	{
 		if (!ImGui::IsMouseHoveringAnyWindow() && !ImGuizmo::IsOver())
 		{
@@ -107,7 +107,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 #endif
 
-	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT )
 	{
 
 		//Keyboard Movement with Frustum--------------------------------------
@@ -124,12 +124,13 @@ update_status ModuleCamera3D::Update(float dt)
 		
 
 		//Mouse movement with Frustum---------------------------------------
+	
 		int dx = -App->input->GetMouseXMotion();
-		int dy = -App->input->GetMouseYMotion() ;
+		int dy = -App->input->GetMouseYMotion();
 
 		if (dx != 0.0f)
 		{
-			math::Quat quat = math::Quat::RotateY(dx*dt*0.3); 
+			math::Quat quat = math::Quat::RotateY(dx*dt*0.3);
 			current_camera->frustum.front = quat.Mul(current_camera->frustum.front).Normalized();
 			current_camera->frustum.up = quat.Mul(current_camera->frustum.up).Normalized();
 		}
