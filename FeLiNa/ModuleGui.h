@@ -27,6 +27,7 @@ public:
 private:
 	bool About_active = false;
 	bool want_to_rename = false;
+	bool creating_folder = false;
 
 	std::string file_to_rename;
 
@@ -42,6 +43,7 @@ private:
 	void LoadScene();
 	void ShowImportOptions();
 	void Rename();
+	void CreateFolder();
 
 public:
 

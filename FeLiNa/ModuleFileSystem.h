@@ -22,6 +22,8 @@ public:
 
 	uint Load(const char* path, char** buffer) const;
 
+	void CreateFolder(const char* new_folder);
+
 	char* SaveFile(char* buffer, uint size, std::string& outputFileName, FILE_TYPE file);
 
 	uint SaveBufferData(char* buffer,const char* filePath, uint size);

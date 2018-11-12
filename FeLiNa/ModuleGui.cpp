@@ -120,6 +120,12 @@ update_status ModuleGui::Update(float dt)
 			Rename();
 		}
 
+		if (creating_folder)
+		{
+			ImGui::OpenPopup("Folder name:");
+			CreateFolder();
+		}
+
 		if (open_configuration)
 			ShowConfigurationWindow();
 
@@ -631,6 +637,12 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 
 					}
+
+					if (ImGui::MenuItem("Create new folder", NULL, false, true))
+					{
+						creating_folder = true;
+
+					}
 					ImGui::EndPopup();
 				}
 
@@ -708,7 +720,7 @@ void ModuleGui::Rename()
 			rename(file_focus.c_str(), new_save_name_s.c_str());
 
 			want_to_rename = false;
-			//file_to_rename.clear();
+			
 			file_focus.clear();
 		}
 		ImGui::SameLine();
@@ -717,7 +729,43 @@ void ModuleGui::Rename()
 		{
 			ImGui::CloseCurrentPopup();
 			want_to_rename = false;
-			//file_to_rename.clear();
+			file_focus.clear();
+		}
+
+		ImGui::SetItemDefaultFocus();
+		ImGui::EndPopup();
+	}
+
+
+}
+
+
+void ModuleGui::CreateFolder()
+{
+	if (ImGui::BeginPopupModal("Folder name:",false, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+
+		static char new_save_name[50];
+		ImGui::InputText("###scene_name", new_save_name, 50);//default buffer size?¿
+
+		if (ImGui::Button("Create", ImVec2(100, 0)))
+		{
+			std::string new_folder = "Assets/";
+
+			new_folder += new_save_name;
+
+			App->fs->CreateFolder(new_folder.c_str());
+
+			creating_folder = false;
+
+			file_focus.clear();
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			ImGui::CloseCurrentPopup();
+			creating_folder = false;
 			file_focus.clear();
 		}
 

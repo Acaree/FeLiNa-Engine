@@ -414,3 +414,14 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 	}
 }
+
+void ModuleFileSystem::CreateFolder(const char* new_folder) {
+
+	if (PHYSFS_mkdir(new_folder)) {
+
+		std::string tmp = new_folder;
+		tmp.erase(0,tmp.find_last_of("/") + 1);
+		PHYSFS_mount(new_folder,tmp.c_str(),1);
+	}
+
+}
