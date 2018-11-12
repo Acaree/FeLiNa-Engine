@@ -13,7 +13,7 @@ public:
 
 	void SaveScene(GameObject* go);
 
-	void LoadScene(char* file_name = "Autosave");
+	bool LoadScene(char* file_name = "Autosave");
 
 	void RecursiveSearchChildrens(GameObject* parent);
 

@@ -32,7 +32,7 @@ private:
 	
 	std::map<uint, Resource*> resources;
 	float refresh_time = 0.0F;
-	float time_to_refresh = 20.0F;
+	float time_to_refresh = 200.0F;
 };
 
 

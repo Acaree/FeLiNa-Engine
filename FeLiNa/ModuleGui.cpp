@@ -582,7 +582,38 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 					std::string json_path = file_focus;
 					json_path.erase(json_path.find_last_of("."), json_path.size());
 					
-					App->serialization_scene->LoadScene((char*)json_path.c_str());
+					if (!App->serialization_scene->LoadScene((char*)json_path.c_str()))
+					{
+						// TO CHANGE
+						uint uid = App->resource_manager->ImportFile(file_focus.c_str());
+
+						Resource* resource = App->resource_manager->Get(uid);
+
+						std::string path = file_focus;
+						path = path.substr(0, path.find_last_of("/") + 1);
+
+						std::string file_name = file_focus;
+						file_name = file_name.substr(file_name.find_last_of("/") + 1, file_name.size());
+
+						std::string output_file;
+
+						switch (resource->type)
+						{
+						case RESOURCE_TYPE::RESOURCE_MESH:
+						{
+							MeshSettings* default_settings = new MeshSettings();
+							App->importer_mesh->Import(file_name.c_str(), path.c_str(), output_file, default_settings);
+							RELEASE(default_settings);
+						}
+						break;
+						case RESOURCE_TYPE::RESOURCE_MATERIAL:
+							MaterialSettings * default_settings = new MaterialSettings();
+							App->importer_material->Import(file_focus.c_str(), output_file, default_settings);
+							break;
+						}
+
+						App->serialization_scene->LoadScene((char*)json_path.c_str());
+					}
 
 					json_path.clear();
 					file_focus.clear();

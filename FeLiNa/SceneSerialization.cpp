@@ -62,9 +62,10 @@ void SceneSerialization::SaveScene(GameObject* go)
 	save_name_scene = "";
 }
 
-void SceneSerialization::LoadScene(char* file_name)
+bool SceneSerialization::LoadScene(char* file_name)
 {
 	//TO REVISE and change
+	bool ret = false;
 
 	char file[DEFAULT_BUF_SIZE];
 	strcpy_s(file, DEFAULT_BUF_SIZE, file_name);
@@ -75,7 +76,7 @@ void SceneSerialization::LoadScene(char* file_name)
 	if (file_root != nullptr)
 	{
 		JSON_Array* go_array = json_value_get_array(file_root);
-
+		ret = true;
 		if (go_array != nullptr)
 		{
 			std::vector<GameObject*> go_vector;
@@ -121,6 +122,7 @@ void SceneSerialization::LoadScene(char* file_name)
 	}
 	//json_value_free(file_root);
 	save_name_scene = "";
+	return ret;
 }
 
 void SceneSerialization::RecursiveSearchChildrens(GameObject* parent)
