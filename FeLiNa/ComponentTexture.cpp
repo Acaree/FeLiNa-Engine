@@ -68,10 +68,12 @@ void ComponentTexture::DrawInspector()
 	if (ImGui::TreeNodeEx("Material"))
 	{
 		uint uid = App->resource_manager->Find(texture->felina_path);
-		Resource* resource = App->resource_manager->Get(uid);
+		if (uid != 0)
+		{
+			Resource* resource = App->resource_manager->Get(uid);
 
-		ImGui::Text("Refernce counting: %i", resource->loaded);
-
+			ImGui::Text("Refernce counting: %i", resource->loaded);
+		}
 		ImGui::Text("Texture ID: %i", texture->texture_id);
 		ImGui::Separator();
 
