@@ -24,10 +24,40 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::Start()
 {
-	std::string new_file;
-	if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO Change -> assets a Macro?
-		ImportFile(new_file.data());
+	std::string new_file = " ";
+	
+	while (strcmp("Assets/", new_file.c_str()) != 0)
+	{
+		new_file.clear();
+		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO REVISE
+		{
+			uint uid = ImportFile(new_file.data());
+			Resource* resource = App->resource_manager->Get(uid);
 
+			std::string path = new_file;
+			path = path.substr(0, path.find_last_of("/") + 1);
+
+			std::string file_name = new_file;
+			file_name = file_name.substr(file_name.find_last_of("/") + 1, file_name.size());
+
+			std::string output_file;
+
+			switch (resource->type)
+			{
+			case RESOURCE_TYPE::RESOURCE_MESH:
+			{
+				MeshSettings* default_settings = new MeshSettings();
+				App->importer_mesh->Import(file_name.c_str(), path.c_str(), output_file, default_settings);
+				RELEASE(default_settings);
+			}
+			break;
+			case RESOURCE_TYPE::RESOURCE_MATERIAL:
+				MaterialSettings * default_settings = new MaterialSettings();
+				App->importer_material->Import(new_file.c_str(), output_file, default_settings);
+				break;
+			}
+		}
+	}
 	return true;
 }
 
@@ -131,9 +161,8 @@ uint ResourceManager::ImportFile(const char* new_file)
 			break;
 		}
 
-		ret = Find(new_file);
 	}
-	
+	ret = Find(new_file);
 	return ret;
 }
 
