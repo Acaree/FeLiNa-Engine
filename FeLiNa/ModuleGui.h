@@ -29,6 +29,8 @@ private:
 	bool want_to_rename = false;
 	bool creating_folder = false;
 
+	char* file_moving = nullptr;
+
 	std::string file_to_rename;
 
 	void ShowMainMenuBar();

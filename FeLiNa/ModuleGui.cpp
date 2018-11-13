@@ -608,6 +608,27 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 	
 			
 		}
+
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+		{
+			ImGui::SetDragDropPayload("Assets_Nodes", *file, strlen(*file));
+			ImGui::EndDragDropSource();
+			file_moving = (char*)*file;
+		}
+
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
+			{
+				if (App->fs->isDirectory(*file)) {
+					//here the file must be moved but i can't know the repository
+					int i = 0;
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 		
 	}
 
@@ -681,6 +702,8 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 		}
 		ImGui::EndPopup();
 	}
+
+
 }
 
 void ModuleGui::ShowImportOptions()
