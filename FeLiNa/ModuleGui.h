@@ -58,6 +58,7 @@ public:
 	bool serialization_load_scene = false;
 
 	std::string file_focus;
+	std::string extension;
 	FILE_TYPE type;
 };
 #endif

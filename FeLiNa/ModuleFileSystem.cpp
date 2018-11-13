@@ -465,3 +465,8 @@ void ModuleFileSystem::CreateFolder(const char* new_folder) {
 	}
 
 }
+
+void ModuleFileSystem::FreeEnumeratedFiles(const char** dir)
+{
+	PHYSFS_freeList(dir);
+}

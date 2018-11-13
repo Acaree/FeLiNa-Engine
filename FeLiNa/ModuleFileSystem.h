@@ -40,6 +40,7 @@ public:
 
 	void RemoveAllDependencies(char* file_path);
 	void GetPhysfsStats(const char* filename, PHYSFS_Stat& stat );
+	void FreeEnumeratedFiles( const char** dir);
 private:
 	std::string tmp_string;
 };

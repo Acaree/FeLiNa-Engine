@@ -548,7 +548,8 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 	static const char* tmp_dir = "";
 
 	const char** directory_array = App->fs->GetAllFilesFromDir(dir);
-	static std::string tmp; //All calls to std::string are so slow best way static?
+	char* tmp = new char[DEFAULT_BUF_SIZE]; 
+
 	for (const char** file = directory_array; *file != nullptr; ++file)
 	{
 		
@@ -560,26 +561,28 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			
 			if (ImGui::TreeNodeEx(*file, flags))
 			{
+				strcpy(tmp, dir);
+				strcat(tmp, "/");
+				strcat(tmp, *file);
 				
-				tmp = dir;
-				tmp += "/";
-				tmp += *file;
-				RecurssiveShowAssets(tmp.c_str());
+				RecurssiveShowAssets(tmp);
 
 				
 				ImGui::TreePop();
-
 			}
+
 			
 			ShowAssetsOptions(*file, dir);
 		}
 		else
 		{
-			tmp = *file;
+			strcpy(tmp, *file);
 			
-			tmp.erase(0, tmp.size() - 5);
+			extension = tmp;
+			
+			extension.erase(0,extension.size()-5);
 
-			if (strcmp(tmp.c_str(),".meta") == 0)
+			if (strcmp(extension.c_str(),".meta") == 0)
 				continue;
 
 			flags = 0;
@@ -602,23 +605,20 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 						json_path.clear();
 					}
-
 					else {
-						
-						file_dragging = file_focus;
-					}
-					file_focus.clear();
 
+						file_dragging = file_focus;
+						file_focus.clear();
+					}
+					
 				}
 
-				ShowAssetsOptions(tmp_file, tmp_dir);
+
+				ShowAssetsOptions(*file, dir);
 			
 				ImGui::TreePop();
 			}
 
-			
-	
-			
 		}
 
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
@@ -639,7 +639,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 					file_focus += file_dragging.substr(file_dragging.find_last_of("/"), file_dragging.size());
 
-					MoveFile(file_dragging.c_str(),file_focus.c_str());
+					MoveFile(file_dragging.c_str(), file_focus.c_str());
 
 					RELEASE(payload);
 				}
@@ -647,12 +647,13 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			ImGui::EndDragDropTarget();
 		}
 
-		
 	}
 
+	RELEASE_ARRAY(tmp);
 
 	file_to_rename = file_focus;
 
+	App->fs->FreeEnumeratedFiles(directory_array);
 }
 
 
@@ -660,14 +661,14 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 {
 	if (ImGui::BeginPopupContextItem(file))
 	{
-		bool directory = App->fs->isDirectory(dir);
+		bool directory = App->fs->isDirectory(file);
 
 		if (ImGui::MenuItem("See Import Options", NULL, false, !directory))
 		{
 			//To Revise
 			file_focus = dir;
 			file_focus += "/";
-			file_focus += *file;
+			file_focus += file;
 			std::string tmp = file_focus;
 			tmp += ".meta";
 

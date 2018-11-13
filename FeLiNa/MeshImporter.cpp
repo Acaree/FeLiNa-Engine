@@ -473,7 +473,7 @@ void MeshImporter::ShowMeshImport()
 
 	static int current_procces = mesh_settings->process_node;
 	const char* process_elements[] = { " TargetRealtime_MaxQuality" , "TargetRealtime_Quality", "TargetRealtime_Fast", "ConvertToLeftHanded " };
-
+	ImGui::Text(" Import options for: %s ###importmesh", App->gui->file_focus.c_str());
 
 	ImGui::Text("Procces:");
 	ImGui::SameLine();
@@ -506,6 +506,7 @@ void MeshImporter::ShowMeshImport()
 		Resource* resource = App->resource_manager->Get(uid);
 
 		CreateFileMeta(resource, mesh_settings);
+
 		App->gui->file_focus.clear();
 	}
 	ImGui::SameLine();

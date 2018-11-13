@@ -67,7 +67,7 @@ bool ResourceManager::Start()
 update_status ResourceManager::PreUpdate(float dt)
 {
 	refresh_time += dt;
-	if (refresh_time >= 5 )
+	if (refresh_time >= time_to_refresh )
 	{
 		// FOR SEARCH META: when we implemented, testing with .felina and works pecfect
 		char* new_file = new char[DEFAULT_BUF_SIZE];
