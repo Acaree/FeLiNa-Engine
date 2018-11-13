@@ -51,7 +51,7 @@ void SceneSerialization::SaveScene(GameObject* go)
 	//TO REVISION: CAN CRash if use strcpy with same_name_scene
 	char name[DEFAULT_BUF_SIZE];
 
-	sprintf_s(name, DEFAULT_BUF_SIZE, "Assets/%s", save_name_scene );
+	sprintf_s(name, DEFAULT_BUF_SIZE, "Assets/Settings/%s", save_name_scene );
 	strcat(name, ".json");
 	
 

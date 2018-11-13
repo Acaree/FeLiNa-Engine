@@ -46,8 +46,8 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 		RELEASE(stat);
 	}
 
-	;
-
+	
+	PHYSFS_mkdir("Assets/Settings");
 	if (PHYSFS_mount("./Assets/Settings/", "Settings", 1) == 0) { //Add paths to physfs to search throught
 
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
@@ -58,7 +58,7 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
 
 	}
-
+	
 	PHYSFS_mkdir("Library/Meshes");
 	PHYSFS_mkdir("Library/Materials");
 
