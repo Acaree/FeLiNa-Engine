@@ -297,65 +297,58 @@ FILE_TYPE ModuleFileSystem::FindOwnTypeFile(const char* file)
 bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & new_file)
 {
 	bool ret = false;
-	
+	static std::string tmp;
 	//TO REVISE
 
 	/*1- Check if is directory : true: recursive
 	2-chech if are asociate the .meta in the soma folder: yes continue, no create
 	 */
-	new_file.append(directory);
+	new_file = directory;
 	
 	const char** files_array = GetAllFilesFromDir(directory);
-	/*static uint last_count = 0;
-	uint count = 0;
-	for (const char** file = files_array; *file != nullptr; ++file) {
-		count++;
-	}*/
 
-	//if (count != last_count) {
-		for (const char** file = files_array; *file != nullptr; ++file)
+	for (const char** file = files_array; *file != nullptr; ++file)
+	{
+
+		if (isDirectory(*file))
 		{
-
-			if (isDirectory(*file))
+			tmp = *file;
+			tmp += "/";
+			if (FindNewAssetsFiles(tmp.c_str(), new_file))
 			{
-				std::string tmp = *file;
-				tmp += "/";
-				if (FindNewAssetsFiles(tmp.c_str(), new_file))
-				{
-					return true;
-				}
-				else
-				{
-					new_file = new_file.substr(0, new_file.find_first_of("/")+1);
-				}
-
+				return true;
 			}
 			else
 			{
-				std::string extension = *file;
-				extension = extension.substr(extension.find_last_of("."));
+				 new_file.erase(0, new_file.find_first_of("/") + 1);
+			}
 
-				//TO REVISE THIS JSON HAS A .sceneFelina
-				if (strcmp(extension.data(), ".json") == 0 || strcmp(extension.data(), ".meta") == 0)
-					continue;
+		}
+		else
+		{
+			tmp = *file;
+			tmp = tmp.substr(tmp.find_last_of("."));
 
-				char meta[DEFAULT_BUF_SIZE];
+			//TO REVISE THIS JSON HAS A .sceneFelina
+			if (strcmp(tmp.data(), ".json") == 0 || strcmp(tmp.data(), ".meta") == 0)
+				continue;
 
-				strcpy(meta, new_file.data());
-				strcat(meta, *file);
-				strcat(meta, ".meta");
+		//	char meta[DEFAULT_BUF_SIZE];
 
-				if (!PHYSFS_exists(meta))
-				{
-					new_file.append(*file);
-					ret = true;
-					break;
-				}
+			/*strcpy(meta, new_file.data());
+			strcat(meta, *file);
+			strcat(meta, ".meta");*/
+			tmp = new_file;
+			tmp += *file;
+			tmp += ".meta";
+			if (!PHYSFS_exists(tmp.c_str()))
+			{
+				new_file.append(*file);
+				ret = true;
+				break;
 			}
 		}
-	//}
-
-	//last_count = count;
+	}
 
 	return ret;
 }
