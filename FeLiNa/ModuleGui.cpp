@@ -767,12 +767,6 @@ void ModuleGui::ShowImportOptions()
 		break;
 	}
 
-	if (ImGui::Button("Back to inspector")) {
-
-		show_import_settings = false;
-
-	}
-
 	ImGui::End();
 
 }

@@ -28,7 +28,7 @@ private:
 	bool About_active = false;
 	bool want_to_rename = false;
 	bool creating_folder = false;
-	bool show_import_settings = true;
+	
 
 	std::string file_to_rename;
 	std::string file_dragging;
@@ -54,6 +54,7 @@ public:
 	bool open_console = false;
 	bool need_screenshoot = false; 
 	bool inspector_open = false;
+	bool show_import_settings = false;
 
 	bool serialization_save_scene = false;
 	bool serialization_load_scene = false;

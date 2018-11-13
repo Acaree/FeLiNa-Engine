@@ -467,7 +467,7 @@ void MaterialImporter::ShowMaterialImport()
 	ImGui::SameLine();
 	if (ImGui::Button("Cancel ###savematerial", { 70,50 }))
 	{
-		App->gui->file_focus.clear();
+		App->gui->show_import_settings = false;
 	}
 
 }

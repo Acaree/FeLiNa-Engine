@@ -609,7 +609,7 @@ void MeshImporter::ShowMeshImport()
 	ImGui::SameLine();
 	if (ImGui::Button("Cancel ###savemesh", { 70,50 }))
 	{
-		App->gui->file_focus.clear();
+		App->gui->show_import_settings = false;
 	}
 
 }
