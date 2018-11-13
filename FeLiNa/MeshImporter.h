@@ -18,7 +18,7 @@ enum FILE_TYPE;
 
 struct MeshSettings: public ImporterSettings //We use this for load/save .meta
 {
-	enum ProcessNode { TargetRealtime_MaxQuality = 0, TargetRealtime_Quality, TargetRealtime_Fast, ConvertToLeftHanded };
+	enum ProcessNode { TargetRealtime_MaxQuality = 0, TargetRealtime_Quality, TargetRealtime_Fast, ConvertToLeftHanded, Customized };
 	ProcessNode process_node = TargetRealtime_MaxQuality;
 	
 	bool CalcTangentSpace = true;

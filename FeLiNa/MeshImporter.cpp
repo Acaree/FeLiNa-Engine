@@ -472,7 +472,10 @@ void MeshImporter::ShowMeshImport()
 {
 
 	static int current_procces = mesh_settings->process_node;
-	const char* process_elements[] = { " TargetRealtime_MaxQuality" , "TargetRealtime_Quality", "TargetRealtime_Fast", "ConvertToLeftHanded " };
+	const char* process_elements[] = { " TargetRealtime_MaxQuality" , "TargetRealtime_Quality", "TargetRealtime_Fast", "ConvertToLeftHanded", "Customize" };
+
+	bool is_customize = false;
+
 	ImGui::Text(" Import options for: %s ###importmesh", App->gui->file_focus.c_str());
 
 	ImGui::Text("Procces:");
@@ -483,22 +486,107 @@ void MeshImporter::ShowMeshImport()
 		RefreshMeshOptions();
 	}
 
-	ImGui::Checkbox("Calculate Tangent Space:", &mesh_settings->CalcTangentSpace);
-	ImGui::Checkbox("Join Identical Vertices:", &mesh_settings->JoinIdenticalVertices);
-	ImGui::Checkbox("Make Left Handed:", &mesh_settings->MakeLeftHanded);
-	ImGui::Checkbox("Triangulate Vertices:", &mesh_settings->Triangulate);
-	ImGui::Checkbox("Remove Components:", &mesh_settings->RemoveComponent);
-	ImGui::Checkbox("Generate Normals:", &mesh_settings->GenNormals);
-	ImGui::Checkbox("Generate Smooth Normals:", &mesh_settings->GenSmoothNormals);
-	ImGui::Checkbox("Split Large Meshes:", &mesh_settings->SplitLargeMeshes);
-	ImGui::Checkbox("Pre Transform Vertices:", &mesh_settings->PreTransformVertices);
-	ImGui::Checkbox("Limit Bone Weights:", &mesh_settings->LimitBoneWeights);
-	ImGui::Checkbox("Validate Data Structure:", &mesh_settings->ValidateDataStructure);
-	ImGui::Checkbox("Remove Redundant Materials:", &mesh_settings->RemoveRedundantMaterials);
-	ImGui::Checkbox("Sort by Type:", &mesh_settings->SortByPType);
-	ImGui::Checkbox("Generate Uvs Coords:", &mesh_settings->GenUvCoords);
-	ImGui::Checkbox("Optimize Meshes:", &mesh_settings->OptimizeMeshes);
-	ImGui::Checkbox("Flip UVs:", &mesh_settings->FlipUVs);
+	if (current_procces == MeshSettings::ProcessNode::Customized)
+	{
+		is_customize = true;
+	}
+
+	if (ImGui::Checkbox("Calculate Tangent Space:", &mesh_settings->CalcTangentSpace))
+	{
+		if (!is_customize)
+			mesh_settings->CalcTangentSpace = !mesh_settings->CalcTangentSpace;
+	}
+
+	if (ImGui::Checkbox("Join Identical Vertices:", &mesh_settings->JoinIdenticalVertices))
+	{
+		if (!is_customize)
+			mesh_settings->JoinIdenticalVertices = !mesh_settings->JoinIdenticalVertices;
+	}
+
+	if (ImGui::Checkbox("Make Left Handed:", &mesh_settings->MakeLeftHanded))
+	{
+		if (!is_customize)
+			mesh_settings->MakeLeftHanded = !mesh_settings->MakeLeftHanded;
+	}
+
+	if (ImGui::Checkbox("Triangulate Vertices:", &mesh_settings->Triangulate))
+	{
+		if (!is_customize)
+			mesh_settings->Triangulate = !mesh_settings->Triangulate;
+	}
+
+	if (ImGui::Checkbox("Remove Components:", &mesh_settings->RemoveComponent))
+	{
+		if (!is_customize)
+			mesh_settings->RemoveComponent = !mesh_settings->RemoveComponent;
+	}
+
+	if (ImGui::Checkbox("Generate Normals:", &mesh_settings->GenNormals))
+	{
+		if (!is_customize)
+			mesh_settings->GenNormals = !mesh_settings->GenNormals;
+	}
+
+	if (ImGui::Checkbox("Generate Smooth Normals:", &mesh_settings->GenSmoothNormals))
+	{
+		if (!is_customize)
+			mesh_settings->GenSmoothNormals = !mesh_settings->GenSmoothNormals;
+	}
+
+	if (ImGui::Checkbox("Split Large Meshes:", &mesh_settings->SplitLargeMeshes))
+	{
+		if (!is_customize)
+			mesh_settings->SplitLargeMeshes = !mesh_settings->SplitLargeMeshes;
+	}
+
+	if (ImGui::Checkbox("Pre Transform Vertices:", &mesh_settings->PreTransformVertices))
+	{
+		if (!is_customize)
+			mesh_settings->PreTransformVertices = !mesh_settings->PreTransformVertices;
+	}
+
+	if (ImGui::Checkbox("Limit Bone Weights:", &mesh_settings->LimitBoneWeights))
+	{
+		if (!is_customize)
+			mesh_settings->LimitBoneWeights = !mesh_settings->LimitBoneWeights;
+	}
+
+	if (ImGui::Checkbox("Validate Data Structure:", &mesh_settings->ValidateDataStructure))
+	{
+		if (!is_customize)
+			mesh_settings->ValidateDataStructure = !mesh_settings->ValidateDataStructure;
+	}
+
+	if (ImGui::Checkbox("Remove Redundant Materials:", &mesh_settings->RemoveRedundantMaterials))
+	{
+		if (!is_customize)
+			mesh_settings->RemoveRedundantMaterials = !mesh_settings->RemoveRedundantMaterials;
+	}
+
+	if (ImGui::Checkbox("Sort by Type:", &mesh_settings->SortByPType))
+	{
+		if (!is_customize)
+			mesh_settings->SortByPType = !mesh_settings->SortByPType;
+	}
+
+	if (ImGui::Checkbox("Generate Uvs Coords:", &mesh_settings->GenUvCoords))
+	{
+		if (!is_customize)
+			mesh_settings->GenUvCoords = !mesh_settings->GenUvCoords;
+	}
+
+	if (ImGui::Checkbox("Optimize Meshes:", &mesh_settings->OptimizeMeshes))
+	{
+		if (!is_customize)
+			mesh_settings->OptimizeMeshes = !mesh_settings->OptimizeMeshes;
+	}
+
+	if (ImGui::Checkbox("Flip UVs:", &mesh_settings->FlipUVs))
+	{
+		if (!is_customize)
+			mesh_settings->FlipUVs =  !mesh_settings->FlipUVs
+;
+	}
 
 	if (ImGui::Button("Apply ###importmesh", { 70,50 }))
 	{
@@ -507,6 +595,15 @@ void MeshImporter::ShowMeshImport()
 
 		CreateFileMeta(resource, mesh_settings);
 
+		std::string file_path = App->gui->file_focus;
+		file_path.erase(file_path.find_last_of("/")+1, file_path.size());
+
+		std::string file_name = App->gui->file_focus;
+		file_name.erase(0, (file_path.find_last_of("/")+1));
+
+		std::string output;
+
+		App->importer_mesh->Import(file_name.c_str(),file_path.c_str(),output,mesh_settings);
 		App->gui->file_focus.clear();
 	}
 	ImGui::SameLine();
@@ -616,40 +713,46 @@ uint MeshImporter::SetPostProccesConfiguration(const MeshSettings* import_settin
 	case MeshSettings::ProcessNode::ConvertToLeftHanded:
 		flags |= aiProcess_ConvertToLeftHanded;
 		break;
+
+	case MeshSettings::ProcessNode::Customized:
+		
+		if (import_settings->CalcTangentSpace)
+			flags |= aiPostProcessSteps::aiProcess_CalcTangentSpace;
+		if (import_settings->JoinIdenticalVertices)
+			flags |= aiPostProcessSteps::aiProcess_JoinIdenticalVertices;
+		if (import_settings->MakeLeftHanded)
+			flags |= aiPostProcessSteps::aiProcess_MakeLeftHanded;
+		if (import_settings->Triangulate)
+			flags |= aiPostProcessSteps::aiProcess_Triangulate;
+		if (import_settings->RemoveComponent)
+			flags |= aiPostProcessSteps::aiProcess_RemoveComponent;
+		if (import_settings->GenNormals)
+			flags |= aiPostProcessSteps::aiProcess_GenNormals;
+		if (import_settings->GenSmoothNormals)
+			flags |= aiPostProcessSteps::aiProcess_GenSmoothNormals;
+		if (import_settings->SplitLargeMeshes)
+			flags |= aiPostProcessSteps::aiProcess_SplitLargeMeshes;
+		if (import_settings->PreTransformVertices)
+			flags |= aiPostProcessSteps::aiProcess_PreTransformVertices;
+		if (import_settings->LimitBoneWeights)
+			flags |= aiPostProcessSteps::aiProcess_LimitBoneWeights;
+		if (import_settings->ValidateDataStructure)
+			flags |= aiPostProcessSteps::aiProcess_ValidateDataStructure;
+		if (import_settings->RemoveRedundantMaterials)
+			flags |= aiPostProcessSteps::aiProcess_RemoveRedundantMaterials;
+		if (import_settings->SortByPType)
+			flags |= aiPostProcessSteps::aiProcess_SortByPType;
+		if (import_settings->GenUvCoords)
+			flags |= aiPostProcessSteps::aiProcess_GenUVCoords;
+		if (import_settings->OptimizeMeshes)
+			flags |= aiPostProcessSteps::aiProcess_OptimizeMeshes;
+		if (import_settings->FlipUVs)
+			flags |= aiPostProcessSteps::aiProcess_FlipUVs;
+
+		break;
 	}
 
-	if (import_settings->CalcTangentSpace)
-		flags |= aiPostProcessSteps::aiProcess_CalcTangentSpace;
-	if (import_settings->JoinIdenticalVertices)
-		flags |= aiPostProcessSteps::aiProcess_JoinIdenticalVertices;
-	if (import_settings->MakeLeftHanded)
-		flags |= aiPostProcessSteps::aiProcess_MakeLeftHanded;
-	if (import_settings->Triangulate)
-		flags |= aiPostProcessSteps::aiProcess_Triangulate;
-	if (import_settings->RemoveComponent)
-		flags |= aiPostProcessSteps::aiProcess_RemoveComponent;
-	if (import_settings->GenNormals)
-		flags |= aiPostProcessSteps::aiProcess_GenNormals;
-	if (import_settings->GenSmoothNormals)
-		flags |= aiPostProcessSteps::aiProcess_GenSmoothNormals;
-	if (import_settings->SplitLargeMeshes)
-		flags |= aiPostProcessSteps::aiProcess_SplitLargeMeshes;
-	if (import_settings->PreTransformVertices)
-		flags |= aiPostProcessSteps::aiProcess_PreTransformVertices;
-	if (import_settings->LimitBoneWeights)
-		flags |= aiPostProcessSteps::aiProcess_LimitBoneWeights;
-	if (import_settings->ValidateDataStructure)
-		flags |= aiPostProcessSteps::aiProcess_ValidateDataStructure;
-	if (import_settings->RemoveRedundantMaterials)
-		flags |= aiPostProcessSteps::aiProcess_RemoveRedundantMaterials;
-	if (import_settings->SortByPType)
-		flags |= aiPostProcessSteps::aiProcess_SortByPType;
-	if (import_settings->GenUvCoords)
-		flags |= aiPostProcessSteps::aiProcess_GenUVCoords;
-	if (import_settings->OptimizeMeshes)
-		flags |= aiPostProcessSteps::aiProcess_OptimizeMeshes;
-	if (import_settings->FlipUVs)
-		flags |= aiPostProcessSteps::aiProcess_FlipUVs;
+
 
 	return flags;
 }
