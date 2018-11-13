@@ -294,61 +294,82 @@ FILE_TYPE ModuleFileSystem::FindOwnTypeFile(const char* file)
 }
 
 
-bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, std::string & new_file)
+bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, char* new_file)
 {
 	bool ret = false;
-	static std::string tmp;
+
 	//TO REVISE
 
 	/*1- Check if is directory : true: recursive
-	2-chech if are asociate the .meta in the soma folder: yes continue, no create
-	 */
-	new_file = directory;
-	
-	const char** files_array = GetAllFilesFromDir(directory);
+	2-chech if are asociate the .meta in the soma folder: yes continue, no create*/
 
-	for (const char** file = files_array; *file != nullptr; ++file)
+	char** files = PHYSFS_enumerateFiles(directory);
+	char** file;
+
+	for (file = files; file != nullptr; ++file)
 	{
-
-		if (isDirectory(*file))
+		if (PHYSFS_isDirectory(*file))
 		{
-			tmp = *file;
-			tmp += "/";
-			if (FindNewAssetsFiles(tmp.c_str(), new_file))
+			char* new_dir = new char[DEFAULT_BUF_SIZE];
+			char* tmp_file = new char[DEFAULT_BUF_SIZE];
+
+			strcpy(new_dir, *file);
+			strcat(new_dir, "/");
+
+			if (FindNewAssetsFiles(new_dir, tmp_file))
 			{
-				return true;
-			}
-			else
-			{
-				 new_file.erase(0, new_file.find_first_of("/") + 1);
+				ret = true;
+
+				strcpy(new_file, directory);
+
+
+				strcat(new_file, tmp_file);
+				RELEASE_ARRAY(tmp_file);
 			}
 
+			RELEASE_ARRAY(new_dir);
+	
 		}
 		else
 		{
-			tmp = *file;
-			tmp = tmp.substr(tmp.find_last_of("."));
-
-			//TO REVISE THIS JSON HAS A .sceneFelina
-			if (strcmp(tmp.data(), ".json") == 0 || strcmp(tmp.data(), ".meta") == 0)
-				continue;
-
-		//	char meta[DEFAULT_BUF_SIZE];
-
-			/*strcpy(meta, new_file.data());
-			strcat(meta, *file);
-			strcat(meta, ".meta");*/
-			tmp = new_file;
-			tmp += *file;
-			tmp += ".meta";
-			if (!PHYSFS_exists(tmp.c_str()))
+			if (*file == nullptr)
 			{
-				new_file.append(*file);
-				ret = true;
+				RELEASE_ARRAY(new_file);
 				break;
 			}
+			char* tmp = new char[DEFAULT_BUF_SIZE];
+
+			strcpy(tmp, *file);
+
+			tmp_string = tmp;
+			const char* extension = tmp_string.erase(0, tmp_string.find_last_of(".")).c_str();
+
+
+			if (strcmp(extension, ".meta") != 0 && strcmp(extension, ".json") != 0)
+			{
+				strcpy(tmp, directory);
+				strcat(tmp, *file);
+				strcat(tmp, ".meta");
+
+				if (!PHYSFS_exists(tmp))
+				{
+					strcpy(new_file, directory);
+					strcat(new_file, *file);
+					ret = true;
+				}
+
+			}
+
+			RELEASE_ARRAY(tmp);
 		}
+
+		if (ret)
+			break;
+
 	}
+
+
+	PHYSFS_freeList(files);
 
 	return ret;
 }

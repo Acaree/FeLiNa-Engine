@@ -34,14 +34,14 @@ public:
 
 	const char** GetAllFilesFromDir(const char* dir) const;
 
-	bool FindNewAssetsFiles(const char* directory, std::string& file);
+	bool FindNewAssetsFiles(const char* directory, char* file);
 	
 	bool isDirectory(const char* file) const;
 
 	void RemoveAllDependencies(char* file_path);
 	void GetPhysfsStats(const char* filename, PHYSFS_Stat& stat );
 private:
-
+	std::string tmp_string;
 };
 
 

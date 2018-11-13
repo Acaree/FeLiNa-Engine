@@ -24,14 +24,16 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::Start()
 {
-	std::string new_file = " ";
+	std::string tmp_string = " ";
 	//to revise
-	while (!App->fs->isDirectory(new_file.c_str()))
+	while (!App->fs->isDirectory(tmp_string.c_str()))
 	{
-		new_file.clear();
+		tmp_string.clear();
+		char* new_file = new char[DEFAULT_BUF_SIZE];
 		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO REVISE
 		{
-			uint uid = ImportFile(new_file.data());
+			tmp_string = new_file;
+			uint uid = ImportFile(new_file);
 			Resource* resource = App->resource_manager->Get(uid);
 
 			std::string path = new_file;
@@ -53,10 +55,11 @@ bool ResourceManager::Start()
 			break;
 			case RESOURCE_TYPE::RESOURCE_MATERIAL:
 				MaterialSettings * default_settings = new MaterialSettings();
-				App->importer_material->Import(new_file.c_str(), output_file, default_settings);
+				App->importer_material->Import(new_file, output_file, default_settings);
 				break;
 			}
 		}
+		RELEASE_ARRAY(new_file);
 	}
 	return true;
 }
@@ -64,13 +67,14 @@ bool ResourceManager::Start()
 update_status ResourceManager::PreUpdate(float dt)
 {
 	refresh_time += dt;
-	if (refresh_time >= time_to_refresh)
+	if (refresh_time >= 5 )
 	{
 		// FOR SEARCH META: when we implemented, testing with .felina and works pecfect
-		static std::string new_file;
+		char* new_file = new char[DEFAULT_BUF_SIZE];
 		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO Change -> assets a Macro?
-			ImportFile(new_file.data());
+			ImportFile(new_file);
 
+		RELEASE_ARRAY(new_file);
 		refresh_time = 0.0F;
 	}
 
