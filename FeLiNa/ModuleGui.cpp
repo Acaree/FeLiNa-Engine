@@ -548,7 +548,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 	static const char* tmp_dir = "";
 
 	const char** directory_array = App->fs->GetAllFilesFromDir(dir);
-
+	static std::string tmp; //All calls to std::string are so slow best way static?
 	for (const char** file = directory_array; *file != nullptr; ++file)
 	{
 		if (App->fs->isDirectory(*file))
@@ -560,8 +560,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			if (ImGui::TreeNodeEx(*file, flags))
 			{
 				
-
-				std::string tmp = dir;
+				tmp = dir;
 				tmp += "/";
 				tmp += *file;
 				RecurssiveShowAssets(tmp.c_str());
@@ -575,6 +574,12 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 		}
 		else
 		{
+			tmp = *file;
+			
+			tmp.erase(0, tmp.size() - 5);
+
+			if (strcmp(tmp.c_str(),".meta") == 0)
+				continue;
 
 			flags = 0;
 			flags |= ImGuiTreeNodeFlags_Leaf;

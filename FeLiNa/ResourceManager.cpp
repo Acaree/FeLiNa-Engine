@@ -25,8 +25,8 @@ ResourceManager::~ResourceManager()
 bool ResourceManager::Start()
 {
 	std::string new_file = " ";
-	
-	while (strcmp("Assets/", new_file.c_str()) != 0)
+	//to revise
+	while (!App->fs->isDirectory(new_file.c_str()))
 	{
 		new_file.clear();
 		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO REVISE
@@ -67,7 +67,7 @@ update_status ResourceManager::PreUpdate(float dt)
 	if (refresh_time >= time_to_refresh)
 	{
 		// FOR SEARCH META: when we implemented, testing with .felina and works pecfect
-		std::string new_file;
+		static std::string new_file;
 		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO Change -> assets a Macro?
 			ImportFile(new_file.data());
 
