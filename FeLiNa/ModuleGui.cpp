@@ -141,10 +141,10 @@ update_status ModuleGui::Update(float dt)
 #ifndef GAME_MODE
 			App->scene->ShowHierarchy();
 
-			if (file_focus.size() == 0 && want_to_rename == false)
-				App->scene->ShowInspector();
-			else
+			if (show_import_settings)
 				ShowImportOptions();
+			else
+				App->scene->ShowInspector();
 #endif		
 		}
 	}
@@ -666,6 +666,9 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 		if (ImGui::MenuItem("See Import Options", NULL, false, !directory))
 		{
 			//To Revise
+
+			show_import_settings = true;
+
 			file_focus = dir;
 			file_focus += "/";
 			file_focus += file;
@@ -762,6 +765,12 @@ void ModuleGui::ShowImportOptions()
 		break;
 	default:
 		break;
+	}
+
+	if (ImGui::Button("Back to inspector")) {
+
+		show_import_settings = false;
+
 	}
 
 	ImGui::End();
