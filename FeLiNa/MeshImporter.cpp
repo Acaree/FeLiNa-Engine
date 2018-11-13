@@ -1,5 +1,5 @@
 #include "MeshImporter.h"
-
+#include "PhysFS/physfs.h"
 #include "Glew/include/glew.h" 
 #include "SDL/include/SDL_opengl.h"
 #include "ModuleGui.h"
@@ -372,7 +372,13 @@ void MeshImporter::CreateFileMeta(Resource* resource, MeshSettings* settings)
 	JSON_Value* root_value = json_value_init_object();
 	JSON_Object* root_object = json_value_get_object(root_value);
 
-	json_object_set_number(root_object, "Time", App->time_management->ReadRealTimeClock());
+	std::string tmp = resource->exported_file;
+	
+	PHYSFS_Stat* stat = new PHYSFS_Stat();
+
+	App->fs->GetPhysfsStats(tmp.c_str(), *stat);
+
+	json_object_set_number(root_object, "Time", stat->modtime);
 	json_object_set_number(root_object, "UID", resource->GetUID());
 
 	JSON_Value* mesh_import = json_value_init_object();
@@ -409,6 +415,7 @@ void MeshImporter::CreateFileMeta(Resource* resource, MeshSettings* settings)
 
 	App->fs->SaveBufferData(buffer, path, size);
 
+	RELEASE(stat);
 	RELEASE_ARRAY(buffer);
 }
 

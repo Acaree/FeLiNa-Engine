@@ -1,5 +1,5 @@
 #include "MaterialImporter.h"
-
+#include "PhysFS/physfs.h"
 #include "Application.h"
 #include "ResourceManager.h"
 #include "ModuleTimeManagement.h"
@@ -344,7 +344,11 @@ void MaterialImporter::CreateFileMeta(Resource* resource, MaterialSettings* sett
 	JSON_Value* root_value = json_value_init_object();
 	JSON_Object* root_object = json_value_get_object(root_value);
 
-	json_object_set_number(root_object, "Time", App->time_management->ReadRealTimeClock());
+	PHYSFS_Stat* stat = new PHYSFS_Stat();
+	std::string tmp = resource->exported_file;
+	App->fs->GetPhysfsStats(tmp.c_str(), *stat);
+
+	json_object_set_number(root_object, "Time", stat->modtime);
 	json_object_set_number(root_object, "UID", resource->GetUID());
 
 	JSON_Value* material_import = json_value_init_object();
@@ -369,6 +373,7 @@ void MaterialImporter::CreateFileMeta(Resource* resource, MaterialSettings* sett
 
 	App->fs->SaveBufferData(buffer,path,size); 
 
+	RELEASE(stat);
 	RELEASE_ARRAY(buffer);
 
 }

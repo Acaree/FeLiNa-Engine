@@ -10,6 +10,8 @@ enum FILE_TYPE
 	UKNOWN_FILE
 };
 
+struct PHYSFS_Stat;
+
 class ModuleFileSystem : public Module
 {
 public:
@@ -37,6 +39,7 @@ public:
 	bool isDirectory(const char* file) const;
 
 	void RemoveAllDependencies(char* file_path);
+	void GetPhysfsStats(const char* filename, PHYSFS_Stat& stat );
 private:
 
 };

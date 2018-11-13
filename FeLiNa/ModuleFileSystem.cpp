@@ -21,7 +21,7 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 	if (PHYSFS_setWriteDir(".") == 0) // create a directory (if it's point it take game as base directory)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
-
+	
 
 	if (PHYSFS_mount("./Assets/", "Assets", 1)==0) { //Add paths to physfs to search throught
 	
@@ -87,6 +87,11 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 ModuleFileSystem::~ModuleFileSystem()
 {
 	PHYSFS_deinit();
+}
+
+void ModuleFileSystem::GetPhysfsStats(const char* file, PHYSFS_Stat & stats)
+{
+	PHYSFS_stat(file, &stats);
 }
 
 uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
