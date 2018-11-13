@@ -457,6 +457,10 @@ void MaterialImporter::ShowMaterialImport()
 		Resource* resource = App->resource_manager->Get(uid);
 
 		CreateFileMeta(resource,material_settings);
+
+		std::string output;
+		App->importer_material->Import(App->gui->file_focus.c_str(),output, material_settings);
+
 		App->gui->file_focus.clear();
 
 	}

@@ -120,27 +120,46 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			new_position += current_camera->frustum.WorldRight() * speed;
 
-		current_camera->frustum.Translate(new_position);
 		
-
-		//Mouse movement with Frustum---------------------------------------
-	
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
 
-		if (dx != 0.0f)
+		//TO REVISE are same ~
+		if (App->engine_states == ENGINE_STATES::ENGINE_STATE_EDITOR_MODE)
 		{
-			math::Quat quat = math::Quat::RotateY(dx*dt*0.3);
-			current_camera->frustum.front = quat.Mul(current_camera->frustum.front).Normalized();
-			current_camera->frustum.up = quat.Mul(current_camera->frustum.up).Normalized();
-		}
+			current_camera->frustum.Translate(new_position);
 
-		if (dy != 0.0f)
+			if (dx != 0.0f)
+			{
+				math::Quat quat = math::Quat::RotateY(dx*dt*0.3);
+				current_camera->frustum.front = quat.Mul(current_camera->frustum.front).Normalized();
+				current_camera->frustum.up = quat.Mul(current_camera->frustum.up).Normalized();
+			}
+
+			if (dy != 0.0f)
+			{
+				math::Quat quat = math::Quat::RotateAxisAngle(current_camera->frustum.WorldRight(), dy * dt *0.3);
+				math::float3 up = quat.Mul(current_camera->frustum.up).Normalized();
+				current_camera->frustum.up = up;
+				current_camera->frustum.front = quat.Mul(current_camera->frustum.front).Normalized();
+			}
+		}
+		else
 		{
-			math::Quat quat = math::Quat::RotateAxisAngle(current_camera->frustum.WorldRight(), dy * dt *0.3);
-			math::float3 up = quat.Mul(current_camera->frustum.up).Normalized();
-			current_camera->frustum.up = up;
-			current_camera->frustum.front = quat.Mul(current_camera->frustum.front).Normalized();
+			current_camera->GetParent()->transform->SumPosition(new_position);
+			if (dx != 0.0f )
+			{
+				math::Quat quat = math::Quat::RotateY(dx*dt*0.3);
+				current_camera->GetParent()->transform->SumRotation(quat.ToEulerXYZ());
+		
+			}
+			if (dy != 0.0f)
+			{
+				math::Quat quat = math::Quat::RotateAxisAngle(current_camera->frustum.WorldRight(), dy * dt *0.3);
+				math::float3 up = quat.Mul(current_camera->frustum.up).Normalized();
+				current_camera->frustum.up = up;
+				current_camera->GetParent()->transform->SumRotation(quat.ToEulerXYZ());
+			}
 		}
 
 	}
