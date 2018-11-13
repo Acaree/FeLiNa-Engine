@@ -551,6 +551,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 	for (const char** file = directory_array; *file != nullptr; ++file)
 	{
+		
 		if (App->fs->isDirectory(*file))
 		{
 			flags = 0;
@@ -583,6 +584,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			if (ImGui::TreeNodeEx(*file, flags)) {
 				if (ImGui::IsItemClicked(0))//Left click
 				{
+
 					file_focus = dir;
 					file_focus += "/";
 					file_focus += *file;
@@ -594,6 +596,11 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 						App->serialization_scene->LoadScene((char*)json_path.c_str());
 
 						json_path.clear();
+					}
+
+					else {
+						
+						file_dragging = file_focus;
 					}
 					file_focus.clear();
 
@@ -613,7 +620,6 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 		{
 			ImGui::SetDragDropPayload("Assets_Nodes", *file, strlen(*file));
 			ImGui::EndDragDropSource();
-			file_moving = (char*)*file;
 		}
 
 
@@ -622,8 +628,15 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
 			{
 				if (App->fs->isDirectory(*file)) {
-					//here the file must be moved but i can't know the repository
-					int i = 0;
+					file_focus = dir;
+					file_focus += "/";
+					file_focus += *file;
+
+					file_focus += file_dragging.substr(file_dragging.find_last_of("/"), file_dragging.size());
+
+					MoveFile(file_dragging.c_str(),file_focus.c_str());
+
+					RELEASE(payload);
 				}
 			}
 			ImGui::EndDragDropTarget();
