@@ -608,7 +608,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 					else {
 
 						file_dragging = file_focus;
-						file_focus.clear();
+						//file_focus.clear();
 					}
 					
 				}
@@ -641,7 +641,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 					MoveFile(file_dragging.c_str(), file_focus.c_str());
 
-					RELEASE(payload);
+					//RELEASE(payload);
 				}
 			}
 			ImGui::EndDragDropTarget();
@@ -705,12 +705,12 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 
 		if (ImGui::MenuItem("Delete", NULL, false, true))
 		{
-			char* file_path = new char[DEFAULT_BUF_SIZE];
-			sprintf_s(file_path, DEFAULT_BUF_SIZE, "%s/%s", dir, *file);
-			App->fs->RemoveAllDependencies(file_path);
-			remove((const char*)file_path);
-
-
+			std::string file_path;
+			file_path += dir;
+			file_path += "/";
+			file_path += file;
+			App->fs->RemoveAllDependencies((char*)file_path.c_str());
+			remove(file_path.c_str());
 
 		}
 
