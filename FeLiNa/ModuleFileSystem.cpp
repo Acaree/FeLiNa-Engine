@@ -18,14 +18,13 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	PHYSFS_init(nullptr);
 
-	if (PHYSFS_setWriteDir(".") == 0) // create a directory (if it's point it take game as base directory)
-		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
-
+	PHYSFS_setWriteDir(".");
+		
 	
 
-	if (PHYSFS_mount("./Assets/", "Assets", 1)==0) { //Add paths to physfs to search throught
+	if (PHYSFS_mount("./Assets/", "Assets", 1)==0) { 
 	
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
 
 	}
 
@@ -41,7 +40,7 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 		
 		if(stat->filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY)
 			if(PHYSFS_mount(dir.c_str(), *file, 1) == 0)
-				LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+				LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
 
 		RELEASE(stat);
 	}
@@ -50,12 +49,12 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	if (PHYSFS_mount("./Assets/Settings/", "Settings", 1) == 0) { //Add paths to physfs to search throught
 
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
 
 	}
 	if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
 
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
 
 	}
 
@@ -64,19 +63,19 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	if (PHYSFS_mount("./Library/", "Library", 1) == 0) { 
 
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
 
 	}
 
 	if (PHYSFS_mount("./Library/Meshes/", "Meshes", 1) == 0) {
 
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
 
 	}
 
 	if (PHYSFS_mount("./Library/Materials/", "Materials", 1) == 0) {
 
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
 
 	}
 
@@ -115,51 +114,23 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 
 				if (count == size)
 				{
-					LOG("FILE SYSTEM: Read %u bytes from file '%s'", count, filePath);
+					LOG("Read %u bytes from file '%s'", count, filePath);
 					
 				}
 				else
 				{
 					RELEASE(buffer);
-					LOG("FILE SYSTEM: Could not read from file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
+					LOG("Could not read file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
 				}
 
-				if (PHYSFS_close(file) == 0)
-					LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
-				
+				PHYSFS_close(file);
 				RELEASE_ARRAY(buffer);
 			}
 		}
 
-		else {
-
-			PHYSFS_sint64 size = PHYSFS_fileLength(file);
-
-			if (size > 0) {
-
-				*buffer = new char[size];
-				count = PHYSFS_readBytes(file, *buffer, size);
-
-				if (count == size)
-				{
-					LOG("FILE SYSTEM: Read %u bytes from file '%s'", count, filePath);
-
-				}
-				else
-				{
-					RELEASE(buffer);
-					LOG("FILE SYSTEM: Could not read from file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
-				}
-
-				if (PHYSFS_close(file) == 0)
-					LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
-
-				RELEASE_ARRAY(buffer)
-			}
-		}
 	}
 	else
-		LOG("FILE SYSTEM: Could not load file '%s' to read because it doesn't exist", filePath);
+		LOG("File '%s' don't exists and can't be charged", filePath);
 
 	return count;
 }
@@ -207,11 +178,14 @@ uint ModuleFileSystem::SaveBufferData(char* buffer, const char* file_path, uint 
 
 	PHYSFS_File* file = nullptr;
 
-	if (!exists)
+	if (!exists) {
 		file = PHYSFS_openAppend(file_path);
-	else
+		LOG("New file will be created : %s ", file_path)
+	}
+	else {
 		file = PHYSFS_openWrite(file_path);
-
+		LOG("File opened to write : %s ", file_path)
+	}
 	if (file != nullptr)
 	{
 		count = PHYSFS_writeBytes(file, (const void*)buffer, size);
@@ -220,19 +194,14 @@ uint ModuleFileSystem::SaveBufferData(char* buffer, const char* file_path, uint 
 		{
 			if (exists)
 			{
-				LOG("FILE SYSTEM: CREATE ");
+				LOG("New file created : %s ",file_path);
 			}
 			else
-				LOG("FILE SYSTEM: FAIL");
+				LOG("Can't create the new file '%s' : %s ", file_path, PHYSFS_getLastError());
 		}
-		else
-			LOG("FILE SYSTEM: Could not write to file '%s'. ERROR: %s", tmp.c_str(), PHYSFS_getLastError());
-
-		if (PHYSFS_close(file) == 0)
-			LOG("FILE SYSTEM: Could not close file '%s'. ERROR: %s", tmp.c_str(), PHYSFS_getLastError());
+		
+		PHYSFS_close(file);
 	}
-	else
-		LOG("FILE SYSTEM: Could not open file '%s' to write. ERROR: %s", tmp.c_str(), PHYSFS_getLastError());
 
 	return count;
 }
@@ -400,7 +369,6 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 		file_path_s.erase(file_path_s.find_last_of("."), file_path_s.size());
 		file_path_s +=".json";
 
-		//charge json -> get his dependencies (.felina) -> delete it
 		
 		JSON_Value* file_root = json_parse_file(file_path_s.data());
 		
@@ -462,6 +430,7 @@ void ModuleFileSystem::CreateFolder(const char* new_folder) {
 		std::string tmp = new_folder;
 		tmp.erase(0,tmp.find_last_of("/") + 1);
 		PHYSFS_mount(new_folder,tmp.c_str(),1);
+		LOG("New folder %s created and ready to use", new_folder);
 	}
 
 }
