@@ -244,19 +244,19 @@ void ComponentTransform::ShowGuizmos()
 
 	if (ImGuizmo::IsUsing() && parent->static_object == false)
 	{
-		if (parent->GetParent() == nullptr)
-		{
-			local_matrix = matrix;
-		}
-		else
-		{
+		if (mCurrentGizmoOperation == ImGuizmo::SCALE) {
 
-			local_matrix = parent->GetParent()->transform->GetGlobalMatrix().Inverted() * matrix;
+			math::Quat despreciable_rot;
+			matrix.Decompose(position, despreciable_rot, scale);
+			UpdateMatrix();
+
 		}
 
-		local_matrix.Decompose(position, quat_rotation, scale);
-		euler_angles = quat_rotation.ToEulerXYZ() * RADTODEG;
-
+		else {
+			matrix.Decompose(position, quat_rotation, scale);
+			euler_angles = quat_rotation.ToEulerXYZ() * RADTODEG;
+			UpdateMatrix();
+		}
 	}
 
 }
