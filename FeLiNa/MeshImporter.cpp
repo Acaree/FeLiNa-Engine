@@ -157,6 +157,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 		go->transform->SetRotation(transform->GetRotation());
 		go->transform->SetScale(transform->GetScale());
 		go->AddComponent(Component_Mesh);
+		
 
 		//Allwais in node
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
@@ -205,49 +206,34 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 			}
 
 			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
-			aiString name;
 
-			material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
-
-
-			if (name.length != 0)
+			if (material != nullptr)
 			{
-				std::string file_path = name.data;
+				aiString name;
+				material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
 
-				std::string file_name = file_path.substr(file_path.find_last_of("\\") + 1, file_path.size());
+				std::string tmp_name = name.C_Str();
+				std::string output_file;
+				tmp_name.erase(0, tmp_name.find_last_of("\\")+1);
+				//tmp_name.erase(tmp_name.find_last_of("."), tmp_name.size());
 
-				std::string path = file_path.erase(file_path.find_last_of("\\"), file_path.size());
-
-				std::string texture_generated;
-
-				char* file_name_c = new char[file_name.size() + 1];
-
-				strcpy_s(file_name_c, file_name.size() + 1, file_name.data());
-
-				char* path_c = new char[path.size() + 1];
-
-				strcpy_s(path_c, path.size() + 1, path.data());
-
-				char add[DEFAULT_BUF_SIZE] = "Assets";
-
-				sprintf_s(add, DEFAULT_BUF_SIZE, "%s/%s/%s", add, path_c, file_name.data());
-
+				if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
+				{
+					uint uid = App->resource_manager->Find(output_file.c_str());
+					
+					if (uid == 0)
+						uid = App->resource_manager->ImportFile(output_file.c_str());
+				
+					go->AddComponent(Component_Material);
+					go->material->SetUID(uid);
+					
 
 
-				MaterialSettings* settings = new MaterialSettings();
-				App->importer_material->Import((const char*)add, texture_generated, settings);
-
-
-				RELEASE_ARRAY(path_c);
-				RELEASE_ARRAY(file_name_c);
-
-
-				file_path.clear();
-				file_name.clear();
-				path.clear();
-				texture_generated.clear();
+				}
 
 			}
+
+
 
 			if (new_mesh->HasTextureCoords(0))
 			{

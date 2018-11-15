@@ -95,7 +95,7 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 	// Load the image
 	if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size))
 	{
-		//ilEnable(IL_FILE_OVERWRITE);
+		ilEnable(IL_FILE_OVERWRITE);
 
 		uint size = 0;
 		ILubyte* data = nullptr;
@@ -140,7 +140,15 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 
 			if (ilSaveL(IL_DDS, data, size) > 0)
 			{
-				App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);//TO Revise ret and uint or bool?
+				//TODO NEED SAVE FILE with name of uid
+				uint uid = App->random->Int();
+				output_file = std::to_string(uid);
+
+				char* tmp = new char[DEFAULT_BUF_SIZE];
+
+				 tmp = App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);//TO Revise ret and uint or bool?
+				
+
 				ret = true;
 			}
 			else
@@ -172,7 +180,7 @@ bool MaterialImporter::Load(const char* file_name, ResourceMaterial* output_text
 	{
 		LOG("LOAD MATERIAL IMPORT GOOD");
 		ret = Load(buffer, size, output_texture, settings);
-		RELEASE(buffer);
+		RELEASE_ARRAY(buffer);
 	}
 
 	return ret;
@@ -202,6 +210,12 @@ bool MaterialImporter::Load(const void* buffer, uint size, ResourceMaterial* out
 		{
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+			uint tex_id = 0;
+
+			glGenTextures(1, &tex_id);
+			glBindTexture(GL_TEXTURE_2D, tex_id);
+
+
 			int wrap_mode_s = 0;
 			int wrap_mode_t = 0;
 			int mag_filter = 0;
@@ -209,10 +223,10 @@ bool MaterialImporter::Load(const void* buffer, uint size, ResourceMaterial* out
 			switch (material_setting->wrap_mode_s)
 			{
 			case MaterialSettings::TextureWrapMode::CLAMP:
-				wrap_mode_s = GL_CLAMP;
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 				break;
 			case MaterialSettings::TextureWrapMode::REPEAT:
-				wrap_mode_s = GL_REPEAT;
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 				break;
 			default:
 				break;
@@ -221,10 +235,10 @@ bool MaterialImporter::Load(const void* buffer, uint size, ResourceMaterial* out
 			switch (material_setting->wrap_mode_t)
 			{
 			case MaterialSettings::TextureWrapMode::CLAMP:
-				wrap_mode_t = GL_CLAMP;
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 				break;
 			case MaterialSettings::TextureWrapMode::REPEAT:
-				wrap_mode_t = GL_REPEAT;
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 				break;
 			default:
 				break;
@@ -233,25 +247,18 @@ bool MaterialImporter::Load(const void* buffer, uint size, ResourceMaterial* out
 			switch (material_setting->mag_filter)
 			{
 			case MaterialSettings::TextureMagFilter::NEAREST:
-				wrap_mode_t = GL_NEAREST;
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				break;
 			case MaterialSettings::TextureMagFilter::LINEAR:
-				wrap_mode_t = GL_LINEAR;
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 				break;
 			default:
 				break;
 			}
 
-			uint tex_id= 0;
 
-			glGenTextures(1, &tex_id);
-			glBindTexture(GL_TEXTURE_2D, tex_id);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_mode_s);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_mode_t);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mag_filter);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter);
 
 			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
 				0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
@@ -294,7 +301,7 @@ void MaterialImporter::CreateFileMeta(std::list<Resource*> resources, MaterialSe
 		for(std::list<Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 			json_array_append_number(array_uids,  (*it)->GetUID());
 
-		json_object_set_value(root_object, "Material", array_value);
+		json_object_set_value(root_object, "UID MATERIALS", array_value);
 
 		JSON_Value* material_import = json_value_init_object();
 		JSON_Object* settings_import = json_value_get_object(material_import);
@@ -325,6 +332,7 @@ void MaterialImporter::CreateFileMeta(std::list<Resource*> resources, MaterialSe
 
 void MaterialImporter::ReadFileMeta(const char* file,  MaterialSettings* settings)
 {
+	// TO REVISE : I THINK WE CAN DELETE THIS FUNCTION (ARE BAD BECAUSE WE GENERATE A RESOURCE);
 	char* buffer = nullptr;
 
 	uint size = App->fs->Load(file, &buffer);
@@ -413,6 +421,34 @@ void MaterialImporter::ShowMaterialImport(MaterialSettings* material_settings)
 	if (ImGui::Button("Cancel ###savematerial", { 70,50 }))
 	{
 		App->gui->show_import_settings = false;
+	}
+
+}
+
+void MaterialImporter::GetImportSettingsInMeta(const char* meta, MaterialSettings* settings)
+{
+	if (meta != nullptr)
+	{
+		char* buffer;
+		uint size = App->fs->Load(meta, &buffer);
+
+		if (size > 0)
+		{
+			JSON_Value* root_value = json_parse_string(buffer);
+			JSON_Object* root_object = json_value_get_object(root_value);
+
+			JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
+
+			settings->dxct_compression = (MaterialSettings::DXCT_DEFINITION)json_object_get_boolean(import_settings, "DXCT Compression");
+			settings->wrap_mode_s = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode S");
+			settings->wrap_mode_t = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode T");
+			settings->mag_filter = (MaterialSettings::TextureMagFilter)json_object_get_boolean(import_settings, "MAG FILTER");
+
+			json_value_free(root_value);
+		}
+
+		RELEASE_ARRAY(buffer);
+		
 	}
 
 }

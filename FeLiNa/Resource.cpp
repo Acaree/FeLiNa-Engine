@@ -46,7 +46,8 @@ uint Resource::LoadToMemory()
 
 uint Resource::EraseToMemory()
 {
-	loaded--;
+	if(loaded > 0)
+		loaded--;
 
 	if (isLoadedToMemory())
 		EraseInMemory();

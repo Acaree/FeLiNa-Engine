@@ -125,7 +125,7 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 				}
 
 				PHYSFS_close(file);
-				RELEASE_ARRAY(buffer);
+				//RELEASE_ARRAY(buffer);
 			}
 		}
 
@@ -160,7 +160,7 @@ char* ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_fi
 	default:
 		break;
 	}
-
+	output_file = new_path;
 
 	SaveBufferData(buffer, new_path, size);
 
@@ -342,7 +342,6 @@ bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, char* new_file)
 
 	}
 
-
 	PHYSFS_freeList(files);
 
 	return ret;
@@ -443,4 +442,54 @@ void ModuleFileSystem::CreateFolder(const char* new_folder) {
 void ModuleFileSystem::FreeEnumeratedFiles(const char** dir)
 {
 	PHYSFS_freeList(dir);
+}
+
+bool ModuleFileSystem::RecursiveFindFileExistInAssets(const char* dir, const char* file_name, std::string& path)
+{
+	bool ret = false;
+
+	//Another recursivity :/
+	if (dir != nullptr)
+	{
+		path.append(dir);
+		path += "/";
+
+		std::string file = path;
+		file += file_name;
+
+		if (ExistFile(file.c_str()))
+		{
+			path += file_name;
+			ret = true;
+		}
+		else
+		{
+			const char** files = GetAllFilesFromDir(dir);
+			const char** file;
+
+			for (file = files; *file != nullptr; ++file)
+			{
+				if (isDirectory(*file))
+				{
+					if (RecursiveFindFileExistInAssets(*file, file_name, path))
+					{
+						return true;
+					}
+
+					uint position = path.find(*file);
+
+					if (position != std::string::npos)
+						path.erase(position, path.size());
+
+				}
+
+
+			}
+
+
+		}
+
+	}
+
+	return ret;
 }

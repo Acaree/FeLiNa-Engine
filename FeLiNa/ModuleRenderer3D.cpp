@@ -136,10 +136,6 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_COLOR_MATERIAL);
 
-#ifndef GAME_MODE
-		CreateCheckers();
-#endif
-
 	}
 
 	return ret;
@@ -418,33 +414,4 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 }
 
 
-#ifndef GAME_MODE
-uint ModuleRenderer3D::CreateCheckers()
-{
-	GLubyte checkImage[36][36][4];
-	for (int i = 0; i < 36; i++) {
-		for (int j = 0; j < 36; j++) {
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
-			checkImage[i][j][0] = (GLubyte)c;
-			checkImage[i][j][1] = (GLubyte)c;
-			checkImage[i][j][2] = (GLubyte)c;
-			checkImage[i][j][3] = (GLubyte)255;
-		}
-	}
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &checker_id);
-	glBindTexture(GL_TEXTURE_2D, checker_id);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 36, 36, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	return checker_id;
-}
-
-
-#endif

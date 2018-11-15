@@ -11,16 +11,16 @@ class ResourceMaterial;
 struct MaterialSettings : public ImporterSettings //We use this for load/save .meta
 {
 	// We use the same hexadecimal direction than GL and devil
-	enum DXCT_DEFINITION { DXTC_FORMAT = 0x0705, DXT1 = 0x0706, DXT2 = 0x0707,DXT3 = 0x0708,DXT4 = 0x0709,DXT5 = 0x070A};
+	enum DXCT_DEFINITION { DXTC_FORMAT = 0, DXT1  , DXT2 ,DXT3 ,DXT4 ,DXT5 };
 	DXCT_DEFINITION dxct_compression = DXT1;
 
-	enum TextureWrapMode { CLAMP = 0x2900, REPEAT = 0x2901};
+	enum TextureWrapMode { CLAMP , REPEAT };
 	TextureWrapMode wrap_mode_s = CLAMP;
 	TextureWrapMode wrap_mode_t = CLAMP;
 
 	// TO CHANGE : need min_filter
 
-	enum TextureMagFilter {NEAREST = 0x2600,LINEAR = 0x2601};
+	enum TextureMagFilter {NEAREST,LINEAR };
 	TextureMagFilter mag_filter = NEAREST;
 
 };
@@ -40,6 +40,7 @@ public:
 
 	void CreateFileMeta(std::list<Resource*> resources,  MaterialSettings* settings);
 	void ReadFileMeta(const char* file,  MaterialSettings* settings);
+	void GetImportSettingsInMeta(const char* meta, MaterialSettings* material);
 
 	bool Load(const char* file_name, ResourceMaterial* output_texture, const MaterialSettings* settings);
 	bool Load(const void* buffer, uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting);

@@ -39,10 +39,6 @@ public:
 	
 	void SaveState(JSON_Object* config);
 
-#ifndef GAME_MODE
-	uint CreateCheckers();
-#endif
-
 public:
 
 	Light lights[MAX_LIGHTS];

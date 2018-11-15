@@ -8,7 +8,7 @@
 
 class Resource;
 enum RESOURCE_TYPE;
-
+struct ImportSettings;
 class ResourceManager: public Module 
 {
 public:
@@ -24,7 +24,7 @@ public:
 	Resource* Get(uint uid);
 	Resource* CreateNewResource(RESOURCE_TYPE type, uint last_uid = 0);
 	void RecursiveResourceFiles(const char* dir, std::string path );
-	void FillResources(std::list<Resource*> resources);
+	void FillResources(std::list<Resource*> resources,ImporterSettings* settings = nullptr);
 	template<typename DATA>
 	void SetResourceData(DATA* data, Resource* resource);
 

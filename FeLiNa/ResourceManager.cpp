@@ -98,7 +98,6 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 		else
 		{
 
-
 			if (meta_file != nullptr)
 			{
 				switch (file_type)
@@ -107,7 +106,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 					App->importer_mesh->ReadFileMeta(meta_file, (MeshSettings*)settings);
 					break;
 				case MATERIAL_FILE:
-					App->importer_material->ReadFileMeta(meta_file, (MaterialSettings*)settings);
+					App->importer_material->GetImportSettingsInMeta(meta_file, (MaterialSettings*)settings);
 					break;
 
 				}
@@ -137,53 +136,61 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 		//If importation go good we finally create the resources.
 		if (is_imported)
 		{
-			std::string json_file = assets_file;
-			json_file.erase(json_file.find_last_of("."), json_file.size());
-			json_file += ".json";
-
-			App->serialization_scene->GetAllUIDInSerialization(uids,json_file.c_str(), file_type);
-
 			std::list<Resource*> aux_resources;
-			//Create all resources empty
-			for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
-			{
-				Resource* resource = CreateNewResource(resource_type, *it);
-				resource->exported_file = "Library/";
 
-				switch (resource_type)
-				{
-				case RESOURCE_MESH:
-					resource->exported_file += "Meshes/";
-					resource->exported_file += std::to_string(*it);
-					resource->exported_file += ".felina";
-					break;
-				case RESOURCE_MATERIAL:
-					resource->exported_file += "Materials/";
-					resource->exported_file += std::to_string(*it);
-					resource->exported_file += ".dds";
-					break;
-				}
-				resource->file = assets_file;
-
-				aux_resources.push_back(resource);
-			}
-
-			
-
-			if (aux_resources.size() != 0)
-			{
-				FillResources(aux_resources);
-				ret = aux_resources.front()->GetUID();
-			}
 			switch (resource_type)
 			{
 			case RESOURCE_MESH:
+			{
+				std::string json_file = assets_file;
+				json_file.erase(json_file.find_last_of("."), json_file.size());
+				json_file += ".json";
+
+				App->serialization_scene->GetAllUIDInSerialization(uids, json_file.c_str(), file_type);
+
+				
+				//Create all resources empty
+				for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
+				{
+					Resource* resource = CreateNewResource(resource_type, *it);
+					resource->exported_file = "Library/";
+					resource->exported_file += "Meshes/";
+					resource->exported_file += std::to_string(*it);
+					resource->exported_file += ".felina";
+					resource->file = assets_file;
+					aux_resources.push_back(resource);
+				}
+
+				if (aux_resources.size() != 0)
+				{
+					FillResources(aux_resources, settings);
+					ret = aux_resources.front()->GetUID();
+				}
 				App->importer_mesh->CreateFileMeta(aux_resources, (MeshSettings*)settings);
-				break;
-			case RESOURCE_MATERIAL:
-				App->importer_material->CreateFileMeta(aux_resources, (MaterialSettings*)settings);
+
 				break;
 			}
+			case RESOURCE_MATERIAL:
+			{
+				std::string output_name = output_file;
+				output_name.erase(0, output_name.find_last_of("/")+1);
+				output_name.erase(output_name.find_last_of("."), output_file.size());
+				uint uid = strtoul(output_name.c_str(), NULL, 0);
+				Resource* resource = CreateNewResource(resource_type, uid);
+				resource->file= output_file;
+				resource->exported_file = assets_file;
+				aux_resources.push_back(resource);
+
+				if (meta_file == nullptr)
+					App->importer_material->CreateFileMeta(aux_resources, (MaterialSettings*)settings);
+
+				//FillResources(aux_resources, settings);
+				ret = aux_resources.front()->GetUID();
+				break;
+			}
+
+			}
+
 
 		}
 
@@ -194,7 +201,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 	return ret;
 }
 
-void ResourceManager::FillResources(std::list<Resource*> resources)
+void ResourceManager::FillResources(std::list<Resource*> resources, ImporterSettings* settings)
 {
 
 	for (std::list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
@@ -206,9 +213,9 @@ void ResourceManager::FillResources(std::list<Resource*> resources)
 		case MESH_FILE:
 			App->importer_mesh->LoadFLN((*it)->exported_file.c_str(),(ResourceMesh*)(*it));
 			break;
-		case MATERIAL_FILE:
-			//App->importer_material->Load
-			break;
+		/*case MATERIAL_FILE:
+			App->importer_material->Load((*it)->file.c_str(), (ResourceMaterial*)(*it), (MaterialSettings*)settings); TO REVISE
+			break;*/
 
 		}
 	}
