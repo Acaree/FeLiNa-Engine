@@ -5,7 +5,9 @@
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "Resource.h"
+#include "ResourceMaterial.h"
 #include "ModuleGui.h"
+#include "ResourceMaterial.h"
 #include "DevIL/include/il.h"
 #include "DevIL/include/ilu.h"
 #include "DevIL/include/ilut.h"
@@ -156,7 +158,7 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 	return ret;
 }
 
-bool MaterialImporter::Load(const char* file_name, Texture* output_texture, const MaterialSettings* settings)
+bool MaterialImporter::Load(const char* file_name, ResourceMaterial* output_texture, const MaterialSettings* settings)
 {
 	bool ret = false;
 
@@ -177,7 +179,7 @@ bool MaterialImporter::Load(const char* file_name, Texture* output_texture, cons
 	
 }
 
-bool MaterialImporter::Load(const void* buffer, uint size, Texture* output_texture, const MaterialSettings* material_setting)
+bool MaterialImporter::Load(const void* buffer, uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting)
 {
 	bool ret = false;
 
@@ -254,9 +256,9 @@ bool MaterialImporter::Load(const void* buffer, uint size, Texture* output_textu
 			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
 				0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
-			output_texture->texture_id = tex_id;
+			output_texture->id_texture = tex_id;
 			output_texture->height = ilGetInteger(IL_IMAGE_HEIGHT);
-			output_texture->width = ilGetInteger(IL_IMAGE_WIDTH);
+			output_texture->widht = ilGetInteger(IL_IMAGE_WIDTH);
 
 			glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -270,112 +272,55 @@ bool MaterialImporter::Load(const void* buffer, uint size, Texture* output_textu
 }
 
 
-Texture* MaterialImporter::LoadDDS(char* path) {
-
-	Texture* ret = new Texture(); //this must be desalocated outside here
-
-	uint imageID = 0;
-
-	uint textureID = 0;
-
-	bool success = false;
-
-	ILenum error;
-
-	ilGenImages(1, &imageID);
-
-	ilBindImage(imageID);
-
-	success = ilLoadImage(path);
-
-
-	if (success)
-	{
-
-		ILinfo ImageInfo;
-		iluGetImageInfo(&ImageInfo);
-	//	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-	//	{
-		//	iluFlipImage();
-	//	}
-
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
-
-		if (!success)
-		{
-			error = ilGetError();
-			LOG("Image conversion failed - IL reports error: %i %s ", error, iluErrorString(error));
-			exit(-1);
-		}
-
-		glGenTextures(1, &textureID);
-
-		glBindTexture(GL_TEXTURE_2D, textureID);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
-			0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
-
-		ret->felina_path = path;
-
-		ret->height = ilGetInteger(IL_IMAGE_HEIGHT);
-		ret->width = ilGetInteger(IL_IMAGE_WIDTH);
-		ret->texture_id = textureID;
-
-		if (success)
-			LOG("Texture creation successful.");
-	}
-	else
-		LOG("Texture creation failed.");
-
-	ilDeleteImages(1, &imageID);
-
-	return ret;
-
-}
-
-void MaterialImporter::CreateFileMeta(Resource* resource, MaterialSettings* settings)
+void MaterialImporter::CreateFileMeta(std::list<Resource*> resources, MaterialSettings* settings)
 {
-	JSON_Value* root_value = json_value_init_object();
-	JSON_Object* root_object = json_value_get_object(root_value);
 
-	PHYSFS_Stat* stat = new PHYSFS_Stat();
-	std::string tmp = resource->exported_file;
-	App->fs->GetPhysfsStats(tmp.c_str(), *stat);
+	if (resources.size() > 0 && settings != nullptr)
+	{
+		ResourceMaterial* res_material = (ResourceMaterial*)resources.front();
 
-	json_object_set_number(root_object, "Time", stat->modtime);
-	json_object_set_number(root_object, "UID", resource->GetUID());
+		JSON_Value* root_value = json_value_init_object();
+		JSON_Object* root_object = json_value_get_object(root_value);
 
-	JSON_Value* material_import = json_value_init_object();
-	JSON_Object* settings_import = json_value_get_object(material_import);
+		PHYSFS_Stat* stat = new PHYSFS_Stat();
+		std::string tmp = res_material->file.c_str();
+		App->fs->GetPhysfsStats(tmp.c_str(), *stat);
 
-	json_object_set_value(root_object, "Import Settings", material_import);
+		json_object_set_number(root_object, "Time", stat->modtime);
 
-	json_object_set_boolean(settings_import, "DXCT Compression",settings->dxct_compression); //If we save as number , when we rean can convet the type :/
-	json_object_set_boolean(settings_import, "WRAP Mode S", settings->wrap_mode_s);
-	json_object_set_boolean(settings_import, "WRAP Mode T", settings->wrap_mode_t);
-	json_object_set_boolean(settings_import, "MAG FILTER", settings->mag_filter);
-	
+		JSON_Value* array_value = json_value_init_array();
+		JSON_Array* array_uids = json_value_get_array(array_value);
 
-	char path[DEFAULT_BUF_SIZE];
-	strcpy(path, resource->GetExportedFile());
-	strcat(path, ".meta");
+		for(std::list<Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+			json_array_append_number(array_uids,  (*it)->GetUID());
 
-	uint size = json_serialization_size_pretty(root_value);
-	char* buffer = new char[size];
+		json_object_set_value(root_object, "Material", array_value);
 
-	json_serialize_to_buffer_pretty(root_value, buffer, size);
+		JSON_Value* material_import = json_value_init_object();
+		JSON_Object* settings_import = json_value_get_object(material_import);
 
-	App->fs->SaveBufferData(buffer,path,size); 
+		json_object_set_value(root_object, "Import Settings", material_import);
 
-	RELEASE(stat);
-	RELEASE_ARRAY(buffer);
+		json_object_set_boolean(settings_import, "DXCT Compression", settings->dxct_compression); //If we save as number , when we rean can convet the type :/
+		json_object_set_boolean(settings_import, "WRAP Mode S", settings->wrap_mode_s);
+		json_object_set_boolean(settings_import, "WRAP Mode T", settings->wrap_mode_t);
+		json_object_set_boolean(settings_import, "MAG FILTER", settings->mag_filter);
 
+
+		char path[DEFAULT_BUF_SIZE];
+		strcpy(path, res_material->GetExportedFile());
+		strcat(path, ".meta");
+
+		uint size = json_serialization_size_pretty(root_value);
+		char* buffer = new char[size];
+
+		json_serialize_to_buffer_pretty(root_value, buffer, size);
+
+		App->fs->SaveBufferData(buffer, path, size);
+
+		RELEASE(stat);
+		RELEASE_ARRAY(buffer);
+	}
 }
 
 void MaterialImporter::ReadFileMeta(const char* file,  MaterialSettings* settings)
@@ -418,7 +363,7 @@ void MaterialImporter::ReadFileMeta(const char* file,  MaterialSettings* setting
 	RELEASE_ARRAY(buffer);
 }
 
-void MaterialImporter::ShowMaterialImport()
+void MaterialImporter::ShowMaterialImport(MaterialSettings* material_settings)
 {
 
 	static int current_compression = material_settings->dxct_compression;
@@ -455,8 +400,8 @@ void MaterialImporter::ShowMaterialImport()
 	{
 		uint uid = App->resource_manager->Find(App->gui->file_focus.c_str());
 		Resource* resource = App->resource_manager->Get(uid);
-
-		CreateFileMeta(resource,material_settings);
+		//DONT WORK
+		//CreateFileMeta(resource,material_settings);
 
 		std::string output;
 		App->importer_material->Import(App->gui->file_focus.c_str(),output, material_settings);

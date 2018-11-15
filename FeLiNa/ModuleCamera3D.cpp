@@ -8,6 +8,8 @@
 #include "MathGeoLib/MathGeoLib.h"
 #include "ModuleWindow.h"
 #include "Quadtree.h"
+#include "ResourceManager.h"
+#include "ResourceMesh.h"
 #include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"
 #include "ImGuizmo/ImGuizmo.h"
@@ -198,7 +200,6 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 	float min_distance = FLOAT_INF;
 	float hit_distance = 0.0F;
 
-	Mesh* mesh = nullptr;
 
 	GameObject* selected_object = nullptr;
 
@@ -222,7 +223,7 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 			if (component_mesh != nullptr)
 			{
 				//Set the object mesh
-				mesh = component_mesh->GetMesh();
+				ResourceMesh* mesh = (ResourceMesh*)App->resource_manager->Get(component_mesh->GetUID());
 
 				int j = 0;
 

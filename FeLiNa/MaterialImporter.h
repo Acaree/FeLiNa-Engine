@@ -3,9 +3,10 @@
 
 #include "Importer.h"
 #include "ComponentTexture.h"
+#include <list>
 
 class Resource;
-
+class ResourceMaterial;
 
 struct MaterialSettings : public ImporterSettings //We use this for load/save .meta
 {
@@ -36,18 +37,17 @@ public:
 	bool Import(const char* file_path, std::string& output_file, const MaterialSettings* material);
 	bool Import(const void* buffer, uint size, std::string& output_file, const MaterialSettings* material);
 
-	Texture* LoadDDS(char* path);
 
-	void CreateFileMeta(Resource* resource,  MaterialSettings* settings);
+	void CreateFileMeta(std::list<Resource*> resources,  MaterialSettings* settings);
 	void ReadFileMeta(const char* file,  MaterialSettings* settings);
 
-	bool Load(const char* file_name, Texture* output_texture, const MaterialSettings* settings);
-	bool Load(const void* buffer, uint size, Texture* output_texture, const MaterialSettings* material_setting);
+	bool Load(const char* file_name, ResourceMaterial* output_texture, const MaterialSettings* settings);
+	bool Load(const void* buffer, uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting);
 
-	void ShowMaterialImport();
+	void ShowMaterialImport(MaterialSettings* settings);
 public:
+	MaterialSettings* material_settings;
 
-	MaterialSettings* material_settings = nullptr;
 };
 
 

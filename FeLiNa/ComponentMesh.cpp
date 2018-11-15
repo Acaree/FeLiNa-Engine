@@ -4,6 +4,7 @@
 #include "MeshImporter.h"
 #include "ImGui/imgui.h"
 #include "Resource.h"
+#include "MeshImporter.h"
 #include "Application.h"
 #include "ResourceManager.h"
 #include "ResourceMesh.h"
@@ -11,89 +12,62 @@
 ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)
 {
 	type = Component_Mesh;
-
-	mesh = new Mesh();
-	mesh->felina_path = new char[DEFAULT_BUF_SIZE];
 }
 
 ComponentMesh::~ComponentMesh()
 {
-	uint uid = App->resource_manager->Find(mesh->felina_path);
-
 	if (uid != 0)
 	{
 		ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->Get(uid);
-		resource_mesh->EraseToMemory();
+		if(resource_mesh != nullptr)
+			resource_mesh->EraseToMemory();
 	}
 }
 
 
-void ComponentMesh::CleanUp()
+void ComponentMesh::SetUID(uint uid)
 {
-	uint uid = App->resource_manager->Find(mesh->felina_path);
-
-	if (uid != 0)
-	{
-		ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->Get(uid);
-		resource_mesh->EraseToMemory();
-	}
-
+	this->uid = uid;
 }
 
-void ComponentMesh::SetMesh(Mesh* mesh)
+uint ComponentMesh::GetUID() const
 {
-	this->mesh = mesh;
-}
-
-Mesh* ComponentMesh::GetMesh() const
-{
-	return mesh;
+	return uid;
 }
 
 void ComponentMesh::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Mesh"))
 	{
-		uint uid = App->resource_manager->Find(mesh->felina_path);
 		if (uid != 0)
 		{
-			Resource* resource = App->resource_manager->Get(uid);
-
+			ResourceMesh* resource = (ResourceMesh*)App->resource_manager->Get(uid);
+			
 			ImGui::Text("Refernce counting: %i", resource->loaded);
+		
+			ImGui::Text("Indices: %i", resource->num_indices);
+			ImGui::Text("Vertices: %i", resource->num_vertices);
+			ImGui::Text("Uv's: %i", resource->num_uv);
+			ImGui::Text("Triangles: %i", resource->num_vertices / 3);
 		}
-		ImGui::Text("Indices: %i", mesh->num_indices);
-		ImGui::Text("Vertices: %i", mesh->num_vertices);
-		ImGui::Text("Uv's: %i", mesh->num_uv);
-		ImGui::Text("Triangles: %i", mesh->num_vertices/3);
-
+		else
+		{
+			ImGui::Text("INVALID MESH");
+		}
 		ImGui::TreePop();
 	}
 }
 
-void ComponentMesh::SetPath(char* path) {
-
-	
-	strcpy(mesh->felina_path, path);
-
-}
 
 void ComponentMesh::OnSave(JSON_Object* obj)
 {
 	json_object_set_number(obj, "type", type);
-	json_object_set_string(obj, "path", mesh->felina_path);
+	json_object_set_number(obj, "UID", uid);
 }
 
 void ComponentMesh::OnLoad(JSON_Object* obj)
 {
-	char* tmp = (char*)json_object_get_string(obj, "path");
-	uint uid = App->resource_manager->ImportOwnFile(tmp);
-
-	ResourceMesh* resource_mesh = (ResourceMesh*)App->resource_manager->Get(uid);
-	
-	
-	mesh = resource_mesh->GetMesh();
-	
-	parent->bounding_box.Enclose((math::float3 *)mesh->vertices, mesh->num_vertices);
-	
-	parent->RecalculateBoundingBox();
+	uid = json_object_get_number(obj, "UID");
+	Resource* resource = App->resource_manager->Get(uid);
+	resource->LoadToMemory();
 }

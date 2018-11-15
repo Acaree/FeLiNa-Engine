@@ -41,6 +41,8 @@ public:
 	void RemoveAllDependencies(char* file_path);
 	void GetPhysfsStats(const char* filename, PHYSFS_Stat& stat );
 	void FreeEnumeratedFiles( const char** dir);
+	bool ExistFile(const char* file); // TO REVISE: REPLACE ALL PHYSFS_EXIST TO THIS FUNCTION
+
 private:
 	std::string tmp_string;
 };

@@ -9,6 +9,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 #include "ResourceManager.h"
+#include "ResourceMesh.h"
 #include "MaterialImporter.h"
 #include "Resource.h"
 #include "Assimp/include/cimport.h"
@@ -85,7 +86,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 		aiNode* rootNode = scene->mRootNode;
 
-		LoadModel(scene, rootNode, output_file, childrens_go, trans);
+		LoadModel(scene, rootNode, childrens_go, trans);
 
 		
 		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
@@ -98,6 +99,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 		//App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
 
 		aiReleaseImport(scene);
+		// HERE CRASH.
 		RELEASE(childrens_go);
 
 		ret = true;
@@ -106,58 +108,88 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 	return ret;
 }
 
-void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& output_file, GameObject* obj, ComponentTransform* trans)
+void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* parent, ComponentTransform* transform)
 {
 
-	//Creating a game object to set data
-	GameObject* game_object = new GameObject(nullptr);
-	game_object->SetName(node->mName.data);
+	GameObject* go = parent;
 
-	aiQuaternion q;
-	aiVector3D scale, pos;
-	node->mTransformation.Decompose(scale, q, pos);
+	std::string name = node->mName.C_Str();
+	static int invalid_position = std::string::npos;
 
-	ComponentTransform* component_transform = new ComponentTransform(nullptr, math::float3(pos.x, pos.y, pos.z), math::float3(q.GetEuler().x, q.GetEuler().y, q.GetEuler().z), math::float3(scale.x, scale.y, scale.z));
-	component_transform->SumPosition(trans->GetPosition());
-	component_transform->SumRotation(trans->GetRotation());
-	component_transform->SumScale(trans->GetScale());
+	//Street has a node with size 0 :/.
+	if (name.length() == 0)
+		name = "No Name";
 
+	//best way? Invalid nodes of assimp only have transformations
+	static const char* invalid_node_names[5] = { "$_PreRotation", "$_Rotation", "$_PostRotation",
+		"$_Scaling", "$_Translation" };
+
+	bool invalid_node = false;
+	if (name.find(invalid_node_names[0]) != invalid_position || name.find(invalid_node_names[1]) != invalid_position || name.find(invalid_node_names[2]) != invalid_position
+		|| name.find(invalid_node_names[3]) != invalid_position || name.find(invalid_node_names[4]) != invalid_position)
+		invalid_node = true;
+
+	aiVector3D position;
+	aiVector3D scale;
+	aiQuaternion rotation;
+
+	node->mTransformation.Decompose(scale, rotation, position);
+
+	math::float3 new_position = { position.x, position.y, position.z };
+	math::Quat new_rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
+	math::float3 new_scale = { scale.x, scale.y, scale.z };
+
+	
+	transform->SumPosition(new_position);
+	transform->SumRotation(new_rotation.ToEulerXYZ());
+	transform->SumScale(new_scale);
+
+	if (!invalid_node && node != scene->mRootNode)
+	{
+		go = new GameObject(parent);
+		go->SetName(name.c_str());
+	}
 
 	if (node->mNumMeshes > 0)
 	{
+		go->AddComponent(Component_Transform);
+		go->transform->SetPosition(transform->GetPosition());
+		go->transform->SetRotation(transform->GetRotation());
+		go->transform->SetScale(transform->GetScale());
+		go->AddComponent(Component_Mesh);
 
-		output_file = node->mName.data;
+		//Allwais in node
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
 
-		ComponentTransform* transform = (ComponentTransform*)game_object->AddComponent(Component_Transform);
-		transform->SetPosition(component_transform->GetPosition());
-		transform->SetRotation(component_transform->GetRotation());
-		transform->SetScale(component_transform->GetScale());
+		//Create here all information:
 
-		//RELEASE(component_transform); // this last line of function?
+		float* vertices = nullptr;
+		uint num_vertices = 0;
+		uint id_vertices = 0;
 
+		uint* indices = nullptr;
+		uint num_indices = 0;
+		uint id_indices = 0;
 
-		ComponentMesh* component_mesh = (ComponentMesh*)game_object->AddComponent(Component_Mesh);
-		ComponentTexture* component_texture = (ComponentTexture*)game_object->AddComponent(Component_Material);
-
-
-		Mesh* mesh_data = component_mesh->GetMesh();
-		
+		float* uv = nullptr;
+		uint num_uv = 0;
+		uint id_uv = 0;
 
 		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
 		{
 			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[num_meshes]];
 
 			//Load Vertices
-			mesh_data->num_vertices = new_mesh->mNumVertices;
-			mesh_data->vertices = new float[mesh_data->num_vertices * 3];
-			memcpy(mesh_data->vertices, new_mesh->mVertices, sizeof(float)*mesh_data->num_vertices * 3);
-			LOG("New mesh with %d vertices", mesh_data->num_vertices);
+			num_vertices = new_mesh->mNumVertices;
+			vertices = new float[num_vertices * 3];
+			memcpy(vertices, new_mesh->mVertices, sizeof(float)*num_vertices * 3);
+			LOG("New mesh with %d vertices", num_vertices);
 
-			//Load Mesh
+
 			if (new_mesh->HasFaces())
 			{
-				mesh_data->num_indices = new_mesh->mNumFaces * 3;
-				mesh_data->indices = new uint[mesh_data->num_indices];
+				num_indices = new_mesh->mNumFaces * 3;
+				indices = new uint[num_indices];
 
 				for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
 				{
@@ -166,20 +198,19 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 						LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
 					}
 					else
-						memcpy(&mesh_data->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
+						memcpy(&indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
 
 				}
 
-
 			}
 
-			//Texture
 			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
 			aiString name;
-			
+
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
 
-			if (name.length != 0) // if are 0 don't have asociated texture
+
+			if (name.length != 0)
 			{
 				std::string file_path = name.data;
 
@@ -207,10 +238,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 				App->importer_material->Import((const char*)add, texture_generated, settings);
 
 
-
-				component_texture->SetPath(add);
-
-
 				RELEASE_ARRAY(path_c);
 				RELEASE_ARRAY(file_name_c);
 
@@ -221,42 +248,27 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 				texture_generated.clear();
 
 			}
-			
+
 			if (new_mesh->HasTextureCoords(0))
 			{
-				mesh_data->num_uv = new_mesh->mNumVertices;
-				mesh_data->uv = new float[mesh_data->num_uv * 2];
+				num_uv = new_mesh->mNumVertices;
+				uv = new float[num_uv * 2];
 
 				for (uint coords = 0; coords < new_mesh->mNumVertices; ++coords)
 				{
-					memcpy(&mesh_data->uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
-					memcpy(&mesh_data->uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
+					memcpy(&uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
+					memcpy(&uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
 				}
 
 
 			}
 
-			
-
 
 		}
 
-		//CREATE AABB
-		game_object->AddBoundingBox(mesh_data);
-		
+		uint ranges[3] = {num_vertices,num_indices, num_uv };
 
-		obj->AddChildren(game_object);
-		game_object->RecalculateBoundingBox();
-
-		/*******************************************************************/
-
-		//put in a new function savefln
-
-
-
-		uint ranges[3] = { mesh_data->num_vertices, mesh_data->num_indices, mesh_data->num_uv };
-
-		uint size = sizeof(ranges) + sizeof(float) * mesh_data->num_vertices * 3 + sizeof(uint) * mesh_data->num_indices + sizeof(float)* mesh_data->num_uv * 2;
+		uint size = sizeof(ranges) + sizeof(float) * num_vertices * 3 + sizeof(uint) * num_indices + sizeof(float)* num_uv * 2;
 
 		char* data = new char[size]; // Why if the variable is cursor physfs crashes? 
 		char* cursor = data;
@@ -268,46 +280,47 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, std::string& ou
 		cursor += bytes;
 
 		//Store vertices
-		bytes = sizeof(float) * mesh_data->num_vertices * 3;
-		memcpy(cursor, mesh_data->vertices, bytes);
+		bytes = sizeof(float) * num_vertices * 3;
+		memcpy(cursor, vertices, bytes);
 
 		cursor += bytes;
 
 		//Store indices
-		bytes = sizeof(uint) * mesh_data->num_indices;
-		memcpy(cursor, mesh_data->indices, bytes);
+		bytes = sizeof(uint) * num_indices;
+		memcpy(cursor, indices, bytes);
 
 		cursor += bytes;
 
-		bytes = sizeof(float)* mesh_data->num_uv * 2;
-		memcpy(cursor, mesh_data->uv, bytes);
+		bytes = sizeof(float)* num_uv * 2;
+		memcpy(cursor, uv, bytes);
 
 		int i = sizeof(bytes);
 
+		std::string output_file =std::to_string(go->mesh->GetUID());
 		char* final_path = App->fs->SaveFile((char *)data, size, output_file, MESH_FILE);
-		
-		game_object->mesh->SetPath(final_path);
+
 
 		RELEASE_ARRAY(data);
-	}
-	else
-	{
-		RELEASE(game_object);
-		game_object = obj;
+
+		RELEASE_ARRAY(vertices);
+		RELEASE_ARRAY(indices);
+		RELEASE_ARRAY(uv);
 	}
 
-	for (uint i = 0; i < node->mNumChildren; i++)
+	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
-		LoadModel(scene, node->mChildren[i], output_file, game_object, component_transform);
+		LoadModel(scene, node->mChildren[i], go, transform);
 	}
-
-	RELEASE(component_transform);
+	
 }
 
 
-Mesh* MeshImporter::LoadFLN(const void* buffer, uint size) {
+bool MeshImporter::LoadFLN(const void* buffer, uint size, ResourceMesh* ret) {
 
-	Mesh* ret = new Mesh;
+	if (buffer == nullptr || ret == nullptr)
+		return false;
+
+
 	char* cursor = (char*)buffer;
 
 	uint ranges[3];
@@ -336,27 +349,23 @@ Mesh* MeshImporter::LoadFLN(const void* buffer, uint size) {
 
 	bytes = sizeof(float) * ret->num_uv * 2;
 	ret->uv = new float[ret->num_uv * 2];
-	memcpy(ret->uv, cursor, bytes);
-
-	ret->felina_path = new char[DEFAULT_BUF_SIZE];
-
-	
+	memcpy(ret->uv, cursor, bytes);	
 
 
-	return ret;
+	return true;
 
 }
 
-Mesh* MeshImporter::LoadFLN(const char* path) {
+bool MeshImporter::LoadFLN(const char* path, ResourceMesh* mesh) {
 
-	Mesh* ret = nullptr;
+	bool ret = false;
 
 	char* buffer;
 	uint size = App->fs->Load(path, &buffer);
 	if (size > 0)
 	{
 		LOG("MATERIAL IMPORTER: Successfully loaded mesh (own format)");
-		ret = LoadFLN(buffer, size);
+		ret = LoadFLN(buffer, size,mesh);
 		RELEASE_ARRAY(buffer);
 	}
 	else
@@ -367,19 +376,27 @@ Mesh* MeshImporter::LoadFLN(const char* path) {
 
 }
 
-void MeshImporter::CreateFileMeta(Resource* resource, MeshSettings* settings)
+
+void MeshImporter::CreateFileMeta(std::list<Resource*> resources, MeshSettings* settings)
 {
 	JSON_Value* root_value = json_value_init_object();
 	JSON_Object* root_object = json_value_get_object(root_value);
 
-	std::string tmp = resource->exported_file;
-	
+	ResourceMesh* resource = (ResourceMesh*)resources.front();
+
 	PHYSFS_Stat* stat = new PHYSFS_Stat();
 
-	App->fs->GetPhysfsStats(tmp.c_str(), *stat);
+	App->fs->GetPhysfsStats(resource->file.c_str(), *stat);
 
 	json_object_set_number(root_object, "Time", stat->modtime);
-	json_object_set_number(root_object, "UID", resource->GetUID());
+
+	JSON_Value* array_value = json_value_init_array();
+	JSON_Array* array_uids = json_value_get_array(array_value);
+
+	for (std::list<Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+		json_array_append_number(array_uids, (*it)->GetUID());
+
+	json_object_set_value(root_object, "UID MESHES", array_value);
 
 	JSON_Value* mesh_import = json_value_init_object();
 	JSON_Object* settings_import = json_value_get_object(mesh_import);
@@ -405,7 +422,7 @@ void MeshImporter::CreateFileMeta(Resource* resource, MeshSettings* settings)
 	json_object_set_boolean(settings_import, "Flip Uvs", settings->FlipUVs);
 
 	char path[DEFAULT_BUF_SIZE];
-	strcpy(path, resource->GetExportedFile());
+	strcpy(path, resource->file.c_str());
 	strcat(path, ".meta");
 
 	uint size = json_serialization_size_pretty(root_value);
@@ -593,7 +610,7 @@ void MeshImporter::ShowMeshImport()
 		uint uid = App->resource_manager->Find(App->gui->file_focus.c_str());
 		Resource* resource = App->resource_manager->Get(uid);
 
-		CreateFileMeta(resource, mesh_settings);
+		//CreateFileMeta(resource, mesh_settings);
 
 		std::string file_path = App->gui->file_focus;
 		file_path.erase(file_path.find_last_of("/")+1, file_path.size());

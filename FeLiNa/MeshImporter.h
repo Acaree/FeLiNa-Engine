@@ -9,12 +9,15 @@
 #include "ComponentMesh.h"
 #include "ComponentTexture.h"
 
+#include <list>
 class aiScene;
 class aiNode;
 struct aiLogStream;
 struct aiMaterial;
 class Resource;
 enum FILE_TYPE;
+class Resources;
+class ResourceMesh;
 
 struct MeshSettings: public ImporterSettings //We use this for load/save .meta
 {
@@ -50,20 +53,21 @@ public:
 	//¿LOAD CHECKERS?
 
 	bool Import(const char* file_name, const char* file_path, std::string& output_file, const MeshSettings* import_settings);
-
 	bool Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings);
 
-	void LoadModel(const aiScene* scene, aiNode* node, std::string& output_file, GameObject* obj, ComponentTransform* trans);
+	void LoadModel(const aiScene* scene, aiNode* node, GameObject* parent, ComponentTransform* trans);
 
 
-	Mesh* LoadFLN(const char* path);
-	Mesh* LoadFLN(const void* buffer, uint size);
+	bool LoadFLN(const char* path, ResourceMesh* mesh);
+	bool LoadFLN(const void* buffer, uint size, ResourceMesh* mesh);
 
-	void CreateFileMeta(Resource* resource, MeshSettings* settings);
+	void CreateFileMeta(std::list<Resource*> resources, MeshSettings* settings);
 	void ReadFileMeta(const char* file, MeshSettings* settings);
 
 	void ShowMeshImport();
 	void RefreshMeshOptions();
+
+	
 
 	uint SetPostProccesConfiguration(const MeshSettings* import_settings);
 

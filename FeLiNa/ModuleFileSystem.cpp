@@ -97,6 +97,7 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 	
 	uint count = 0;
 
+	
 	bool file_exists = PHYSFS_exists(filePath);
 
 	if (file_exists) {
@@ -262,6 +263,10 @@ FILE_TYPE ModuleFileSystem::FindOwnTypeFile(const char* file)
 	return file_type;
 }
 
+bool ModuleFileSystem::ExistFile(const char* file)
+{
+	return PHYSFS_exists(file);
+}
 
 bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, char* new_file)
 {

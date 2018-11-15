@@ -7,8 +7,10 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentTexture.h"
+#include "ResourceManager.h"
 #include "ComponentMesh.h"
-
+#include "ResourceMesh.h"
+#include "ResourceMaterial.h"
 #ifndef GAME_MODE
 #include "ModuleGui.h"
 #include "ImGui/imgui.h"
@@ -356,34 +358,32 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 	{
 		ComponentMesh* mesh = go->mesh;
 		ComponentTransform* trans = go->transform;
-		ComponentTexture* texture = go->material;
-
-		
-		
+		ComponentTexture* material = go->material;
 
 
 		math::float4x4 matrix = trans->GetTransformMatrix();
-
 		glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
 
-		Mesh* m_mesh = mesh->GetMesh();
-
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		if (texture == nullptr || texture->no_texture) {
-
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
-		else if (texture->material_checker)
+		if (material == nullptr)
 		{
-			glBindTexture(GL_TEXTURE_2D, checker_id);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		else
 		{
-			glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
+			ResourceMaterial* texture = (ResourceMaterial*)App->resource_manager->Get(material->GetUID());
+			if (texture == nullptr) {
+
+				glBindTexture(GL_TEXTURE_2D, 0);
+			}
+			else
+			{
+				glBindTexture(GL_TEXTURE_2D, texture->id_texture);
+			}
 		}
+
+		ResourceMesh* m_mesh = (ResourceMesh*)App->resource_manager->Get(mesh->GetUID());
+
 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, m_mesh->id_vertices);

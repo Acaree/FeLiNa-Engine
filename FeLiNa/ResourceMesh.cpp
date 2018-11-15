@@ -5,48 +5,31 @@
 
 ResourceMesh::ResourceMesh(uint uid, RESOURCE_TYPE type) : Resource(uid,type)
 {
-	mesh = new Mesh;
+
 }
 
 ResourceMesh::~ResourceMesh()
 {	
-	if (mesh->indices != nullptr)
-	{
-		RELEASE_ARRAY(mesh->indices);
-	}
 
-	if (mesh->vertices != nullptr)
-	{
-		RELEASE_ARRAY(mesh->vertices);
-	}
-
-	if (mesh->uv != nullptr)
-	{
-		RELEASE_ARRAY(mesh->uv);
-
-	}
-
-	RELEASE_ARRAY(mesh->felina_path);
-	RELEASE(mesh);
 }
 
 bool ResourceMesh::LoadInMemory()
 {
 	bool ret = false;
 
-	glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*) &(id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * num_vertices, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glGenBuffers(1, (GLuint*) &(mesh->id_indices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*) &(id_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glGenBuffers(1, (GLuint*) &(mesh->id_uv));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uv);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_uv, mesh->uv, GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*) &(id_uv));
+	glBindBuffer(GL_ARRAY_BUFFER, id_uv);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * num_uv, uv, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
@@ -57,19 +40,14 @@ bool ResourceMesh::EraseInMemory()
 {
 	bool ret = false;
 
-	glDeleteBuffers(1, (GLuint*) &(mesh->id_vertices));
-	glDeleteBuffers(1, (GLuint*) &(mesh->id_indices));
-	glDeleteBuffers(1, (GLuint*) &(mesh->id_uv));
+	glDeleteBuffers(1, (GLuint*) &(id_vertices));
+	glDeleteBuffers(1, (GLuint*) &(id_indices));
+	glDeleteBuffers(1, (GLuint*) &(id_uv));
+
+	RELEASE_ARRAY(vertices);
+	RELEASE_ARRAY(indices);
+	RELEASE_ARRAY(uv);
 
 	return ret;
 }
 
-void ResourceMesh::SetMesh(Mesh* mesh)
-{
-	this->mesh = mesh;
-}
-
-Mesh* ResourceMesh::GetMesh() const
-{
-	return mesh;
-}

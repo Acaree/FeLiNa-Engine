@@ -26,7 +26,7 @@ public:
 	bool CleanUp();
 
 	void CleanData();
-	void SetName(char*name);
+	void SetName(const char*name);
 	char* GetName() const;
 
 	void SetActive(bool* active);
@@ -60,7 +60,7 @@ public:
 	bool IsSelected() const;
 	void ToggleSelected();
 
-	void AddBoundingBox(const Mesh* mesh);
+	//void AddBoundingBox(const Mesh* mesh);
 	math::AABB GetAABB() const;
 	void DrawBoundingBox();
 	void RecalculateBoundingBox();

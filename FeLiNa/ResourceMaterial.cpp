@@ -4,14 +4,13 @@
 #include "mmgr/mmgr.h"
 ResourceMaterial::ResourceMaterial(uint uid, RESOURCE_TYPE type) : Resource(uid, type)
 {
-	texture = new Texture;
+	
 }
 
 ResourceMaterial::~ResourceMaterial()
 {
-	glDeleteTextures(1, (GLuint*) &(texture->texture_id));
-	//RELEASE_ARRAY(texture->felina_path);
-	//RELEASE(texture);
+	//glDeleteTextures(1, (GLuint*) &(id_texture));
+
 }
 
 bool ResourceMaterial::LoadInMemory()
@@ -24,18 +23,9 @@ bool ResourceMaterial::LoadInMemory()
 bool ResourceMaterial::EraseInMemory()
 {
 	bool ret = true;
-	glDeleteTextures(1, (GLuint*) &(texture->texture_id));
+	glDeleteTextures(1, (GLuint*) &(id_texture));
 
-	RELEASE(texture);
+
 	return ret;
 }
 
-void ResourceMaterial::SetTexture(Texture* texture)
-{
-	this->texture = texture;
-}
-
-Texture* ResourceMaterial::GetTexture() const
-{
-	return texture;
-}

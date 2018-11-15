@@ -8,6 +8,8 @@
 #include "ComponentTransform.h"
 #include "ModuleRenderer3D.h"
 #include "Quadtree.h"
+#include "ResourceManager.h"
+#include "ResourceMesh.h"
 #include "ComponentTexture.h"
 #include "ComponentCamera.h"
 #include "mmgr/mmgr.h"
@@ -106,7 +108,7 @@ void GameObject::CleanData()
 }
 
 
-void GameObject::SetName(char* name)
+void GameObject::SetName(const char* name)
 {
 	//this->name = new char[100];
 	strcpy_s(this->name, 100, name);
@@ -171,10 +173,12 @@ Component* GameObject::AddComponent(ComponentType type)
 		break;
 	case Component_Mesh:
 		mesh = new ComponentMesh(this);
+		mesh->SetUID(uid = App->random->Int());
 		component = mesh;
 		break;
 	case Component_Material:
 		material = new ComponentTexture(this);
+		material->SetUID(uid = App->random->Int());
 		component = material;
 		break;
 	case Component_Camera:
@@ -345,11 +349,6 @@ void GameObject::ShowObjectInspector()
 
 }
 
-void GameObject::AddBoundingBox(const Mesh* mesh)
-{
-	bounding_box.SetNegativeInfinity();
-	bounding_box.Enclose((math::float3 *)mesh->vertices,mesh->num_vertices);
-}
 
 void GameObject::DrawBoundingBox()
 {
@@ -395,7 +394,10 @@ void GameObject::RecalculateBoundingBox()
 
 
 	if (mesh != nullptr)
-		bounding_box.Enclose((const math::float3*)mesh->GetMesh()->vertices, mesh->GetMesh()->num_vertices);
+	{
+		ResourceMesh* res_mesh =  (ResourceMesh*)App->resource_manager->Get(mesh->GetUID());
+		bounding_box.Enclose((const math::float3*)res_mesh->vertices, res_mesh->num_vertices);
+	}
 
 	if (transform != nullptr)
 	{

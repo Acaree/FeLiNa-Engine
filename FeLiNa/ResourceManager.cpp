@@ -7,6 +7,7 @@
 #include "MeshImporter.h"
 #include "MaterialImporter.h"
 #include "ModuleTimeManagement.h"
+#include "SceneSerialization.h"
 #include "PhysFS/physfs.h"
 #include "mmgr/mmgr.h"
 ResourceManager::ResourceManager(Application* app, bool start_enabled ): Module(app,start_enabled)
@@ -24,43 +25,10 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::Start()
 {
-	std::string tmp_string = " ";
-	//to revise
-	while (!App->fs->isDirectory(tmp_string.c_str()))
-	{
-		tmp_string.clear();
-		char* new_file = new char[DEFAULT_BUF_SIZE];
-		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO REVISE
-		{
-			tmp_string = new_file;
-			uint uid = ImportFile(new_file);
-			Resource* resource = App->resource_manager->Get(uid);
+	//Create all resources emptys
+	std::string path;
+	RecursiveResourceFiles("Assets", path);
 
-			std::string path = new_file;
-			path = path.substr(0, path.find_last_of("/") + 1);
-
-			std::string file_name = new_file;
-			file_name = file_name.substr(file_name.find_last_of("/") + 1, file_name.size());
-
-			std::string output_file;
-
-			switch (resource->type)
-			{
-			case RESOURCE_TYPE::RESOURCE_MESH:
-			{
-				MeshSettings* default_settings = new MeshSettings();
-				App->importer_mesh->Import(file_name.c_str(), path.c_str(), output_file, default_settings);
-				RELEASE(default_settings);
-			}
-			break;
-			case RESOURCE_TYPE::RESOURCE_MATERIAL:
-				MaterialSettings * default_settings = new MaterialSettings();
-				App->importer_material->Import(new_file, output_file, default_settings);
-				break;
-			}
-		}
-		RELEASE_ARRAY(new_file);
-	}
 	return true;
 }
 
@@ -93,141 +61,275 @@ uint ResourceManager::Find(const char* file) const
 	return 0;
 }
 
-uint ResourceManager::ImportFile(const char* new_file)
+uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file, const char* library_file)
 {
 	uint ret = 0;
 
-	LOG("Importing file: %s", new_file);
+	RESOURCE_TYPE resource_type = RESOURCE_TYPE::RESOURCE_DEFAULT;
 
-	//Find the type of file from it's extension
-	FILE_TYPE file_type = App->fs->FindTypeFile(new_file);
-
-	//Generate path .meta 
-	std::string meta_file = new_file;
-	meta_file += ".meta";
-
-	//Search if exist meta: are a new file
-	if (!PHYSFS_exists(meta_file.c_str()))
+	if (assets_file != nullptr)
 	{
-		//if not exist and not exist resource create all:
-		Resource* resource;
-		ImporterSettings* settings = nullptr;
+		//Find the type of file from it's extension
+		bool is_imported = false;
 
-		//Create Resource only with path and generate standar .meta.
+		FILE_TYPE file_type = App->fs->FindTypeFile(assets_file);
+		ImporterSettings* settings = nullptr;
+		std::string output_file;
+		std::list<uint> uids;
+
 		switch (file_type)
 		{
 		case MESH_FILE:
-		{
-			LOG("Mesh file detected, creating...");
-			settings = new MeshSettings(); //Mesh Settings are public ImporterSettings
-			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
-			resource->SetExportedFile(new_file);
-			App->importer_mesh->CreateFileMeta(resource,(MeshSettings*)settings); //TO REVISE: we save options as bool, we don't know if work
+			settings = new MeshSettings();
+			resource_type = RESOURCE_TYPE::RESOURCE_MESH;
 			break;
-		}
 		case MATERIAL_FILE:
-		{
-			LOG("Material file detected, creating...");
-			settings = new MaterialSettings(); //Material Settings are public ImporterSettings
-			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MATERIAL);
-			resource->SetExportedFile(new_file);
-			App->importer_material->CreateFileMeta(resource, (MaterialSettings*)settings);
+			settings = new MaterialSettings();
+			resource_type = RESOURCE_TYPE::RESOURCE_MATERIAL;
 			break;
-		}
-		case UKNOWN_FILE:
-			LOG("Can't recognize type of file");
-			break;
+
 		}
 
+		if (library_file != nullptr)
+		{
+			is_imported = true;
+			output_file = library_file;
+		}
+		else
+		{
+
+
+			if (meta_file != nullptr)
+			{
+				switch (file_type)
+				{
+				case MESH_FILE:
+					App->importer_mesh->ReadFileMeta(meta_file, (MeshSettings*)settings);
+					break;
+				case MATERIAL_FILE:
+					App->importer_material->ReadFileMeta(meta_file, (MaterialSettings*)settings);
+					break;
+
+				}
+			}
+			//Get the name and the path
+			std::string name = assets_file;
+			std::string path = assets_file;
+
+			path.erase(name.find_last_of("/") +1, name.size() );
+			name.erase(0, name.find_last_of("/")+1);
+
+		
+
+			switch (file_type)
+			{
+			case MESH_FILE:
+				is_imported = App->importer_mesh->Import(name.c_str(), path.c_str(),output_file, (MeshSettings*)settings);
+				resource_type = RESOURCE_TYPE::RESOURCE_MESH;
+				break;
+			case MATERIAL_FILE:
+				is_imported= App->importer_material->Import(assets_file, output_file,(MaterialSettings*)settings);
+				resource_type = RESOURCE_TYPE::RESOURCE_MATERIAL;
+				break;
+			}
+		}
+
+		//If importation go good we finally create the resources.
+		if (is_imported)
+		{
+			std::string json_file = assets_file;
+			json_file.erase(json_file.find_last_of("."), json_file.size());
+			json_file += ".json";
+
+			App->serialization_scene->GetAllUIDInSerialization(uids,json_file.c_str(), file_type);
+
+			std::list<Resource*> aux_resources;
+			//Create all resources empty
+			for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
+			{
+				Resource* resource = CreateNewResource(resource_type, *it);
+				resource->exported_file = "Library/";
+
+				switch (resource_type)
+				{
+				case RESOURCE_MESH:
+					resource->exported_file += "Meshes/";
+					resource->exported_file += std::to_string(*it);
+					resource->exported_file += ".felina";
+					break;
+				case RESOURCE_MATERIAL:
+					resource->exported_file += "Materials/";
+					resource->exported_file += std::to_string(*it);
+					resource->exported_file += ".dds";
+					break;
+				}
+				resource->file = assets_file;
+
+				aux_resources.push_back(resource);
+			}
+
+			
+
+			if (aux_resources.size() != 0)
+			{
+				FillResources(aux_resources);
+				ret = aux_resources.front()->GetUID();
+			}
+			switch (resource_type)
+			{
+			case RESOURCE_MESH:
+				App->importer_mesh->CreateFileMeta(aux_resources, (MeshSettings*)settings);
+				break;
+			case RESOURCE_MATERIAL:
+				App->importer_material->CreateFileMeta(aux_resources, (MaterialSettings*)settings);
+				break;
+			}
+
+		}
+
+		
 		RELEASE(settings);
 	}
-	else
-	{
-		
-		//if the new file has .meta associate read the meta and add in settings 
-		switch (file_type)
-		{
-		case MESH_FILE:
-		{			
-			MeshSettings* settings = new MeshSettings();
-			App->importer_mesh->ReadFileMeta(meta_file.data(), (MeshSettings*)settings);
-			RELEASE(settings);
-			break;
-		}
-		case MATERIAL_FILE:
-		{
-			MaterialSettings* settings = new MaterialSettings();
-			App->importer_material->ReadFileMeta(meta_file.data(), (MaterialSettings*)settings);
-			RELEASE(settings);
-			break;
-		}
-		default:
-			break;
-		}
 
-	}
-	ret = Find(new_file);
 	return ret;
 }
 
-uint ResourceManager::ImportOwnFile(const char* new_file) {
-	
-	uint uid = Find(new_file);
+void ResourceManager::FillResources(std::list<Resource*> resources)
+{
 
-	if (uid == 0) {
-		Resource* resource = nullptr;
-		FILE_TYPE file_type = App->fs->FindOwnTypeFile(new_file);
-
-		switch (file_type)
+	for (std::list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
+	{
+		FILE_TYPE type = App->fs->FindTypeFile((*it)->file.c_str());
+		
+		switch (type)
 		{
 		case MESH_FILE:
-		{
-			LOG("Mesh file detected, creating...");
-			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MESH);
-			resource->SetExportedFile(new_file);
-			Mesh* mesh = App->importer_mesh->LoadFLN(new_file);
-			memcpy(mesh->felina_path, new_file, DEFAULT_BUF_SIZE);
-			SetResourceData(mesh, resource);
-			
+			App->importer_mesh->LoadFLN((*it)->exported_file.c_str(),(ResourceMesh*)(*it));
 			break;
-		}
 		case MATERIAL_FILE:
-		{
-			LOG("Material file detected, creating...");
-			resource = CreateNewResource(RESOURCE_TYPE::RESOURCE_MATERIAL);
-			resource->SetExportedFile(new_file);
-			Texture* texture = App->importer_material->LoadDDS((char*)new_file); // To revise function not const char*??
-			memcpy(texture->felina_path, new_file, DEFAULT_BUF_SIZE);
-			SetResourceData(texture, resource);
-			
+			//App->importer_material->Load
 			break;
-		}
-		case UKNOWN_FILE:
-			LOG("Can't recognize type of file");
-			break;
-		}
 
-		if (resource != nullptr)
+		}
+	}
+}
+
+void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
+{
+
+	path.append(dir);
+	path.append("/");
+
+	const char** files = App->fs->GetAllFilesFromDir(dir);
+	const char** file;
+
+	for (file = files; *file != nullptr; ++file)
+	{
+		//Recursive for all folders
+		if (App->fs->isDirectory(*file))
 		{
-			//If the resource create and assign her data , call LoadToMemory for bind data or sum the number of loaded
-			resource->LoadToMemory();
-			//Get the uid 
-			uid = resource->GetUID();
+			RecursiveResourceFiles(*file, path);
+
+			//test equivalent to not found
+			uint position = path.find(*file);
+
+			if (position != std::string::npos)
+				path = path.substr(position, path.size());
 		}
 		else
-			uid = 0;
-	}
-	else
-	{
-		LOG("Find file in resources with uid: %i", uid);
+		{
+			std::string extension = *file;
+			extension.erase(0, extension.find_last_of(".")+1);
 
-		//Get the resource that are create and sum loaded+1
-		Resource* resource = Get(uid);
-		resource->LoadToMemory();
-	}
+			if (strcmp(extension.c_str(), "meta") == 0 || strcmp(extension.c_str(), "json") == 0)
+				continue;
 
-	return uid;
+			std::string new_file = path;
+			std::string meta_file = path;
+
+			meta_file += *file;
+			meta_file += ".meta";
+
+			if (!App->fs->ExistFile(meta_file.c_str()))
+			{
+				new_file.append(*file);
+				ImportFile(new_file.c_str());
+
+			}
+			else
+			{
+				//Need take all UID that save in meta files.
+				FILE_TYPE type = App->fs->FindTypeFile(*file);
+				std::list<uint> uids;
+
+				switch (type)
+				{
+				case FILE_TYPE::MESH_FILE:
+					App->serialization_scene->GetAllUIDMeshesInMeta(uids, meta_file.c_str(), FILE_TYPE::MESH_FILE);
+					break;
+				case FILE_TYPE::MATERIAL_FILE:
+					App->serialization_scene->GetAllUIDMeshesInMeta(uids, meta_file.c_str(), FILE_TYPE::MATERIAL_FILE);
+					break;
+				}
+
+				std::string library_file;
+				// TO REVISION THIS WORK FINE?
+
+				bool in_directory = true;
+
+				for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
+				{
+
+					switch (type)
+					{
+					case FILE_TYPE::MESH_FILE:
+						library_file ="Library/Meshes/";
+						library_file += std::to_string(*it);
+						library_file += ".felina";
+						break;
+					case FILE_TYPE::MATERIAL_FILE:
+						library_file = "Library/Materials/";
+						library_file += std::to_string(*it);
+						library_file += ".dds";
+						break;
+					}
+
+
+					if (!App->fs->ExistFile(library_file.c_str()))
+					{
+						in_directory = false;
+						break;
+					}
+
+				}
+				//WE need check this
+				if (in_directory)
+				{
+					/*library_file = *file;
+					library_file.erase(0, library_file.find_last_of("\\") + 1);
+					library_file.erase(library_file.find_last_of("."), library_file.size());*/
+
+					new_file.append(*file);
+
+					if (Find(new_file.c_str())==0)
+					{
+						//In this case its all but resources not created 
+						//ImportFile() Need to change the Import to char file and meta and exported
+						ImportFile(new_file.c_str(),meta_file.c_str(),library_file.c_str());
+					}
+
+				}
+				else
+				{
+					//In this case we have file and meta but don't have the file in library
+					new_file.append(*file);
+					//ImportFile()
+				}
+			}
+		}
+	}
 }
+
 
  Resource* ResourceManager::Get(uint uid)
 {
@@ -241,13 +343,18 @@ uint ResourceManager::ImportOwnFile(const char* new_file) {
 	return res;
 }
 
-Resource* ResourceManager::CreateNewResource(RESOURCE_TYPE type)
+Resource* ResourceManager::CreateNewResource(RESOURCE_TYPE type, uint last_uid)
 {
 	Resource* resource = nullptr;
 
 	if (type != RESOURCE_TYPE::RESOURCE_DEFAULT)
 	{
-		uint uid = App->random->Int();
+		uint uid;
+
+		if (last_uid == 0)
+			uid = App->random->Int();
+		else
+			uid = last_uid;
 
 		switch (type)
 		{

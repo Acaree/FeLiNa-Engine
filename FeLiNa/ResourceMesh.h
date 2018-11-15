@@ -15,12 +15,20 @@ public:
 	bool LoadInMemory();
 	bool EraseInMemory();
 
-	void SetMesh(Mesh* mesh);
-	Mesh* GetMesh() const;
 
-private:
+public:
 
-	Mesh* mesh = nullptr;
+	float* vertices = nullptr;
+	uint num_vertices = 0;
+	uint id_vertices = 0;
+
+	uint* indices = nullptr;
+	uint num_indices = 0;
+	uint id_indices = 0;
+
+	float* uv = nullptr;
+	uint num_uv = 0;
+	uint id_uv = 0;
 
 };
 

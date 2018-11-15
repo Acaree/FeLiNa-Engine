@@ -20,11 +20,11 @@ public:
 	update_status PreUpdate(float dt);
 
 	uint Find(const char* file) const;
-	uint ImportFile(const char* new_file);
-	uint ImportOwnFile(const char* new_file);
+	uint ImportFile(const char* assets_file, const char* meta_file = nullptr, const char* library_file = nullptr);
 	Resource* Get(uint uid);
-	Resource* CreateNewResource(RESOURCE_TYPE type);
-
+	Resource* CreateNewResource(RESOURCE_TYPE type, uint last_uid = 0);
+	void RecursiveResourceFiles(const char* dir, std::string path );
+	void FillResources(std::list<Resource*> resources);
 	template<typename DATA>
 	void SetResourceData(DATA* data, Resource* resource);
 
