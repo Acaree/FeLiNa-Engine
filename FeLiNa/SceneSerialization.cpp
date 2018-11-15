@@ -12,14 +12,11 @@ SceneSerialization::SceneSerialization()
 
 SceneSerialization::~SceneSerialization()
 {
-	/*for (uint i = 0; i < aux_go.size(); ++i)
-	{
-		aux_go[i]->CleanUp();
-		RELEASE(aux_go[i]);
-	}*/
+	RELEASE_ARRAY(save_name_scene);
+
 	aux_go.clear();
 
-	RELEASE_ARRAY(save_name_scene);
+
 
 }
 

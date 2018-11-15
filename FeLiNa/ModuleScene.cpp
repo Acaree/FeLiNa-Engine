@@ -53,20 +53,6 @@ bool ModuleScene::Start()
 	root_object->AddComponent(Component_Transform);
 
 	game_camera = CreateMainCamera();
-	std::string output_file;
-
-
-	//App->importer_material->Import("Assets/Textures/Baker_house.dds", output_file);
-
-	MeshSettings* mesh = new MeshSettings();
-	App->importer_mesh->Import("PenguinMesh.fbx","Assets/", output_file,mesh);
-	
-	
-	//Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Baker_House.felina");
-
-	//App->importer_mesh->Import("Hierarchy.FBX", "Assets/", output_file);
-	//Mesh* new_mesh = App->importer_mesh->LoadFLN("Library/Meshes/Box001.felina");
-
 
 	quadtree = new QuadTree();
 	math::AABB box;

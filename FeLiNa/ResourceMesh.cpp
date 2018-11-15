@@ -10,7 +10,9 @@ ResourceMesh::ResourceMesh(uint uid, RESOURCE_TYPE type) : Resource(uid,type)
 
 ResourceMesh::~ResourceMesh()
 {	
-
+	RELEASE_ARRAY(vertices);
+	RELEASE_ARRAY(indices);
+	RELEASE_ARRAY(uv);
 }
 
 bool ResourceMesh::LoadInMemory()
