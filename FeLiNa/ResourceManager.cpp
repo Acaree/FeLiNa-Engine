@@ -181,8 +181,8 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 				resource->exported_file = assets_file;
 				aux_resources.push_back(resource);
 
-				if (meta_file == nullptr)
-					App->importer_material->CreateFileMeta(aux_resources, (MaterialSettings*)settings);
+				
+				App->importer_material->CreateFileMeta(aux_resources, (MaterialSettings*)settings);
 
 				//FillResources(aux_resources, settings);
 				ret = aux_resources.front()->GetUID();
@@ -385,4 +385,69 @@ Resource* ResourceManager::CreateNewResource(RESOURCE_TYPE type, uint last_uid)
 	}
 
 	return resource;
+}
+
+void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, const char* meta_file)
+{
+	std::list<uint> uids;
+	App->serialization_scene->GetAllUIDMeshesInMeta(uids, asset_file, type);
+
+	std::string library_file;
+	switch (type)
+	{
+	case MESH_FILE:
+
+		for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
+		{
+			Resource* resource = Get(*it);
+			resource->SetInvalidateResource();
+
+			library_file = "Library/";
+			library_file += "Meshes/";
+			library_file += std::to_string(*it);
+			library_file += ".felina";
+
+			App->fs->FileDelete(library_file.c_str());
+
+			
+
+		}
+
+		break;
+	case MATERIAL_FILE:
+
+		for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
+		{
+			Resource* resource = Get(*it);
+			resource->SetInvalidateResource();
+
+			
+			library_file = "Library/";
+			library_file += "Materials/";
+			library_file += std::to_string(*it);
+			library_file += ".dds";
+
+			App->fs->FileDelete(library_file.c_str());
+		}
+
+		break;
+	}
+
+	std::map<uint, Resource*>::iterator tmp_resource;
+
+	for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
+	{
+		tmp_resource = resources.find(*it);
+
+		if (tmp_resource != resources.end())
+		{
+			RELEASE(tmp_resource->second);
+			resources.erase(*it);
+		}
+
+	}
+
+	ImportFile(asset_file,meta_file);
+
+
 }

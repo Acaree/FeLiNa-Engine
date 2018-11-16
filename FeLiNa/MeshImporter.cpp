@@ -146,6 +146,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 
 	if (!invalid_node && node != scene->mRootNode)
 	{
+		//if are a valid node we set the transformation of all last invalid node.
 		go = new GameObject(parent);
 		go->SetName(name.c_str());
 		go->AddComponent(Component_Transform);
@@ -153,6 +154,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 		go->transform->SetRotation(transform->GetRotation());
 		go->transform->SetScale(transform->GetScale());
 
+		//Set default transformation because if node are valid because, because the new game object has all transformations.
 		transform->SetPosition({ 0,0,0 });
 		transform->SetRotation({ 0,0,0, });
 		transform->SetScale({ 1,1,1 });
@@ -373,12 +375,7 @@ void MeshImporter::CreateFileMeta(std::list<Resource*> resources, MeshSettings* 
 	JSON_Object* root_object = json_value_get_object(root_value);
 
 	ResourceMesh* resource = (ResourceMesh*)resources.front();
-
-	PHYSFS_Stat* stat = new PHYSFS_Stat();
-
-	App->fs->GetPhysfsStats(resource->file.c_str(), *stat);
-
-	json_object_set_number(root_object, "Time", stat->modtime);
+	json_object_set_number(root_object, "Time", App->fs->GetLastModificationTime(resource->file.c_str()));
 
 	JSON_Value* array_value = json_value_init_array();
 	JSON_Array* array_uids = json_value_get_array(array_value);
@@ -422,7 +419,7 @@ void MeshImporter::CreateFileMeta(std::list<Resource*> resources, MeshSettings* 
 
 	App->fs->SaveBufferData(buffer, path, size);
 
-	RELEASE(stat);
+	
 	RELEASE_ARRAY(buffer);
 }
 
@@ -620,6 +617,8 @@ void MeshImporter::ShowMeshImport()
 	}
 
 }
+
+
 
 void MeshImporter::RefreshMeshOptions()
 {

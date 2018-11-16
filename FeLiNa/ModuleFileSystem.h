@@ -1,6 +1,7 @@
 #ifndef _MODULEFILESYSTEM_
 #define _MODULEFILESYSTEM_
 
+#include <list>
 #include "Module.h"
 
 enum FILE_TYPE
@@ -17,6 +18,8 @@ class ModuleFileSystem : public Module
 public:
 	ModuleFileSystem(Application* app, bool start_enabled = true);
 	~ModuleFileSystem();
+
+	update_status PreUpdate(float dt);
 
 	FILE_TYPE FindTypeFile(const char* file);
 
@@ -43,9 +46,19 @@ public:
 	void GetPhysfsStats(const char* filename, PHYSFS_Stat& stat );
 	void FreeEnumeratedFiles( const char** dir);
 	bool ExistFile(const char* file); // TO REVISE: REPLACE ALL PHYSFS_EXIST TO THIS FUNCTION
+	uint GetLastModificationTime(const char* dir);
+
+	void GetAllAssetsFiles(const char* dir, std::string path);
+	void CheckAllAssetsFiles();
+
+	void FileDelete(const char* path);
 
 private:
+	std::list<std::string> assets_files;
 	std::string tmp_string;
+
+public:
+	bool refresh_now = false;
 };
 
 

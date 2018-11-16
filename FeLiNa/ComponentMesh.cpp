@@ -42,17 +42,23 @@ void ComponentMesh::DrawInspector()
 		if (uid != 0)
 		{
 			ResourceMesh* resource = (ResourceMesh*)App->resource_manager->Get(uid);
-			
-			ImGui::Text("Refernce counting: %i", resource->loaded);
-		
-			ImGui::Text("Indices: %i", resource->num_indices);
-			ImGui::Text("Vertices: %i", resource->num_vertices);
-			ImGui::Text("Uv's: %i", resource->num_uv);
-			ImGui::Text("Triangles: %i", resource->num_vertices / 3);
+
+			if (resource != nullptr)
+			{
+
+				ImGui::Text("Refernce counting: %i", resource->loaded);
+
+				ImGui::Text("Indices: %i", resource->num_indices);
+				ImGui::Text("Vertices: %i", resource->num_vertices);
+				ImGui::Text("Uv's: %i", resource->num_uv);
+				ImGui::Text("Triangles: %i", resource->num_vertices / 3);
+			}
+			else
+				ImGui::Text("Invalid Mesh");
 		}
 		else
 		{
-			ImGui::Text("INVALID MESH");
+			ImGui::Text("Invalid Mesh");
 		}
 		ImGui::TreePop();
 	}
@@ -72,6 +78,8 @@ void ComponentMesh::OnLoad(JSON_Object* obj)
 	{
 		Resource* resource = App->resource_manager->Get(uid);
 
-		resource->LoadToMemory();
+		if(resource != nullptr)
+			resource->LoadToMemory();
+		
 	}
 }

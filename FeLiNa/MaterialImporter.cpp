@@ -289,11 +289,8 @@ void MaterialImporter::CreateFileMeta(std::list<Resource*> resources, MaterialSe
 		JSON_Value* root_value = json_value_init_object();
 		JSON_Object* root_object = json_value_get_object(root_value);
 
-		PHYSFS_Stat* stat = new PHYSFS_Stat();
-		std::string tmp = res_material->file.c_str();
-		App->fs->GetPhysfsStats(tmp.c_str(), *stat);
-
-		json_object_set_number(root_object, "Time", stat->modtime);
+		ResourceMaterial* resource = (ResourceMaterial*)resources.front();
+		json_object_set_number(root_object, "Time", App->fs->GetLastModificationTime(resource->exported_file.c_str()));
 
 		JSON_Value* array_value = json_value_init_array();
 		JSON_Array* array_uids = json_value_get_array(array_value);
@@ -325,7 +322,7 @@ void MaterialImporter::CreateFileMeta(std::list<Resource*> resources, MaterialSe
 
 		App->fs->SaveBufferData(buffer, path, size);
 
-		RELEASE(stat);
+
 		RELEASE_ARRAY(buffer);
 	}
 }

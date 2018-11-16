@@ -8,7 +8,7 @@
 class Component;
 enum ComponentType;
 struct Mesh;
-
+class Resource;
 class ComponentTransform;
 class ComponentTexture;
 class ComponentMesh;
@@ -79,6 +79,10 @@ public:
 	uint uid = 0;
 
 	GameObject* SearchParentForUID(uint parent_uid);
+	
+	void SetInvalidateResource(const Resource* resource);
+
+public:
 
 	std::vector<GameObject*> childrens;
 	// I think this is best 
