@@ -1,6 +1,7 @@
 #include "ModuleFileSystem.h"
 #include "Application.h"
 #include "ResourceManager.h"
+#include "Resource.h"
 #include "PhysFS/physfs.h"
 #include <string>
 
@@ -525,6 +526,10 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 				if (json_object_get_number(obj2, "type") == 1){
 					int uid = json_object_get_number(obj2, "UID");
+
+					Resource* resource = App->resource_manager->Get(uid);
+					resource->SetInvalidateResource();
+
 					char* temp = new char[DEFAULT_BUF_SIZE];
 					sprintf(temp, "Library/Meshes/%i.felina", uid);
 					remove((const char*)temp);
@@ -533,6 +538,10 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 				else if (json_object_get_number(obj2, "type") == 2) {
 					int uid = json_object_get_number(obj2, "UID");
+
+					Resource* resource = App->resource_manager->Get(uid);
+					resource->SetInvalidateResource();
+
 					char* temp = new char[DEFAULT_BUF_SIZE];
 					sprintf(temp, "Library/Materials/%i.dds", uid);
 					remove((const char*)temp);

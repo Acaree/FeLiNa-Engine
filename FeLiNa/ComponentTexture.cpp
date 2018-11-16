@@ -43,17 +43,26 @@ void ComponentTexture::DrawInspector()
 		{
 			ResourceMaterial* resource = (ResourceMaterial*) App->resource_manager->Get(uid);
 
-			ImGui::Text("Refernce counting: %i", resource->loaded);
+			if (resource != nullptr)
+			{
 
-			ImGui::Text("Texture ID: %i", resource->id_texture);
-			ImGui::Separator();
+				ImGui::Text("Refernce counting: %i", resource->loaded);
 
-			ImGui::Text("Width: %i", resource->widht);
-			ImGui::SameLine();
-			ImGui::Text("Height: %i", resource->height);
+				ImGui::Text("Texture ID: %i", resource->id_texture);
+				ImGui::Separator();
 
-			ImGui::Image((ImTextureID)(resource->id_texture), ImVec2(250, 250));
+				ImGui::Text("Width: %i", resource->widht);
+				ImGui::SameLine();
+				ImGui::Text("Height: %i", resource->height);
 
+				ImGui::Image((ImTextureID)(resource->id_texture), ImVec2(250, 250));
+			}
+			else
+				ImGui::Text("Invalid Texture");
+		}
+		else
+		{
+			ImGui::Text("Invalid Texture");
 		}
 		ImGui::TreePop();
 	}
@@ -72,6 +81,7 @@ void ComponentTexture::OnLoad(JSON_Object* obj)
 	{
 		Resource* resource = App->resource_manager->Get(uid);
 
-		resource->LoadToMemory();
+		if (resource != nullptr)
+			resource->LoadToMemory();
 	}
 }

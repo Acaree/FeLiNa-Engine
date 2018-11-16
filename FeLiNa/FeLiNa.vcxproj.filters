@@ -220,6 +220,9 @@
     <ClCompile Include="ResourceMaterial.cpp">
       <Filter>Modules\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Importer.cpp">
+      <Filter>Modules\Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />

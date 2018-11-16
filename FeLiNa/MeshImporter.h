@@ -64,6 +64,7 @@ public:
 	void CreateFileMeta(std::list<Resource*> resources, MeshSettings* settings);
 	void ReadFileMeta(const char* file, MeshSettings* settings);
 
+
 	void ShowMeshImport();
 	void RefreshMeshOptions();
 

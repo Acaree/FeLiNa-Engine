@@ -408,6 +408,9 @@ void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, 
 			library_file += ".felina";
 
 			App->fs->FileDelete(library_file.c_str());
+
+			
+
 		}
 
 		break;
@@ -428,6 +431,20 @@ void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, 
 		}
 
 		break;
+	}
+
+	std::map<uint, Resource*>::iterator tmp_resource;
+
+	for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
+	{
+		tmp_resource = resources.find(*it);
+
+		if (tmp_resource != resources.end())
+		{
+			RELEASE(tmp_resource->second);
+			resources.erase(*it);
+		}
+
 	}
 
 	ImportFile(asset_file,meta_file);
