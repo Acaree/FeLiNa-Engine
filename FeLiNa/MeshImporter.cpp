@@ -148,20 +148,20 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 	{
 		go = new GameObject(parent);
 		go->SetName(name.c_str());
-	}
-
-	if (node->mNumMeshes > 0)
-	{
 		go->AddComponent(Component_Transform);
 		go->transform->SetPosition(transform->GetPosition());
 		go->transform->SetRotation(transform->GetRotation());
 		go->transform->SetScale(transform->GetScale());
-		go->AddComponent(Component_Mesh);
 
 		transform->SetPosition({ 0,0,0 });
 		transform->SetRotation({ 0,0,0, });
-		transform->SetScale({1,1,1});
-		
+		transform->SetScale({ 1,1,1 });
+	
+	}
+
+	if (node->mNumMeshes > 0)
+	{
+		go->AddComponent(Component_Mesh);
 
 		//Allwais in node
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
