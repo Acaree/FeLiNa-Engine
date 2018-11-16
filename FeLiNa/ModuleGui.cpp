@@ -708,7 +708,12 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 
 		if (ImGui::MenuItem("Delete", NULL, false, true))
 		{
-			if(directory){
+
+			file_focus = dir;
+			file_focus += "/";
+			file_focus += file;
+
+			if(App->fs->isDirectory(file_focus.c_str())){
 				std::string file_path;
 				file_path += dir;
 				file_path += "/";

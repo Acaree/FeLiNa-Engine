@@ -411,24 +411,28 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 		}
 
 		//delete .json
-		remove((const char*)file_path_s.c_str());
+		remove(file_path_s.c_str());
 
 		file_path_s = file_path;
 		file_path_s.append(".meta");
-		remove((const char*)file_path_s.c_str());
+		remove(file_path_s.c_str());
 
 		//delete .meta
-		remove((const char*)file_path_s.c_str());
+		remove(file_path_s.c_str());
 	}
 
 	else if (type == MATERIAL_FILE) {
 
-
+		remove(file_path_s.c_str());
 		file_path_s += ".meta";
 
-		//int uid = App->importer_material->GetUIDofMeta(file_path_s.c_str());
+		int uid = App->importer_material->GetUIDofMeta(file_path_s.c_str());
+		char* temp = new char[DEFAULT_BUF_SIZE];
+		sprintf(temp, "Library/Materials/%i.dds", uid);
 
-		int i = 0;
+		remove(temp);
+
+		RELEASE_ARRAY(temp);
 
 	}
 }

@@ -468,7 +468,10 @@ uint MaterialImporter::GetUIDofMeta(const char* meta)
 			JSON_Value* root_value = json_parse_string(buffer);
 			JSON_Object* root_object = json_value_get_object(root_value);
 
-			ret = json_object_get_number(root_object, "UID MATERIALS");
+			JSON_Array* array_objects;
+			array_objects = json_object_get_array(root_object, "UID MATERIALS");
+
+			ret = json_array_get_number(array_objects, 0);
 			
 
 			json_value_free(root_value);
