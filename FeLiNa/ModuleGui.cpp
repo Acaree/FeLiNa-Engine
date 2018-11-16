@@ -708,13 +708,16 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 
 		if (ImGui::MenuItem("Delete", NULL, false, true))
 		{
-			std::string file_path;
-			file_path += dir;
-			file_path += "/";
-			file_path += file;
-			App->fs->RemoveAllDependencies((char*)file_path.c_str());
-			remove(file_path.c_str());
-
+			if(directory){}
+			
+			else {
+				std::string file_path;
+				file_path += dir;
+				file_path += "/";
+				file_path += file;
+				App->fs->RemoveAllDependencies((char*)file_path.c_str());
+				remove(file_path.c_str());
+			}
 		}
 
 		if (ImGui::MenuItem("Create new folder", NULL, false, true))

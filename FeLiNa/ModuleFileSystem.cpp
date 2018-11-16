@@ -391,11 +391,22 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 				JSON_Object* obj2 = json_array_get_object(components_array, i);
 
-				if (json_object_get_number(obj2, "type") == 1 || json_object_get_number(obj2, "type") == 2) {
-					char* temp = (char*)json_object_get_string(obj2, "path");
+				if (json_object_get_number(obj2, "type") == 1){
+					int uid = json_object_get_number(obj2, "UID");
+					char* temp = new char[DEFAULT_BUF_SIZE];
+					sprintf(temp, "Library/Meshes/%i.felina", uid);
 					remove((const char*)temp);
+					RELEASE_ARRAY(temp);
 				}
-			}
+
+				else if (json_object_get_number(obj2, "type") == 2) {
+					int uid = json_object_get_number(obj2, "UID");
+					char* temp = new char[DEFAULT_BUF_SIZE];
+					sprintf(temp, "Library/Materials/%i.dds", uid);
+					remove((const char*)temp);
+					RELEASE_ARRAY(temp);
+				}
+				}
 
 		}
 
