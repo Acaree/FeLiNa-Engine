@@ -173,12 +173,12 @@ Component* GameObject::AddComponent(ComponentType type)
 		break;
 	case Component_Mesh:
 		mesh = new ComponentMesh(this);
-		mesh->SetUID(uid = App->random->Int());
+		mesh->SetUID(App->random->Int());
 		component = mesh;
 		break;
 	case Component_Material:
 		material = new ComponentTexture(this);
-		material->SetUID(uid = App->random->Int());
+		material->SetUID( App->random->Int());
 		component = material;
 		break;
 	case Component_Camera:

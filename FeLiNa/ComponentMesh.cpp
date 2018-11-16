@@ -67,7 +67,7 @@ void ComponentMesh::OnSave(JSON_Object* obj)
 
 void ComponentMesh::OnLoad(JSON_Object* obj)
 {
-	uid = json_object_get_number(obj, "UID");
+	this->uid = json_object_get_number(obj, "UID");
 	if(uid != 0)
 	{
 		Resource* resource = App->resource_manager->Get(uid);
