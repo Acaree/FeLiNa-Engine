@@ -161,7 +161,7 @@ bool SceneSerialization::LoadScene(char* file_name)
 
 void SceneSerialization::RecursiveSearchChildrens(GameObject* parent)
 {
-	aux_go.clear();
+
 
 	if (parent != App->scene->root_object) {
 
@@ -170,11 +170,14 @@ void SceneSerialization::RecursiveSearchChildrens(GameObject* parent)
 
 	for (uint i = 0; i < parent->GetNumChildren(); ++i)
 	{
-		aux_go.push_back(parent->GetChild(i));
 
 		if (parent->GetChild(i)->GetNumChildren() > 0)
 		{
 			RecursiveSearchChildrens(parent->GetChild(i));
+		}
+		else
+		{
+			aux_go.push_back(parent->GetChild(i));
 		}
 	}
 
@@ -213,7 +216,6 @@ void SceneSerialization::CreateGameObjectHierarchy(std::vector<GameObject*>& aux
 
 void SceneSerialization::ClearActualScene()
 {
-	//App->scene->root_object->CleanData();
 	aux_go.clear();
 	App->scene->SetSelectedGameObject(nullptr);
 }

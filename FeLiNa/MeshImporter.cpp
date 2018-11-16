@@ -92,9 +92,9 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
 		App->serialization_scene->save_name_scene = childrens_go->GetName();
 		App->serialization_scene->SaveScene(childrens_go);
-		
+		App->serialization_scene->ClearActualScene();
 		//RELEASE(childrens_go);
-		//App->serialization_scene->ClearActualScene();
+		
 		//App->serialization_scene->save_name_scene = childrens_go->GetName();
 		//App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
 
@@ -157,6 +157,10 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 		go->transform->SetRotation(transform->GetRotation());
 		go->transform->SetScale(transform->GetScale());
 		go->AddComponent(Component_Mesh);
+
+		transform->SetPosition({ 0,0,0 });
+		transform->SetRotation({ 0,0,0, });
+		transform->SetScale({1,1,1});
 		
 
 		//Allwais in node
