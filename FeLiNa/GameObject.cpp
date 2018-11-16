@@ -297,6 +297,18 @@ void GameObject::ShowObjectHierarchy()
 		ImGui::EndDragDropTarget();
 	}
 
+	if (ImGui::IsItemClicked(0))//Left click
+	{
+		GameObject* go = App->scene->GetSelectedGameObject();
+
+		if (go != nullptr)
+		{
+			go->SetSelected(false);
+		}
+
+		App->scene->SetSelectedGameObject(this);
+		SetSelected(true);
+	}
 
 	if (ImGui::BeginPopupContextItem("Create"))
 	{
