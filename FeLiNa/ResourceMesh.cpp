@@ -46,9 +46,9 @@ bool ResourceMesh::EraseInMemory()
 	glDeleteBuffers(1, (GLuint*) &(id_indices));
 	glDeleteBuffers(1, (GLuint*) &(id_uv));
 
-	RELEASE_ARRAY(vertices);
-	RELEASE_ARRAY(indices);
-	RELEASE_ARRAY(uv);
+	//RELEASE_ARRAY(vertices);
+	//RELEASE_ARRAY(indices);
+	//RELEASE_ARRAY(uv);
 
 	return ret;
 }

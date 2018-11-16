@@ -78,76 +78,74 @@ update_status ModuleGui::Update(float dt)
 
 	ShowEditorMenu();
 
-	if (App->engine_states != ENGINE_STATES::ENGINE_STATE_GAME_MODE)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		{
-			if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-				open_console = !open_console;
-
-			if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-				open_configuration = !open_configuration;
-
-			if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
-				inspector_open = !inspector_open;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-			need_screenshoot = true;
-		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-			App->renderer3D->wire = !App->renderer3D->wire;
-
-
-		ShowAssetsWindow();
-
-		ShowMainMenuBar();
 	
-		if (serialization_save_scene)
-		{
-			ImGui::OpenPopup("Save Scene as:");
-			SaveScene();
-		}
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+			open_console = !open_console;
 
-		if (serialization_load_scene)
-		{
-			ImGui::OpenPopup("Load Scene:");
-			LoadScene();
-		}
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+			open_configuration = !open_configuration;
 
-		if (want_to_rename)
-		{
-			ImGui::OpenPopup("Rename as:");
-			Rename();
-		}
-
-		if (creating_folder)
-		{
-			ImGui::OpenPopup("Folder name:");
-			CreateFolder();
-		}
-
-		if (open_configuration)
-			ShowConfigurationWindow();
-
-		if (open_console)
-			App->console->DrawConsole();
-
-		if (About_active) {
-			ShowAboutWindow();
-		}
-
-		if (App->engine_states != ENGINE_STATES::ENGINE_STATE_GAME_MODE)
-		{
-#ifndef GAME_MODE
-			App->scene->ShowHierarchy();
-
-			if (show_import_settings)
-				ShowImportOptions();
-			else
-				App->scene->ShowInspector();
-#endif		
-		}
+		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+			inspector_open = !inspector_open;
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		need_screenshoot = true;
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		App->renderer3D->wire = !App->renderer3D->wire;
+
+
+	ShowAssetsWindow();
+
+	ShowMainMenuBar();
+
+	if (serialization_save_scene)
+	{
+		ImGui::OpenPopup("Save Scene as:");
+		SaveScene();
+	}
+
+	if (serialization_load_scene)
+	{
+		ImGui::OpenPopup("Load Scene:");
+		LoadScene();
+	}
+
+	if (want_to_rename)
+	{
+		ImGui::OpenPopup("Rename as:");
+		Rename();
+	}
+
+	if (creating_folder)
+	{
+		ImGui::OpenPopup("Folder name:");
+		CreateFolder();
+	}
+
+	if (open_configuration)
+		ShowConfigurationWindow();
+
+	if (open_console)
+		App->console->DrawConsole();
+
+	if (About_active) {
+		ShowAboutWindow();
+	}
+
+
+#ifndef GAME_MODE
+	App->scene->ShowHierarchy();
+
+	if (show_import_settings)
+		ShowImportOptions();
+	else
+		App->scene->ShowInspector();
+#endif		
+
+	
 
 	return update_return;
 }
@@ -465,6 +463,8 @@ void ModuleGui::ShowEditorMenu()
 		App->time_management->PlayGameTime();
 		App->game_states = GAME_STATES::ENGINE_STATE_PLAY;
 		App->engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
+		App->serialization_scene->save_name_scene = "Autosave";
+		App->serialization_scene->SaveScene(App->scene->root_object);
 		App->camera->current_camera = App->scene->game_camera;
 	}
 	ImGui::SameLine();
@@ -479,6 +479,11 @@ void ModuleGui::ShowEditorMenu()
 		App->time_management->PauseGameClock();
 		App->game_states = GAME_STATES::ENGINE_STATE_STOP;
 		App->engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
+	
+		App->scene->root_object->CleanData();
+
+		App->serialization_scene->LoadScene();
+	
 		App->camera->current_camera = App->camera->camera_editor;
 
 	}

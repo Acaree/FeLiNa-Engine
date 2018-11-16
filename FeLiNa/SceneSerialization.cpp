@@ -63,6 +63,8 @@ void SceneSerialization::GetAllUIDMeshesInMeta(std::list<uint>& uids, const char
 
 void SceneSerialization::SaveScene(GameObject* go)
 {
+	aux_go.clear();
+
 	JSON_Value* file_root = json_value_init_array();
 	JSON_Array* go_array = json_value_get_array(file_root);
 
@@ -107,6 +109,7 @@ bool SceneSerialization::LoadScene(char* file_name)
 	bool ret = false;
 
 	char file[DEFAULT_BUF_SIZE];
+
 	strcpy_s(file, DEFAULT_BUF_SIZE, file_name);
 	strcat(file, ".json");
 
@@ -130,6 +133,11 @@ bool SceneSerialization::LoadScene(char* file_name)
 				go->OnLoad(object);
 
 				go_vector.push_back(go);
+
+				if (go->camera != nullptr)
+				{
+					App->scene->game_camera = go->camera;
+				}
 
 			}
 
@@ -221,6 +229,7 @@ void SceneSerialization::CreateGameObjectHierarchy(std::vector<GameObject*>& aux
 
 void SceneSerialization::ClearActualScene()
 {
+	
 	aux_go.clear();
 	App->scene->SetSelectedGameObject(nullptr);
 }

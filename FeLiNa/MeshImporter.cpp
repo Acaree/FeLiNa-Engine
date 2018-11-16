@@ -92,7 +92,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
 		App->serialization_scene->save_name_scene = childrens_go->GetName();
 		App->serialization_scene->SaveScene(childrens_go);
-		App->serialization_scene->ClearActualScene();
+		//App->serialization_scene->ClearActualScene();
 		//RELEASE(childrens_go);
 		
 		//App->serialization_scene->save_name_scene = childrens_go->GetName();
