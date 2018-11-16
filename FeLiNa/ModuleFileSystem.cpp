@@ -423,17 +423,6 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 	else if (type == MATERIAL_FILE) {
 
-		file_path_s.erase(file_path_s.find_last_of("."), file_path_s.size());
-		file_path_s.erase(0,file_path_s.find_last_of("/"));
-		file_path_s.append(".dds");
-
-		char* library_file;
-
-		sprintf_s(library_file, DEFAULT_BUF_SIZE, "Library/Materials/%s",file_path_s.c_str());
-
-		remove((const char*)file_path_s.c_str());
-
-		file_path_s.append(".meta"); //this meta should be generated in assets
 
 	}
 }
@@ -503,4 +492,23 @@ bool ModuleFileSystem::RecursiveFindFileExistInAssets(const char* dir, const cha
 	}
 
 	return ret;
+}
+
+void ModuleFileSystem::DeleteFolderandContainedFiles(const char* folder_to_remove) {
+
+	const char** directory_array = App->fs->GetAllFilesFromDir(folder_to_remove);
+	std::string file_path;
+
+	for (const char** file = directory_array; *file != nullptr; ++file) {
+
+		file_path = folder_to_remove;
+		file_path += *file;
+		App->fs->RemoveAllDependencies((char*)file_path.c_str());
+		remove(file_path.c_str());
+
+	}
+
+	file_path.clear();
+	RemoveDirectory(folder_to_remove);
+
 }

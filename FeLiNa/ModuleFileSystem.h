@@ -25,6 +25,7 @@ public:
 	uint Load(const char* path, char** buffer) const;
 
 	void CreateFolder(const char* new_folder);
+	void DeleteFolderandContainedFiles(const char* folder_to_remove);
 
 	char* SaveFile(char* buffer, uint size, std::string& outputFileName, FILE_TYPE file);
 

@@ -708,7 +708,15 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 
 		if (ImGui::MenuItem("Delete", NULL, false, true))
 		{
-			if(directory){}
+			if(directory){
+				std::string file_path;
+				file_path += dir;
+				file_path += "/";
+				file_path += file;
+				file_path += "/";
+				App->fs->DeleteFolderandContainedFiles(file_path.c_str());
+			
+			}
 			
 			else {
 				std::string file_path;
