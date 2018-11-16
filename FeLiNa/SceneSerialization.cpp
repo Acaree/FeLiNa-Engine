@@ -27,7 +27,12 @@ void SceneSerialization::GetAllUIDMeshesInMeta(std::list<uint>& uids, const char
 	if (file != nullptr)
 	{
 		char* buffer;
-		uint size = App->fs->Load(file, &buffer);
+		std::string tmp = file;
+
+		if(tmp.find(".meta") == std::string::npos)
+			tmp += ".meta";
+		
+		uint size = App->fs->Load(tmp.c_str(), &buffer);
 
 		if (size > 0)
 		{

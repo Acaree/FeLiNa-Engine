@@ -1,4 +1,6 @@
 #include "Resource.h"
+#include "Application.h"
+#include "ModuleScene.h"
 #include "mmgr/mmgr.h"
 
 Resource::Resource(uint uid, RESOURCE_TYPE type)
@@ -63,4 +65,11 @@ uint Resource::CountReferences() const
 void Resource::SetExportedFile(const char* exported_file)
 {
 	this->exported_file = exported_file;
+}
+
+void Resource::SetInvalidateResource()
+{
+	App->scene->root_object->SetInvalidateResource(this);
+
+
 }

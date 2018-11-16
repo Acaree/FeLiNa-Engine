@@ -1,5 +1,6 @@
 #include "ModuleFileSystem.h"
 #include "Application.h"
+#include "ResourceManager.h"
 #include "PhysFS/physfs.h"
 #include <string>
 
@@ -83,10 +84,142 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 	
 }
 
+
 ModuleFileSystem::~ModuleFileSystem()
 {
 	PHYSFS_deinit();
 }
+
+update_status ModuleFileSystem::PreUpdate(float dt)
+{
+	if (refresh_now)
+	{
+		assets_files.clear();
+
+		std::string path;
+		GetAllAssetsFiles("Assets", path);
+
+		if (assets_files.size() > 0)
+		{
+			CheckAllAssetsFiles();
+		}
+
+		refresh_now = false;
+	}
+
+
+	return UPDATE_CONTINUE;
+}
+
+void ModuleFileSystem::CheckAllAssetsFiles()
+{
+	std::string extension;
+	std::string file;
+
+	uint null_position = std::string::npos;
+	uint position = 0;
+	for (std::list<std::string>::const_iterator it = assets_files.begin(); it != assets_files.end(); ++it)
+	{
+		extension = *it;
+		position = extension.find_last_of(".");
+
+		if (position != null_position)
+		{
+			extension.erase(0, position + 1);
+
+			if (strcmp(extension.c_str(), "meta") == 0)
+			{
+				file = *it;
+				position = file.find_last_of(".");
+
+				if (position != null_position)
+				{
+					file.erase(position, file.size());
+
+					if (ExistFile(file.c_str()))
+					{
+						uint mod_time_file = GetLastModificationTime(file.c_str());
+						uint meta_mod_time = App->importer_mesh->GetLastModificationTime((*it).c_str());
+
+						if (mod_time_file != meta_mod_time)
+						{
+							//the original file has overwritten, delete resource and dependency and reimport.
+							FILE_TYPE type = FindTypeFile(file.c_str());
+
+							App->resource_manager->CreateNewResource(type,file.c_str(),(*it).c_str());
+							
+						}
+
+					}
+					else
+					{
+						//not exist original fbx delete all.
+						RemoveAllDependencies((char*)file.c_str());
+					}
+
+				}
+			}
+			else
+			{
+				//if not are a meta we search if exist meta file, if not exist create
+				file = *it;
+				file += ".meta";
+
+				if (!ExistFile(file.c_str()))
+				{
+					//Create meta and import all.
+					App->resource_manager->ImportFile((*it).c_str());
+				}
+
+			}
+
+
+
+		}
+
+	}
+}
+
+void ModuleFileSystem::GetAllAssetsFiles(const char* dir, std::string path)
+{
+
+	path.append(dir);
+	path.append("/");
+
+	const char** files = App->fs->GetAllFilesFromDir(dir);
+	const char** file;
+
+	for (file = files; *file != nullptr; ++file)
+	{
+		//Recursive for all folders
+		if (App->fs->isDirectory(*file))
+		{
+			GetAllAssetsFiles(*file, path);
+
+			//test equivalent to not found
+			uint position = path.find(*file);
+
+			if (position != std::string::npos)
+				path = path.substr(position, path.size());
+		}
+		else
+		{
+			std::string extension = *file;
+			extension.erase(0, extension.find_last_of(".") + 1);
+
+			if (strcmp(extension.c_str(), "json") == 0)
+				continue;
+
+			extension = path;
+			extension += *file;
+
+			assets_files.push_back(extension.data());
+
+		}
+	}
+
+}
+
 
 void ModuleFileSystem::GetPhysfsStats(const char* file, PHYSFS_Stat & stats)
 {
@@ -140,7 +273,6 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 char* ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_file, FILE_TYPE file)
 {
 	
-
 	//COPY NAME
 	char new_name[DEFAULT_BUF_SIZE];
 	sprintf_s(new_name, DEFAULT_BUF_SIZE, output_file.data());
@@ -521,4 +653,19 @@ void ModuleFileSystem::DeleteFolderandContainedFiles(const char* folder_to_remov
 	file_path.clear();
 	RemoveDirectory(folder_to_remove);
 
+}
+
+uint ModuleFileSystem::GetLastModificationTime(const char* dir)
+{
+	return PHYSFS_getLastModTime(dir);
+}
+
+void ModuleFileSystem::FileDelete(const char* path)
+{
+	if (PHYSFS_delete(path))
+	{
+		LOG("FILE DELETED");
+	}
+	else
+		LOG("ERROR: FILE NOT DELETED");
 }

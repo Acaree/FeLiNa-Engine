@@ -26,13 +26,12 @@ public:
 	uint LoadToMemory();
 	uint EraseToMemory();
 	uint CountReferences() const;
+	void SetInvalidateResource();
+
 
 	virtual bool LoadInMemory() = 0;
 	virtual bool EraseInMemory() = 0;
-	/*
-	Save
-	Load
-	*/
+
 public:
 	uint uid = 0;
 	std::string file;

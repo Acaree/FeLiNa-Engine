@@ -527,6 +527,10 @@ void ModuleGui::ShowAssetsWindow()
 
 	if (ImGui::Begin("Assets", false, flags))
 	{
+		if (ImGui::Button("Refreash Assets"))
+		{
+			App->fs->refresh_now = true;
+		}
 		if (ImGui::TreeNodeEx("Assets"))
 		{
 			RecurssiveShowAssets("Assets");

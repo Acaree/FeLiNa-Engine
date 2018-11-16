@@ -9,6 +9,7 @@
 #include "ModuleRenderer3D.h"
 #include "Quadtree.h"
 #include "ResourceManager.h"
+#include "Resource.h"
 #include "ResourceMesh.h"
 #include "ComponentTexture.h"
 #include "ComponentCamera.h"
@@ -550,5 +551,34 @@ void GameObject::DeleteChildren(GameObject* go)
 
 }
 
+void GameObject::SetInvalidateResource(const Resource* resource)
+{
+	if (resource != nullptr)
+	{
+
+		if (mesh != nullptr)
+		{
+			if (mesh->GetUID() == resource->uid)
+			{
+				mesh->SetUID(0);
+			}
+		}
+
+		if (material != nullptr)
+		{
+			if (material->GetUID() == resource->uid)
+			{
+				material->SetUID(0);
+			}
+		}
+
+		for (uint i = 0; i < childrens.size(); ++i)
+		{
+			childrens[i]->SetInvalidateResource(resource);
+		}
+
+	}
+
+}
 
 

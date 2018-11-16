@@ -23,13 +23,17 @@ public:
 	uint ImportFile(const char* assets_file, const char* meta_file = nullptr, const char* library_file = nullptr);
 	Resource* Get(uint uid);
 	Resource* CreateNewResource(RESOURCE_TYPE type, uint last_uid = 0);
+	void CreateNewResource(FILE_TYPE type, const char* asset_file, const char* meta_file);
 	void RecursiveResourceFiles(const char* dir, std::string path );
 	void FillResources(std::list<Resource*> resources,ImporterSettings* settings = nullptr);
+
+
 	template<typename DATA>
 	void SetResourceData(DATA* data, Resource* resource);
 
 private:
-	
+
+
 	std::map<uint, Resource*> resources;
 	float refresh_time = 0.0F;
 	float time_to_refresh = 200.0F;
