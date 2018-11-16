@@ -532,7 +532,8 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 					char* temp = new char[DEFAULT_BUF_SIZE];
 					sprintf(temp, "Library/Meshes/%i.felina", uid);
-					remove((const char*)temp);
+					FileDelete((const char*)temp);
+					
 					RELEASE_ARRAY(temp);
 				}
 
@@ -544,7 +545,7 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 					char* temp = new char[DEFAULT_BUF_SIZE];
 					sprintf(temp, "Library/Materials/%i.dds", uid);
-					remove((const char*)temp);
+					FileDelete((const char*)temp);
 					RELEASE_ARRAY(temp);
 				}
 				}
@@ -552,26 +553,26 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 		}
 
 		//delete .json
-		remove(file_path_s.c_str());
+		FileDelete(file_path_s.c_str());
 
 		file_path_s = file_path;
 		file_path_s.append(".meta");
-		remove(file_path_s.c_str());
+		FileDelete(file_path_s.c_str());
 
 		//delete .meta
-		remove(file_path_s.c_str());
+		FileDelete(file_path_s.c_str());
 	}
 
 	else if (type == MATERIAL_FILE) {
 
-		remove(file_path_s.c_str());
+		FileDelete(file_path_s.c_str());
 		file_path_s += ".meta";
 
 		int uid = App->importer_material->GetUIDofMeta(file_path_s.c_str());
 		char* temp = new char[DEFAULT_BUF_SIZE];
 		sprintf(temp, "Library/Materials/%i.dds", uid);
 
-		remove(temp);
+		FileDelete(temp);
 
 		RELEASE_ARRAY(temp);
 
@@ -655,12 +656,13 @@ void ModuleFileSystem::DeleteFolderandContainedFiles(const char* folder_to_remov
 		file_path = folder_to_remove;
 		file_path += *file;
 		App->fs->RemoveAllDependencies((char*)file_path.c_str());
-		remove(file_path.c_str());
+		FileDelete(file_path.c_str());
 
 	}
 
 	file_path.clear();
-	RemoveDirectory(folder_to_remove);
+	//TO REVISE THIS WORK WITH FILEDELETE() ??
+	FileDelete(folder_to_remove);
 
 }
 

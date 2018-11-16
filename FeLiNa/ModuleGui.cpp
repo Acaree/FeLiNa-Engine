@@ -364,7 +364,7 @@ void ModuleGui::SaveScene()
 		ImGui::Text("Scene will be save in: ");
 		ImGui::Separator();
 
-		ImGui::Text("Game/");//TO Changes
+		ImGui::Text("Assets/");//TO Changes
 
 		static char save_name[50];
 		ImGui::InputText("###scene_name", save_name, 50);//default buffer size?¿
@@ -398,7 +398,7 @@ void ModuleGui::LoadScene()
 		ImGui::Text("Scene will be searcher in: ");
 		ImGui::Separator();
 
-		ImGui::Text("Game/");//TO Changes
+		ImGui::Text("Assets/");//TO Changes
 
 		static char name_load_scene[50]; // Same that saveScene, best default buf size??
 
@@ -738,7 +738,7 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 				file_path += "/";
 				file_path += file;
 				App->fs->RemoveAllDependencies((char*)file_path.c_str());
-				remove(file_path.c_str());
+				App->fs->FileDelete(file_path.c_str());
 			}
 		}
 
