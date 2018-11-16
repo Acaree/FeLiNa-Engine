@@ -424,6 +424,12 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 	else if (type == MATERIAL_FILE) {
 
 
+		file_path_s += ".meta";
+
+		//int uid = App->importer_material->GetUIDofMeta(file_path_s.c_str());
+
+		int i = 0;
+
 	}
 }
 

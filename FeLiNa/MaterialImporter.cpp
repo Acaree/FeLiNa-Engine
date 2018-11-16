@@ -452,3 +452,31 @@ void MaterialImporter::GetImportSettingsInMeta(const char* meta, MaterialSetting
 	}
 
 }
+
+uint MaterialImporter::GetUIDofMeta(const char* meta)
+{
+
+	uint ret = 0;
+
+	if (meta != nullptr)
+	{
+		char* buffer;
+		uint size = App->fs->Load(meta, &buffer);
+
+		if (size > 0)
+		{
+			JSON_Value* root_value = json_parse_string(buffer);
+			JSON_Object* root_object = json_value_get_object(root_value);
+
+			ret = json_object_get_number(root_object, "UID MATERIALS");
+			
+
+			json_value_free(root_value);
+		}
+
+		RELEASE_ARRAY(buffer);
+
+	}
+
+	return ret;
+}

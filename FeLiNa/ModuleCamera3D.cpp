@@ -256,7 +256,11 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 
 	if (selected_object != nullptr)
 	{
-		App->scene->GetSelectedGameObject()->SetSelected(false);
+		GameObject* go =App->scene->GetSelectedGameObject();
+		if (go != nullptr)
+		{
+			go->SetSelected(false);
+		}
 		selected_object->SetSelected(true);
 		App->scene->SetSelectedGameObject(selected_object);
 	}

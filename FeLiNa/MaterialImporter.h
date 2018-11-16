@@ -40,6 +40,7 @@ public:
 
 	void CreateFileMeta(std::list<Resource*> resources,  MaterialSettings* settings);
 	void ReadFileMeta(const char* file,  MaterialSettings* settings);
+	uint GetUIDofMeta(const char* meta);
 	void GetImportSettingsInMeta(const char* meta, MaterialSettings* material);
 
 	bool Load(const char* file_name, ResourceMaterial* output_texture, const MaterialSettings* settings);
