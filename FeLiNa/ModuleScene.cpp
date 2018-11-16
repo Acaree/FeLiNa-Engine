@@ -154,7 +154,7 @@ void ModuleScene::ShowHierarchy()
 	window_flags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
 
 	ImGui::Begin("Hierarchy", &hierarchy_open ,window_flags);
-	
+
 	for (uint i = 0; i < root_object->GetNumChildren(); ++i)
 	{
 		ImGui::PushID(i);
@@ -176,6 +176,8 @@ void ModuleScene::ShowHierarchy()
 		}
 		ImGui::EndPopup();
 	}
+
+	
 
 
 	ImGui::End();
@@ -292,6 +294,7 @@ void ModuleScene::UpdateStaticObjectsVector()
 	}
 
 }
+
 
 void ModuleScene::DeleteGameObjects(GameObject* go)
 {

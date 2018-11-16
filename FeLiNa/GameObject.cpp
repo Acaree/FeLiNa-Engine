@@ -269,18 +269,34 @@ void GameObject::ShowObjectHierarchy()
 	if (ImGui::TreeNodeEx(name, flags))
 		node_open = true;
 
-	if (ImGui::IsItemClicked(0))//Left click
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
-		GameObject* go = App->scene->GetSelectedGameObject();
+		ImGui::SetDragDropPayload("Hierarchy_nodes", this, sizeof(GameObject));
+		ImGui::EndDragDropSource();
+		
+		if (!ImGui::IsMouseDragging()) {
+			GameObject* go = App->scene->GetSelectedGameObject();
 
-		if (go != nullptr)
-		{
-			go->SetSelected(false);
+			if (go != nullptr)
+			{
+				go->SetSelected(false);
+			}
+
+			App->scene->SetSelectedGameObject(this);
+			SetSelected(true);
 		}
-
-		App->scene->SetSelectedGameObject(this);
-		SetSelected(true);
 	}
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Hierarchy_nodes"))
+		{
+			int i = 0;
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+
 	if (ImGui::BeginPopupContextItem("Create"))
 	{
 		ShowGameObjectOptions();
@@ -299,6 +315,8 @@ void GameObject::ShowObjectHierarchy()
 
 		ImGui::TreePop();
 	}
+
+	
 	
 }
 
