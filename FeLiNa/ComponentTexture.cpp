@@ -80,7 +80,6 @@ void ComponentTexture::DrawInspector()
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
 				{
 					std::string payload_n = (char*)payload->Data;
-					uint payloa6d_n = *(uint*)payload->Data;
 					payload_n.erase(payload_n.find_first_of("."), payload_n.size());
 					Resource* res = App->resource_manager->Get(std::atoi(payload_n.c_str()));
 

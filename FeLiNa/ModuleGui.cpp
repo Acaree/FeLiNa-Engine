@@ -632,32 +632,33 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				ImGui::TreePop();
 			}
 
-		}
-
-		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-		{
-			ImGui::SetDragDropPayload("Assets_Nodes", *file, strlen(*file));
-			ImGui::EndDragDropSource();
-		}
-
-
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 			{
-				if (App->fs->isDirectory(*file)) {
-					file_focus = dir;
-					file_focus += "/";
-					file_focus += *file;
-
-					file_focus += file_dragging.substr(file_dragging.find_last_of("/"), file_dragging.size());
-
-					MoveFile(file_dragging.c_str(), file_focus.c_str());
-
-					//RELEASE(payload);
-				}
+				ImGui::SetDragDropPayload("Assets_Nodes", *file, strlen(*file));
+				ImGui::EndDragDropSource();
 			}
-			ImGui::EndDragDropTarget();
+
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
+				{
+					if (App->fs->isDirectory(*file)) {
+						file_focus = dir;
+						file_focus += "/";
+						file_focus += *file;
+
+						file_focus += file_dragging.substr(file_dragging.find_last_of("/"), file_dragging.size());
+
+						MoveFile(file_dragging.c_str(), file_focus.c_str());
+
+						//RELEASE(payload);
+					}
+				}
+				ImGui::EndDragDropTarget();
+		}
+
+	
 		}
 
 	}
