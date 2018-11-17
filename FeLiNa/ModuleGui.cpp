@@ -592,7 +592,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 			}
 
 			
-			ShowAssetsOptions(*file, dir);
+			//ShowAssetsOptions(*file, dir);
 		}
 		else
 		{
@@ -684,7 +684,7 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 	{
 		bool directory = App->fs->isDirectory(file);
 
-		if (ImGui::MenuItem("See Import Options", NULL, false, !directory))
+		if (ImGui::MenuItem("See Import Options", NULL, false, true))
 		{
 			//To Revise
 
