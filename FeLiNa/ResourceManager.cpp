@@ -29,22 +29,14 @@ bool ResourceManager::Start()
 	std::string path;
 	RecursiveResourceFiles("Assets", path);
 
+	UpdateListUIDResources();
+
 	return true;
 }
 
 update_status ResourceManager::PreUpdate(float dt)
 {
-	refresh_time += dt;
-	if (refresh_time >= time_to_refresh )
-	{
-		// FOR SEARCH META: when we implemented, testing with .felina and works pecfect
-		char* new_file = new char[DEFAULT_BUF_SIZE];
-		if (App->fs->FindNewAssetsFiles("Assets/", new_file))// TO Change -> assets a Macro?
-			ImportFile(new_file);
 
-		RELEASE_ARRAY(new_file);
-		refresh_time = 0.0F;
-	}
 
 	return UPDATE_CONTINUE;
 }
@@ -280,7 +272,6 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 				}
 
 				std::string library_file;
-				// TO REVISION THIS WORK FINE?
 
 				bool in_directory = true;
 
@@ -293,11 +284,13 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 						library_file ="Library/Meshes/";
 						library_file += std::to_string(*it);
 						library_file += ".felina";
+						resources_meshes.push_back(*it);
 						break;
 					case FILE_TYPE::MATERIAL_FILE:
 						library_file = "Library/Materials/";
 						library_file += std::to_string(*it);
 						library_file += ".dds";
+						resources_materials.push_back(*it);
 						break;
 					}
 
@@ -449,5 +442,75 @@ void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, 
 
 	ImportFile(asset_file,meta_file);
 
+
+}
+
+void ResourceManager::UpdateListUIDResources()
+{
+	
+	for (std::vector<uint>::iterator it = resources_meshes.begin(); it != resources_meshes.end(); ++it)
+	{
+		if (resources.find(*it) == resources.end())
+		{
+			resources_meshes.erase(it);
+			it = resources_meshes.begin();
+		}
+	}
+
+	for (std::vector<uint>::iterator it = resources_materials.begin(); it != resources_materials.end(); ++it)
+	{
+		if (resources.find(*it) == resources.end())
+		{
+			resources_materials.erase(it);
+			it = resources_materials.begin();
+		}
+	}
+
+
+	for (std::map<uint, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		switch ((*it).second->type)
+		{
+		case RESOURCE_MESH:
+		{
+			bool find = false;
+			for (uint i = 0; i < resources_meshes.size(); ++i)
+			{
+				if (resources_meshes[i] == (*it).first)
+				{
+					find = true;
+					break;
+				}
+			}
+
+			if (!find)
+			{
+				resources_meshes.push_back((*it).first);
+			}
+
+
+			break;
+		}
+		case RESOURCE_MATERIAL:
+
+			bool find = false;
+			for (uint i = 0; i < resources_materials.size(); ++i)
+			{
+				if (resources_materials[i] == (*it).first)
+				{
+					find = true;
+					break;
+				}
+			}
+
+			if (!find)
+			{
+				resources_materials.push_back((*it).first);
+			}
+
+
+			break;
+		}
+	}
 
 }
