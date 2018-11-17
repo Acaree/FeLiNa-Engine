@@ -407,13 +407,16 @@ void ModuleGui::LoadScene()
 		
 
 		ImGui::InputText("###scene_name", name_load_scene, 50, flag);//default buffer size?¿
-
+		ImGui::SameLine();
+		ImGui::Text(".json");
 		ImGui::Text("If you click LOAD the current scene will be deleted ");
 		if (ImGui::Button("Load", ImVec2(100, 0)))
 		{
+			std::string file = "Assets/";
+			file += name_load_scene;
 
 			App->serialization_scene->ClearActualScene();
-			App->serialization_scene->LoadScene(name_load_scene);
+			App->serialization_scene->LoadScene((char*)file.c_str());
 			ImGui::CloseCurrentPopup();
 
 			// TO REVISE: clear and load with path
