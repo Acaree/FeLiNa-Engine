@@ -4,8 +4,11 @@
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+
+#include "Importer.h"
 #include "MeshImporter.h"
 #include "MaterialImporter.h"
+
 #include "ModuleTimeManagement.h"
 #include "SceneSerialization.h"
 #include "PhysFS/physfs.h"

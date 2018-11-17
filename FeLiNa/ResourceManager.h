@@ -3,12 +3,14 @@
 
 #include "Module.h"
 #include "Globals.h"
-
+#include <list>
 #include <map>
 
 class Resource;
 enum RESOURCE_TYPE;
-struct ImportSettings;
+struct ImporterSettings;
+enum FILE_TYPE;
+
 class ResourceManager: public Module 
 {
 public:

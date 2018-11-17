@@ -37,6 +37,9 @@ public:
 	void OnLoad(JSON_Object* obj);
 
 	void ShowGuizmos();
+
+	
+
 private:
 
 

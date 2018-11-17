@@ -6,10 +6,9 @@
 #include "MathGeoLib/Algorithm/Random/LCG.h"
 #include <list>
 #include <vector>
-#include "MaterialImporter.h"
-#include "MeshImporter.h"
 
-
+class MaterialImporter;
+class MeshImporter;
 class ModuleHardware;
 class ModuleWindow;
 class ModuleInput;
@@ -35,7 +34,7 @@ enum GAME_STATES
 	ENGINE_STATE_PAUSE,
 	ENGINE_STATE_TICK,
 	ENGINE_STATE_STOP,
-	ENGINE_STATE_DEFAULT//Advance.
+	ENGINE_STATE_DEFAULT
 };
 
 
@@ -53,7 +52,6 @@ public:
 	ModuleConsole* console;
 	ModuleFileSystem* fs;
 	ModuleTimeManagement* time_management;
-	//IMPORTERS
 	MaterialImporter* importer_material ;
 	MeshImporter* importer_mesh;
 	SceneSerialization* serialization_scene;
@@ -61,7 +59,6 @@ public:
 
 	char* app_name = nullptr;
 	char* organization = nullptr;
-
 	int FPS_cap = 60;
 
 	bool vsync = false;
@@ -70,11 +67,10 @@ public:
 	ENGINE_STATES engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 	GAME_STATES game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
 
-
 	PerfTimer	ms_timer;
 
 private:
-	char* name;
+	char* name = nullptr;
 	
 	float	dt = 0.0f;
 	double last_FPS = 0.0f;

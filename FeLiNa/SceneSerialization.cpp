@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
+#include "Component.h"
 
 #include "mmgr/mmgr.h"
 

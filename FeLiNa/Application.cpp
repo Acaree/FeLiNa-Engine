@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "MaterialImporter.h"
+#include "MeshImporter.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleHardware.h"
 #include "ModuleWindow.h"
@@ -42,37 +44,24 @@ Application::Application()
 	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
-	
-	
 	fs = new ModuleFileSystem(this);
 	
-
-	// The order of calls is very important!
-	// Modules will Init() Start() and Update in this order
-	// They will CleanUp() in reverse order
-
 	// Main Modules
-	
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	
-
 	AddModule(fs);
 	AddModule(resource_manager);
 	// Scenes
-
 	AddModule(scene);
 
 #ifndef GAME_MODE
 	AddModule(console);
 	AddModule(hardware);
-	AddModule(time_management); // this good?
+	AddModule(time_management);
 	AddModule(gui);
-#endif // !1
+#endif 
 
-	
-	// Renderer last!
 	AddModule(renderer3D);
 }
 
@@ -90,11 +79,11 @@ Application::~Application()
 	RELEASE(random);
 #endif // !GAME_MODE
 
-	//TO CHANGE THIS DELETE:
-
 	RELEASE(serialization_scene);
 	RELEASE_ARRAY(name);
 	RELEASE_ARRAY(app_name);
+	RELEASE_ARRAY(organization);
+	RELEASE_ARRAY(name);
 	RELEASE_ARRAY(organization);
 }
 

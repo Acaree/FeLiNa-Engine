@@ -7,6 +7,7 @@
 #include "ModuleInput.h"
 #include "ModuleCamera3D.h"
 #include "GameObject.h"
+#include "ModuleWindow.h"
 #include "ComponentCamera.h"
 #include "mmgr/mmgr.h"
 ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position, math::float3 rotation, math::float3 scale): Component(parent)
@@ -240,23 +241,39 @@ void ComponentTransform::ShowGuizmos()
 
 	ImGuizmo::Manipulate(App->camera->current_camera->GetViewMatrix(), App->camera->current_camera->GetProjectionMatrix(), mCurrentGizmoOperation, ImGuizmo::WORLD, matrix.ptr());
 
-	matrix.Transpose();
-
-	if (ImGuizmo::IsUsing() && parent->static_object == false)
+	if (ImGuizmo::IsUsing())
 	{
-		if (mCurrentGizmoOperation == ImGuizmo::SCALE) {
 
-			math::Quat despreciable_rot;
-			matrix.Decompose(position, despreciable_rot, scale);
-			UpdateMatrix();
+		matrix.Transpose();
 
+		if (ImGuizmo::IsUsing() && parent->static_object == false)
+		{
+			if (mCurrentGizmoOperation == ImGuizmo::SCALE) {
+
+				math::Quat despreciable_rot;
+				matrix.Decompose(position, despreciable_rot, scale);
+				UpdateMatrix();
+
+			}
+
+			else {
+
+				if (parent->GetParent() == nullptr)
+				{
+					local_matrix = matrix;
+				}
+				else
+				{
+					local_matrix = parent->GetParent()->transform->GetGlobalMatrix().Inverted() * matrix;
+					local_matrix.Decompose(position, quat_rotation, scale);
+					euler_angles = quat_rotation.ToEulerXYZ() * RADTODEG;
+				}
+
+
+				UpdateMatrix();
+			}
 		}
-
-		else {
-			matrix.Decompose(position, quat_rotation, scale);
-			euler_angles = quat_rotation.ToEulerXYZ() * RADTODEG;
-			UpdateMatrix();
-		}
+		
 	}
 
 }

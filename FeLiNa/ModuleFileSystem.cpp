@@ -1,6 +1,8 @@
 #include "ModuleFileSystem.h"
 #include "Application.h"
 #include "ResourceManager.h"
+#include "MaterialImporter.h"
+#include "MeshImporter.h"
 #include "Resource.h"
 #include "PhysFS/physfs.h"
 #include <string>
