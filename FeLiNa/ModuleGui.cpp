@@ -15,6 +15,7 @@
 #include "ModuleCamera3D.h"
 #include "Resource.h"
 #include "ResourceManager.h"
+#include "ComponentCamera.h"
 #include "mmgr/mmgr.h"
 #endif
 
@@ -268,8 +269,6 @@ void ModuleGui::ShowConfigurationWindow()
 	ImGuiWindowFlags window_flags = 0;
 
 	window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
-	window_flags |= ImGuiWindowFlags_NoCollapse;
-	window_flags |= ImGuiWindowFlags_NoFocusOnAppearing;
 	
 
 	ImGui::Begin("Configuration",&open_configuration, window_flags);
@@ -294,6 +293,11 @@ void ModuleGui::ShowConfigurationWindow()
 	if (ImGui::CollapsingHeader("Input"))
 	{
 		App->input->DrawInputConfiguration();
+	}
+
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		App->camera->camera_editor->DrawInspector();
 	}
 
 	if (ImGui::CollapsingHeader("Modules Update Time"))
