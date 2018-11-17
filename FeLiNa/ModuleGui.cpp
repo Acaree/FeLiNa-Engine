@@ -479,6 +479,8 @@ void ModuleGui::ShowEditorMenu()
 		App->game_states = GAME_STATES::ENGINE_STATE_STOP;
 		App->engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 	
+		
+
 		App->scene->root_object->CleanData();
 
 		App->serialization_scene->LoadScene();

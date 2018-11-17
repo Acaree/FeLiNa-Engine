@@ -90,13 +90,16 @@ void GameObject::CleanData()
 {
 	for (std::vector<GameObject*>::const_iterator it = childrens.begin(); it != childrens.end(); ++it)
 	{
-		(*it)->CleanUp();
+		(*it)->CleanData();
 	}
 	childrens.clear();
 
 	//if (name != nullptr)
 		//RELEASE_ARRAY(name);
 
+
+	if (transform != nullptr)
+		RELEASE(transform);
 	if (mesh != nullptr)
 		RELEASE(mesh);
 	if (material != nullptr)
@@ -373,7 +376,6 @@ void GameObject::ShowObjectInspector()
 
 		ImGui::TreePop();
 	}
-
 
 	for (int i = 0; i < components.size(); ++i)
 	{
