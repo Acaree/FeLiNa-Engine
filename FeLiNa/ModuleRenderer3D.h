@@ -6,7 +6,7 @@
 
 #define MAX_LIGHTS 8
 
-class ImageRecorder;
+
 class ComponentMesh;
 class Component;
 class GameObject;
@@ -59,11 +59,7 @@ private:
 	bool texture2D = true;
 	bool line_smooth = false;
 	bool polygon_smooth = false;
-	
-	ImageRecorder* img = nullptr;
 
-	//Checkers
-	uint checker_id = 0;
 };
 
 #endif

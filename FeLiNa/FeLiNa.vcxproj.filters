@@ -175,9 +175,6 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Containers</Filter>
     </ClCompile>
-    <ClCompile Include="ImageRecorder.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="ImGuizmo\ImSequencer.cpp">
       <Filter>Tools\ImGuizmo</Filter>
     </ClCompile>
@@ -509,9 +506,6 @@
     </ClInclude>
     <ClInclude Include="Quadtree.h">
       <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageRecorder.h">
-      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="ImGuizmo\ImSequencer.h">
       <Filter>Tools\ImGuizmo</Filter>

@@ -1,4 +1,3 @@
-
 #ifndef GAME_MODE
 #include "ModuleGui.h"
 #include "Application.h"
@@ -92,8 +91,6 @@ update_status ModuleGui::Update(float dt)
 			inspector_open = !inspector_open;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		need_screenshoot = true;
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 		App->renderer3D->wire = !App->renderer3D->wire;
 
@@ -174,11 +171,6 @@ void ModuleGui::ShowMainMenuBar()
 	{
 		if (ImGui::BeginMenu("Menu"))
 		{
-
-			if (ImGui::MenuItem("Take Screenshot", "1", false, true))
-			{
-				need_screenshoot = true;
-			}
 
 			if(ImGui::MenuItem("Save Scene", NULL, false, true))
 			{

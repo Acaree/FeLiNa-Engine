@@ -15,7 +15,6 @@
 #include "ModuleGui.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
-#include "ImageRecorder.h"
 #include "Quadtree.h"
 #include "mmgr/mmgr.h"
 #endif
@@ -37,9 +36,6 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-#ifndef GAME_MODE
-	img = new ImageRecorder(App->window->screen_surface->w, App->window->screen_surface->h);
-#endif
 
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
@@ -234,14 +230,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		
 	}
 
-	//Screenshot and gif-> TO REVISION NOT WORK
-	if (App->gui->need_screenshoot)
-	{
-		img->TakeScreenshoot();
-		App->gui->need_screenshoot = false;
-	}
-
-	img->TakeScreenGif(dt);
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -267,7 +255,6 @@ bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
 
-	RELEASE(img);
 	SDL_GL_DeleteContext(context);
 	
 	return true;

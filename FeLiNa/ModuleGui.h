@@ -52,7 +52,6 @@ public:
 	bool close_program = false;
 	bool open_configuration = false;
 	bool open_console = false;
-	bool need_screenshoot = false; 
 	bool inspector_open = false;
 	bool show_import_settings = false;
 
