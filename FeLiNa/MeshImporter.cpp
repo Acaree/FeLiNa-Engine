@@ -536,7 +536,7 @@ void MeshImporter::GetMeshSettingsFromMeta(const char* file, MeshSettings* setti
 
 		if(size > 0)
 		{
-			JSON_Value* root_value = json_parse_file(buffer);
+			JSON_Value* root_value = json_parse_string(buffer);
 			JSON_Object* root_object = json_value_get_object(root_value);
 
 			JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
@@ -576,8 +576,11 @@ void MeshImporter::ShowMeshImport()
 
 	ImGui::Text(" Import options for: %s ###importmesh", App->gui->file_focus.c_str());
 
+	
+
 	ImGui::Text("Procces:");
 	ImGui::SameLine();
+
 	if (ImGui::Combo("###procces2", &current_procces, process_elements, ((int)(sizeof(process_elements) / sizeof(*process_elements)))))
 	{
 		mesh_settings->process_node = (MeshSettings::ProcessNode)current_procces;
