@@ -730,10 +730,6 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 		if (ImGui::MenuItem("Delete", NULL, false, true))
 		{
 
-			file_focus = dir;
-			file_focus += "/";
-			file_focus += file;
-
 			if(App->fs->isDirectory(file_focus.c_str())){
 				std::string file_path;
 				file_path += dir;
@@ -745,12 +741,9 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 			}
 			
 			else {
-				std::string file_path;
-				file_path += dir;
-				file_path += "/";
-				file_path += file;
-				App->fs->RemoveAllDependencies((char*)file_path.c_str());
-				App->fs->FileDelete(file_path.c_str());
+				
+				App->fs->RemoveAllDependencies((char*)file_focus.c_str());
+				App->fs->FileDelete(file_focus.c_str());
 			}
 		}
 
