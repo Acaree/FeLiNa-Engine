@@ -39,6 +39,8 @@ void ComponentMesh::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Mesh"))
 	{
+		static bool want_mesh = false;
+
 		if (uid != 0)
 		{
 			ResourceMesh* resource = (ResourceMesh*)App->resource_manager->Get(uid);
@@ -54,12 +56,45 @@ void ComponentMesh::DrawInspector()
 				ImGui::Text("Triangles: %i", resource->num_vertices / 3);
 			}
 			else
+			{
 				ImGui::Text("Invalid Mesh");
+				want_mesh = true;
+			}
 		}
 		else
 		{
-			ImGui::Text("Invalid Mesh");
+			ImGui::Text("No Mesh");
+			
+			want_mesh = true;
 		}
+
+		if (want_mesh)
+		{
+			ImGui::Button("Drag Mesh Here");
+
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
+				{
+					std::string payload_n = (char*)payload->Data;
+					payload_n.erase(payload_n.find_first_of("."), payload_n.size());
+					Resource* res = App->resource_manager->Get(std::atoi(payload_n.c_str()));
+
+					if (res != nullptr && res->type == RESOURCE_MESH)
+					{
+						uid = res->uid;
+						res->LoadToMemory();
+						want_mesh = false;
+					}
+
+				}
+				ImGui::EndDragDropTarget();
+			}
+		}
+
+
+
 		ImGui::TreePop();
 	}
 }

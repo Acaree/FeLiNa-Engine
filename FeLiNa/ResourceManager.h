@@ -26,7 +26,7 @@ public:
 	void CreateNewResource(FILE_TYPE type, const char* asset_file, const char* meta_file);
 	void RecursiveResourceFiles(const char* dir, std::string path );
 	void FillResources(std::list<Resource*> resources,ImporterSettings* settings = nullptr);
-	void UpdateListUIDResources();
+
 
 	template<typename DATA>
 	void SetResourceData(DATA* data, Resource* resource);
@@ -36,10 +36,6 @@ private:
 	float refresh_time = 0.0F;
 	float time_to_refresh = 200.0F;
 
-public:
-	//For add materials and meshes
-	std::vector<uint> resources_meshes;
-	std::vector<uint> resources_materials;
 };
 
 

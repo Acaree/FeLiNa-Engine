@@ -38,7 +38,8 @@ void ComponentTexture::DrawInspector()
 
 	if (ImGui::TreeNodeEx("Material"))
 	{
-		
+		static bool want_material = false; 
+
 		if (uid != 0)
 		{
 			ResourceMaterial* resource = (ResourceMaterial*) App->resource_manager->Get(uid);
@@ -58,12 +59,45 @@ void ComponentTexture::DrawInspector()
 				ImGui::Image((ImTextureID)(resource->id_texture), ImVec2(250, 250));
 			}
 			else
+			{
 				ImGui::Text("Invalid Texture");
+				want_material = true;
+			}
 		}
 		else
 		{
 			ImGui::Text("Invalid Texture");
+			want_material = true;
 		}
+
+		if (want_material)
+		{
+			ImGui::Button("Drag Material Here");
+
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
+				{
+					std::string payload_n = (char*)payload->Data;
+					uint payloa6d_n = *(uint*)payload->Data;
+					payload_n.erase(payload_n.find_first_of("."), payload_n.size());
+					Resource* res = App->resource_manager->Get(std::atoi(payload_n.c_str()));
+
+					if (res != nullptr && res->type == RESOURCE_MATERIAL)
+					{
+						uid = res->uid;
+						res->LoadToMemory();
+						want_material = false;
+					}
+
+				}
+				ImGui::EndDragDropTarget();
+			}
+		}
+
+
+
 		ImGui::TreePop();
 	}
 }

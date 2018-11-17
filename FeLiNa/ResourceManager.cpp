@@ -29,7 +29,7 @@ bool ResourceManager::Start()
 	std::string path;
 	RecursiveResourceFiles("Assets", path);
 
-	UpdateListUIDResources();
+
 
 	return true;
 }
@@ -284,13 +284,11 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 						library_file ="Library/Meshes/";
 						library_file += std::to_string(*it);
 						library_file += ".felina";
-						resources_meshes.push_back(*it);
 						break;
 					case FILE_TYPE::MATERIAL_FILE:
 						library_file = "Library/Materials/";
 						library_file += std::to_string(*it);
 						library_file += ".dds";
-						resources_materials.push_back(*it);
 						break;
 					}
 
@@ -445,72 +443,3 @@ void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, 
 
 }
 
-void ResourceManager::UpdateListUIDResources()
-{
-	
-	for (std::vector<uint>::iterator it = resources_meshes.begin(); it != resources_meshes.end(); ++it)
-	{
-		if (resources.find(*it) == resources.end())
-		{
-			resources_meshes.erase(it);
-			it = resources_meshes.begin();
-		}
-	}
-
-	for (std::vector<uint>::iterator it = resources_materials.begin(); it != resources_materials.end(); ++it)
-	{
-		if (resources.find(*it) == resources.end())
-		{
-			resources_materials.erase(it);
-			it = resources_materials.begin();
-		}
-	}
-
-
-	for (std::map<uint, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		switch ((*it).second->type)
-		{
-		case RESOURCE_MESH:
-		{
-			bool find = false;
-			for (uint i = 0; i < resources_meshes.size(); ++i)
-			{
-				if (resources_meshes[i] == (*it).first)
-				{
-					find = true;
-					break;
-				}
-			}
-
-			if (!find)
-			{
-				resources_meshes.push_back((*it).first);
-			}
-
-
-			break;
-		}
-		case RESOURCE_MATERIAL:
-
-			bool find = false;
-			for (uint i = 0; i < resources_materials.size(); ++i)
-			{
-				if (resources_materials[i] == (*it).first)
-				{
-					find = true;
-					break;
-				}
-			}
-
-			if (!find)
-			{
-				resources_materials.push_back((*it).first);
-			}
-
-
-			break;
-		}
-	}
-
-}

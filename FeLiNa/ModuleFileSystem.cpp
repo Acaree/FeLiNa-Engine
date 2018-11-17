@@ -105,7 +105,6 @@ update_status ModuleFileSystem::PreUpdate(float dt)
 			CheckAllAssetsFiles();
 		}
 
-		App->resource_manager->UpdateListUIDResources();
 		refresh_now = false;
 	}
 

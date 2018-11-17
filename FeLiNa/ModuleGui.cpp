@@ -145,7 +145,7 @@ update_status ModuleGui::Update(float dt)
 		App->scene->ShowInspector();
 #endif		
 
-	
+	ImGui::ShowDemoWindow();
 
 	return update_return;
 }
@@ -540,7 +540,11 @@ void ModuleGui::ShowAssetsWindow()
 		{
 			RecurssiveShowAssets("Assets");
 			ImGui::TreePop();
-
+		}
+		if (ImGui::TreeNodeEx("Library"))
+		{
+			RecurssiveShowAssets("Library");
+			ImGui::TreePop();
 		}
 	}
 
