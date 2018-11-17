@@ -196,7 +196,7 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 		PosibleObjectsPicked( candidates , App->scene->root_object->GetChild(i));
 	}
 
-
+	
 	float min_distance = FLOAT_INF;
 	float hit_distance = 0.0F;
 
@@ -242,7 +242,11 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 
 					if (ray_local.Intersects(triangle, &hit_distance, &hit_point))
 					{
-						selected_object = candidates[i];
+						if (hit_distance < min_distance)
+						{
+							selected_object = candidates[i];
+							min_distance = hit_distance;
+						}
 					}
 
 				}
