@@ -38,7 +38,6 @@ void ComponentTexture::DrawInspector()
 
 	if (ImGui::TreeNodeEx("Material"))
 	{
-		static bool want_material = false; 
 
 		if (uid != 0)
 		{
@@ -61,17 +60,16 @@ void ComponentTexture::DrawInspector()
 			else
 			{
 				ImGui::Text("Invalid Texture");
-				want_material = true;
+			
 			}
 		}
 		else
 		{
 			ImGui::Text("Invalid Texture");
-			want_material = true;
+		
 		}
 
-		if (want_material)
-		{
+		
 			ImGui::Button("Drag Material Here");
 
 
@@ -87,14 +85,11 @@ void ComponentTexture::DrawInspector()
 					{
 						uid = res->uid;
 						res->LoadToMemory();
-						want_material = false;
 					}
 
 				}
 				ImGui::EndDragDropTarget();
 			}
-		}
-
 
 
 		ImGui::TreePop();
