@@ -275,30 +275,18 @@ void GameObject::ShowObjectHierarchy()
 
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
-		ImGui::SetDragDropPayload("Hierarchy_nodes", this, sizeof(GameObject));
+		GameObject* go = this;
+		ImGui::SetDragDropPayload("Hierarchy_nodes", &go, sizeof(GameObject));
 		ImGui::EndDragDropSource();
-		
-		if (!ImGui::IsMouseDragging()) {
-			GameObject* go = App->scene->GetSelectedGameObject();
-
-			if (go != nullptr)
-			{
-				go->SetSelected(false);
-			}
-
-			App->scene->SetSelectedGameObject(this);
-			SetSelected(true);
-		}
 	}
 
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Hierarchy_nodes"))
 		{
-			GameObject* tmp = new GameObject(nullptr);
-			memcpy(tmp, payload->Data, sizeof(GameObject));
-			tmp->GetParent()->DeleteChildren(tmp);
-			AddChildren(tmp); 
+			GameObject* tmp = *(GameObject**)payload->Data;
+			tmp->GetParent()->ExtractChildrenFromList(tmp);
+			AddChildren(tmp);
 
 		}
 		ImGui::EndDragDropTarget();
@@ -567,6 +555,31 @@ void GameObject::DeleteAllComponents()
 
 void GameObject::DeleteChildren(GameObject* go)
 {
+	
+	std::vector<GameObject*>::iterator it = childrens.begin();
+
+	for (uint i = 0; i < childrens.size(); ++i)
+	{
+		if (strcmp(childrens[i]->GetName(), go->name) == 0)
+		{
+			GameObject* tmp = childrens[i];
+
+			RELEASE(tmp);
+			childrens.erase(it);
+			tmp = nullptr;
+
+			break;
+
+		}
+		it++;
+
+	}
+
+
+}
+
+void GameObject::ExtractChildrenFromList(GameObject* go) { //this don't delete the child pointer, as DeleteChildren does
+
 	std::vector<GameObject*> tmp;
 	std::vector<GameObject*>::iterator it = childrens.begin();
 
@@ -583,8 +596,6 @@ void GameObject::DeleteChildren(GameObject* go)
 	}
 
 	childrens = tmp;
-	//possible leak
-
 }
 
 void GameObject::SetInvalidateResource(const Resource* resource)

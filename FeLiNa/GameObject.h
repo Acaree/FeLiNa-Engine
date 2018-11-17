@@ -35,7 +35,7 @@ public:
 	void AddChildren(GameObject* child);
 	GameObject* GetChild(uint position);
 	void DeleteChildren(GameObject* child);
-
+	void ExtractChildrenFromList(GameObject* go);
 
 	void SetParent(GameObject* parent);
 	GameObject* GetParent()const;
