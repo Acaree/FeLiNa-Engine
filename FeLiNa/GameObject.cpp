@@ -512,6 +512,7 @@ void GameObject::OnLoad(JSON_Object* obj)
 
 GameObject* GameObject::SearchParentForUID(uint parent_uid)
 {
+	GameObject* go = nullptr;
 	if (parent_uid == uid)
 		return this;
 	else
@@ -524,11 +525,11 @@ GameObject* GameObject::SearchParentForUID(uint parent_uid)
 			
 			if (parent_object != nullptr)
 			{
-				return parent_object;
+				go = parent_object;
 			}
 		}
 
-		return nullptr;
+		return go;
 
 	}
 }
