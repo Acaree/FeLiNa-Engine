@@ -43,10 +43,12 @@ public:
 	uint GetUIDofMeta(const char* meta);
 	void GetImportSettingsInMeta(const char* meta, MaterialSettings* material);
 
+	void SetMaterialSettingsFromMeta(const char* file, MaterialSettings* settings);
+
 	bool Load(const char* file_name, ResourceMaterial* output_texture, const MaterialSettings* settings);
 	bool Load(const void* buffer, uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting);
 
-	void ShowMaterialImport(MaterialSettings* settings);
+	void ShowMaterialImport();
 public:
 	MaterialSettings* material_settings;
 

@@ -691,7 +691,7 @@ void MeshImporter::ShowMeshImport()
 		std::string tmp = App->gui->file_focus;
 		tmp += ".meta";
 
-		App->importer_mesh->SetMeshSettingsFromMeta(tmp.c_str(),mesh_settings);
+		SetMeshSettingsFromMeta(tmp.c_str(),mesh_settings);
 	
 		App->fs->refresh_now = true;
 

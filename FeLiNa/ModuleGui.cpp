@@ -798,7 +798,7 @@ void ModuleGui::ShowImportOptions()
 		break;
 
 	case MATERIAL_FILE:
-		//App->importer_material->ShowMaterialImport(); Don't Work
+		App->importer_material->ShowMaterialImport();
 		break;
 	default:
 		break;
