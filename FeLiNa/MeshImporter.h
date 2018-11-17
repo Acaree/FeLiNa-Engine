@@ -8,7 +8,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentTexture.h"
-
+#include <string>
 #include <list>
 class aiScene;
 class aiNode;
@@ -63,12 +63,10 @@ public:
 
 	void CreateFileMeta(std::list<Resource*> resources, MeshSettings* settings);
 	void ReadFileMeta(const char* file, MeshSettings* settings);
-
-
+	void GetMeshSettingsFromMeta(const char* file, MeshSettings* settings);
+	void SetMeshSettingsFromMeta(const char* file, MeshSettings* settings);
 	void ShowMeshImport();
 	void RefreshMeshOptions();
-
-	
 
 	uint SetPostProccesConfiguration(const MeshSettings* import_settings);
 

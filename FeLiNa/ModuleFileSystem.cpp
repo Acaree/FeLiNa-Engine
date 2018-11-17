@@ -236,7 +236,7 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 
 	if (file_exists) {
 		
-		PHYSFS_File* file = PHYSFS_openRead(filePath);
+		PHYSFS_file* file = PHYSFS_openRead(filePath);
 
 		if (file != nullptr) {
 
@@ -260,6 +260,10 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 
 				PHYSFS_close(file);
 				//RELEASE_ARRAY(buffer);
+			}
+			else
+			{
+				LOG("Size Error'. ERROR: %s", filePath, PHYSFS_getLastError());
 			}
 		}
 

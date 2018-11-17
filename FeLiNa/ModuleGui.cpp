@@ -145,7 +145,7 @@ update_status ModuleGui::Update(float dt)
 		App->scene->ShowInspector();
 #endif		
 
-	ImGui::ShowDemoWindow();
+	
 
 	return update_return;
 }
@@ -697,7 +697,7 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 			switch (type)
 			{
 			case MESH_FILE:
-				App->importer_mesh->ReadFileMeta(tmp.c_str(), App->importer_mesh->mesh_settings);
+				App->importer_mesh->GetMeshSettingsFromMeta(tmp.c_str(), App->importer_mesh->mesh_settings);
 				break;
 			case MATERIAL_FILE:
 				App->importer_material->ReadFileMeta(tmp.c_str(), App->importer_material->material_settings);
