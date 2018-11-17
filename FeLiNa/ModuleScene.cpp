@@ -155,12 +155,7 @@ void ModuleScene::ShowHierarchy()
 
 	ImGui::Begin("Hierarchy", &hierarchy_open ,window_flags);
 
-	for (uint i = 0; i < root_object->GetNumChildren(); ++i)
-	{
-		ImGui::PushID(i);
-		root_object->GetChild(i)->ShowObjectHierarchy();
-		ImGui::PopID();
-	}
+
 	if (ImGui::IsMouseClicked(1) && ImGui::IsWindowHovered())
 	{
 		ImGui::OpenPopup("Hierarchy Options");
@@ -177,7 +172,12 @@ void ModuleScene::ShowHierarchy()
 		ImGui::EndPopup();
 	}
 
-	
+	for (uint i = 0; i < root_object->GetNumChildren(); ++i)
+	{
+		ImGui::PushID(i);
+		root_object->GetChild(i)->ShowObjectHierarchy();
+		ImGui::PopID();
+	}
 
 
 	ImGui::End();
