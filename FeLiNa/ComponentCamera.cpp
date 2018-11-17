@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ModuleCamera3D.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "Quadtree.h"
@@ -32,6 +33,22 @@ ComponentCamera::~ComponentCamera()
 
 void ComponentCamera::Update(float dt)
 {
+	//Check if are in play mode for move camera with component transform
+	if (App->camera->current_camera != this)
+	{
+		const ComponentTransform* transform = (ComponentTransform*)parent->GetComponent(Component_Transform);
+
+		math::float4x4 matrix = math::float4x4::identity;
+
+		if (transform != nullptr) {
+			matrix = transform->GetTransformMatrix();
+		}
+		frustum.pos = matrix.TranslatePart();
+		frustum.front = matrix.WorldZ().Normalized();
+		frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();
+
+	}
+
 	if (culling)
 	{
 		CullingObjects();

@@ -16,6 +16,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "Resource.h"
+#include "ImGuizmo/ImGuizmo.h"
 #include "ResourceManager.h"
 #include "ComponentCamera.h"
 #include "mmgr/mmgr.h"

@@ -31,8 +31,8 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	}
 
+	//Get all folder in Assets and mount
 	const char** tmp = GetAllFilesFromDir("/Assets");
-
 	for (const char** file = tmp; *file != nullptr; ++file)
 	{
 		// TO revise 
@@ -48,18 +48,6 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 		RELEASE(stat);
 	}
 
-	;
-
-	if (PHYSFS_mount("./Assets/Settings/", "Settings", 1) == 0) { //Add paths to physfs to search throught
-
-		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
-
-	}
-	if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
-
-		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
-
-	}
 
 	PHYSFS_mkdir("Library/Meshes");
 	PHYSFS_mkdir("Library/Materials");
@@ -82,10 +70,7 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 
 	}
 
-	
-	
 }
-
 
 ModuleFileSystem::~ModuleFileSystem()
 {
@@ -175,8 +160,6 @@ void ModuleFileSystem::CheckAllAssetsFiles()
 
 			}
 
-
-
 		}
 
 	}
@@ -184,7 +167,6 @@ void ModuleFileSystem::CheckAllAssetsFiles()
 
 void ModuleFileSystem::GetAllAssetsFiles(const char* dir, std::string path)
 {
-
 	path.append(dir);
 	path.append("/");
 
@@ -232,7 +214,6 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 	
 	uint count = 0;
 
-	
 	bool file_exists = PHYSFS_exists(filePath);
 
 	if (file_exists) {
@@ -278,15 +259,13 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 
 char* ModuleFileSystem::SaveFile(char* buffer, uint size, std::string& output_file, FILE_TYPE file)
 {
-	
-	//COPY NAME
+
 	char new_name[DEFAULT_BUF_SIZE];
 	sprintf_s(new_name, DEFAULT_BUF_SIZE, output_file.data());
 	output_file = new_name;
 
 	char new_path[DEFAULT_BUF_SIZE];
 
-	//COPY PATH
 	switch (file)
 	{
 	case MESH_FILE:
@@ -373,7 +352,7 @@ FILE_TYPE ModuleFileSystem::FindTypeFile(const char* file)
 	{
 		file_type = FILE_TYPE::MATERIAL_FILE;
 	}
-	//else file type is unknown
+	
 	return file_type;
 }
 
@@ -404,85 +383,6 @@ FILE_TYPE ModuleFileSystem::FindOwnTypeFile(const char* file)
 bool ModuleFileSystem::ExistFile(const char* file)
 {
 	return PHYSFS_exists(file);
-}
-
-bool ModuleFileSystem::FindNewAssetsFiles(const char* directory, char* new_file)
-{
-	bool ret = false;
-
-	//TO REVISE
-
-	/*1- Check if is directory : true: recursive
-	2-chech if are asociate the .meta in the soma folder: yes continue, no create*/
-
-	char** files = PHYSFS_enumerateFiles(directory);
-	char** file;
-
-	for (file = files; file != nullptr; ++file)
-	{
-		if (PHYSFS_isDirectory(*file))
-		{
-			char* new_dir = new char[DEFAULT_BUF_SIZE];
-			char* tmp_file = new char[DEFAULT_BUF_SIZE];
-
-			strcpy(new_dir, *file);
-			strcat(new_dir, "/");
-
-			if (FindNewAssetsFiles(new_dir, tmp_file))
-			{
-				ret = true;
-
-				strcpy(new_file, directory);
-
-
-				strcat(new_file, tmp_file);
-				RELEASE_ARRAY(tmp_file);
-			}
-
-			RELEASE_ARRAY(new_dir);
-	
-		}
-		else
-		{
-			if (*file == nullptr)
-			{
-				RELEASE_ARRAY(new_file);
-				break;
-			}
-			char* tmp = new char[DEFAULT_BUF_SIZE];
-
-			strcpy(tmp, *file);
-
-			tmp_string = tmp;
-			const char* extension = tmp_string.erase(0, tmp_string.find_last_of(".")).c_str();
-
-
-			if (strcmp(extension, ".meta") != 0 && strcmp(extension, ".json") != 0)
-			{
-				strcpy(tmp, directory);
-				strcat(tmp, *file);
-				strcat(tmp, ".meta");
-
-				if (!PHYSFS_exists(tmp))
-				{
-					strcpy(new_file, directory);
-					strcat(new_file, *file);
-					ret = true;
-				}
-
-			}
-
-			RELEASE_ARRAY(tmp);
-		}
-
-		if (ret)
-			break;
-
-	}
-
-	PHYSFS_freeList(files);
-
-	return ret;
 }
 
 char* ModuleFileSystem::MoveFileToAssets(char* path) {
@@ -639,13 +539,8 @@ bool ModuleFileSystem::RecursiveFindFileExistInAssets(const char* dir, const cha
 						path.erase(position, path.size());
 
 				}
-
-
 			}
-
-
 		}
-
 	}
 
 	return ret;
@@ -662,13 +557,10 @@ void ModuleFileSystem::DeleteFolderandContainedFiles(const char* folder_to_remov
 		file_path += *file;
 		App->fs->RemoveAllDependencies((char*)file_path.c_str());
 		FileDelete(file_path.c_str());
-
 	}
 
 	file_path.clear();
-	//TO REVISE THIS WORK WITH FILEDELETE() ??
 	FileDelete(folder_to_remove);
-
 }
 
 uint ModuleFileSystem::GetLastModificationTime(const char* dir)

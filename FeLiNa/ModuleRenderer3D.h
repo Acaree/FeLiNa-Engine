@@ -43,12 +43,8 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	
-	math::float4x4  ProjectionMatrix;
 
 	bool wire = false;
-
-	//TO REVISE;
 	bool debug_draw = false;
 
 private:

@@ -5,12 +5,10 @@
 #include "ModuleCamera3D.h"
 
 #ifndef GAME_MODE
-
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl2.h"
 #endif
-
 
 #include "GameObject.h"
 #include "Component.h"
@@ -25,7 +23,6 @@
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "Scene";
-	
 }
 
 ModuleScene::~ModuleScene()
@@ -112,22 +109,13 @@ update_status ModuleScene::PreUpdate(float dt)
 // Update
 update_status ModuleScene::Update(float dt)
 {
-
 	update_status update_return = UPDATE_CONTINUE;
 	
-
-
 	root_object->Update(dt);
-	return update_return;
-}
-
-update_status ModuleScene::PostUpdate(float dt)
-{
-	update_status update_return = UPDATE_CONTINUE;
-
 
 	return update_return;
 }
+
 
 void ModuleScene::DrawScene()
 {
@@ -239,7 +227,6 @@ void ModuleScene::ShowInspector()
 
 	}
 
-
 	ImGui::End();
 
 }
@@ -338,7 +325,6 @@ void ModuleScene::SearchObjectsToDelete(GameObject* go)
 ComponentCamera* ModuleScene::CreateMainCamera()
 {
 	GameObject* obj_camera = new GameObject(nullptr);
-	
 	
 	std::string name = "Main Camera";
 	char* name_str = new char[name.size() + 1];

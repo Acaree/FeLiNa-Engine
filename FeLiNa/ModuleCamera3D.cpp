@@ -38,10 +38,7 @@ bool ModuleCamera3D::Start()
 	camera_editor->frustum.Translate(math::float3(5, 10, 5));
 	current_camera = camera_editor;
 
-
 #endif // ! GAME_MODE
-
-
 
 	LookAt(math::float3::zero);
 
@@ -57,13 +54,6 @@ bool ModuleCamera3D::CleanUp()
 	RELEASE(camera_editor);
 
 	return true;
-}
-
-update_status ModuleCamera3D::PreUpdate(float dt)
-{
-
-
-	return UPDATE_CONTINUE;
 }
 
 

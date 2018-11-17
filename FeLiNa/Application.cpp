@@ -91,8 +91,6 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	
-
 	// Call Init() in all modules
 	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
 	{

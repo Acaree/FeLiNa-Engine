@@ -15,7 +15,6 @@ public:
 	bool LoadInMemory();
 	bool EraseInMemory();
 
-
 public:
 
 	float* vertices = nullptr;

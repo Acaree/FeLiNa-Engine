@@ -3,12 +3,11 @@
 
 #ifndef GAME_MODE
 #include "Module.h"
-#include "ImGuizmo/ImGuizmo.h"
 
 class ComponentTransform;
 class Resource;
-
 enum FILE_TYPE;
+
 class ModuleGui : public Module
 {
 public:

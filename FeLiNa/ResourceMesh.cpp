@@ -34,7 +34,6 @@ bool ResourceMesh::LoadInMemory()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * num_uv, uv, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-
 	return ret;
 }
 
@@ -46,9 +45,6 @@ bool ResourceMesh::EraseInMemory()
 	glDeleteBuffers(1, (GLuint*) &(id_indices));
 	glDeleteBuffers(1, (GLuint*) &(id_uv));
 
-	//RELEASE_ARRAY(vertices);
-	//RELEASE_ARRAY(indices);
-	//RELEASE_ARRAY(uv);
 
 	return ret;
 }

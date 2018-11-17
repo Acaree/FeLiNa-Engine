@@ -37,8 +37,6 @@ public:
 	char* MoveFileToAssets(char* path);
 
 	const char** GetAllFilesFromDir(const char* dir) const;
-
-	bool FindNewAssetsFiles(const char* directory, char* file);
 	bool RecursiveFindFileExistInAssets(const char* dir, const char* file_name, std::string& path);
 	bool isDirectory(const char* file) const;
 

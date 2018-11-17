@@ -15,9 +15,6 @@ public:
 
 	void DrawHardwareInformationPanel();
 
-	
-
-
 private:
 	void FillHardwareInfo();
 

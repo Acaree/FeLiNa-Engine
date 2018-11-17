@@ -17,8 +17,6 @@ SceneSerialization::~SceneSerialization()
 
 	aux_go.clear();
 
-
-
 }
 
 

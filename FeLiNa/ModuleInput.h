@@ -1,7 +1,6 @@
 #ifndef _MODULE_INPUT_
 #define _MODULE_INPUT_
 
-
 #include "Module.h"
 
 #define MAX_MOUSE_BUTTONS 5

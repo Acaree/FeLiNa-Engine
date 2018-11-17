@@ -10,8 +10,6 @@ ResourceMaterial::ResourceMaterial(uint uid, RESOURCE_TYPE type) : Resource(uid,
 
 ResourceMaterial::~ResourceMaterial()
 {
-	//glDeleteTextures(1, (GLuint*) &(id_texture));
-
 }
 
 bool ResourceMaterial::LoadInMemory()
