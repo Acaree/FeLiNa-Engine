@@ -292,7 +292,11 @@ void GameObject::ShowObjectHierarchy()
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Hierarchy_nodes"))
 		{
-			int i = 0;
+			GameObject* tmp = new GameObject(nullptr);
+			memcpy(tmp, payload->Data, sizeof(GameObject));
+			tmp->GetParent()->DeleteChildren(tmp);
+			AddChildren(tmp); // this isn't working well
+
 		}
 		ImGui::EndDragDropTarget();
 	}
@@ -560,24 +564,23 @@ void GameObject::DeleteAllComponents()
 
 void GameObject::DeleteChildren(GameObject* go)
 {
+	std::vector<GameObject*> tmp;
 	std::vector<GameObject*>::iterator it = childrens.begin();
 
 	for (uint i = 0; i < childrens.size(); ++i)
 	{
-		if (strcmp(childrens[i]->GetName(), go->name) == 0)
+
+		if (strcmp(childrens[i]->GetName(), go->name) != 0)
 		{
-			GameObject* tmp = childrens[i];
-
-			RELEASE(tmp);
-			childrens.erase(it);
-			tmp = nullptr;
-
-			break;
+			tmp.push_back(childrens[i]);
 
 		}
 		it++;
 
 	}
+
+	childrens = tmp;
+	//possible leak
 
 }
 
