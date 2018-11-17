@@ -39,7 +39,7 @@ void ComponentMesh::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Mesh"))
 	{
-		static bool want_mesh = false;
+	
 
 		if (uid != 0)
 		{
@@ -58,18 +58,15 @@ void ComponentMesh::DrawInspector()
 			else
 			{
 				ImGui::Text("Invalid Mesh");
-				want_mesh = true;
 			}
 		}
 		else
 		{
 			ImGui::Text("No Mesh");
 			
-			want_mesh = true;
 		}
 
-		if (want_mesh)
-		{
+		 
 			ImGui::Button("Drag Mesh Here");
 
 
@@ -85,13 +82,11 @@ void ComponentMesh::DrawInspector()
 					{
 						uid = res->uid;
 						res->LoadToMemory();
-						want_mesh = false;
 					}
 
 				}
 				ImGui::EndDragDropTarget();
 			}
-		}
 
 
 

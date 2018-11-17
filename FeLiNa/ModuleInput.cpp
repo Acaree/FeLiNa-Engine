@@ -137,40 +137,7 @@ update_status ModuleInput::PreUpdate(float dt)
 #ifndef GAME_MODE
 			case SDL_DROPFILE:
 			{
-
-				char* dropped_filedir = App->fs->MoveFileToAssets(e.drop.file);
-				
-				uint uid = App->resource_manager->ImportFile(dropped_filedir);
-				
-				Resource* resource = App->resource_manager->Get(uid);
-
-				std::string path = dropped_filedir;
-				path = path.substr(0, path.find_last_of("/")+1);
-
-				std::string file_name = dropped_filedir;
-				file_name = file_name.substr(file_name.find_last_of("/")+1, file_name.size());
-
-				std::string output_file;
-
-				switch (resource->type)
-				{
-				case RESOURCE_TYPE::RESOURCE_MESH:
-				{
-					MeshSettings* default_settings = new MeshSettings();
-					App->importer_mesh->Import(file_name.c_str(), path.c_str(),output_file,default_settings);
-					RELEASE(default_settings);
-				}
-					break;
-				case RESOURCE_TYPE::RESOURCE_MATERIAL:
-					MaterialSettings* default_settings = new MaterialSettings();
-					App->importer_material->Import(dropped_filedir, output_file, default_settings);
-					break;
-				}
-				//Texture* tex = App->importer_material->Import(dropped_filedir, output_file);
-				//App->resource_manager->ImportFile("Assets/Hierarchy.FBX");
-
-				SDL_free(&dropped_filedir);
-
+				App->fs->MoveFileToAssets(e.drop.file);
 				break;
 			}
 #endif

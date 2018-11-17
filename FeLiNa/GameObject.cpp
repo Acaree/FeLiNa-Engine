@@ -298,7 +298,7 @@ void GameObject::ShowObjectHierarchy()
 			GameObject* tmp = new GameObject(nullptr);
 			memcpy(tmp, payload->Data, sizeof(GameObject));
 			tmp->GetParent()->DeleteChildren(tmp);
-			AddChildren(tmp); // this isn't working well
+			AddChildren(tmp); 
 
 		}
 		ImGui::EndDragDropTarget();
