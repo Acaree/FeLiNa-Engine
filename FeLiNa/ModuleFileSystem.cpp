@@ -13,16 +13,15 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 {
 	name = "File System";
 
-
-	char* base_path = SDL_GetBasePath();
-	PHYSFS_init(base_path);
-	SDL_free(base_path);
-
 	PHYSFS_init(nullptr);
+	
+	if (PHYSFS_mount(".", nullptr, 1) == 0) {
+
+		LOG("Physfs could not find the path: %s", PHYSFS_getLastError());
+
+	}
 
 	PHYSFS_setWriteDir(".");
-		
-	
 
 	if (PHYSFS_mount("./Assets/", "Assets", 1)==0) { 
 	
@@ -269,7 +268,7 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 
 	}
 	else
-		LOG("File '%s' don't exists and can't be charged", filePath);
+		LOG("File '%s' don't exists and can't be charged. %s", filePath, PHYSFS_getLastError());
 
 	return count;
 }

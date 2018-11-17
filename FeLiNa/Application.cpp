@@ -17,6 +17,12 @@ Application::Application()
 {
 	name = "Application";
 	
+	app_name = new char[DEFAULT_BUF_SIZE];
+	organization = new char[DEFAULT_BUF_SIZE];
+
+	strcpy_s(app_name, DEFAULT_BUF_SIZE, "FeLiNa Engine");
+	strcpy_s(organization, DEFAULT_BUF_SIZE, "CITM UPC");
+	
 
 #ifndef GAME_MODE
 	random = new math::LCG();
@@ -119,37 +125,39 @@ bool Application::Awake()
 {
 	bool ret = true;
 
-	JSON_Value* root = json_parse_file("data.json");
+	char* buffer;
+	uint size = fs->Load("config.json",&buffer);
 
 
-	if (root != nullptr)
+	if (size >0)
 	{
-		JSON_Object* node = json_value_get_object(root);
+		JSON_Value* node = json_parse_string(buffer);
 
-		JSON_Object* config_app = json_object_get_object(node, name);
+		JSON_Object* config_app = json_value_get_object(node);
 
 		if (config_app != nullptr)
 		{
-			app_name = new char[100];
-			organization = new char[100];
+			JSON_Object* app_object = json_object_get_object(config_app, "Application");
 			
-			strcpy_s(app_name, 100, json_object_get_string(config_app, "Title"));
-			strcpy(organization, json_object_get_string(config_app, "Organization"));
+			strcpy_s(app_name, DEFAULT_BUF_SIZE, json_object_get_string(app_object, "Title"));
+			strcpy_s(organization,DEFAULT_BUF_SIZE ,(char*)json_object_get_string(app_object, "Organization"));
 
-			vsync = json_object_get_boolean(config_app, "VSYNC");
-			FPS_cap = json_object_get_number(config_app, "Max frames");
+			vsync = json_object_get_boolean(app_object, "VSYNC");
+			FPS_cap = json_object_get_number(app_object, "Max frames");
 		}
 
 		for (std::list<Module*>::iterator it = list_modules.begin(); it != list_modules.end() && ret == true; it++)
 		{
-			JSON_Object* module_obj = json_object_get_object(node, (*it)->GetName());
+			JSON_Object* module_obj = json_object_get_object(config_app, (*it)->GetName());
 
 			ret = (*it)->Awake(module_obj);
 		}
 		
-		json_value_free(root);
+		json_value_free(node);
 
 	}
+
+	RELEASE_ARRAY(buffer);
 
 	return true;
 }
@@ -341,21 +349,15 @@ void Application::Save()
 #ifndef GAME_MODE
 	Log_app("Saving State....");
 #endif
-	//Search data.json
-	JSON_Value* root = json_parse_file("data.json");
-	
-	//if can't find create a json
-	if (root == nullptr)
-	{
-		root = json_value_init_object();
-	}
-	//Get root object
-	JSON_Object* root_object = json_value_get_object(root);
 
+	//Create a new object
+	JSON_Value* root = json_value_init_object();
+	JSON_Object* root_object = json_value_get_object(root);
+	
 	//Create a new object to store values
 	JSON_Value* new_value = json_value_init_object();
 	JSON_Object* new_object = json_value_get_object(new_value);
-	json_object_set_value(root_object, name, new_value);
+	json_object_set_value(root_object, "Application", new_value);
 
 	json_object_set_string(new_object,"Title", app_name);
 	json_object_set_string(new_object, "Organization", organization);
@@ -373,11 +375,17 @@ void Application::Save()
 		(*it)->SaveState(new_object);
 	}
 
-	char *serialized_string = json_serialize_to_string_pretty(root);
-	puts(serialized_string);
-	json_serialize_to_file(root, "data.json");
-	json_free_serialized_string(serialized_string);
+
+	uint size = json_serialization_size_pretty(root);
+	char* buffer = new char[size];
+
+	json_serialize_to_buffer_pretty(root, buffer, size);
+
+	fs->SaveBufferData(buffer, "config.json", size);
+
 	json_value_free(root);
+
+	RELEASE_ARRAY(buffer);
 
 	need_save = false;
 }
