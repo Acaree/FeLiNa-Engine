@@ -368,6 +368,61 @@ bool MeshImporter::LoadFLN(const char* path, ResourceMesh* mesh) {
 
 }
 
+void MeshImporter::SetMeshSettingsFromMeta(const char* file, MeshSettings* settings)
+{
+	if (file != nullptr && settings != nullptr)
+	{
+		char* buffer;
+		uint size = App->fs->Load(file, &buffer);
+
+		if (size > 0)
+		{
+			LOG("Can load Mesh meta file: %s", file);
+
+			JSON_Value* root = json_parse_string(buffer);
+			JSON_Object* root_object = json_value_get_object(root);
+
+			json_object_set_number(root_object, "Time", 1);
+
+			JSON_Object* settings_import = json_object_get_object(root_object, "Import Settings");
+
+			json_object_set_number(settings_import, "Ai PROCCES", settings->process_node);
+			json_object_set_boolean(settings_import, "Tangent", settings->CalcTangentSpace);
+			json_object_set_boolean(settings_import, "Identical Vertices", settings->JoinIdenticalVertices);
+			json_object_set_boolean(settings_import, "Left Handed", settings->MakeLeftHanded);
+			json_object_set_boolean(settings_import, "Triangulate", settings->Triangulate);
+			json_object_set_boolean(settings_import, "Remove Components", settings->RemoveComponent);
+			json_object_set_boolean(settings_import, "Generate Normals", settings->GenNormals);
+			json_object_set_boolean(settings_import, "Smooth Normals", settings->GenSmoothNormals);
+			json_object_set_boolean(settings_import, "Split Meshes", settings->SplitLargeMeshes);
+			json_object_set_boolean(settings_import, "Pre Transform", settings->PreTransformVertices);
+			json_object_set_boolean(settings_import, "Limit Bone", settings->LimitBoneWeights);
+			json_object_set_boolean(settings_import, "Validate Data", settings->ValidateDataStructure);
+			json_object_set_boolean(settings_import, "Remove Redundants", settings->RemoveRedundantMaterials);
+			json_object_set_boolean(settings_import, "Sort by Type", settings->SortByPType);
+			json_object_set_boolean(settings_import, "Generate Uv", settings->GenUvCoords);
+			json_object_set_boolean(settings_import, "Optimize Meshes", settings->OptimizeMeshes);
+			json_object_set_boolean(settings_import, "Flip Uvs", settings->FlipUVs);
+
+
+			uint size = json_serialization_size_pretty(root);
+			char* new_buffer = new char[size];
+
+
+			json_serialize_to_buffer_pretty(root, new_buffer, size);
+
+			App->fs->SaveBufferData(new_buffer, file, size);
+
+			//RELEASE_ARRAY(new_buffer);
+			json_value_free(root);
+		}
+		else
+			LOG("Error reading mesh meta file: %s", file);
+
+		RELEASE_ARRAY(buffer);
+	}
+
+}
 
 void MeshImporter::CreateFileMeta(std::list<Resource*> resources, MeshSettings* settings)
 {
@@ -390,7 +445,7 @@ void MeshImporter::CreateFileMeta(std::list<Resource*> resources, MeshSettings* 
 
 	json_object_set_value(root_object, "Import Settings", mesh_import);
 
-	json_object_set_boolean(settings_import, "Ai PROCCES", settings->process_node);
+	json_object_set_number(settings_import, "Ai PROCCES", settings->process_node);
 	json_object_set_boolean(settings_import, "Tangent", settings->CalcTangentSpace);
 	json_object_set_boolean(settings_import, "Identical Vertices", settings->JoinIdenticalVertices);
 	json_object_set_boolean(settings_import, "Left Handed", settings->MakeLeftHanded);
@@ -422,7 +477,7 @@ void MeshImporter::CreateFileMeta(std::list<Resource*> resources, MeshSettings* 
 	
 	RELEASE_ARRAY(buffer);
 }
-
+//To REVISE: we can delete this function and use Get Mesh Settings from meta?
 void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
 {
 	char* buffer = nullptr;
@@ -446,7 +501,7 @@ void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
 
 		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
 
-		settings->process_node = (MeshSettings::ProcessNode)json_object_get_boolean(import_settings, "Ai PROCCES");
+		settings->process_node = (MeshSettings::ProcessNode)(int)json_object_get_number(import_settings, "Ai PROCCES");
 		settings->CalcTangentSpace= json_object_get_boolean(import_settings, "Tangent");
 		settings->JoinIdenticalVertices = json_object_get_boolean(import_settings, "Identical Vertices");
 		settings->MakeLeftHanded = json_object_get_boolean(import_settings, "Left Handed");
@@ -471,6 +526,45 @@ void MeshImporter::ReadFileMeta(const char* file, MeshSettings* settings)
 
 	RELEASE_ARRAY(buffer);
 }
+
+void MeshImporter::GetMeshSettingsFromMeta(const char* file, MeshSettings* settings)
+{
+	if (file != nullptr && settings != nullptr)
+	{
+		char* buffer;
+		uint size = App->fs->Load(file, &buffer);
+
+		if(size > 0)
+		{
+			JSON_Value* root_value = json_parse_file(buffer);
+			JSON_Object* root_object = json_value_get_object(root_value);
+
+			JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
+
+			settings->process_node = (MeshSettings::ProcessNode)(int)json_object_get_number(import_settings, "Ai PROCCES");
+			settings->CalcTangentSpace = json_object_get_boolean(import_settings, "Tangent");
+			settings->JoinIdenticalVertices = json_object_get_boolean(import_settings, "Identical Vertices");
+			settings->MakeLeftHanded = json_object_get_boolean(import_settings, "Left Handed");
+			settings->Triangulate = json_object_get_boolean(import_settings, "Triangulate");
+			settings->RemoveComponent = json_object_get_boolean(import_settings, "Remove Components");
+			settings->GenNormals = json_object_get_boolean(import_settings, "Generate Normals");
+			settings->GenSmoothNormals = json_object_get_boolean(import_settings, "Smooth Normals");
+			settings->SplitLargeMeshes = json_object_get_boolean(import_settings, "Split Meshes");
+			settings->PreTransformVertices = json_object_get_boolean(import_settings, "Pre Transform");
+			settings->LimitBoneWeights = json_object_get_boolean(import_settings, "Limit Bone");
+			settings->ValidateDataStructure = json_object_get_boolean(import_settings, "Validate Data");
+			settings->RemoveRedundantMaterials = json_object_get_boolean(import_settings, "Remove Redundants");
+			settings->SortByPType = json_object_get_boolean(import_settings, "Sort by Type");
+			settings->GenUvCoords = json_object_get_boolean(import_settings, "Generate Uv");
+			settings->OptimizeMeshes = json_object_get_boolean(import_settings, "Optimize Meshes");
+			settings->FlipUVs = json_object_get_boolean(import_settings, "Flip Uvs");
+
+			json_value_free(root_value);
+		}
+		RELEASE_ARRAY(buffer);
+	}
+}
+
 
 void MeshImporter::ShowMeshImport()
 {
@@ -592,23 +686,17 @@ void MeshImporter::ShowMeshImport()
 ;
 	}
 
-	if (ImGui::Button("Apply ###importmesh", { 70,50 }))
+	if (ImGui::Button("Apply ###importermesh", { 70,50 }))
 	{
-		uint uid = App->resource_manager->Find(App->gui->file_focus.c_str());
-		Resource* resource = App->resource_manager->Get(uid);
+		std::string tmp = App->gui->file_focus;
+		tmp += ".meta";
 
-		//CreateFileMeta(resource, mesh_settings);
+		App->importer_mesh->SetMeshSettingsFromMeta(tmp.c_str(),mesh_settings);
+	
+		App->fs->refresh_now = true;
 
-		std::string file_path = App->gui->file_focus;
-		file_path.erase(file_path.find_last_of("/")+1, file_path.size());
-
-		std::string file_name = App->gui->file_focus;
-		file_name.erase(0, (file_path.find_last_of("/")+1));
-
-		std::string output;
-
-		App->importer_mesh->Import(file_name.c_str(),file_path.c_str(),output,mesh_settings);
 		App->gui->file_focus.clear();
+		App->gui->show_import_settings = false;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Cancel ###savemesh", { 70,50 }))
