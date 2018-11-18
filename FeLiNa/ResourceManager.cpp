@@ -292,13 +292,25 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 
 					if (Find(new_file.c_str())==0)
 					{
+						std::string json_file = *file;
+						json_file += ".json";
+
+						if(App->fs->ExistFile(json_file.c_str()))
+						{ 
+							ImportFile(new_file.c_str(), meta_file.c_str(), library_file.c_str());
+						}
+						else
+						{
+							//if dont exist .son we reimport all. 
+							ImportFile(new_file.c_str());
+						}
+
 						//In this case its all but resources not created 
-						ImportFile(new_file.c_str(),meta_file.c_str(),library_file.c_str());
+
 					}
 
 				}
-				// Here go else condition that we have file and meta but don't have the file in library
-				//but if user erase file in library not are our problem :)
+
 			}
 		}
 	}
