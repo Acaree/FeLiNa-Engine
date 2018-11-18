@@ -195,8 +195,6 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 					ret = uid;
 				}
 				
-
-				
 				break;
 			}
 
@@ -319,8 +317,9 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 						{ 
 							ImportFile(new_file.c_str(), meta_file.c_str(), library_file.c_str());
 						}
-						else if (type == MATERIAL_FILE)
+						else if (type == MATERIAL_FILE) // need this conditional , else always duplicate material file
 						{
+
 							ImportFile(new_file.c_str(), meta_file.c_str(), library_file.c_str());
 						}
 						else

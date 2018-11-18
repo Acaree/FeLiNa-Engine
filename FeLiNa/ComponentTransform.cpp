@@ -150,16 +150,19 @@ void ComponentTransform::OnLoad(JSON_Object* obj)
 	position.y = json_object_get_number(obj, "py");
 	position.z = json_object_get_number(obj, "pz");
 
-	quat_rotation.x = json_object_get_number(obj, "rx");
-	quat_rotation.y = json_object_get_number(obj, "ry");
-	quat_rotation.z = json_object_get_number(obj, "rz");
-	quat_rotation.w = json_object_get_number(obj, "rw");
+	quat_rotation.x = json_object_get_number(obj, "qx");
+	quat_rotation.y = json_object_get_number(obj, "qy");
+	quat_rotation.z = json_object_get_number(obj, "qz");
+	quat_rotation.w = json_object_get_number(obj, "qw");
+
+	euler_angles = quat_rotation.ToEulerXYZ();
 
 	scale.x = json_object_get_number(obj, "sx");
 	scale.y = json_object_get_number(obj, "sy");
 	scale.z = json_object_get_number(obj, "sz");
 
-	
+
+	UpdateMatrix();
 }
 
 

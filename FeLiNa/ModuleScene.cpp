@@ -322,6 +322,14 @@ void ModuleScene::SearchObjectsToDelete(GameObject* go)
 	}
 }
 
+void ModuleScene::SetAllGameObjectActive(GameObject* go)
+{
+	go->SetActive(true);
+
+	for (uint i = 0; i < go->GetNumChildren(); ++i)
+		SetAllGameObjectActive(go->GetChild(i));
+}
+
 ComponentCamera* ModuleScene::CreateMainCamera()
 {
 	GameObject* obj_camera = new GameObject(nullptr);
