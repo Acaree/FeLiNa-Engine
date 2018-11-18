@@ -42,6 +42,10 @@ uint ResourceManager::Find(const char* file) const
 		if (strcmp(it->second->GetExportedFile(), file) == 0)
 			return it->first;
 
+	for (std::map<uint, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+		if (strcmp(it->second->GetFile(), file) == 0)
+			return it->first;
+
 	return 0;
 }
 
@@ -75,6 +79,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 			break;
 
 		}
+
 		//if library_file != nullptr the file has imported in last time
 		if (library_file != nullptr)
 		{
@@ -83,23 +88,21 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 		}
 		else
 		{
-			//if not library_file we import all and create library files
-
-			//if has meta red the settings else we take the default import settings
-			// TO REVISE: I think this not necesary because if user delete .json or library we don't create library files
-		/*	if (meta_file != nullptr)
+		
+			if (meta_file != nullptr)
 			{
 				switch (file_type)
 				{
 				case MESH_FILE:
-					App->importer_mesh->ReadFileMeta(meta_file, (MeshSettings*)settings);
+					App->importer_mesh->ReadFileMeta(meta_file, (MeshSettings*)settings); 
 					break;
 				case MATERIAL_FILE:
 					App->importer_material->GetImportSettingsInMeta(meta_file, (MaterialSettings*)settings);
 					break;
 
 				}
-			}*/
+			}
+
 			//Get the name and the path if file in assets.
 			std::string name = assets_file;
 			std::string path = assets_file;
@@ -128,9 +131,9 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 			std::list<Resource*> aux_resources;
 
 			//search json and get aall uid in the sceneserialization for find all file in library and create resources with same uid than sceneserialization uids
-			switch (resource_type)
+			switch (file_type)
 			{
-			case RESOURCE_MESH:
+			case MESH_FILE:
 			{
 				std::string json_file = assets_file;
 				json_file.erase(json_file.find_last_of("."), json_file.size());
@@ -146,8 +149,9 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 
 					if (resource == nullptr)
 					{
+				
 						Resource* resource = CreateNewResource(resource_type, *it);
-						resource->exported_file = "Library/";
+						resource->exported_file.append( "Library/");
 						resource->exported_file += "Meshes/";
 						resource->exported_file += std::to_string(*it);
 						resource->exported_file += ".felina";
@@ -167,11 +171,9 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 
 				break;
 			}
-			case RESOURCE_MATERIAL:
+			case MATERIAL_FILE:
 			{
 				//if are a material we create the resource and meta.
-
-
 
 				std::string output_name = output_file;
 				output_name.erase(0, output_name.find_last_of("/")+1);
@@ -309,20 +311,25 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 
 					if (Find(new_file.c_str())==0)
 					{
-						std::string json_file = *file;
+						std::string json_file = new_file;
+						json_file.erase(json_file.find_last_of("."), json_file.size());
 						json_file += ".json";
 
 						if(App->fs->ExistFile(json_file.c_str()))
 						{ 
 							ImportFile(new_file.c_str(), meta_file.c_str(), library_file.c_str());
 						}
+						else if (type == MATERIAL_FILE)
+						{
+							ImportFile(new_file.c_str(), meta_file.c_str(), library_file.c_str());
+						}
 						else
 						{
-							//if dont exist .son we reimport all. 
-							ImportFile(new_file.c_str());
+
+							ImportFile(new_file.c_str(),meta_file.c_str());
 						}
 
-						//In this case its all but resources not created 
+					
 
 					}
 

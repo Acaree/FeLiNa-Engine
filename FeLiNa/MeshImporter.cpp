@@ -156,104 +156,104 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 
 	if (node->mNumMeshes > 0)
 	{
-		go->AddComponent(Component_Mesh);
-		
-		bool valid_mesh = true;
+		aiMesh* new_mesh = scene->mMeshes[node->mMeshes[0]];
 
-		//Allwais in node
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
-		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		invalid_node = false;
 
-		bool is_loaded = false;
+		//Check faces are a problem with street-.-
 
-		//This map is an auxiliar to avoid repeating mesh.
-		if (meshes_map.find(mesh) != meshes_map.end())
+		for (uint i = 0; i < new_mesh->mNumFaces; ++i)
 		{
-			go->mesh->SetUID(meshes_map.find(mesh)->second);
-			is_loaded = true;
-		}
-		else
-		{
-			meshes_map[mesh] = go->mesh->GetUID();
-		}
-
-
-
-		if (material != nullptr)
-		{
-			aiString name;
-			material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
-
-			std::string tmp_name = name.C_Str();
-			std::string output_file;
-			tmp_name.erase(0, tmp_name.find_last_of("\\") + 1);
-			//tmp_name.erase(tmp_name.find_last_of("."), tmp_name.size());
-			if (tmp_name.size() > 0)
+			if (new_mesh->mFaces[i].mNumIndices != 3)
 			{
-				if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
-				{
-					uint uid = App->resource_manager->Find(output_file.c_str());
-
-					if (uid == 0)
-						uid = App->resource_manager->ImportFile(output_file.c_str());
-
-					go->AddComponent(Component_Material);
-					go->material->SetUID(uid);
-
-				}
+				invalid_node = true;
+				LOG("INVALID MESH: %s her face have number of indices < 3",name);
 			}
-
 		}
 
-		
-		if (!is_loaded)
+
+		if (!invalid_node)
 		{
-			//Create here all information:
+			bool is_loaded = false;
 
-			float* vertices = nullptr;
-			uint num_vertices = 0;
-			uint id_vertices = 0;
-
-			uint* indices = nullptr;
-			uint num_indices = 0;
-			uint id_indices = 0;
-
-			float* uv = nullptr;
-			uint num_uv = 0;
-			uint id_uv = 0;
-
-		
-			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[0]];
-
-			//Load Vertices
-			num_vertices = new_mesh->mNumVertices;
-			vertices = new float[num_vertices * 3];
-			memcpy(vertices, new_mesh->mVertices, sizeof(float)*num_vertices * 3);
-			LOG("New mesh with %d vertices", num_vertices);
+			go->AddComponent(Component_Mesh);
 
 
-			if (new_mesh->HasFaces())
+			if (meshes_map.find(new_mesh) != meshes_map.end())
 			{
-				num_indices = new_mesh->mNumFaces * 3;
-				indices = new uint[num_indices];
+				go->mesh->SetUID(meshes_map.find(new_mesh)->second);
+				is_loaded = true;
+			}
+			else
+				meshes_map[new_mesh] = go->mesh->GetUID();
 
-				for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
+			
+
+				//Create here all information:
+
+				float* vertices = nullptr;
+				uint num_vertices = 0;
+				uint id_vertices = 0;
+
+				uint* indices = nullptr;
+				uint num_indices = 0;
+				uint id_indices = 0;
+
+				float* uv = nullptr;
+				uint num_uv = 0;
+				uint id_uv = 0;
+
+				aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+
+				if (material != nullptr)
 				{
-					if (new_mesh->mFaces[num_faces].mNumIndices != 3)
+					aiString name;
+					material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
+
+					std::string tmp_name = name.C_Str();
+					std::string output_file;
+					tmp_name.erase(0, tmp_name.find_last_of("\\") + 1);
+
+					if (tmp_name.size() > 0)
 					{
-						LOG("CRITICAL ERROR: Geometry face %i whit %i faces, we don't load this geometry.", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
-						valid_mesh = false;
-						break;
+						if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
+						{
+							uint uid = App->resource_manager->Find(output_file.c_str());
+
+							if (uid == 0)
+								uid = App->resource_manager->ImportFile(output_file.c_str());
+
+							go->AddComponent(Component_Material);
+							go->material->SetUID(uid);
+
+						}
 					}
-					else
-						memcpy(&indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
 
 				}
 
-			}
+				if (!is_loaded)
+				{
+				//Load Vertices
+				num_vertices = new_mesh->mNumVertices;
+				vertices = new float[num_vertices * 3];
+				memcpy(vertices, new_mesh->mVertices, sizeof(float)*num_vertices * 3);
+				LOG("New mesh with %d vertices", num_vertices);
 
-			if (valid_mesh)
-			{
+
+				if (new_mesh->HasFaces())
+				{
+					num_indices = new_mesh->mNumFaces * 3;
+					indices = new uint[num_indices];
+
+					for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
+					{
+						memcpy(&indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
+					}
+
+				}
+
+
+
 
 				if (new_mesh->HasTextureCoords(0))
 				{
@@ -306,19 +306,12 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 
 				RELEASE_ARRAY(data);
 
+
+
+				RELEASE_ARRAY(vertices);
+				RELEASE_ARRAY(indices);
+				RELEASE_ARRAY(uv);
 			}
-			else
-			{
-				meshes_map.erase(mesh);
-				go->to_delete = true;
-				GameObject* tmp = go;
-				go->GetParent()->DeleteChildren(tmp);
-				go = parent;
-			}
-			
-			RELEASE_ARRAY(vertices);
-			RELEASE_ARRAY(indices);
-			RELEASE_ARRAY(uv);
 		}
 	}
 
