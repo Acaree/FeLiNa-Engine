@@ -272,6 +272,8 @@ void ComponentTransform::ShowGuizmos()
 
 				UpdateMatrix();
 			}
+
+			parent->RecalculateBoundingBox();
 		}
 		
 	}

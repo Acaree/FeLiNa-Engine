@@ -426,7 +426,9 @@ void GameObject::RecalculateBoundingBox()
 
 	if (transform != nullptr)
 	{
-		math::OBB obb = bounding_box.Transform(transform->GetTransformMatrix());
+		math::OBB obb;
+		obb.SetFrom(bounding_box);
+		obb.Transform(transform->GetTransformMatrix());
 
 		if (obb.IsFinite())
 			bounding_box = obb.MinimalEnclosingAABB();
