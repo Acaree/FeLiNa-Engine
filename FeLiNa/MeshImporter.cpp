@@ -157,35 +157,71 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 	if (node->mNumMeshes > 0)
 	{
 		go->AddComponent(Component_Mesh);
+		
+		bool valid_mesh = true;
 
 		//Allwais in node
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
-		
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+
+		bool is_loaded = false;
+
 		//This map is an auxiliar to avoid repeating mesh.
 		if (meshes_map.find(mesh) != meshes_map.end())
+		{
 			go->mesh->SetUID(meshes_map.find(mesh)->second);
+			is_loaded = true;
+		}
 		else
+		{
 			meshes_map[mesh] = go->mesh->GetUID();
+		}
+
+
+
+		if (material != nullptr)
+		{
+			aiString name;
+			material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
+
+			std::string tmp_name = name.C_Str();
+			std::string output_file;
+			tmp_name.erase(0, tmp_name.find_last_of("\\") + 1);
+			//tmp_name.erase(tmp_name.find_last_of("."), tmp_name.size());
+
+			if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
+			{
+				uint uid = App->resource_manager->Find(output_file.c_str());
+
+				if (uid == 0)
+					uid = App->resource_manager->ImportFile(output_file.c_str());
+
+				go->AddComponent(Component_Material);
+				go->material->SetUID(uid);
+
+			}
+
+		}
 
 		
-
-		//Create here all information:
-
-		float* vertices = nullptr;
-		uint num_vertices = 0;
-		uint id_vertices = 0;
-
-		uint* indices = nullptr;
-		uint num_indices = 0;
-		uint id_indices = 0;
-
-		float* uv = nullptr;
-		uint num_uv = 0;
-		uint id_uv = 0;
-
-		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
+		if (!is_loaded)
 		{
-			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[num_meshes]];
+			//Create here all information:
+
+			float* vertices = nullptr;
+			uint num_vertices = 0;
+			uint id_vertices = 0;
+
+			uint* indices = nullptr;
+			uint num_indices = 0;
+			uint id_indices = 0;
+
+			float* uv = nullptr;
+			uint num_uv = 0;
+			uint id_uv = 0;
+
+		
+			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[0]];
 
 			//Load Vertices
 			num_vertices = new_mesh->mNumVertices;
@@ -203,7 +239,9 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 				{
 					if (new_mesh->mFaces[num_faces].mNumIndices != 3)
 					{
-						LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
+						LOG("CRITICAL ERROR: Geometry face %i whit %i faces, we don't load this geometry.", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
+						valid_mesh = false;
+						break;
 					}
 					else
 						memcpy(&indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
@@ -212,92 +250,73 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 
 			}
 
-			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
-
-			if (material != nullptr)
+			if (valid_mesh)
 			{
-				aiString name;
-				material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
 
-				std::string tmp_name = name.C_Str();
-				std::string output_file;
-				tmp_name.erase(0, tmp_name.find_last_of("\\")+1);
-				//tmp_name.erase(tmp_name.find_last_of("."), tmp_name.size());
-
-				if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
+				if (new_mesh->HasTextureCoords(0))
 				{
-					uint uid = App->resource_manager->Find(output_file.c_str());
-					
-					if (uid == 0)
-						uid = App->resource_manager->ImportFile(output_file.c_str());
-				
-					go->AddComponent(Component_Material);
-					go->material->SetUID(uid);
-					
+					num_uv = new_mesh->mNumVertices;
+					uv = new float[num_uv * 2];
+
+					for (uint coords = 0; coords < new_mesh->mNumVertices; ++coords)
+					{
+						memcpy(&uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
+						memcpy(&uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
+					}
 
 
 				}
 
+
+
+				uint ranges[3] = { num_vertices,num_indices, num_uv };
+
+				uint size = sizeof(ranges) + sizeof(float) * num_vertices * 3 + sizeof(uint) * num_indices + sizeof(float)* num_uv * 2;
+
+				char* data = new char[size]; // Why if the variable is cursor physfs crashes? 
+				char* cursor = data;
+
+				// First store ranges
+				uint bytes = sizeof(ranges);
+				memcpy(cursor, ranges, bytes);
+
+				cursor += bytes;
+
+				//Store vertices
+				bytes = sizeof(float) * num_vertices * 3;
+				memcpy(cursor, vertices, bytes);
+
+				cursor += bytes;
+
+				//Store indices
+				bytes = sizeof(uint) * num_indices;
+				memcpy(cursor, indices, bytes);
+
+				cursor += bytes;
+
+				bytes = sizeof(float)* num_uv * 2;
+				memcpy(cursor, uv, bytes);
+
+				int i = sizeof(bytes);
+
+				std::string output_file = std::to_string(go->mesh->GetUID());
+				char* final_path = App->fs->SaveFile((char *)data, size, output_file, MESH_FILE);
+
+				RELEASE_ARRAY(data);
+
 			}
-
-
-
-			if (new_mesh->HasTextureCoords(0))
+			else
 			{
-				num_uv = new_mesh->mNumVertices;
-				uv = new float[num_uv * 2];
-
-				for (uint coords = 0; coords < new_mesh->mNumVertices; ++coords)
-				{
-					memcpy(&uv[coords * 2], &new_mesh->mTextureCoords[0][coords].x, sizeof(float));
-					memcpy(&uv[(coords * 2) + 1], &new_mesh->mTextureCoords[0][coords].y, sizeof(float));
-				}
-
-
+				go->to_delete = true;
+				GameObject* tmp = go;
+				go->GetParent()->DeleteChildren(tmp);
+				go = parent;
 			}
-
-
+			
+			RELEASE_ARRAY(vertices);
+			RELEASE_ARRAY(indices);
+			RELEASE_ARRAY(uv);
 		}
-
-		uint ranges[3] = {num_vertices,num_indices, num_uv };
-
-		uint size = sizeof(ranges) + sizeof(float) * num_vertices * 3 + sizeof(uint) * num_indices + sizeof(float)* num_uv * 2;
-
-		char* data = new char[size]; // Why if the variable is cursor physfs crashes? 
-		char* cursor = data;
-
-		// First store ranges
-		uint bytes = sizeof(ranges);
-		memcpy(cursor, ranges, bytes);
-
-		cursor += bytes;
-
-		//Store vertices
-		bytes = sizeof(float) * num_vertices * 3;
-		memcpy(cursor, vertices, bytes);
-
-		cursor += bytes;
-
-		//Store indices
-		bytes = sizeof(uint) * num_indices;
-		memcpy(cursor, indices, bytes);
-
-		cursor += bytes;
-
-		bytes = sizeof(float)* num_uv * 2;
-		memcpy(cursor, uv, bytes);
-
-		int i = sizeof(bytes);
-
-		std::string output_file =std::to_string(go->mesh->GetUID());
-		char* final_path = App->fs->SaveFile((char *)data, size, output_file, MESH_FILE);
-
-
-		RELEASE_ARRAY(data);
-
-		RELEASE_ARRAY(vertices);
-		RELEASE_ARRAY(indices);
-		RELEASE_ARRAY(uv);
 	}
 
 	for (uint i = 0; i < node->mNumChildren; ++i)
