@@ -188,17 +188,19 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 			std::string output_file;
 			tmp_name.erase(0, tmp_name.find_last_of("\\") + 1);
 			//tmp_name.erase(tmp_name.find_last_of("."), tmp_name.size());
-
-			if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
+			if (tmp_name.size() > 0)
 			{
-				uint uid = App->resource_manager->Find(output_file.c_str());
+				if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
+				{
+					uint uid = App->resource_manager->Find(output_file.c_str());
 
-				if (uid == 0)
-					uid = App->resource_manager->ImportFile(output_file.c_str());
+					if (uid == 0)
+						uid = App->resource_manager->ImportFile(output_file.c_str());
 
-				go->AddComponent(Component_Material);
-				go->material->SetUID(uid);
+					go->AddComponent(Component_Material);
+					go->material->SetUID(uid);
 
+				}
 			}
 
 		}
@@ -307,6 +309,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 			}
 			else
 			{
+				meshes_map.erase(mesh);
 				go->to_delete = true;
 				GameObject* tmp = go;
 				go->GetParent()->DeleteChildren(tmp);

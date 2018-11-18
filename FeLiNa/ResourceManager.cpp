@@ -142,13 +142,18 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 				//Create all resources empty
 				for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
 				{
-					Resource* resource = CreateNewResource(resource_type, *it);
-					resource->exported_file = "Library/";
-					resource->exported_file += "Meshes/";
-					resource->exported_file += std::to_string(*it);
-					resource->exported_file += ".felina";
-					resource->file = assets_file;
-					aux_resources.push_back(resource);
+					Resource* resource = Get(*it);
+
+					if (resource == nullptr)
+					{
+						Resource* resource = CreateNewResource(resource_type, *it);
+						resource->exported_file = "Library/";
+						resource->exported_file += "Meshes/";
+						resource->exported_file += std::to_string(*it);
+						resource->exported_file += ".felina";
+						resource->file = assets_file;
+						aux_resources.push_back(resource);
+					}
 				}
 
 				if (aux_resources.size() != 0)
@@ -165,19 +170,31 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 			case RESOURCE_MATERIAL:
 			{
 				//if are a material we create the resource and meta.
+
+
+
 				std::string output_name = output_file;
 				output_name.erase(0, output_name.find_last_of("/")+1);
 				output_name.erase(output_name.find_last_of("."), output_file.size());
 				uint uid = strtoul(output_name.c_str(), NULL, 0);
-				Resource* resource = CreateNewResource(resource_type, uid);
-				resource->file= output_file;
-				resource->exported_file = assets_file;
-				aux_resources.push_back(resource);
+				Resource* resource = Get(uid);
+
+				if (resource == nullptr)
+				{
+					resource = CreateNewResource(resource_type, uid);
+					resource->file = output_file;
+					resource->exported_file = assets_file;
+					aux_resources.push_back(resource);
+					App->importer_material->CreateFileMeta(aux_resources, (MaterialSettings*)settings);
+					ret = aux_resources.front()->GetUID();
+				}
+				else
+				{
+					ret = uid;
+				}
+				
 
 				
-				App->importer_material->CreateFileMeta(aux_resources, (MaterialSettings*)settings);
-
-				ret = aux_resources.front()->GetUID();
 				break;
 			}
 
