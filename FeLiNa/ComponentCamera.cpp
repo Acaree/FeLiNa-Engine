@@ -19,7 +19,7 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
 	frustum.front = math::float3::unitZ;
 	frustum.up = math::float3::unitY;
 
-	aspect_ratio = 64/ 9;
+	aspect_ratio = 16/ 9;
 	frustum.nearPlaneDistance = 1.0F;
 	frustum.farPlaneDistance = 100.0F;
 	frustum.verticalFov = math::DegToRad(60.0F);
@@ -36,8 +36,8 @@ ComponentCamera::~ComponentCamera()
 void ComponentCamera::Update(float dt)
 {
 	//Check if are in play mode for move camera with component transform
-	//if (App->camera->current_camera != this)
-//	{
+	if (App->camera->current_camera != this)
+	{
 		const ComponentTransform* transform = (ComponentTransform*)parent->GetComponent(Component_Transform);
 
 		math::float4x4 matrix = math::float4x4::identity;
@@ -48,8 +48,7 @@ void ComponentCamera::Update(float dt)
 		frustum.pos = matrix.TranslatePart();
 		frustum.front = matrix.WorldZ().Normalized();
 		frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();
-
-//	}
+	}
 
 	if (culling)
 	{
@@ -271,7 +270,11 @@ void ComponentCamera::DrawInspector()
 			SetFov(f_fov);
 		}
 
-		ImGui::Checkbox("Culling", &culling);
+		if (ImGui::Checkbox("Culling", &culling))
+		{
+			if (!culling)
+				App->scene->SetAllGameObjectActive(App->scene->root_object);
+		}
 
 		ImGui::TreePop();
 	}

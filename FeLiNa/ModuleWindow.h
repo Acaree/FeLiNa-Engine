@@ -27,10 +27,12 @@ public:
 	Uint32 flags;
 	SDL_Surface* screen_surface;
 
+	int width = 1280;
+	int height = 960;
+
 private:
 
-	int width = 1280;
-	int height = 1024;
+
 	float brightness = 1;
 	int refresh_rate = 0;
 	bool fullscreen = false, reasizable = false, bordeless=false, fullscreen_desktop= false;

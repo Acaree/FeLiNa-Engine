@@ -32,7 +32,7 @@ public:
 	void DrawScene();
 
 	ComponentCamera* CreateMainCamera();
-
+	void SetAllGameObjectActive(GameObject* go);
 	void SearchObjectsToDelete(GameObject*go);
 	void DeleteGameObjects(GameObject* go);
 	

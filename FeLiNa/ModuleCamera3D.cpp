@@ -79,8 +79,8 @@ update_status ModuleCamera3D::Update(float dt)
 		if (!ImGui::IsMouseHoveringAnyWindow() && !ImGuizmo::IsOver())
 		{
 			//Taking screen values.
-			float width = (float)App->window->screen_surface->w;
-			float height = (float)App->window->screen_surface->h;
+			float width = (float)App->window->width;
+			float height = (float)App->window->height;
 
 			//Take mouse position.
 			int mouse_x = App->input->GetMouseX();
