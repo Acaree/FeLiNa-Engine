@@ -480,8 +480,10 @@ void ModuleGui::ShowEditorMenu()
 
 		App->scene->root_object->CleanData();
 
+		App->scene->root_object->AddComponent(Component_Transform);
+
 		App->serialization_scene->LoadScene();
-	
+
 		App->camera->current_camera = App->camera->camera_editor;
 
 	}
