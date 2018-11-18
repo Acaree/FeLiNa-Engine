@@ -560,16 +560,17 @@ void GameObject::DeleteChildren(GameObject* go)
 
 	for (uint i = 0; i < childrens.size(); ++i)
 	{
-		if (strcmp(childrens[i]->GetName(), go->name) == 0)
+		if (childrens[i]->uid == go->uid)
 		{
-			GameObject* tmp = childrens[i];
+			if (childrens[i]->to_delete) {
+				GameObject* tmp = childrens[i];
 
-			RELEASE(tmp);
-			childrens.erase(it);
-			tmp = nullptr;
+				RELEASE(tmp);
+				childrens.erase(it);
+				tmp = nullptr;
 
-			break;
-
+				break;
+			}
 		}
 		it++;
 
