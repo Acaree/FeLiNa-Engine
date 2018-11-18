@@ -220,7 +220,7 @@
     <ClCompile Include="Importer.cpp">
       <Filter>Modules\Importers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\entropy.c">
+    <ClCompile Include="Pcg\entropy.c">
       <Filter>Tools\PCG</Filter>
     </ClCompile>
   </ItemGroup>
@@ -558,13 +558,13 @@
     <ClInclude Include="ResourceMaterial.h">
       <Filter>Modules\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\entropy.h">
+    <ClInclude Include="Pcg\entropy.h">
       <Filter>Tools\PCG</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\pcg_spinlock.h">
+    <ClInclude Include="Pcg\pcg_spinlock.h">
       <Filter>Tools\PCG</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\pcg_variants.h">
+    <ClInclude Include="Pcg\pcg_variants.h">
       <Filter>Tools\PCG</Filter>
     </ClInclude>
   </ItemGroup>
