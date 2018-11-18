@@ -469,6 +469,7 @@ void ModuleFileSystem::RemoveAllDependencies(char* file_path) {
 
 		FileDelete(file_path_s.c_str());
 		file_path_s += ".meta";
+		FileDelete(file_path_s.c_str());
 
 		int uid = App->importer_material->GetUIDofMeta(file_path_s.c_str());
 		char* temp = new char[DEFAULT_BUF_SIZE];
