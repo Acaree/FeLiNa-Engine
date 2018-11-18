@@ -8,11 +8,13 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentTexture.h"
+#include <map>
 #include <string>
 #include <list>
 
 class aiScene;
 class aiNode;
+class aiMesh;
 struct aiLogStream;
 struct aiMaterial;
 class Resource;
@@ -71,7 +73,7 @@ public:
 
 public:
 	MeshSettings* mesh_settings = nullptr;
-
+	std::map<const aiMesh*, uint> meshes_map;
 };
 
 

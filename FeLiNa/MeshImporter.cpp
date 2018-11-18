@@ -160,6 +160,14 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 
 		//Allwais in node
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
+		
+		//This map is an auxiliar to avoid repeating mesh.
+		if (meshes_map.find(mesh) != meshes_map.end())
+			go->mesh->SetUID(meshes_map.find(mesh)->second);
+		else
+			meshes_map[mesh] = go->mesh->GetUID();
+
+		
 
 		//Create here all information:
 
