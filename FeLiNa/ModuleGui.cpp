@@ -587,7 +587,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				ImGui::TreePop();
 			}
 		
-			//ShowAssetsOptions(*file, dir);
+			ShowAssetsOptions(*file, dir);
 
 			RELEASE_ARRAY(tmp);
 
@@ -632,7 +632,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				}
 
 
-				//ShowAssetsOptions(*file, dir);
+				ShowAssetsOptions(*file, dir);
 			
 				ImGui::TreePop();
 			}
