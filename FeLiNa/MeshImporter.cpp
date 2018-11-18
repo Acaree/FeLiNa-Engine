@@ -171,7 +171,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 			}
 		}
 
-
 		if (!invalid_node)
 		{
 			bool is_loaded = false;
@@ -187,58 +186,55 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 			else
 				meshes_map[new_mesh] = go->mesh->GetUID();
 
-			
+			//Create here all information:
 
-				//Create here all information:
+			float* vertices = nullptr;
+			uint num_vertices = 0;
+			uint id_vertices = 0;
 
-				float* vertices = nullptr;
-				uint num_vertices = 0;
-				uint id_vertices = 0;
+			uint* indices = nullptr;
+			uint num_indices = 0;
+			uint id_indices = 0;
 
-				uint* indices = nullptr;
-				uint num_indices = 0;
-				uint id_indices = 0;
+			float* uv = nullptr;
+			uint num_uv = 0;
+			uint id_uv = 0;
 
-				float* uv = nullptr;
-				uint num_uv = 0;
-				uint id_uv = 0;
+			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
 
-				aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+			if (material != nullptr)
+			{
+				aiString name;
+				material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
 
-				if (material != nullptr)
+				std::string tmp_name = name.C_Str();
+				std::string output_file;
+				tmp_name.erase(0, tmp_name.find_last_of("\\") + 1);
+
+				if (tmp_name.size() > 0)
 				{
-					aiString name;
-					material->GetTexture(aiTextureType_DIFFUSE, 0, &name);
-
-					std::string tmp_name = name.C_Str();
-					std::string output_file;
-					tmp_name.erase(0, tmp_name.find_last_of("\\") + 1);
-
-					if (tmp_name.size() > 0)
+					if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
 					{
-						if (App->fs->RecursiveFindFileExistInAssets("Assets", tmp_name.c_str(), output_file))
-						{
-							uint uid = App->resource_manager->Find(output_file.c_str());
+						uint uid = App->resource_manager->Find(output_file.c_str());
 
-							if (uid == 0)
-								uid = App->resource_manager->ImportFile(output_file.c_str());
+						if (uid == 0)
+							uid = App->resource_manager->ImportFile(output_file.c_str());
 
-							go->AddComponent(Component_Material);
-							go->material->SetUID(uid);
+						go->AddComponent(Component_Material);
+						go->material->SetUID(uid);
 
-						}
 					}
-
 				}
 
-				if (!is_loaded)
-				{
+			}
+
+			if (!is_loaded)
+			{
 				//Load Vertices
 				num_vertices = new_mesh->mNumVertices;
 				vertices = new float[num_vertices * 3];
 				memcpy(vertices, new_mesh->mVertices, sizeof(float)*num_vertices * 3);
 				LOG("New mesh with %d vertices", num_vertices);
-
 
 				if (new_mesh->HasFaces())
 				{
@@ -251,9 +247,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 					}
 
 				}
-
-
-
 
 				if (new_mesh->HasTextureCoords(0))
 				{
@@ -268,8 +261,6 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 
 
 				}
-
-
 
 				uint ranges[3] = { num_vertices,num_indices, num_uv };
 

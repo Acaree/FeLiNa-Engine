@@ -42,10 +42,6 @@ uint ModuleResourceManager::Find(const char* file) const
 		if (strcmp(it->second->GetExportedFile(), file) == 0)
 			return it->first;
 
-	for (std::map<uint, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
-		if (strcmp(it->second->GetFile(), file) == 0)
-			return it->first;
-
 	return 0;
 }
 
@@ -255,7 +251,6 @@ void ModuleResourceManager::RecursiveResourceFiles(const char* dir, std::string 
 			{
 				new_file.append(*file);
 				ImportFile(new_file.c_str());
-
 			}
 			else
 			{
@@ -435,7 +430,7 @@ void ModuleResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_
 	}
 
 	std::map<uint, Resource*>::iterator tmp_resource;
-	//TO REVISE: THIS WORK GOOD IF WE ERASE TEXTURES WITH TEXTURES? :/
+
 	for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
 	{
 		tmp_resource = resources.find(*it);
