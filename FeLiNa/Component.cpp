@@ -1,13 +1,13 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "Application.h"
-#include "MathGeoLib/Algorithm/Random/LCG.h"
+
 #include "mmgr/mmgr.h"
 Component::Component(GameObject* parent)
 {
 	this->parent = parent;
 #ifndef GAME_MODE
-	uid = App->random->Int();
+	uid = App->GenerateRandomNumber();
 #endif
 }
 

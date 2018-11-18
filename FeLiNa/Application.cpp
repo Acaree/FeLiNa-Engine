@@ -13,6 +13,7 @@
 #include "ModuleTimeManagement.h"
 #include "SceneSerialization.h"
 #include "ResourceManager.h"
+#include "PCG/entropy.h"
 #include "mmgr/mmgr.h"
 
 Application::Application()
@@ -27,7 +28,6 @@ Application::Application()
 	
 
 #ifndef GAME_MODE
-	random = new math::LCG();
 	
 	hardware = new ModuleHardware(this, false);
 	gui = new ModuleGui(this);
@@ -76,7 +76,6 @@ Application::~Application()
 #ifndef GAME_MODE
 	RELEASE(importer_mesh);
 	RELEASE(importer_material);
-	RELEASE(random);
 #endif // !GAME_MODE
 
 	RELEASE(serialization_scene);
@@ -90,6 +89,11 @@ Application::~Application()
 bool Application::Init()
 {
 	bool ret = true;
+
+	uint64_t seeds[2];
+	entropy_getbytes((void*)seeds, sizeof(seeds));
+	pcg32_srandom_r(&random, seeds[0], seeds[1]);
+
 
 	// Call Init() in all modules
 	for (std::list<Module*>::const_iterator it = list_modules.begin(); it != list_modules.end() && ret; ++it)
@@ -331,6 +335,12 @@ float Application::GetFPS() const
 	return last_FPS;
 }
 
+uint Application::GenerateRandomNumber() const
+{
+	return pcg32_random_r(&(App->random));
+}
+
+
 void Application::Save()
 {
 #ifndef GAME_MODE
@@ -556,5 +566,6 @@ void Application::Log_app(const char * text) const
 	console->Log_console(text);
 
 }
+
 #endif
 

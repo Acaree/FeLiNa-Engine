@@ -3,7 +3,7 @@
 
 #include "Globals.h"
 #include "Module.h"
-#include "MathGeoLib/Algorithm/Random/LCG.h"
+#include "Pcg/pcg_variants.h"
 #include <list>
 #include <vector>
 
@@ -62,7 +62,7 @@ public:
 	int FPS_cap = 60;
 
 	bool vsync = false;
-	math::LCG* random = nullptr;
+	pcg32_random_t random;
 
 	ENGINE_STATES engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 	GAME_STATES game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
@@ -105,6 +105,9 @@ public:
 
 	void NeedSave();
 	void NeedLoad();
+
+	uint GenerateRandomNumber() const;
+
 private:
 
 	void Save();

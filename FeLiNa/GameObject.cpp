@@ -28,7 +28,7 @@ GameObject::GameObject(GameObject* parent)
 	strcpy(name, "No Name");
 
 #ifndef GAME_MODE
-	uid = App->random->Int();
+	uid = App->GenerateRandomNumber();
 #endif
 }
 
@@ -177,12 +177,12 @@ Component* GameObject::AddComponent(ComponentType type)
 		break;
 	case Component_Mesh:
 		mesh = new ComponentMesh(this);
-		mesh->SetUID(App->random->Int());
+		mesh->SetUID(App->GenerateRandomNumber());
 		component = mesh;
 		break;
 	case Component_Material:
 		material = new ComponentTexture(this);
-		material->SetUID( App->random->Int());
+		material->SetUID( App->GenerateRandomNumber());
 		component = material;
 		break;
 	case Component_Camera:

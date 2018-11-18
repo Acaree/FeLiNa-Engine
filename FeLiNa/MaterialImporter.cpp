@@ -140,7 +140,7 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 			if (ilSaveL(IL_DDS, data, size) > 0)
 			{
 
-				uint uid = App->random->Int();
+				uint uid = App->GenerateRandomNumber();
 				output_file = std::to_string(uid);
 
 				App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);

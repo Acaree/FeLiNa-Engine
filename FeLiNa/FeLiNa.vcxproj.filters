@@ -220,6 +220,9 @@
     <ClCompile Include="Importer.cpp">
       <Filter>Modules\Importers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\entropy.c">
+      <Filter>Tools\PCG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -555,6 +558,15 @@
     <ClInclude Include="ResourceMaterial.h">
       <Filter>Modules\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\entropy.h">
+      <Filter>Tools\PCG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\pcg_spinlock.h">
+      <Filter>Tools\PCG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\pcg_variants.h">
+      <Filter>Tools\PCG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -604,6 +616,9 @@
     </Filter>
     <Filter Include="Modules\Resources">
       <UniqueIdentifier>{33e45be2-9824-4c6c-9f52-fb961e7a03a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\PCG">
+      <UniqueIdentifier>{1e64f6f4-c7f4-4cf1-89fc-b593beef51c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

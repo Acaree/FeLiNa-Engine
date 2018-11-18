@@ -326,7 +326,7 @@ Resource* ResourceManager::CreateNewResource(RESOURCE_TYPE type, uint last_uid)
 		uint uid;
 
 		if (last_uid == 0)
-			uid = App->random->Int();
+			uid = App->GenerateRandomNumber();
 		else
 			uid = last_uid;
 

@@ -79,6 +79,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\entropy.h" />
+    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\pcg_spinlock.h" />
+    <ClInclude Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\pcg_variants.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Desktop\NekoEngine-master\Source\PCG\entropy.c" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
