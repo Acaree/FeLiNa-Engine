@@ -555,17 +555,18 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 {
 	ImGuiTreeNodeFlags flags = 0;
 	
-	static const char* tmp_file = "";
+	static const char* tmp = "";
 	static const char* tmp_dir = "";
 
 	const char** directory_array = App->fs->GetAllFilesFromDir(dir);
-	char* tmp = new char[DEFAULT_BUF_SIZE]; 
+	
 
 	for (const char** file = directory_array; *file != nullptr; ++file)
 	{
 		
 		if (App->fs->isDirectory(*file))
 		{
+			char* tmp = new char[DEFAULT_BUF_SIZE];
 			flags = 0;
 			flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 
@@ -579,19 +580,20 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				RecurssiveShowAssets(tmp);
 
 				
+				
 				ImGui::TreePop();
 			}
+		
+			ShowAssetsOptions(*file, dir);
 
-			
-			//ShowAssetsOptions(*file, dir);
+			RELEASE_ARRAY(tmp);
+
 		}
 		else
 		{
-			strcpy(tmp, *file);
+			extension = *file;
 			
-			extension = tmp;
-			
-			extension.erase(0,extension.size()-5);
+			extension.erase(0,extension.find_last_of("."));
 
 			if (strcmp(extension.c_str(),".meta") == 0)
 				continue;
@@ -619,7 +621,6 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 					else {
 
 						file_dragging = file_focus;
-						//file_focus.clear();
 					}
 					
 				}
@@ -640,8 +641,6 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 	}
 
-	RELEASE_ARRAY(tmp);
-
 	file_to_rename = file_focus;
 
 	App->fs->FreeEnumeratedFiles(directory_array);
@@ -652,7 +651,6 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 {
 	if (ImGui::BeginPopupContextItem(file))
 	{
-		bool directory = App->fs->isDirectory(file);
 
 		if (ImGui::MenuItem("See Import Options", NULL, false, true))
 		{
