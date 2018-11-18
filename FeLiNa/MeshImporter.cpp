@@ -53,7 +53,7 @@ bool MeshImporter::Import(const char* file_name, const char* file_path, std::str
 	if (size > 0)
 	{
 		LOG("MATERIAL IMPORTER: Successfully");
-		ret = Import(buffer, size, output_file,import_settings);
+		ret = Import(buffer, size, output_file,import_settings, file_path);
 		RELEASE_ARRAY(buffer);
 	}	
 	else
@@ -63,7 +63,7 @@ bool MeshImporter::Import(const char* file_name, const char* file_path, std::str
 	return ret;
 }
 
-bool MeshImporter::Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings)
+bool MeshImporter::Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings, const char* file_path)
 {
 	bool ret = false;
 
@@ -89,7 +89,7 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 		//Serialization the imported file
 		App->serialization_scene->save_name_scene = childrens_go->GetName();
-		App->serialization_scene->SaveScene(childrens_go);
+		App->serialization_scene->SaveScene(childrens_go,file_path);
 
 		aiReleaseImport(scene);
 

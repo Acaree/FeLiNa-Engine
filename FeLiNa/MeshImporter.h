@@ -54,7 +54,7 @@ public:
 	~MeshImporter();
 
 	bool Import(const char* file_name, const char* file_path, std::string& output_file, const MeshSettings* import_settings);
-	bool Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings);
+	bool Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings, const char* file_path = nullptr);
 
 	void LoadModel(const aiScene* scene, aiNode* node, GameObject* parent, ComponentTransform* trans);
 

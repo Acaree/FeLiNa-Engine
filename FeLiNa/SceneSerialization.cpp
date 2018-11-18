@@ -60,7 +60,7 @@ void SceneSerialization::GetAllUIDMeshesInMeta(std::list<uint>& uids, const char
 }
 
 
-void SceneSerialization::SaveScene(GameObject* go)
+void SceneSerialization::SaveScene(GameObject* go, const char* file_path)
 {
 	aux_go.clear();
 
@@ -84,19 +84,21 @@ void SceneSerialization::SaveScene(GameObject* go)
 
 	}
 	
-
-	char *serialized_string = json_serialize_to_string_pretty(file_root);
-	puts(serialized_string);
 	
-	//TO REVISION: CAN CRash if use strcpy with same_name_scene
+	int size = json_serialization_size_pretty(file_root);
+	char* buffer = new char[size];
+	json_serialize_to_buffer_pretty(file_root, buffer, size);
+	
 	char name[DEFAULT_BUF_SIZE];
 
-	sprintf_s(name, DEFAULT_BUF_SIZE, "Assets/%s", save_name_scene );
+	if(file_path == nullptr)
+		sprintf_s(name, DEFAULT_BUF_SIZE, "Assets/%s", save_name_scene );
+	else
+		sprintf_s(name, DEFAULT_BUF_SIZE, "%s%s", file_path, save_name_scene);
 	strcat(name, ".json");
 	
-
-	json_serialize_to_file(file_root, name);
-	json_free_serialized_string(serialized_string);
+	App->fs->SaveBufferData(buffer,name,size);
+	RELEASE_ARRAY(buffer);
 	json_value_free(file_root);
 
 	save_name_scene = "";
