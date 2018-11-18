@@ -70,6 +70,4 @@ void Resource::SetExportedFile(const char* exported_file)
 void Resource::SetInvalidateResource()
 {
 	App->scene->root_object->SetInvalidateResource(this);
-
-
 }

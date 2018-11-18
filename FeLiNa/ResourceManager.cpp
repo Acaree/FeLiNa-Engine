@@ -86,7 +86,8 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 			//if not library_file we import all and create library files
 
 			//if has meta red the settings else we take the default import settings
-			if (meta_file != nullptr)
+			// TO REVISE: I think this not necesary because if user delete .json or library we don't create library files
+		/*	if (meta_file != nullptr)
 			{
 				switch (file_type)
 				{
@@ -98,7 +99,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 					break;
 
 				}
-			}
+			}*/
 			//Get the name and the path if file in assets.
 			std::string name = assets_file;
 			std::string path = assets_file;

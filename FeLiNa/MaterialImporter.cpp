@@ -132,7 +132,6 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 
 		if (size > 0)
 		{
-			//TO REVISION REALLY NEED 2?
 			ilEnable(IL_FILE_OVERWRITE);
 
 			// Allocate the data buffer
@@ -140,13 +139,10 @@ bool MaterialImporter::Import(const void* buffer, uint size, std::string& output
 
 			if (ilSaveL(IL_DDS, data, size) > 0)
 			{
-				//TODO NEED SAVE FILE with name of uid
+
 				uint uid = App->random->Int();
 				output_file = std::to_string(uid);
 
-				//char* tmp = new char[DEFAULT_BUF_SIZE];
-
-				// tmp = App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);//TO Revise ret and uint or bool?
 				App->fs->SaveFile((char*)data, size, output_file, MATERIAL_FILE);
 
 				ret = true;
@@ -305,7 +301,7 @@ void MaterialImporter::CreateFileMeta(std::list<Resource*> resources, MaterialSe
 
 		json_object_set_value(root_object, "Import Settings", material_import);
 
-		json_object_set_number(settings_import, "DXCT Compression", settings->dxct_compression); //If we save as number , when we rean can convet the type :/
+		json_object_set_number(settings_import, "DXCT Compression", settings->dxct_compression);
 		json_object_set_boolean(settings_import, "WRAP Mode S", settings->wrap_mode_s);
 		json_object_set_boolean(settings_import, "WRAP Mode T", settings->wrap_mode_t);
 		json_object_set_boolean(settings_import, "MAG FILTER", settings->mag_filter);
@@ -327,52 +323,12 @@ void MaterialImporter::CreateFileMeta(std::list<Resource*> resources, MaterialSe
 	}
 }
 
-void MaterialImporter::ReadFileMeta(const char* file,  MaterialSettings* settings)
-{
-	// TO REVISE : I THINK WE CAN DELETE THIS FUNCTION (ARE BAD BECAUSE WE GENERATE A RESOURCE);
-	char* buffer = nullptr;
-
-	uint size = App->fs->Load(file, &buffer);
-
-	if (size > 0)
-	{
-		LOG("Can load Mesh meta file: %s", file);
-
-		Resource* resource = App->resource_manager->CreateNewResource(RESOURCE_MATERIAL);
-		
-
-		JSON_Value* root = json_parse_string(buffer);
-		JSON_Object* root_object = json_value_get_object(root);
-
-		std::string tmp = file;
-		tmp = tmp.substr(0, tmp.find_last_of("."));
-
-		resource->uid = json_object_get_number(root_object, "UID");
-		resource->exported_file = tmp.c_str();
-
-		JSON_Object* import_settings = json_object_get_object(root_object, "Import Settings");
-
-	
-		settings->dxct_compression = (MaterialSettings::DXCT_DEFINITION)(int)json_object_get_number(import_settings, "DXCT Compression");
-		settings->wrap_mode_s = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode S");
-		settings->wrap_mode_t = (MaterialSettings::TextureWrapMode)json_object_get_boolean(import_settings, "WRAP Mode T");
-		settings->mag_filter = (MaterialSettings::TextureMagFilter)json_object_get_boolean(import_settings, "MAG FILTER");
-
-		json_value_free(root);
-
-		
-	}
-	else
-		LOG("Error reading mesh meta file: %s", file);
-
-	RELEASE_ARRAY(buffer);
-}
 
 void MaterialImporter::ShowMaterialImport()
 {
 
 	static int current_compression = material_settings->dxct_compression;
-	const char* compression_elements[] = {"DXTC_FORMAT" , "DXT1" , "DXT2" ,"DXT3" ,"DXT4" ,"DXT5"  };
+	static const char* compression_elements[] = {"DXTC_FORMAT" , "DXT1" , "DXT2" ,"DXT3" ,"DXT4" ,"DXT5"  };
 
 	if (ImGui::Combo("###compression2", &current_compression, compression_elements, ((int)(sizeof(compression_elements) / sizeof(*compression_elements)))))
 	{
@@ -381,7 +337,7 @@ void MaterialImporter::ShowMaterialImport()
 
 	static int current_wrap_s = material_settings->wrap_mode_s;
 	static int current_wrap_t = material_settings->wrap_mode_t;
-	const char* wrap_elements[] = { "CLAMP" , "REPEAT"  };
+	static const char* wrap_elements[] = { "CLAMP" , "REPEAT"  };
 
 	if (ImGui::Combo("###wrap_s", &current_wrap_s, wrap_elements, ((int)(sizeof(wrap_elements) / sizeof(*wrap_elements)))))
 	{
@@ -394,7 +350,7 @@ void MaterialImporter::ShowMaterialImport()
 	}
 
 	static int current_mag = material_settings->mag_filter;
-	const char* mag_elements[] = { "NEAREST" ,"LINEAR" };
+	static const char* mag_elements[] = { "NEAREST" ,"LINEAR" };
 
 	if (ImGui::Combo("###mag_filter", &current_mag, mag_elements, ((int)(sizeof(mag_elements) / sizeof(*mag_elements)))))
 	{
@@ -496,7 +452,6 @@ void MaterialImporter::GetImportSettingsInMeta(const char* meta, MaterialSetting
 
 uint MaterialImporter::GetUIDofMeta(const char* meta)
 {
-
 	uint ret = 0;
 
 	if (meta != nullptr)

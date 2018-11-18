@@ -10,6 +10,7 @@
 #include "ComponentTexture.h"
 #include <string>
 #include <list>
+
 class aiScene;
 class aiNode;
 struct aiLogStream;
@@ -49,8 +50,6 @@ public:
 
 	MeshImporter();
 	~MeshImporter();
-
-	//¿LOAD CHECKERS?
 
 	bool Import(const char* file_name, const char* file_path, std::string& output_file, const MeshSettings* import_settings);
 	bool Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings);

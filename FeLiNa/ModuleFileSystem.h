@@ -43,7 +43,7 @@ public:
 	void RemoveAllDependencies(char* file_path);
 	void GetPhysfsStats(const char* filename, PHYSFS_Stat& stat );
 	void FreeEnumeratedFiles( const char** dir);
-	bool ExistFile(const char* file); // TO REVISE: REPLACE ALL PHYSFS_EXIST TO THIS FUNCTION
+	bool ExistFile(const char* file); 
 	uint GetLastModificationTime(const char* dir);
 
 	void GetAllAssetsFiles(const char* dir, std::string path);

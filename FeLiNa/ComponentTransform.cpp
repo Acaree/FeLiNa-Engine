@@ -10,6 +10,7 @@
 #include "ModuleWindow.h"
 #include "ComponentCamera.h"
 #include "mmgr/mmgr.h"
+
 ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position, math::float3 rotation, math::float3 scale): Component(parent)
 {
 	type = Component_Transform;
@@ -23,8 +24,6 @@ ComponentTransform::ComponentTransform(GameObject* parent, math::float3 position
 	this->scale = scale;
 
 	UpdateMatrix();
-
-
 }
 
 math::float4x4 ComponentTransform::GetTransformMatrix() const {

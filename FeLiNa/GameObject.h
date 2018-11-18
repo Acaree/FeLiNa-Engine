@@ -44,7 +44,6 @@ public:
 	Component* GetComponent(ComponentType type);
 	Component* AddComponent(ComponentType type);
 
-	//void CloneComponents(Component* component);
 	bool DeleteComponent(Component* component);
 	void DeleteAllComponents();
 	bool DeleteComponent(ComponentType type);
@@ -60,7 +59,6 @@ public:
 	bool IsSelected() const;
 	void ToggleSelected();
 
-	//void AddBoundingBox(const Mesh* mesh);
 	math::AABB GetAABB() const;
 	void DrawBoundingBox();
 	void RecalculateBoundingBox();
@@ -85,7 +83,7 @@ public:
 public:
 
 	std::vector<GameObject*> childrens;
-	// I think this is best 
+
 	ComponentTransform* transform = nullptr;
 	ComponentTexture* material = nullptr;
 	ComponentMesh* mesh = nullptr;
@@ -96,11 +94,9 @@ private:
 	
 	char name[DEFAULT_BUF_SIZE];
 	
-
 	GameObject* parent = nullptr;
 	bool selected = false;
 	bool active = true;
-
 
 };
 

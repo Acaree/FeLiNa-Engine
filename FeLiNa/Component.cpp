@@ -28,7 +28,6 @@ void Component::DrawInspector()
 
 void Component::CleanUp()
 {
-	//RELEASE(parent);
 	parent = nullptr;
 }
 

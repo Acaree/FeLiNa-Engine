@@ -236,12 +236,11 @@ uint ModuleFileSystem::Load(const char* filePath, char** buffer) const {
 				}
 				else
 				{
-					RELEASE(buffer);
+					RELEASE_ARRAY(buffer);
 					LOG("Could not read file '%s'. ERROR: %s", filePath, PHYSFS_getLastError());
 				}
 
 				PHYSFS_close(file);
-				//RELEASE_ARRAY(buffer);
 			}
 			else
 			{
@@ -375,8 +374,6 @@ FILE_TYPE ModuleFileSystem::FindOwnTypeFile(const char* file)
 		file_type = FILE_TYPE::MATERIAL_FILE;
 	}
 
-	//else file type is unknown
-
 	return file_type;
 }
 
@@ -505,7 +502,6 @@ bool ModuleFileSystem::RecursiveFindFileExistInAssets(const char* dir, const cha
 {
 	bool ret = false;
 
-	//Another recursivity :/
 	if (dir != nullptr)
 	{
 		path.append(dir);

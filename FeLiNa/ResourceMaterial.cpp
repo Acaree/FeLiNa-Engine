@@ -33,7 +33,6 @@ bool ResourceMaterial::EraseInMemory()
 
 	glDeleteTextures(1, (GLuint*) &(id_texture));
 
-
 	return ret;
 }
 

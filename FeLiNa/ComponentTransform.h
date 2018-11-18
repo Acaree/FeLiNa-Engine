@@ -8,9 +8,7 @@ class ComponentTransform : public Component
 {
 public:
 	ComponentTransform(GameObject* parent, math::float3 position = math::float3::zero, math::float3 rotation = math::float3::zero, math::float3 scale = math::float3::one);
-	//~ComponentTransform();
 
-	;
 	void DrawInspector();
 
 	math::float4x4 GetTransformMatrix() const;
@@ -38,11 +36,7 @@ public:
 
 	void ShowGuizmos();
 
-	
-
 private:
-
-
 
 	math::float3 position = math::float3::zero;
 	math::float3 euler_angles = math::float3::zero;

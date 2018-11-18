@@ -32,14 +32,11 @@ public:
 	MaterialImporter();
 	~MaterialImporter();
 
-	//¿LOAD CHECKERS?
-
 	bool Import(const char* file_path, std::string& output_file, const MaterialSettings* material);
 	bool Import(const void* buffer, uint size, std::string& output_file, const MaterialSettings* material);
 
-
 	void CreateFileMeta(std::list<Resource*> resources,  MaterialSettings* settings);
-	void ReadFileMeta(const char* file,  MaterialSettings* settings);
+
 	uint GetUIDofMeta(const char* meta);
 	void GetImportSettingsInMeta(const char* meta, MaterialSettings* material);
 
@@ -49,8 +46,10 @@ public:
 	bool Load(const void* buffer, uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting);
 
 	void ShowMaterialImport();
+
 public:
-	MaterialSettings* material_settings;
+
+	MaterialSettings* material_settings = nullptr;
 
 };
 

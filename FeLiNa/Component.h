@@ -21,34 +21,31 @@ class Component
 public:
 
 	Component(GameObject* parent);
-
-	virtual void CleanUp();
-
 	~Component();
 
 	virtual void Update(float dt);
+	virtual void CleanUp();
 
-	virtual void DrawInspector();
 	void SetComponentType(ComponentType type = Component_Default);
 	ComponentType GetComponentType() const;
 
 	void SetActive(bool active = true);
 	bool GetActive() const;
 
-	ComponentType type = Component_Default;
-
 	void SetParent(GameObject* parent = nullptr);
 	GameObject* GetParent() const;
+
+	virtual void DrawInspector();
 
 	virtual void OnSave(JSON_Object* obj);
 	virtual void OnLoad(JSON_Object* obj);
 
 protected:
 
-	
 	bool active = true;
 	GameObject* parent = nullptr;
 	uint uid = 0;
+	ComponentType type = Component_Default;
 };
 
 

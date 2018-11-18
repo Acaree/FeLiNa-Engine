@@ -31,7 +31,7 @@ MeshImporter::~MeshImporter()
 	RELEASE(mesh_settings);
 }
 //CONST????
-bool MeshImporter::Import(const char* file_name, const char* file_path, std::string& output_file, const MeshSettings* import_settings)
+bool MeshImporter::Import(const char* file_name, const char* file_path, std::string& output_file, const MeshSettings* import_settings) 
 {
 	bool ret = false;
 
@@ -63,7 +63,6 @@ bool MeshImporter::Import(const char* file_name, const char* file_path, std::str
 	return ret;
 }
 
-// same that other this is const?
 bool MeshImporter::Import(const void* buffer, uint size, std::string& output_file, const MeshSettings* import_settings)
 {
 	bool ret = false;
@@ -88,18 +87,12 @@ bool MeshImporter::Import(const void* buffer, uint size, std::string& output_fil
 
 		LoadModel(scene, rootNode, childrens_go, trans);
 
-		
-		//SITO TEST ZONE: WARNING THIS ARE A SHIT..
+		//Serialization the imported file
 		App->serialization_scene->save_name_scene = childrens_go->GetName();
 		App->serialization_scene->SaveScene(childrens_go);
-		//App->serialization_scene->ClearActualScene();
-		//RELEASE(childrens_go);
-		
-		//App->serialization_scene->save_name_scene = childrens_go->GetName();
-		//App->serialization_scene->LoadScene(App->serialization_scene->save_name_scene);
 
 		aiReleaseImport(scene);
-		// HERE CRASH.
+
 		RELEASE(childrens_go);
 
 		ret = true;
@@ -854,8 +847,6 @@ uint MeshImporter::SetPostProccesConfiguration(const MeshSettings* import_settin
 
 		break;
 	}
-
-
 
 	return flags;
 }

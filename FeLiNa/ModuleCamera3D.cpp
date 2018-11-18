@@ -30,10 +30,9 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
-	//current_camera;
 
 #ifndef  GAME_MODE
-	//Create and Set Edito camera a initial pos
+	//Create and Set Editor camera a initial pos
 	camera_editor = new ComponentCamera(nullptr);
 	camera_editor->frustum.Translate(math::float3(5, 10, 5));
 	current_camera = camera_editor;
@@ -73,8 +72,6 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
 		new_position.y -= speed;
 
-	/*if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
-		// TODO-> Focus*/
 
 #ifndef GAME_MODE
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN )
@@ -155,18 +152,15 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 {
 	candidates.clear(); //Else all time add elements
 
-	App->scene->quadtree->CollectIntersections(candidates, ray); // not order
+	App->scene->quadtree->CollectIntersections(candidates, ray); 
 
-	//TO REVISE THAT NOT CLEAN
 	for (uint i = 0; i < App->scene->root_object->GetNumChildren(); ++i)
 	{
 		PosibleObjectsPicked( candidates , App->scene->root_object->GetChild(i));
 	}
 
-	
 	float min_distance = FLOAT_INF;
 	float hit_distance = 0.0F;
-
 
 	GameObject* selected_object = nullptr;
 
@@ -196,7 +190,6 @@ void ModuleCamera3D::PickObjectSelected(std::vector<GameObject*> &candidates, ma
 
 				while (j < mesh->num_indices)
 				{
-					//0-1-2 1-2-3 2-3-4 :)
 					math::float3 x = {mesh->vertices[mesh->indices[j]*3],mesh->vertices[mesh->indices[j]*3+1] ,mesh->vertices[mesh->indices[j]*3+2] };
 					j++;
 					math::float3 y = { mesh->vertices[mesh->indices[j]*3],mesh->vertices[mesh->indices[j]*3+1] ,mesh->vertices[mesh->indices[j]*3+2] };

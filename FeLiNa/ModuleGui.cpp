@@ -676,7 +676,6 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 
 		if (ImGui::MenuItem("See Import Options", NULL, false, true))
 		{
-			//To Revise
 
 			show_import_settings = true;
 

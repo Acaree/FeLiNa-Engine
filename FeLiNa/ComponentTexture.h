@@ -19,7 +19,7 @@ public:
 
 	void DrawInspector();
 
-	void OnSave(JSON_Object* obj); //What we save? :/
+	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);
 
 private:

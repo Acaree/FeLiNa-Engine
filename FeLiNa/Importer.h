@@ -4,7 +4,8 @@
 #include "Globals.h"
 #include <string>
 
-struct ImporterSettings //We use this for load/save .meta
+//We use this for load/save .meta
+struct ImporterSettings 
 {
 
 };
@@ -22,12 +23,6 @@ public:
 	uint GetLastModificationTime(const char* file);
 
 };
-
-
-
-
-
-
 
 
 

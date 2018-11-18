@@ -403,7 +403,7 @@ Component* GameObject::GetComponent(ComponentType type)
 
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (components[i]->type == type)
+		if (components[i]->GetComponentType() == type)
 		{
 			component = components[i];
 			break;
@@ -581,7 +581,8 @@ void GameObject::DeleteChildren(GameObject* go)
 
 }
 
-void GameObject::ExtractChildrenFromList(GameObject* go) { //this don't delete the child pointer, as DeleteChildren does
+//this don't delete the child pointer, as DeleteChildren does
+void GameObject::ExtractChildrenFromList(GameObject* go) { 
 
 	std::vector<GameObject*> tmp;
 	std::vector<GameObject*>::iterator it = childrens.begin();
