@@ -210,11 +210,6 @@ void ComponentTransform::DrawInspector()
 	
 }
 
-math::float4x4 ComponentTransform::GetGlobalMatrix() {
-
-	return global_matrix;
-}
-
 
 void ComponentTransform::ShowGuizmos()
 {
@@ -266,7 +261,7 @@ void ComponentTransform::ShowGuizmos()
 				}
 				else
 				{
-					local_matrix = parent->GetParent()->transform->GetGlobalMatrix().Inverted() * matrix;
+					local_matrix = parent->GetParent()->transform->GetTransformMatrix().Inverted() * matrix;
 					local_matrix.Decompose(position, quat_rotation, scale);
 					euler_angles = quat_rotation.ToEulerXYZ() * RADTODEG;
 				}

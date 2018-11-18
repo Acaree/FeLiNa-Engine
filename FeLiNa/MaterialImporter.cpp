@@ -183,7 +183,7 @@ bool MaterialImporter::Load(const char* file_name, ResourceMaterial* output_text
 	
 }
 
-bool MaterialImporter::Load(const void* buffer, uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting)
+bool MaterialImporter::Load(const void* buffer, const uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting)
 {
 	bool ret = false;
 
@@ -377,7 +377,7 @@ void MaterialImporter::ShowMaterialImport()
 
 }
 
-void MaterialImporter::SetMaterialSettingsFromMeta(const char* file, MaterialSettings* settings)
+void MaterialImporter::SetMaterialSettingsFromMeta(const char* file, MaterialSettings* settings) const
 {
 	if (file != nullptr && settings != nullptr)
 	{
@@ -450,7 +450,7 @@ void MaterialImporter::GetImportSettingsInMeta(const char* meta, MaterialSetting
 
 }
 
-uint MaterialImporter::GetUIDofMeta(const char* meta)
+uint MaterialImporter::GetUIDofMeta(const char* meta) const
 {
 	uint ret = 0;
 

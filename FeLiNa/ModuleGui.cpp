@@ -95,7 +95,7 @@ update_status ModuleGui::Update(float dt)
 			inspector_open = !inspector_open;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 		App->renderer3D->wire = !App->renderer3D->wire;
 
 
@@ -189,7 +189,7 @@ void ModuleGui::ShowMainMenuBar()
 		if (ImGui::BeginMenu("Mode"))
 		{
 
-			if (ImGui::MenuItem("Wireframe", "2", App->renderer3D->wire, true))
+			if (ImGui::MenuItem("Wireframe", "H", App->renderer3D->wire, true))
 			{
 				App->renderer3D->wire = !App->renderer3D->wire;
 			}

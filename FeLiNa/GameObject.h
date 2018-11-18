@@ -33,7 +33,7 @@ public:
 	bool GetActive() const;
 
 	void AddChildren(GameObject* child);
-	GameObject* GetChild(uint position);
+	GameObject* GetChild(uint position) const;
 	void DeleteChildren(GameObject* child);
 	void ExtractChildrenFromList(GameObject* go);
 
@@ -41,8 +41,8 @@ public:
 	GameObject* GetParent()const;
 
 	void SetComponent(Component* parent);
-	Component* GetComponent(ComponentType type);
-	Component* AddComponent(ComponentType type);
+	Component* GetComponent(const ComponentType type);
+	Component* AddComponent(const ComponentType type);
 
 	bool DeleteComponent(Component* component);
 	void DeleteAllComponents();
@@ -55,7 +55,7 @@ public:
 	void ShowObjectHierarchy();
 	void ShowObjectInspector();
 
-	void SetSelected(bool selected);
+	void SetSelected(const bool selected);
 	bool IsSelected() const;
 	void ToggleSelected();
 
@@ -63,7 +63,7 @@ public:
 	void DrawBoundingBox();
 	void RecalculateBoundingBox();
 
-	void SetActive(bool active);
+	void SetActive(const bool active);
 	bool IsActive() const;
 
 	bool static_object = false;
@@ -76,7 +76,7 @@ public:
 
 	uint uid = 0;
 
-	GameObject* SearchParentForUID(uint parent_uid);
+	GameObject* SearchParentForUID(const uint parent_uid);
 	
 	void SetInvalidateResource(const Resource* resource);
 

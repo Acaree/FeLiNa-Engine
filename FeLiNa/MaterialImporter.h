@@ -37,13 +37,13 @@ public:
 
 	void CreateFileMeta(std::list<Resource*> resources,  MaterialSettings* settings);
 
-	uint GetUIDofMeta(const char* meta);
+	uint GetUIDofMeta(const char* meta) const;
 	void GetImportSettingsInMeta(const char* meta, MaterialSettings* material);
 
-	void SetMaterialSettingsFromMeta(const char* file, MaterialSettings* settings);
+	void SetMaterialSettingsFromMeta(const char* file, MaterialSettings* settings) const;
 
 	bool Load(const char* file_name, ResourceMaterial* output_texture, const MaterialSettings* settings);
-	bool Load(const void* buffer, uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting);
+	bool Load(const void* buffer, const uint size, ResourceMaterial* output_texture, const MaterialSettings* material_setting);
 
 	void ShowMaterialImport();
 

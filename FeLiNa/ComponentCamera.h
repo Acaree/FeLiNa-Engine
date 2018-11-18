@@ -39,14 +39,17 @@ public:
 	void OnLoad(JSON_Object* obj);
 
 	void CullingObjects();
-	void CullingStaticObjects();
-	void CullingDynamicObjects(GameObject* obj);
 
 public:
 
 	float aspect_ratio = 0.0f;
 	math::Frustum frustum;
 	bool culling = false;
+
+private:
+
+	void CullingStaticObjects();
+	void CullingDynamicObjects(GameObject* obj);
 
 };
 

@@ -139,7 +139,7 @@ void GameObject::AddChildren(GameObject* child)
 	child->SetParent(this);
 }
 
-GameObject* GameObject::GetChild(uint position)
+GameObject* GameObject::GetChild(uint position) const
 {
 	return childrens[position];
 }
@@ -165,7 +165,7 @@ void GameObject::SetComponent(Component* component)
 	}
 }
 
-Component* GameObject::AddComponent(ComponentType type)
+Component* GameObject::AddComponent(const ComponentType type)
 {
 	Component* component = nullptr;
 
@@ -328,7 +328,7 @@ void GameObject::ShowObjectHierarchy()
 	
 }
 
-void GameObject::SetSelected(bool selected)
+void GameObject::SetSelected(const bool selected)
 {
 	this->selected = selected;
 }
@@ -397,7 +397,7 @@ void GameObject::DrawBoundingBox()
 }
 
 
-Component* GameObject::GetComponent(ComponentType type)
+Component* GameObject::GetComponent(const ComponentType type)
 {
 	Component* component = nullptr;
 
@@ -438,7 +438,7 @@ void GameObject::RecalculateBoundingBox()
 		childrens[i]->RecalculateBoundingBox();
 }
 
-void GameObject::SetActive(bool active)
+void GameObject::SetActive(const bool active)
 {
 	this->active = active;
 }
@@ -502,7 +502,7 @@ void GameObject::OnLoad(JSON_Object* obj)
 
 }
 
-GameObject* GameObject::SearchParentForUID(uint parent_uid)
+GameObject* GameObject::SearchParentForUID(const uint parent_uid)
 {
 	GameObject* go = nullptr;
 	if (parent_uid == uid)
