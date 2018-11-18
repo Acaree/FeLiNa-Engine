@@ -337,7 +337,13 @@ float Application::GetFPS() const
 
 uint Application::GenerateRandomNumber() const
 {
-	return pcg32_random_r(&(App->random));
+	uint ret = pcg32_random_r(&(App->random));
+
+	while (ret > 2147483647) { //if not, the capacity of int are passed
+		ret = pcg32_random_r(&(App->random));
+	}
+
+	return ret;
 }
 
 
