@@ -8,7 +8,7 @@
 #include "ComponentTransform.h"
 #include "ModuleRenderer3D.h"
 #include "Quadtree.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ComponentMaterial.h"

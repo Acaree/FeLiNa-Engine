@@ -6,7 +6,7 @@
 #include "Resource.h"
 #include "MeshImporter.h"
 #include "Application.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "ResourceMesh.h"
 #include "mmgr/mmgr.h"
 ComponentMesh::ComponentMesh(GameObject* parent) : Component(parent)

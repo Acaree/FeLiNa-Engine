@@ -7,7 +7,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "ComponentMesh.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"

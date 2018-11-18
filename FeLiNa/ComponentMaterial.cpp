@@ -1,7 +1,7 @@
 #include "ComponentMaterial.h"
 #include "ImGui/imgui.h"
 #include "Application.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "ResourceMaterial.h"
 #include "mmgr/mmgr.h"
 ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(parent) {

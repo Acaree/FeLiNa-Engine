@@ -1,7 +1,7 @@
 #include "MaterialImporter.h"
 #include "PhysFS/physfs.h"
 #include "Application.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "Resource.h"

@@ -8,7 +8,7 @@
 #include "MathGeoLib/MathGeoLib.h"
 #include "ModuleWindow.h"
 #include "Quadtree.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "ResourceMesh.h"
 #include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"

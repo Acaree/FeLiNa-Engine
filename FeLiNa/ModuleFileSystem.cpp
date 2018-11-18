@@ -1,6 +1,6 @@
 #include "ModuleFileSystem.h"
 #include "Application.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "MaterialImporter.h"
 #include "MeshImporter.h"
 #include "Resource.h"

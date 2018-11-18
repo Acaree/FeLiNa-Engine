@@ -8,7 +8,7 @@
 #include "ModuleTimeManagement.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "ResourceMesh.h"
 #include "MaterialImporter.h"
 #include "Resource.h"

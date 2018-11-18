@@ -12,7 +12,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleTimeManagement.h"
 #include "SceneSerialization.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "PCG/entropy.h"
 #include "mmgr/mmgr.h"
 
@@ -35,7 +35,7 @@ Application::Application()
 	time_management = new ModuleTimeManagement(this);
 #endif // !GAME_MODE
 
-	resource_manager = new ResourceManager(this);
+	resource_manager = new ModuleResourceManager(this);
 	serialization_scene = new SceneSerialization();
 	importer_material = new MaterialImporter();
 	importer_mesh = new MeshImporter();

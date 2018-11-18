@@ -205,9 +205,6 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Modules\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Modules\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceMesh.cpp">
       <Filter>Modules\Resources</Filter>
     </ClCompile>
@@ -222,6 +219,9 @@
     </ClCompile>
     <ClCompile Include="ComponentMaterial.cpp">
       <Filter>Modules\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResourceManager.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -543,9 +543,6 @@
     <ClInclude Include="Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Modules\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Modules\Resources</Filter>
     </ClInclude>
@@ -566,6 +563,9 @@
     </ClInclude>
     <ClInclude Include="ComponentMaterial.h">
       <Filter>Modules\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleResourceManager.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

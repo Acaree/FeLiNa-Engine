@@ -4,7 +4,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "Resource.h"
 #include "ModuleGui.h"
 #include "ImGui/imgui.h"

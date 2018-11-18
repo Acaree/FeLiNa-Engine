@@ -11,12 +11,12 @@ enum RESOURCE_TYPE;
 struct ImporterSettings;
 enum FILE_TYPE;
 
-class ResourceManager: public Module 
+class ModuleResourceManager: public Module 
 {
 public:
 
-	ResourceManager(Application* app, bool start_enabled = true);
-	~ResourceManager();
+	ModuleResourceManager(Application* app, bool start_enabled = true);
+	~ModuleResourceManager();
 
 	bool Start();
 
@@ -41,7 +41,7 @@ private:
 
 
 template<typename DATA>
-inline void ResourceManager::SetResourceData(DATA* data, Resource* resource)
+inline void ModuleResourceManager::SetResourceData(DATA* data, Resource* resource)
 {
 	RESOURCE_TYPE type = resource->GetType();
 

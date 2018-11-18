@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
-#include "ResourceManager.h"
+#include "ModuleResourceManager.h"
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
@@ -14,12 +14,12 @@
 #include "PhysFS/physfs.h"
 #include "mmgr/mmgr.h"
 
-ResourceManager::ResourceManager(Application* app, bool start_enabled ): Module(app,start_enabled)
+ModuleResourceManager::ModuleResourceManager(Application* app, bool start_enabled ): Module(app,start_enabled)
 {
 
 }
 
-ResourceManager::~ResourceManager()
+ModuleResourceManager::~ModuleResourceManager()
 {
 	for (std::map<uint, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 		RELEASE(it->second);
@@ -27,7 +27,7 @@ ResourceManager::~ResourceManager()
 	resources.clear();
 }
 
-bool ResourceManager::Start()
+bool ModuleResourceManager::Start()
 {
 	//Create all resources and files at start 
 	std::string path;
@@ -36,7 +36,7 @@ bool ResourceManager::Start()
 	return true;
 }
 
-uint ResourceManager::Find(const char* file) const
+uint ModuleResourceManager::Find(const char* file) const
 {
 	for (std::map<uint, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 		if (strcmp(it->second->GetExportedFile(), file) == 0)
@@ -49,7 +49,7 @@ uint ResourceManager::Find(const char* file) const
 	return 0;
 }
 
-uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file, const char* library_file)
+uint ModuleResourceManager::ImportFile(const char* assets_file, const char* meta_file, const char* library_file)
 {
 	//Import a new file
 	uint ret = 0;
@@ -207,7 +207,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 	return ret;
 }
 
-void ResourceManager::FillResources(std::list<Resource*> resources, ImporterSettings* settings)
+void ModuleResourceManager::FillResources(std::list<Resource*> resources, ImporterSettings* settings)
 {
 	for (std::list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
 	{
@@ -215,7 +215,7 @@ void ResourceManager::FillResources(std::list<Resource*> resources, ImporterSett
 	}
 }
 
-void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
+void ModuleResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 {
 	//Search for all folders in Assets/
 	path.append(dir);
@@ -340,7 +340,7 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 }
 
 
- Resource* ResourceManager::Get(uint uid)
+ Resource* ModuleResourceManager::Get(uint uid)
 {
 	Resource* res = nullptr;
 
@@ -352,7 +352,7 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 	return res;
 }
 
-Resource* ResourceManager::CreateNewResource(RESOURCE_TYPE type, uint last_uid)
+Resource* ModuleResourceManager::CreateNewResource(RESOURCE_TYPE type, uint last_uid)
 {
 	Resource* resource = nullptr;
 
@@ -390,7 +390,7 @@ Resource* ResourceManager::CreateNewResource(RESOURCE_TYPE type, uint last_uid)
 }
 
 //this function is called when refresh assets and file has overwritten, erase last resource and create new with import file.
-void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, const char* meta_file)
+void ModuleResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, const char* meta_file)
 {
 	std::list<uint> uids;
 	App->serialization_scene->GetAllUIDMeshesInMeta(uids, asset_file, type);

@@ -19,7 +19,7 @@ class ModuleGui;
 class ModuleConsole;
 class ModuleFileSystem;
 class ModuleTimeManagement;
-class ResourceManager;
+class ModuleResourceManager;
 class SceneSerialization;
 
 enum ENGINE_STATES
@@ -55,7 +55,7 @@ public:
 	MaterialImporter* importer_material ;
 	MeshImporter* importer_mesh;
 	SceneSerialization* serialization_scene;
-	ResourceManager* resource_manager;
+	ModuleResourceManager* resource_manager;
 
 	char* app_name = nullptr;
 	char* organization = nullptr;
