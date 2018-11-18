@@ -612,11 +612,14 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 					if (ImGui::IsMouseDoubleClicked(0)) {
 						std::string json_path = file_focus;
-						json_path.erase(json_path.find_last_of("."), json_path.size());
+						int position = json_path.find(".json");
+						if (position == std::string::npos) {
+							json_path.erase(json_path.find_last_of("."), json_path.size());
 
-						App->serialization_scene->LoadScene((char*)json_path.c_str());
+							App->serialization_scene->LoadScene((char*)json_path.c_str());
 
-						json_path.clear();
+							json_path.clear();
+						}
 					}
 					else {
 
