@@ -15,6 +15,7 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <string>
 
 #define LOG(format, ...) log_global(__FILE__, __LINE__, format, __VA_ARGS__);
 

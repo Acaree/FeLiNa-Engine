@@ -28,7 +28,6 @@ public:
 	void RecursiveResourceFiles(const char* dir, std::string path );
 	void FillResources(std::list<Resource*> resources,ImporterSettings* settings = nullptr);
 
-
 	template<typename DATA>
 	void SetResourceData(DATA* data, Resource* resource);
 

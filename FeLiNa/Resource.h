@@ -2,7 +2,6 @@
 #define _RESOURCE_
 
 #include "Globals.h"
-#include <string>
 
 enum RESOURCE_TYPE
 {
