@@ -164,8 +164,6 @@ void ModuleWindow::DrawWindowInformationPanel()
 	}
 	ImGui::Spacing();
 
-	//¿Refresh rate?
-
 	if (ImGui::Checkbox("Fullscreen", &fullscreen))
 	{
 		if (fullscreen)

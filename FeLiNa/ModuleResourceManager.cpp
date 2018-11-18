@@ -302,14 +302,14 @@ void ModuleResourceManager::RecursiveResourceFiles(const char* dir, std::string 
 				{
 					new_file.append(*file);
 
-					if (Find(new_file.c_str())==0)
+					if (Find(new_file.c_str()) == 0)
 					{
 						std::string json_file = new_file;
 						json_file.erase(json_file.find_last_of("."), json_file.size());
 						json_file += ".json";
 
-						if(App->fs->ExistFile(json_file.c_str()))
-						{ 
+						if (App->fs->ExistFile(json_file.c_str()))
+						{
 							ImportFile(new_file.c_str(), meta_file.c_str(), library_file.c_str());
 						}
 						else if (type == MATERIAL_FILE) // need this conditional , else always duplicate material file
@@ -320,14 +320,16 @@ void ModuleResourceManager::RecursiveResourceFiles(const char* dir, std::string 
 						else
 						{
 
-							ImportFile(new_file.c_str(),meta_file.c_str());
+							ImportFile(new_file.c_str(), meta_file.c_str());
 						}
 
-					
+
 
 					}
 
 				}
+				else
+					ImportFile(new_file.c_str());
 
 			}
 		}

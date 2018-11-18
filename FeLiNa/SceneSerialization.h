@@ -25,6 +25,7 @@ public:
 	void GetAllUIDInSerialization(std::list<uint>& uids, const char* file, FILE_TYPE type);
 
 	void ClearActualScene();
+
 private:
 	std::vector<GameObject*> aux_go;
 

@@ -279,5 +279,4 @@ void ComponentCamera::DrawInspector()
 		ImGui::TreePop();
 	}
 	
-
 }

@@ -57,8 +57,6 @@ void mPlane::Render() const
 
 	glColor3f(color.r, color.g, color.b);
 
-
-
 	InnerRender();
 
 	glPopMatrix();

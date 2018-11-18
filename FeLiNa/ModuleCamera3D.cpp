@@ -239,7 +239,6 @@ void ModuleCamera3D::PosibleObjectsPicked(std::vector<GameObject*> &posible_cand
 		posible_candidate.push_back(candidates);
 	}
 
-
 	for (uint i = 0; i < candidates->GetNumChildren(); ++i)
 	{
 		PosibleObjectsPicked(posible_candidate, candidates->GetChild(i));

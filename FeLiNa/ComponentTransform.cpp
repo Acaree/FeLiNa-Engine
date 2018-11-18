@@ -90,7 +90,6 @@ void ComponentTransform :: UpdateMatrix() {
 
 	}
 
-	
 	if (!global_matrix.Equals(last_global))
 		if(parent != nullptr)
 			parent->RecalculateBoundingBox();
@@ -161,7 +160,6 @@ void ComponentTransform::OnLoad(JSON_Object* obj)
 	scale.y = json_object_get_number(obj, "sy");
 	scale.z = json_object_get_number(obj, "sz");
 
-
 	UpdateMatrix();
 }
 
@@ -206,8 +204,6 @@ void ComponentTransform::DrawInspector()
 
 		ImGui::TreePop();
 	}
-	
-	
 }
 
 
@@ -248,7 +244,8 @@ void ComponentTransform::ShowGuizmos()
 			if (mCurrentGizmoOperation == ImGuizmo::SCALE) {
 
 				math::Quat despreciable_rot;
-				matrix.Decompose(position, despreciable_rot, scale);
+				math::float3 despreciable_pos;
+				matrix.Decompose(despreciable_pos, despreciable_rot, scale);
 				UpdateMatrix();
 
 			}

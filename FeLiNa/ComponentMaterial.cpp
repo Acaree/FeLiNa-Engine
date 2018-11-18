@@ -4,6 +4,7 @@
 #include "ModuleResourceManager.h"
 #include "ResourceMaterial.h"
 #include "mmgr/mmgr.h"
+
 ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(parent) {
 
 	type = Component_Material;
@@ -11,7 +12,6 @@ ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(parent) {
 
 ComponentMaterial::~ComponentMaterial()
 {
-
 	if (uid != 0)
 	{
 		ResourceMaterial* resource_material = (ResourceMaterial*)App->resource_manager->Get(uid);
@@ -19,7 +19,6 @@ ComponentMaterial::~ComponentMaterial()
 			resource_material->EraseToMemory();
 	}
 }
-
 
 void ComponentMaterial::SetUID(uint uid)
 {
@@ -30,8 +29,6 @@ uint ComponentMaterial::GetUID() const
 {
 	return uid;
 }
-
-
 
 void ComponentMaterial::DrawInspector()
 {
@@ -69,28 +66,28 @@ void ComponentMaterial::DrawInspector()
 		
 		}
 
-		
-			ImGui::Button("Drag Material Here");
+		ImGui::Button("Drag Material Here");
 
 
-			if (ImGui::BeginDragDropTarget())
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
 			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
+				std::string payload_n = (char*)payload->Data;
+				payload_n.erase(payload_n.find_first_of("."), payload_n.size());
+				Resource* res = App->resource_manager->Get(std::stoi(payload_n.c_str()));
+
+				if (res != nullptr && res->type == RESOURCE_MATERIAL)
 				{
-					std::string payload_n = (char*)payload->Data;
-					payload_n.erase(payload_n.find_first_of("."), payload_n.size());
-					Resource* res = App->resource_manager->Get(std::stoi(payload_n.c_str()));
-
-					if (res != nullptr && res->type == RESOURCE_MATERIAL)
-					{
-						uid = res->uid;
-						res->LoadToMemory();
-					}
-
+					uid = res->uid;
+					res->LoadToMemory();
 				}
-				ImGui::EndDragDropTarget();
-			}
 
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+			
 
 		ImGui::TreePop();
 	}

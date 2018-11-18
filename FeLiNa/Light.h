@@ -1,7 +1,5 @@
-
 #ifndef _LIGHT_
 #define _LIGHT
-
 
 #include "Color.h"
 #include "MathGeoLib/MathGeoLib.h"

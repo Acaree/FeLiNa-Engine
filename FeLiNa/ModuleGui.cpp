@@ -655,7 +655,7 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 	if (ImGui::BeginPopupContextItem(file))
 	{
 
-		if (ImGui::MenuItem("See Import Options", NULL, false, true))
+		if (ImGui::MenuItem("See Import Options", NULL, false, false))
 		{
 
 			show_import_settings = true;
