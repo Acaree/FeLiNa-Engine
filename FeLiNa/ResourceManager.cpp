@@ -227,7 +227,7 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 	for (file = files; *file != nullptr; ++file)
 	{
 		//Recursive for all folders
-		if (App->fs->isDirectory(*file))
+	if (App->fs->isDirectory(*file))
 		{
 			RecursiveResourceFiles(*file, path);
 
