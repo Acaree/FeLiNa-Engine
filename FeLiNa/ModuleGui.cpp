@@ -587,7 +587,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				ImGui::TreePop();
 			}
 		
-			//ShowAssetsOptions(*file, dir);
+			ShowAssetsOptions(*file, dir);
 
 			RELEASE_ARRAY(tmp);
 
@@ -632,7 +632,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 				}
 
 
-				//ShowAssetsOptions(*file, dir);
+				ShowAssetsOptions(*file, dir);
 			
 				ImGui::TreePop();
 			}
@@ -684,7 +684,7 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 
 		}
 
-		if (ImGui::MenuItem("Rename", NULL, false, true))
+		if (ImGui::MenuItem("Rename", NULL, false, false))
 		{
 			want_to_rename = true;
 
@@ -700,7 +700,7 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 			//reimport
 		}
 
-		if (ImGui::MenuItem("Delete", NULL, false, true))
+		if (ImGui::MenuItem("Delete", NULL, false, false))
 		{
 
 			if(App->fs->isDirectory(file_focus.c_str())){
@@ -720,7 +720,7 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 			}
 		}
 
-		if (ImGui::MenuItem("Create new folder", NULL, false, true))
+		if (ImGui::MenuItem("Create new folder", NULL, false, false))
 		{
 			creating_folder = true;
 
