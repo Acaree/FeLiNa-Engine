@@ -6,7 +6,7 @@
 #include "ModuleScene.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
-#include "ComponentTexture.h"
+#include "ComponentMaterial.h"
 #include "ResourceManager.h"
 #include "ComponentMesh.h"
 #include "ResourceMesh.h"
@@ -341,7 +341,7 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 	{
 		ComponentMesh* mesh = go->mesh;
 		ComponentTransform* trans = go->transform;
-		ComponentTexture* material = go->material;
+		ComponentMaterial* material = go->material;
 
 
 		math::float4x4 matrix = trans->GetTransformMatrix();

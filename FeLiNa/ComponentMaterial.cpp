@@ -1,15 +1,15 @@
-#include "ComponentTexture.h"
+#include "ComponentMaterial.h"
 #include "ImGui/imgui.h"
 #include "Application.h"
 #include "ResourceManager.h"
 #include "ResourceMaterial.h"
 #include "mmgr/mmgr.h"
-ComponentTexture::ComponentTexture(GameObject* parent) : Component(parent) {
+ComponentMaterial::ComponentMaterial(GameObject* parent) : Component(parent) {
 
 	type = Component_Material;
 }
 
-ComponentTexture::~ComponentTexture()
+ComponentMaterial::~ComponentMaterial()
 {
 
 	if (uid != 0)
@@ -21,19 +21,19 @@ ComponentTexture::~ComponentTexture()
 }
 
 
-void ComponentTexture::SetUID(uint uid)
+void ComponentMaterial::SetUID(uint uid)
 {
 	this->uid = uid;
 }
 
-uint ComponentTexture::GetUID() const
+uint ComponentMaterial::GetUID() const
 {
 	return uid;
 }
 
 
 
-void ComponentTexture::DrawInspector()
+void ComponentMaterial::DrawInspector()
 {
 
 	if (ImGui::TreeNodeEx("Material"))
@@ -96,13 +96,13 @@ void ComponentTexture::DrawInspector()
 	}
 }
 
-void ComponentTexture::OnSave(JSON_Object* obj)
+void ComponentMaterial::OnSave(JSON_Object* obj)
 {
 	json_object_set_number(obj, "type", type);
 	json_object_set_number(obj, "UID", uid);
 }
 
-void ComponentTexture::OnLoad(JSON_Object* obj)
+void ComponentMaterial::OnLoad(JSON_Object* obj)
 {
 	uid = json_object_get_number(obj, "UID");
 	if (uid != 0)

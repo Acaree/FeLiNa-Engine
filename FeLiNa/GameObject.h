@@ -10,7 +10,7 @@ enum ComponentType;
 struct Mesh;
 class Resource;
 class ComponentTransform;
-class ComponentTexture;
+class ComponentMaterial;
 class ComponentMesh;
 class ComponentCamera;
 
@@ -85,7 +85,7 @@ public:
 	std::vector<GameObject*> childrens;
 
 	ComponentTransform* transform = nullptr;
-	ComponentTexture* material = nullptr;
+	ComponentMaterial* material = nullptr;
 	ComponentMesh* mesh = nullptr;
 	ComponentCamera* camera = nullptr;
 	bool to_delete = false;

@@ -10,7 +10,7 @@
 class ComponentMesh;
 class Component;
 class GameObject;
-class ComponentTexture;
+class ComponentMaterial;
 
 struct Mesh;
 

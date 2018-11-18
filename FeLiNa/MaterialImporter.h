@@ -2,7 +2,7 @@
 #define _MATERIAL_IMPORTER_
 
 #include "Importer.h"
-#include "ComponentTexture.h"
+#include "ComponentMaterial.h"
 #include <list>
 
 class Resource;

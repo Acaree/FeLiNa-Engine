@@ -3,7 +3,7 @@
 
 #include "Resource.h"
 #include "MaterialImporter.h"
-#include "ComponentTexture.h"
+#include "ComponentMaterial.h"
 
 
 class ResourceMaterial : public Resource

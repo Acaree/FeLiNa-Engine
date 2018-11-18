@@ -11,7 +11,7 @@
 #include "ResourceManager.h"
 #include "Resource.h"
 #include "ResourceMesh.h"
-#include "ComponentTexture.h"
+#include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "mmgr/mmgr.h"
 
@@ -181,7 +181,7 @@ Component* GameObject::AddComponent(ComponentType type)
 		component = mesh;
 		break;
 	case Component_Material:
-		material = new ComponentTexture(this);
+		material = new ComponentMaterial(this);
 		material->SetUID( App->GenerateRandomNumber());
 		component = material;
 		break;

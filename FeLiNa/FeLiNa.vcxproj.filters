@@ -151,9 +151,6 @@
     <ClCompile Include="ComponentTransform.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentTexture.cpp">
-      <Filter>Modules\GameObject\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
@@ -222,6 +219,9 @@
     </ClCompile>
     <ClCompile Include="Pcg\entropy.c">
       <Filter>Tools\PCG</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -480,9 +480,6 @@
     <ClInclude Include="ComponentTransform.h">
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentTexture.h">
-      <Filter>Modules\GameObject\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentCamera.h">
       <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
@@ -566,6 +563,9 @@
     </ClInclude>
     <ClInclude Include="Pcg\pcg_variants.h">
       <Filter>Tools\PCG</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
-#ifndef _COMPONENTTEXTURE
-#define _COMPONENTTEXTURE
+#ifndef _COMPONENTMATERIAL
+#define _COMPONENTMATERIAL
 
 #include "Component.h"
 #include "ComponentMesh.h"
@@ -7,12 +7,12 @@
 #include "Globals.h"
 
 
-class ComponentTexture : public Component
+class ComponentMaterial : public Component
 {
 public:
 	
-	ComponentTexture(GameObject* parent);
-	~ComponentTexture();
+	ComponentMaterial(GameObject* parent);
+	~ComponentMaterial();
 
 	void SetUID(uint uid);
 	uint GetUID() const;

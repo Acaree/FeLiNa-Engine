@@ -14,7 +14,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
-#include "ComponentTexture.h"
+#include "ComponentMaterial.h"
 #include "Quadtree.h"
 #include "MathGeoLib/Geometry/Frustum.h"
 #include "ComponentCamera.h"
