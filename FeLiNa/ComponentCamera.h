@@ -33,7 +33,7 @@ public:
 	void DebugDraw();
 	void DrawInspector();
 
-	bool ContainsAaBox(const math::AABB refBox) const;
+	bool ContainsAaBox(const math::AABB& refBox) const;
 
 	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);
@@ -44,6 +44,7 @@ public:
 
 public:
 
+	float aspect_ratio = 0.0f;
 	math::Frustum frustum;
 	bool culling = false;
 

@@ -19,10 +19,12 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go)
 	frustum.front = math::float3::unitZ;
 	frustum.up = math::float3::unitY;
 
+	aspect_ratio = 16 / 9;
 	frustum.nearPlaneDistance = 1.0F;
 	frustum.farPlaneDistance = 100.0F;
 	frustum.verticalFov = math::DegToRad(60.0F);
-	frustum.horizontalFov = 2 * atanf(1.3 * tanf(frustum.verticalFov * 0.5));
+	frustum.horizontalFov = 2 * atanf(aspect_ratio * tanf(frustum.verticalFov * 0.5));
+	
 }
 
 ComponentCamera::~ComponentCamera()
@@ -87,10 +89,13 @@ void ComponentCamera::CullingDynamicObjects(GameObject * obj)
 	
 	if (!obj->static_object)
 	{
-		if (!ContainsAaBox(obj->GetAABB()))
-			obj->SetActive(false);
-		else
-			obj->SetActive(true);
+		if (obj->mesh != nullptr)
+		{
+			if (!ContainsAaBox(obj->GetAABB()))
+				obj->SetActive(false);
+			else
+				obj->SetActive(true);
+		}
 	}
 	
 	for (uint i = 0; i < obj->GetNumChildren(); ++i)
@@ -131,11 +136,13 @@ void ComponentCamera::SetFar(float f_far)
 
 void ComponentCamera::SetFov(float f_fov)
 {
-	frustum.verticalFov = math::DegToRad(f_fov);
+	frustum.verticalFov = f_fov *DEGTORAD;
+	frustum.horizontalFov = 2 * atanf(aspect_ratio * tanf(frustum.verticalFov * 0.5));
 }
 
 void ComponentCamera::SetAspectRatio(float f_ratio)
 {
+	aspect_ratio = f_ratio;
 	frustum.horizontalFov = 2 * atanf(f_ratio * tanf(frustum.verticalFov * 0.5));
 }
 
@@ -156,35 +163,34 @@ void ComponentCamera::DebugDraw()
 
 }
 
-bool ComponentCamera::ContainsAaBox(const math::AABB refBox) const
+bool ComponentCamera::ContainsAaBox(const math::AABB& refBox) const
 {
-	
 	bool ret = true;
 
 	math::float3 corners[8];
-	int total_in = 0;
+	uint total_in = 0;
 	refBox.GetCornerPoints(corners);
 
 	for (uint p = 0; p < 6; ++p)
 	{
-		int In_count = 8;
-		int point_In = 1;
+		uint in_count = 8;
+		uint point_in = 1;
 
 		for (uint i = 0; i < 8; ++i)
 		{
 			if (frustum.GetPlane(p).IsOnPositiveSide(corners[i]))
 			{
-				point_In = 0;
-				In_count--;
+				point_in = 0;
+				in_count--;
 			}
 		}
 
-		if (In_count == 0)
+		if (in_count == 0)
 		{
 			return false;
 		}
 
-		total_in += point_In;
+		total_in += point_in;
 	}
 
 	return ret;
