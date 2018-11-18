@@ -35,9 +35,6 @@ GameObject::GameObject(GameObject* parent)
 
 GameObject::~GameObject()
 {
-	// We don't allocate memory for this pointers.
-	/*if (name != nullptr)
-		RELEASE_ARRAY(name);*/
 
 	for (uint i = 0; i < childrens.size(); ++i)
 	{
@@ -55,7 +52,6 @@ GameObject::~GameObject()
 	if (camera != nullptr)
 		RELEASE(camera);
 
-
 	parent = nullptr;
 }
 
@@ -67,7 +63,6 @@ void GameObject::Update(float dt)
 
 	for (int i = 0; i < components.size(); ++i)
 		components[i]->Update(dt);
-
 }
 
 bool GameObject::CleanUp()
@@ -79,6 +74,15 @@ bool GameObject::CleanUp()
 
 	}
 	childrens.clear();
+
+	if (transform != nullptr)
+		RELEASE(transform);
+	if (mesh != nullptr)
+		RELEASE(mesh);
+	if (material != nullptr)
+		RELEASE(material);
+	if (camera != nullptr)
+		RELEASE(camera);
 
 	components.clear();
 
@@ -93,10 +97,6 @@ void GameObject::CleanData()
 		(*it)->CleanData();
 	}
 	childrens.clear();
-
-	//if (name != nullptr)
-		//RELEASE_ARRAY(name);
-
 
 	if (transform != nullptr)
 		RELEASE(transform);

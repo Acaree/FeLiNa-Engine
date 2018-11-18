@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Glew/include/glew.h"
 #include "mmgr/mmgr.h"
+
 QuadTreeNode::QuadTreeNode(const math::AABB &bounding_box, QuadTreeNode* parent)
 {
 	this->bounding_box = bounding_box;
@@ -113,8 +114,6 @@ void QuadTreeNode::DistributeChildrens()
 					
 				}
 			}
-
-			
 		}
 		else
 			it++;
@@ -125,7 +124,6 @@ void QuadTreeNode::DistributeChildrens()
 void QuadTreeNode::DebugDraw()
 {
 	
-
 	for (uint i = 0; i < 12; i++)
 	{
 		glVertex3f(bounding_box.Edge(i).a.x, bounding_box.Edge(i).a.y, bounding_box.Edge(i).a.z);
@@ -140,7 +138,6 @@ void QuadTreeNode::DebugDraw()
 		}
 	}
 
-
 }
 
 void QuadTreeNode::Clear()
@@ -152,8 +149,6 @@ void QuadTreeNode::Clear()
 			childrens[i]->Clear();
 			childrens[i] = nullptr;
 		}
-
-		
 	}
 	objects.clear();
 }
@@ -193,7 +188,6 @@ void QuadTree::Insert(GameObject* go)
 			root_node->Insert(go);
 			size++;
 		}
-		
 	}
 }
 

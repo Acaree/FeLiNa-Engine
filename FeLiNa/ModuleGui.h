@@ -23,13 +23,6 @@ public:
 	void SaveState(JSON_Object* config);
 
 private:
-	bool About_active = false;
-	bool want_to_rename = false;
-	bool creating_folder = false;
-	
-
-	std::string file_to_rename;
-	std::string file_dragging;
 
 	void ShowMainMenuBar();
 	void ShowConfigurationWindow();
@@ -45,6 +38,17 @@ private:
 	void Rename();
 	void CreateFolder();
 	void ShowAssetsOptions(const char* file, const char* dir);
+
+private:
+
+	bool About_active = false;
+	bool want_to_rename = false;
+	bool creating_folder = false;
+
+
+	std::string file_to_rename;
+	std::string file_dragging;
+
 public:
 
 	bool close_program = false;

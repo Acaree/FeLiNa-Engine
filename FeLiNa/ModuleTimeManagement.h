@@ -18,8 +18,8 @@ public:
 	bool Start();
 	bool CleanUp();
 
-	float ReadGameClock();
-	float ReadRealTimeClock();
+	float ReadGameClock() const;
+	float ReadRealTimeClock() const;
 
 	void StartGameTime();
 	

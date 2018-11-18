@@ -21,12 +21,12 @@ bool ModuleTimeManagement::CleanUp()
 	return true;
 }
 
-float ModuleTimeManagement::ReadGameClock() 
+float ModuleTimeManagement::ReadGameClock() const
 {
 	return game_time/1000;
 }
 
-float ModuleTimeManagement::ReadRealTimeClock() 
+float ModuleTimeManagement::ReadRealTimeClock() const
 {
 	return real_time/1000;
 }

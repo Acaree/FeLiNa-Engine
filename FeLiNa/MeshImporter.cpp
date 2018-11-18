@@ -589,7 +589,6 @@ void MeshImporter::ShowMeshImport()
 
 	ImGui::Text(" Import options for: %s ###importmesh", App->gui->file_focus.c_str());
 
-	
 
 	ImGui::Text("Procces:");
 	ImGui::SameLine();

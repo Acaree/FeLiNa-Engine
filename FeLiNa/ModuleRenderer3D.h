@@ -27,8 +27,6 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	math::float4x4 perspective(float fovy, float aspect, float n, float f);
-
 	void OnResize(int width, int height);
 
 	void DrawCheckBoxEdgeGLPanel();
