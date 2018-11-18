@@ -409,6 +409,7 @@ void ModuleGui::LoadScene()
 
 			App->serialization_scene->ClearActualScene();
 			App->scene->root_object->CleanData();
+			App->scene->root_object->AddComponent(Component_Transform);
 			App->serialization_scene->LoadScene((char*)file.c_str());
 			ImGui::CloseCurrentPopup();
 
