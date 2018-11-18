@@ -19,7 +19,6 @@ public:
 	bool Awake(JSON_Object* config);
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
-	update_status PostUpdate(float dt);
 	bool CleanUp();
 	void SaveState(JSON_Object* config);
 

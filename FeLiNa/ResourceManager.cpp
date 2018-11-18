@@ -29,27 +29,15 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::Start()
 {
-	//Create all resources emptys
+	//Create all resources and files at start 
 	std::string path;
 	RecursiveResourceFiles("Assets", path);
-
-
 
 	return true;
 }
 
-update_status ResourceManager::PreUpdate(float dt)
-{
-
-
-	return UPDATE_CONTINUE;
-}
-
-
-//The file need to load in ModuleFileSystem
 uint ResourceManager::Find(const char* file) const
 {
-	
 	for (std::map<uint, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 		if (strcmp(it->second->GetExportedFile(), file) == 0)
 			return it->first;
@@ -59,6 +47,7 @@ uint ResourceManager::Find(const char* file) const
 
 uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file, const char* library_file)
 {
+	//Import a new file
 	uint ret = 0;
 
 	RESOURCE_TYPE resource_type = RESOURCE_TYPE::RESOURCE_DEFAULT;
@@ -73,6 +62,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 		std::string output_file;
 		std::list<uint> uids;
 
+		//Create settings
 		switch (file_type)
 		{
 		case MESH_FILE:
@@ -85,7 +75,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 			break;
 
 		}
-
+		//if library_file != nullptr the file has imported in last time
 		if (library_file != nullptr)
 		{
 			is_imported = true;
@@ -93,7 +83,9 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 		}
 		else
 		{
+			//if not library_file we import all and create library files
 
+			//if has meta red the settings else we take the default import settings
 			if (meta_file != nullptr)
 			{
 				switch (file_type)
@@ -107,7 +99,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 
 				}
 			}
-			//Get the name and the path
+			//Get the name and the path if file in assets.
 			std::string name = assets_file;
 			std::string path = assets_file;
 
@@ -115,7 +107,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 			name.erase(0, name.find_last_of("/")+1);
 
 		
-
+			//import file if true create the resource
 			switch (file_type)
 			{
 			case MESH_FILE:
@@ -134,6 +126,7 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 		{
 			std::list<Resource*> aux_resources;
 
+			//search json and get aall uid in the sceneserialization for find all file in library and create resources with same uid than sceneserialization uids
 			switch (resource_type)
 			{
 			case RESOURCE_MESH:
@@ -159,15 +152,18 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 
 				if (aux_resources.size() != 0)
 				{
+					//if has uids we read all for meshes, texture no because are .dds not stored nothing more.
 					FillResources(aux_resources, settings);
 					ret = aux_resources.front()->GetUID();
 				}
+				//Create meta file with all uids that we stored in auxiliar.
 				App->importer_mesh->CreateFileMeta(aux_resources, (MeshSettings*)settings);
 
 				break;
 			}
 			case RESOURCE_MATERIAL:
 			{
+				//if are a material we create the resource and meta.
 				std::string output_name = output_file;
 				output_name.erase(0, output_name.find_last_of("/")+1);
 				output_name.erase(output_name.find_last_of("."), output_file.size());
@@ -180,17 +176,13 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 				
 				App->importer_material->CreateFileMeta(aux_resources, (MaterialSettings*)settings);
 
-				//FillResources(aux_resources, settings);
 				ret = aux_resources.front()->GetUID();
 				break;
 			}
 
 			}
-
-
 		}
 
-		
 		RELEASE(settings);
 	}
 
@@ -199,27 +191,15 @@ uint ResourceManager::ImportFile(const char* assets_file, const char* meta_file,
 
 void ResourceManager::FillResources(std::list<Resource*> resources, ImporterSettings* settings)
 {
-
 	for (std::list<Resource*>::iterator it = resources.begin(); it != resources.end(); it++)
 	{
-		FILE_TYPE type = App->fs->FindTypeFile((*it)->file.c_str());
-		
-		switch (type)
-		{
-		case MESH_FILE:
-			App->importer_mesh->LoadFLN((*it)->exported_file.c_str(),(ResourceMesh*)(*it));
-			break;
-		/*case MATERIAL_FILE:
-			App->importer_material->Load((*it)->file.c_str(), (ResourceMaterial*)(*it), (MaterialSettings*)settings); TO REVISE
-			break;*/
-
-		}
+		App->importer_mesh->LoadFLN((*it)->exported_file.c_str(), (ResourceMesh*)(*it));
 	}
 }
 
 void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 {
-
+	//Search for all folders in Assets/
 	path.append(dir);
 	path.append("/");
 
@@ -243,7 +223,7 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 		{
 			std::string extension = *file;
 			extension.erase(0, extension.find_last_of(".")+1);
-
+			//Deprecate .meta and .json
 			if (strcmp(extension.c_str(), "meta") == 0 || strcmp(extension.c_str(), "json") == 0)
 				continue;
 
@@ -304,29 +284,20 @@ void ResourceManager::RecursiveResourceFiles(const char* dir, std::string path)
 					}
 
 				}
-				//WE need check this
+			
 				if (in_directory)
 				{
-					/*library_file = *file;
-					library_file.erase(0, library_file.find_last_of("\\") + 1);
-					library_file.erase(library_file.find_last_of("."), library_file.size());*/
-
 					new_file.append(*file);
 
 					if (Find(new_file.c_str())==0)
 					{
 						//In this case its all but resources not created 
-						//ImportFile() Need to change the Import to char file and meta and exported
 						ImportFile(new_file.c_str(),meta_file.c_str(),library_file.c_str());
 					}
 
 				}
-				else
-				{
-					//In this case we have file and meta but don't have the file in library
-					new_file.append(*file);
-					//ImportFile()
-				}
+				// Here go else condition that we have file and meta but don't have the file in library
+				//but if user erase file in library not are our problem :)
 			}
 		}
 	}
@@ -372,16 +343,17 @@ Resource* ResourceManager::CreateNewResource(RESOURCE_TYPE type, uint last_uid)
 
 		if (resource != nullptr)
 		{
-			LOG("NEW RESOURCE GENERATED");
+			LOG("new resource generated");
 			resources[uid] = resource;
 		}
 		else
-			LOG("Can't generate new resource :(");
+			LOG("Can't generate new resource");
 	}
 
 	return resource;
 }
 
+//this function is called when refresh assets and file has overwritten, erase last resource and create new with import file.
 void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, const char* meta_file)
 {
 	std::list<uint> uids;
@@ -403,8 +375,6 @@ void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, 
 			library_file += ".felina";
 
 			App->fs->FileDelete(library_file.c_str());
-
-			
 
 		}
 
@@ -429,7 +399,7 @@ void ResourceManager::CreateNewResource(FILE_TYPE type, const char* asset_file, 
 	}
 
 	std::map<uint, Resource*>::iterator tmp_resource;
-
+	//TO REVISE: THIS WORK GOOD IF WE ERASE TEXTURES WITH TEXTURES? :/
 	for (std::list<uint>::const_iterator it = uids.begin(); it != uids.end(); ++it)
 	{
 		tmp_resource = resources.find(*it);

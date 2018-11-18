@@ -29,7 +29,7 @@ private:
 	std::vector<GameObject*> aux_go;
 
 public:
-	char* save_name_scene = "Auto_Save";
+	char* save_name_scene = "AutoSave";
 };
 
 

@@ -19,7 +19,6 @@ public:
 	~ResourceManager();
 
 	bool Start();
-	update_status PreUpdate(float dt);
 
 	uint Find(const char* file) const;
 	uint ImportFile(const char* assets_file, const char* meta_file = nullptr, const char* library_file = nullptr);

@@ -69,7 +69,7 @@ void ComponentCamera::CullingObjects()
 
 void ComponentCamera::CullingStaticObjects()
 {
-	std::vector<GameObject*> tmp_go;
+	static std::vector<GameObject*> tmp_go;
 
 	//Set all static objects to  false
 	for (uint i = 0; i < App->scene->static_go.size(); ++i)
@@ -82,6 +82,9 @@ void ComponentCamera::CullingStaticObjects()
 	{
 		tmp_go[i]->SetActive(true);
 	}
+
+	tmp_go.clear();
+
 }
 
 void ComponentCamera::CullingDynamicObjects(GameObject * obj)

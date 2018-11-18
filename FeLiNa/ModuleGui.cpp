@@ -152,15 +152,7 @@ update_status ModuleGui::Update(float dt)
 	return update_return;
 }
 
-update_status ModuleGui::PostUpdate(float dt)
-{
-	update_status update_return = UPDATE_CONTINUE;
-	
-	
 
-
-	return update_return;
-}
 
 bool ModuleGui::CleanUp()
 {
