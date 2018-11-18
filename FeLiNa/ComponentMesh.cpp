@@ -81,6 +81,10 @@ void ComponentMesh::DrawInspector()
 				{
 					uid = res->uid;
 					res->LoadToMemory();
+
+					if (parent->transform != nullptr)
+						parent->RecalculateBoundingBox();
+
 				}
 
 			}
