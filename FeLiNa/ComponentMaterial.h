@@ -22,8 +22,12 @@ public:
 	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);
 
+	float alpha_test = 0.5f;
+
 private:
 	uint uid = 0;
+	
+
 };
 
 #endif

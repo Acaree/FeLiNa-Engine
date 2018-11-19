@@ -329,6 +329,7 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 		math::float4x4 matrix = trans->GetTransformMatrix();
 		glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
+		
 
 		if (material == nullptr)
 		{
@@ -337,6 +338,10 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 		else
 		{
 			ResourceMaterial* texture = (ResourceMaterial*)App->resource_manager->Get(material->GetUID());
+
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER, material->alpha_test);
+	
 			if (texture == nullptr) {
 
 				glBindTexture(GL_TEXTURE_2D, 0);
@@ -368,6 +373,7 @@ void ModuleRenderer3D ::DrawGameObjects(GameObject*go)
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 			glDisableClientState(GL_VERTEX_ARRAY);
 		}
+		glDisable(GL_ALPHA_TEST);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		

@@ -52,6 +52,8 @@ void ComponentMaterial::DrawInspector()
 				ImGui::SameLine();
 				ImGui::Text("Height: %i", resource->height);
 
+				ImGui::SliderFloat("Alpha Test: ",&alpha_test,0.0f, 1.0f);
+
 				ImGui::Image((ImTextureID)(resource->id_texture), ImVec2(250, 250));
 			}
 			else
