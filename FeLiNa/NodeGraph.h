@@ -66,6 +66,12 @@ public:
 public:
 	std::vector<Node> nodes;
 	std::vector<NodeLink> links;
+	//Node* last_input_node_clicked = nullptr;
+	int input_clicked = -1;
+	int input_node_pos = -1;
+	//Node* last_output_node_clicked = nullptr;
+	int output_clicked = -1;
+	int output_node_pos = -1;
 
 };
 

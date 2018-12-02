@@ -98,6 +98,8 @@ void NodeGraph::DrawNodeGraph()
 		ImVec2 p1 = offset + node_inp->GetOutputSlotPos(link->input_slots);
 		ImVec2 p2 = offset + node_out->GetInputSlotPos(link->output_slots);
 		draw_list->AddBezierCurve(p1, p1 + ImVec2(+50, 0), p2 + ImVec2(-50, 0), p2, IM_COL32(200, 200, 100, 255), 3.0f);
+
+
 	}
 	//----------------------------------------------------------------------------------------------------
 
@@ -151,16 +153,43 @@ void NodeGraph::DrawNodeGraph()
 		
 		draw_list->AddRectFilled(node_rect_min, node_rect_max, node_bg_color, 4.0f);
 		
-		SetBackgroundNodeType(node, draw_list, node_rect_min, node_rect_max);
-
 		draw_list->AddRect(node_rect_min, node_rect_max, IM_COL32(100, 100, 100, 255), 4.0f);
-	
 
-		for (int slot_idx = 0; slot_idx < node->input_counts; slot_idx++)
+		for (int slot_idx = 0; slot_idx < node->input_counts; slot_idx++) {
 			draw_list->AddCircleFilled(offset + node->GetInputSlotPos(slot_idx), NODE_SLOT_RADIUS, IM_COL32(150, 150, 150, 150));
-		for (int slot_idx = 0; slot_idx < node->output_counts; slot_idx++)
+			ImVec2 mouse_pos = ImGui::GetMousePos();
+			ImVec2 input_pos = node->GetInputSlotPos(slot_idx) + offset;
+			
+			if(ImGui::IsMouseHoveringRect(ImVec2(input_pos.x - NODE_SLOT_RADIUS, input_pos.y - NODE_SLOT_RADIUS), ImVec2(input_pos.x + NODE_SLOT_RADIUS, input_pos.y + NODE_SLOT_RADIUS))) {
+				if (ImGui::IsMouseClicked(0)) {
+					input_node_pos = node_ids;
+					input_clicked = slot_idx;
+				}
+			}
+		}
+		for (int slot_idx = 0; slot_idx < node->output_counts; slot_idx++) {
 			draw_list->AddCircleFilled(offset + node->GetOutputSlotPos(slot_idx), NODE_SLOT_RADIUS, IM_COL32(150, 150, 150, 150));
 
+			ImVec2 mouse_pos = ImGui::GetMousePos();
+			ImVec2 output_pos = node->GetOutputSlotPos(slot_idx) + offset;
+
+			if (ImGui::IsMouseHoveringRect(ImVec2(output_pos.x - NODE_SLOT_RADIUS, output_pos.y - NODE_SLOT_RADIUS), ImVec2(output_pos.x + NODE_SLOT_RADIUS, output_pos.y + NODE_SLOT_RADIUS))) {
+				if (ImGui::IsMouseClicked(0)) {
+					output_node_pos = node_ids;
+					output_clicked = slot_idx;
+				}
+			}
+		}
+
+		if (input_node_pos != -1 && output_node_pos != -1) {
+			
+			links.push_back(NodeLink(output_node_pos, output_clicked, input_node_pos, input_clicked));
+			input_node_pos = -1;
+			output_node_pos = -1;
+		}
+		
+
+		SetBackgroundNodeType(node, draw_list, node_rect_min, node_rect_max);
 
 		ImGui::PopID();
 	}
