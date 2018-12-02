@@ -84,17 +84,69 @@ void NodeGraph::DrawNodeGraph()
 
 	draw_list->ChannelsSplit(2);
 	draw_list->ChannelsSetCurrent(0);
+
+	//Link Nodes------------------------------------------------------------------------------------------ 
+	for (int link_idex = 0; link_idex < links.size(); link_idex++)
+	{
+		NodeLink* link = &links[link_idex];
+		Node* node_inp = &nodes[link->input_index];
+		Node* node_out = &nodes[link->output_index];
+		ImVec2 p1 = offset + node_inp->GetOutputSlotPos(link->input_slots);
+		ImVec2 p2 = offset + node_out->GetInputSlotPos(link->output_slots);
+		draw_list->AddBezierCurve(p1, p1 + ImVec2(+50, 0), p2 + ImVec2(-50, 0), p2, IM_COL32(200, 200, 100, 255), 3.0f);
+	}
+	//----------------------------------------------------------------------------------------------------
+
+
 	//Print Nodes--------------------------------------------------------------------------------------------
 	for (int node_ids = 0; node_ids < nodes.size(); node_ids++)
 	{
 		Node* node = &nodes[node_ids];
 		ImGui::PushID(node->id);
 
+		ImVec2 node_rect_min = offset + node->position;
+		ImVec2 node_rect_max = node_rect_min + ImVec2(10,10);
+		draw_list->ChannelsSetCurrent(1);
+		bool old_any_active = ImGui::IsAnyItemActive();
+		ImGui::SetCursorScreenPos(node_rect_min + NODE_WINDOW_PADDING);
+
+		ImGui::BeginGroup();
+
+		//Here set the the content first that all nodes are equals.
+		ImGui::Text("%s", node->name);
+
+		//Draw node virtual for set variables that we need
 		node->DrawNode();
+
+		ImGui::EndGroup();
+
+		bool node_widgets_active = (!old_any_active && ImGui::IsAnyItemActive());
+		node->size = ImGui::GetItemRectSize() + NODE_WINDOW_PADDING + NODE_WINDOW_PADDING;
+
+		//Now we create the node box.
+
+		draw_list->ChannelsSetCurrent(0);
+
+		ImGui::SetCursorScreenPos(node_rect_min);
+		ImGui::InvisibleButton("node", node->size);
+
+		if (ImGui::IsItemHovered())
+		{
+			node_hovered_in_scene = node->id;
+			open_context_menu |= ImGui::IsMouseClicked(1);
+		}
+
+		bool node_moving_active = ImGui::IsItemActive();
+		if (node_widgets_active || node_moving_active)
+			node_selected = node->id;
+		if (node_moving_active && ImGui::IsMouseDragging(0))
+			node->position = node->position + ImGui::GetIO().MouseDelta;
+
 
 		ImGui::PopID();
 	}
 	
+	draw_list->ChannelsMerge();
 	//-------------------------------------------------------------------------------------------------------
 
 	ImGui::PopItemWidth();

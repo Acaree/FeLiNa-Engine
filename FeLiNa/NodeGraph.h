@@ -10,6 +10,8 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 
 #define GRID_COLOR IM_COL32(200, 200, 200, 40)
+#define NODE_SLOT_RADIUS  4.0f
+#define NODE_WINDOW_PADDING ImVec2(8.0f, 8.0f)
 
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
@@ -27,6 +29,9 @@ public:
 	ImVec2 position, size;
 
 	Node(int Id, char* Name, ImVec2 Position, int Inputs_counts, int Output_counts) { id = Id; strcpy(name, Name); position = Position; input_counts = Inputs_counts; output_counts = Output_counts; };
+	ImVec2 GetInputSlotPos(int slot_no) const { return ImVec2(position.x, position.y + size.y * ((float)slot_no + 1) / ((float)input_counts + 1)); }
+	ImVec2 GetOutputSlotPos(int slot_no) const { return ImVec2(position.x + size.x, position.y + size.y * ((float)slot_no + 1) / ((float)output_counts + 1)); }
+
 
 	void DrawNode();
 
