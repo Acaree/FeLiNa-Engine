@@ -4,12 +4,16 @@
 void NodeGraph::AddTestNodes()
 {
 
-	nodes.push_back(Node(0, "MainTex", ImVec2(40, 50), 1, 1));
-	nodes.push_back(Node(1, "BumpMap", ImVec2(40, 150), 1, 1));
-	nodes.push_back(Node(2, "Combine", ImVec2(270, 80), 2, 2));
-	links.push_back(NodeLink(0, 0, 2, 0));
-	links.push_back(NodeLink(1, 0, 2, 1));
+	nodes.push_back(Node(0, "The teacher says: ", ImVec2(40, 50), 1, 1));
+	nodes.push_back(Node(1, "You are going to create a visual programming system", ImVec2(40, 150), 1, 1));
+	nodes.push_back(Node(2, "you only have 2 options:", ImVec2(270, 80), 2, 2));
+	nodes.push_back(Node(3, "1.Cry so hard", ImVec2(290, 80), 1, 1));
+	nodes.push_back(Node(4, "2.Cry so hard ", ImVec2(330, 80), 1, 1));
 
+	links.push_back(NodeLink(0, 0, 1, 0));
+	links.push_back(NodeLink(1, 0, 2, 1));
+	links.push_back(NodeLink(2, 0, 3, 1));
+	links.push_back(NodeLink(2, 1, 4, 1));
 }
 
 void NodeGraph::DrawNodeGraph()
@@ -105,7 +109,6 @@ void NodeGraph::DrawNodeGraph()
 		ImGui::PushID(node->id);
 
 		ImVec2 node_rect_min = offset + node->position;
-		ImVec2 node_rect_max = node_rect_min + ImVec2(10,10);
 		draw_list->ChannelsSetCurrent(1);
 		bool old_any_active = ImGui::IsAnyItemActive();
 		ImGui::SetCursorScreenPos(node_rect_min + NODE_WINDOW_PADDING);
@@ -114,7 +117,7 @@ void NodeGraph::DrawNodeGraph()
 
 		//Here set the the content first that all nodes are equals.
 		ImGui::Text("%s", node->name);
-
+		
 		//Draw node virtual for set variables that we need
 		node->DrawNode();
 
@@ -122,6 +125,7 @@ void NodeGraph::DrawNodeGraph()
 
 		bool node_widgets_active = (!old_any_active && ImGui::IsAnyItemActive());
 		node->size = ImGui::GetItemRectSize() + NODE_WINDOW_PADDING + NODE_WINDOW_PADDING;
+		ImVec2 node_rect_max = node_rect_min + node->size;
 
 		//Now we create the node box.
 
@@ -141,6 +145,23 @@ void NodeGraph::DrawNodeGraph()
 			node_selected = node->id;
 		if (node_moving_active && ImGui::IsMouseDragging(0))
 			node->position = node->position + ImGui::GetIO().MouseDelta;
+
+		ImU32 node_bg_color = (node_selected == node->id && node_hovered_in_scene == node->id) ? IM_COL32(75, 75, 75, 255) : IM_COL32(60, 60, 60, 255);
+		
+		draw_list->AddRectFilled(node_rect_min, node_rect_max, node_bg_color, 4.0f);
+
+		int flags = 0;
+		flags |= ImDrawCornerFlags_TopLeft;
+		flags |= ImDrawCornerFlags_TopRight;
+		draw_list->AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y +10), IM_COL32(0, 255, 0, 60), 4.0f,flags);
+
+		draw_list->AddRect(node_rect_min, node_rect_max, IM_COL32(100, 100, 100, 255), 4.0f);
+	
+
+		for (int slot_idx = 0; slot_idx < node->input_counts; slot_idx++)
+			draw_list->AddCircleFilled(offset + node->GetInputSlotPos(slot_idx), NODE_SLOT_RADIUS, IM_COL32(150, 150, 150, 150));
+		for (int slot_idx = 0; slot_idx < node->output_counts; slot_idx++)
+			draw_list->AddCircleFilled(offset + node->GetOutputSlotPos(slot_idx), NODE_SLOT_RADIUS, IM_COL32(150, 150, 150, 150));
 
 
 		ImGui::PopID();
