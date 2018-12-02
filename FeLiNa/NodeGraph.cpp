@@ -28,9 +28,11 @@ void NodeGraph::DrawNodeGraph()
 	ImGui::Text("All Nodes");
 	ImGui::Separator();
 
-	for (int node_idx = 0; node_idx < nodes.size(); node_idx++)
+	//Iterate all nodes in vector node 
+	for (int node_ids = 0; node_ids < nodes.size(); node_ids++) 
 	{
-		Node* node = &nodes[node_idx];
+		//Push her id and set if are selectable
+		Node* node = &nodes[node_ids];
 		ImGui::PushID(node->id);
 		if (ImGui::Selectable(node->name, node->id == node_selected))
 			node_selected = node->id;
@@ -46,5 +48,66 @@ void NodeGraph::DrawNodeGraph()
 	//--------------------------------------------------------------------------------------------------------
 
 
+	//Create Canvas-------------------------------------------------------------------------------------------
+
+	static bool show_grid = false;
+
+	ImGui::SameLine();
+	ImGui::BeginGroup();
+
+	ImGui::Text("Canvas");
+	ImGui::SameLine(ImGui::GetWindowWidth() - 220);
+	ImGui::Checkbox("Show grid", &show_grid);
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1, 1));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, IM_COL32(60, 60, 70, 200));
+	ImGui::BeginChild("canvas_region", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove);
+	ImGui::PushItemWidth(120.0f);
+
+	ImDrawList* draw_list = ImGui::GetWindowDrawList();
+	static ImVec2 scrolling = ImVec2(0.0f, 0.0f);
+	ImVec2 offset = ImGui::GetCursorScreenPos() - scrolling;
+
+	//Show Grid---------------------------------------------------------------------------------------------
+	if (show_grid)// Not work
+	{
+		float grid_size = 64.0f;
+
+		ImVec2 win_pos = ImGui::GetCursorScreenPos();
+		ImVec2 canvas_size = ImGui::GetWindowSize();
+		for (float x = fmodf(scrolling.x, grid_size); x < canvas_size.x; x += grid_size)
+			draw_list->AddLine(ImVec2(x, 0.0f) + win_pos, ImVec2(x, canvas_size.y) + win_pos, GRID_COLOR);
+		for (float y = fmodf(scrolling.y, grid_size); y < canvas_size.y; y += grid_size)
+			draw_list->AddLine(ImVec2(0.0f, y) + win_pos, ImVec2(canvas_size.x, y) + win_pos, GRID_COLOR);
+	}
+	//----------------------------------------------------------------------------------------------------
+
+	draw_list->ChannelsSplit(2);
+	draw_list->ChannelsSetCurrent(0);
+	//Print Nodes--------------------------------------------------------------------------------------------
+	for (int node_ids = 0; node_ids < nodes.size(); node_ids++)
+	{
+		Node* node = &nodes[node_ids];
+		ImGui::PushID(node->id);
+
+		node->DrawNode();
+
+		ImGui::PopID();
+	}
+	
+	//-------------------------------------------------------------------------------------------------------
+
+	ImGui::PopItemWidth();
+	ImGui::EndChild();
+	ImGui::PopStyleColor();
+	ImGui::PopStyleVar(2);
+	ImGui::EndGroup();
+	//----------------------------------------------------------------------------------------------------------
+
 	ImGui::End();
+}
+
+void Node::DrawNode()
+{
+	//This draw display the contents first.
 }

@@ -5,11 +5,19 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_internal.h"
 #include <vector>
+#include <math.h>
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 
-struct Node
+#define GRID_COLOR IM_COL32(200, 200, 200, 40)
+
+static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
+static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
+
+class Node
 {
+public:
+
 	char name[DEFAULT_BUF_SIZE];
 	int id = -1;
 
@@ -19,6 +27,8 @@ struct Node
 	ImVec2 position, size;
 
 	Node(int Id, char* Name, ImVec2 Position, int Inputs_counts, int Output_counts) { id = Id; strcpy(name, Name); position = Position; input_counts = Inputs_counts; output_counts = Output_counts; };
+
+	void DrawNode();
 
 };
 
