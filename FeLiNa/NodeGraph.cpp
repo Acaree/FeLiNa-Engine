@@ -165,6 +165,17 @@ void NodeGraph::DrawNodeGraph()
 					input_node_pos = node_ids;
 					input_clicked = slot_idx;
 				}
+				if (ImGui::IsMouseClicked(1)) {
+					
+					for (std::vector<NodeLink>::const_iterator it = links.begin(); it != links.end(); it++) {
+						
+						if ((*it).output_index == node_ids && (*it).output_slots == slot_idx) {
+							links.erase(it);
+							links.shrink_to_fit();
+							it = links.begin();
+						}
+					}
+				}
 			}
 		}
 		for (int slot_idx = 0; slot_idx < node->output_counts; slot_idx++) {
@@ -177,6 +188,18 @@ void NodeGraph::DrawNodeGraph()
 				if (ImGui::IsMouseClicked(0)) {
 					output_node_pos = node_ids;
 					output_clicked = slot_idx;
+				}
+
+				if (ImGui::IsMouseClicked(1)) {
+
+					for (std::vector<NodeLink>::const_iterator it = links.begin(); it != links.end(); it++) {
+
+						if ((*it).input_index == node_ids && (*it).input_slots == slot_idx) {
+							links.erase(it);
+							links.shrink_to_fit();
+							it = links.begin();
+						}
+					}
 				}
 			}
 		}
