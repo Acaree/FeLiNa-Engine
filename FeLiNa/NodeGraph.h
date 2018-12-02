@@ -16,6 +16,14 @@
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
 
+
+enum NodeType
+{
+	EventType = 0,
+	FunctionType,
+	DefaultType
+};
+
 class Node
 {
 public:
@@ -25,15 +33,15 @@ public:
 
 	int input_counts = 0;
 	int output_counts = 0;
-
+	NodeType type = NodeType::DefaultType;
 	ImVec2 position, size;
 
-	Node(int Id, char* Name, ImVec2 Position, int Inputs_counts, int Output_counts) { id = Id; strcpy(name, Name); position = Position; input_counts = Inputs_counts; output_counts = Output_counts; };
+	Node(int Id, char* Name, ImVec2 Position, int Inputs_counts, int Output_counts, NodeType Type = NodeType::DefaultType) { id = Id; strcpy(name, Name); position = Position; input_counts = Inputs_counts; output_counts = Output_counts; type = Type; };
 	ImVec2 GetInputSlotPos(int slot_no) const { return ImVec2(position.x, position.y + size.y * ((float)slot_no + 1) / ((float)input_counts + 1)); }
 	ImVec2 GetOutputSlotPos(int slot_no) const { return ImVec2(position.x + size.x, position.y + size.y * ((float)slot_no + 1) / ((float)output_counts + 1)); }
 
 
-	void DrawNode();
+	virtual void DrawNode() {/*This draw display the contents first.*/ };
 
 };
 
@@ -53,6 +61,7 @@ public:
 	void AddTestNodes();
 
 	void DrawNodeGraph();
+	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
 
 public:
 	std::vector<Node> nodes;

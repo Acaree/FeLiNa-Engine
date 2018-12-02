@@ -4,16 +4,16 @@
 void NodeGraph::AddTestNodes()
 {
 
-	nodes.push_back(Node(0, "The teacher says: ", ImVec2(40, 50), 1, 1));
-	nodes.push_back(Node(1, "You are going to create a visual programming system", ImVec2(40, 150), 1, 1));
+	nodes.push_back(Node(0, "The teacher says: ", ImVec2(40, 50), 1, 1, NodeType::EventType));
+	nodes.push_back(Node(1, "You are going to create a visual programming system", ImVec2(40, 150), 1, 1, NodeType::FunctionType));
 	nodes.push_back(Node(2, "you only have 2 options:", ImVec2(270, 80), 2, 2));
 	nodes.push_back(Node(3, "1.Cry so hard", ImVec2(290, 80), 1, 1));
 	nodes.push_back(Node(4, "2.Cry so hard ", ImVec2(330, 80), 1, 1));
 
 	links.push_back(NodeLink(0, 0, 1, 0));
 	links.push_back(NodeLink(1, 0, 2, 1));
-	links.push_back(NodeLink(2, 0, 3, 1));
-	links.push_back(NodeLink(2, 1, 4, 1));
+	links.push_back(NodeLink(2, 0, 3, 0));
+	links.push_back(NodeLink(2, 1, 4, 0));
 }
 
 void NodeGraph::DrawNodeGraph()
@@ -116,6 +116,7 @@ void NodeGraph::DrawNodeGraph()
 		ImGui::BeginGroup();
 
 		//Here set the the content first that all nodes are equals.
+		ImGui::Text("\n");// only aesthetic purpose
 		ImGui::Text("%s", node->name);
 		
 		//Draw node virtual for set variables that we need
@@ -149,11 +150,8 @@ void NodeGraph::DrawNodeGraph()
 		ImU32 node_bg_color = (node_selected == node->id && node_hovered_in_scene == node->id) ? IM_COL32(75, 75, 75, 255) : IM_COL32(60, 60, 60, 255);
 		
 		draw_list->AddRectFilled(node_rect_min, node_rect_max, node_bg_color, 4.0f);
-
-		int flags = 0;
-		flags |= ImDrawCornerFlags_TopLeft;
-		flags |= ImDrawCornerFlags_TopRight;
-		draw_list->AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y +10), IM_COL32(0, 255, 0, 60), 4.0f,flags);
+		
+		SetBackgroundNodeType(node, draw_list, node_rect_min, node_rect_max);
 
 		draw_list->AddRect(node_rect_min, node_rect_max, IM_COL32(100, 100, 100, 255), 4.0f);
 	
@@ -170,6 +168,13 @@ void NodeGraph::DrawNodeGraph()
 	draw_list->ChannelsMerge();
 	//-------------------------------------------------------------------------------------------------------
 
+
+
+	//Scroll Canvas------------------------------------------------------------------------------------------
+	if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemActive() && ImGui::IsMouseDragging(2, 0.0f))
+		scrolling = scrolling - ImGui::GetIO().MouseDelta;
+	//-------------------------------------------------------------------------------------------------------
+
 	ImGui::PopItemWidth();
 	ImGui::EndChild();
 	ImGui::PopStyleColor();
@@ -180,7 +185,32 @@ void NodeGraph::DrawNodeGraph()
 	ImGui::End();
 }
 
-void Node::DrawNode()
+void NodeGraph::SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max)
 {
-	//This draw display the contents first.
+	int flags = 0;
+	flags |= ImDrawCornerFlags_TopLeft;
+	flags |= ImDrawCornerFlags_TopRight;
+
+
+	switch (node->type)
+	{
+	case NodeType::EventType:
+
+		draw_list->AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(255, 0, 0, 60), 4.0f, flags);
+		draw_list->AddText(ImVec2((node_rect_min.x + (node_rect_max.x - node_rect_min.x) / 4), node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Event: ");
+
+		break;
+	case NodeType::FunctionType:
+
+		draw_list->AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(0, 255, 0, 60), 4.0f, flags);
+		draw_list->AddText(ImVec2((node_rect_min.x + (node_rect_max.x - node_rect_min.x) / 4), node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Function: ");
+
+		break;
+	case NodeType::DefaultType:
+		draw_list->AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(0, 0, 255, 60), 4.0f, flags);
+		draw_list->AddText(ImVec2(( node_rect_min.x + (node_rect_max.x-node_rect_min.x)/4) , node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Default: ");
+
+		break;
+	}
 }
+
