@@ -223,6 +223,9 @@
     <ClCompile Include="ModuleResourceManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="NodeGraph.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -566,6 +569,9 @@
     </ClInclude>
     <ClInclude Include="ModuleResourceManager.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeGraph.h">
+      <Filter>Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
