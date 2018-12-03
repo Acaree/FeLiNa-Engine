@@ -220,7 +220,51 @@ void NodeGraph::DrawNodeGraph()
 	draw_list->ChannelsMerge();
 	//-------------------------------------------------------------------------------------------------------
 
+	//Create New Node----------------------------------------------------------------------------------------
 
+	if (!ImGui::IsAnyItemHovered() && ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(1))
+	{
+		node_selected = node_hovered_in_list = node_hovered_in_scene = -1;
+		open_context_menu = true;
+	}
+	if (open_context_menu)
+	{
+		if (ImGui::IsMouseClicked(1))
+		{
+			ImGui::OpenPopup("context_menu");
+			if (node_hovered_in_list != -1)
+				node_selected = node_hovered_in_list;
+			if (node_hovered_in_scene != -1)
+				node_selected = node_hovered_in_scene;
+		}
+	}
+
+
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
+	if (ImGui::BeginPopup("context_menu"))
+	{
+		Node* node = node_selected != -1 ? &nodes[node_selected] : NULL;
+		ImVec2 scene_pos = ImGui::GetMousePosOnOpeningCurrentPopup() - offset;
+		if (node)
+		{
+			ImGui::Text("Node '%s'", node->name);
+			ImGui::Separator();
+			if (ImGui::MenuItem("Rename..", NULL, false, false)) {}
+			if (ImGui::MenuItem("Delete", NULL, false, false)) {}
+			if (ImGui::MenuItem("Copy", NULL, false, false)) {}
+		}
+		else
+		{
+			if (ImGui::MenuItem("Add")) { nodes.push_back(Node(nodes.size(), "New node", scene_pos, 1, 1)); }
+			if (ImGui::MenuItem("Paste", NULL, false, false)) {}
+		}
+		ImGui::EndPopup();
+	}
+	ImGui::PopStyleVar();
+
+
+	//-------------------------------------------------------------------------------------------------------
 
 	//Scroll Canvas------------------------------------------------------------------------------------------
 	if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemActive() && ImGui::IsMouseDragging(2, 0.0f))
