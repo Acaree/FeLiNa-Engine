@@ -1,6 +1,6 @@
 #include "NodeGraph.h"
 #include "NodeInputKeyboard.h"
-
+#include "NodeTranslateGameObject.h"
 void NodeGraph::AddTestNodes()
 {
 
@@ -10,7 +10,7 @@ void NodeGraph::AddTestNodes()
 	//nodes.push_back(Node(3, "1.Cry so hard", ImVec2(290, 80), 1, 1));
 //	nodes.push_back(Node(4, "2.Cry so hard ", ImVec2(330, 80), 1, 1));
 	
-	nodes.push_back(new NodeInputKeyboard('w'));
+	nodes.push_back(new NodeTranslateGameObject());
 //	links.push_back(NodeLink(0, 0, 1, 0));
 	//links.push_back(NodeLink(1, 0, 2, 1));
 //	links.push_back(NodeLink(2, 0, 3, 0));

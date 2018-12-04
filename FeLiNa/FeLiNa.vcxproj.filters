@@ -229,6 +229,9 @@
     <ClCompile Include="NodeInputKeyboard.cpp">
       <Filter>Modules\VisualScripting</Filter>
     </ClCompile>
+    <ClCompile Include="NodeTranslateGameObject.cpp">
+      <Filter>Modules\VisualScripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -577,6 +580,9 @@
       <Filter>Modules\VisualScripting</Filter>
     </ClInclude>
     <ClInclude Include="NodeInputKeyboard.h">
+      <Filter>Modules\VisualScripting</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeTranslateGameObject.h">
       <Filter>Modules\VisualScripting</Filter>
     </ClInclude>
   </ItemGroup>
