@@ -238,6 +238,9 @@
     <ClCompile Include="ComponentScript.cpp">
       <Filter>Modules\GameObject\Components</Filter>
     </ClCompile>
+    <ClCompile Include="NodeRotateGameObject.cpp">
+      <Filter>Modules\VisualScripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -596,6 +599,9 @@
     </ClInclude>
     <ClInclude Include="ComponentScript.h">
       <Filter>Modules\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeRotateGameObject.h">
+      <Filter>Modules\VisualScripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

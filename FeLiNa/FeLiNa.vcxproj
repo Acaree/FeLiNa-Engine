@@ -97,6 +97,7 @@
     <ClInclude Include="NodeGraph.h" />
     <ClInclude Include="NodeInputKeyboard.h" />
     <ClInclude Include="NodeMouseMotion.h" />
+    <ClInclude Include="NodeRotateGameObject.h" />
     <ClInclude Include="NodeTranslateGameObject.h" />
     <ClInclude Include="Pcg\entropy.h" />
     <ClInclude Include="Pcg\pcg_spinlock.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="NodeGraph.cpp" />
     <ClCompile Include="NodeInputKeyboard.cpp" />
     <ClCompile Include="NodeMouseMotion.cpp" />
+    <ClCompile Include="NodeRotateGameObject.cpp" />
     <ClCompile Include="NodeTranslateGameObject.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="mPlane.cpp" />

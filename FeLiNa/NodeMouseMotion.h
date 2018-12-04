@@ -8,7 +8,7 @@ class NodeMouseMotion : public Node
 {
 public:
 
-	NodeMouseMotion();
+	NodeMouseMotion(int id);
 	bool Update();
 
 };

@@ -2,6 +2,7 @@
 #include "NodeInputKeyboard.h"
 #include "NodeTranslateGameObject.h"
 #include "NodeMouseMotion.h"
+#include "NodeRotateGameObject.h"
 
 void NodeGraph::AddTestNodes()
 {
@@ -329,7 +330,7 @@ void NodeGraph::DrawNodeGraph()
 	if (open_pop)
 	{
 		//Try to set this in a pop up, spoiler works but not easy to close combo.
-		static const char* node_types[] = { "No type selected","InputKeyboard", "MouseMotion", "TranslateGameObject" };
+		static const char* node_types[] = { "No type selected","InputKeyboard", "MouseMotion", "TranslateGameObject","NodeRotateGameObject" };
 		static int current_type = 0;
 
 		if (ImGui::Combo("Select type of new node: ", &current_type, node_types, ((int)(sizeof(node_types) / sizeof(*node_types)))))
@@ -343,10 +344,13 @@ void NodeGraph::DrawNodeGraph()
 					nodes.push_back(new NodeInputKeyboard(nodes.size()));
 					break;
 				case 2:
-					nodes.push_back(new NodeMouseMotion());
+					nodes.push_back(new NodeMouseMotion(nodes.size()));
 					break;
 				case 3:
 					nodes.push_back(new NodeTranslateGameObject(nodes.size()));
+					break;
+				case 4:
+					nodes.push_back(new NodeRotateGameObject(nodes.size()));
 					break;
 				}
 				open_pop = false;
