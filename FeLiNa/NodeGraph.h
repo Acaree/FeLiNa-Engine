@@ -35,6 +35,8 @@ public:
 	int output_counts = 0;
 	NodeType type = NodeType::DefaultType;
 	ImVec2 position, size;
+	std::vector<Node*> inputs_vec;
+	std::vector<Node*> outputs_vec;
 
 	Node(int Id, char* Name, ImVec2 Position, int Inputs_counts, int Output_counts, NodeType Type = NodeType::DefaultType) { id = Id; strcpy(name, Name); position = Position; input_counts = Inputs_counts; output_counts = Output_counts; type = Type; };
 	ImVec2 GetInputSlotPos(int slot_no) const { return ImVec2(position.x, position.y + size.y * ((float)slot_no + 1) / ((float)input_counts + 1)); }

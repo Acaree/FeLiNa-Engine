@@ -96,8 +96,8 @@ void NodeGraph::DrawNodeGraph()
 		NodeLink* link = &links[link_idex];
 		Node* node_inp = nodes[link->input_index];
 		Node* node_out = nodes[link->output_index];
-		ImVec2 p1 = offset + node_inp->GetOutputSlotPos(link->input_slots);
-		ImVec2 p2 = offset + node_out->GetInputSlotPos(link->output_slots);
+		ImVec2 p1 = offset + node_out->GetOutputSlotPos(link->output_slots);
+		ImVec2 p2 = offset + node_inp->GetInputSlotPos(link->input_slots);
 		draw_list->AddBezierCurve(p1, p1 + ImVec2(+50, 0), p2 + ImVec2(-50, 0), p2, IM_COL32(200, 200, 100, 255), 3.0f);
 
 
@@ -170,7 +170,7 @@ void NodeGraph::DrawNodeGraph()
 					
 					for (std::vector<NodeLink>::const_iterator it = links.begin(); it != links.end(); it++) {
 						
-						if ((*it).output_index == node_ids && (*it).output_slots == slot_idx) {
+						if ((*it).input_index == node_ids && (*it).input_slots == slot_idx) {
 							links.erase(it);
 							links.shrink_to_fit();
 							it = links.begin();
@@ -195,7 +195,7 @@ void NodeGraph::DrawNodeGraph()
 
 					for (std::vector<NodeLink>::const_iterator it = links.begin(); it != links.end(); it++) {
 
-						if ((*it).input_index == node_ids && (*it).input_slots == slot_idx) {
+						if ((*it).output_index == node_ids && (*it).output_slots == slot_idx) {
 							links.erase(it);
 							links.shrink_to_fit();
 							it = links.begin();
@@ -207,7 +207,12 @@ void NodeGraph::DrawNodeGraph()
 
 		if (input_node_pos != -1 && output_node_pos != -1) {
 			
-			links.push_back(NodeLink(output_node_pos, output_clicked, input_node_pos, input_clicked));
+			links.push_back(NodeLink(input_node_pos, input_clicked, output_node_pos, output_clicked));
+			//nodes[input_node_pos]->outputs_vec.push_back(nodes[output_node_pos]);
+			//nodes[output_node_pos]->inputs_vec.push_back(nodes[input_node_pos]);
+
+
+
 			input_node_pos = -1;
 			output_node_pos = -1;
 		}
