@@ -59,8 +59,6 @@ bool ModuleScene::Start()
 
 	quadtree->SetBoundary(box);
 
-	//TEST NODE GRAPH
-	graph.AddTestNodes();
 
 	return ret;
 }
@@ -122,7 +120,6 @@ update_status ModuleScene::Update(float dt)
 void ModuleScene::DrawScene()
 {
 	grid_plane->Render();
-	graph.DrawNodeGraph();
 }
 
 #ifndef GAME_MODE

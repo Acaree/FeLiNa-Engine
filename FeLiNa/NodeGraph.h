@@ -74,6 +74,9 @@ public:
 	//Node* last_output_node_clicked = nullptr;
 	int output_clicked = -1;
 	int output_node_pos = -1;
+	
+	//TO Revision
+	char name[DEFAULT_BUF_SIZE] = "No Name";
 
 };
 

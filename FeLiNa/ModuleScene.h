@@ -4,7 +4,6 @@
 #include "Module.h"
 #include "mPlane.h"
 #include "SceneSerialization.h"
-#include "NodeGraph.h"
 #include <list>
 class GameObject;
 enum ComponentType;
@@ -58,8 +57,6 @@ public:
 	ComponentCamera* game_camera = nullptr;
 
 	SceneSerialization* serialization_scene = nullptr;
-
-	NodeGraph graph;
 
 };
 

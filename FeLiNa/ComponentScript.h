@@ -19,6 +19,7 @@ public:
 private:
 
 	NodeGraph* graph = nullptr;
+	bool open_graph = false;
 
 };
 
