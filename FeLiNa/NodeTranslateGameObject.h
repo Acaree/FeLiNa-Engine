@@ -2,6 +2,7 @@
 #define _NODE_TRANSLATE_GAME_OBJECT_
 
 #include "NodeGraph.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 class GameObject;
 
@@ -15,6 +16,7 @@ public:
 private:
 
 	GameObject* go = nullptr;
+	math::float3 translation = math::float3::zero;
 };
 
 
