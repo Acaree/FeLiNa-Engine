@@ -1,19 +1,20 @@
 #include "NodeGraph.h"
-
+#include "NodeInputKeyboard.h"
 
 void NodeGraph::AddTestNodes()
 {
 
-	nodes.push_back(Node(0, "The teacher says: ", ImVec2(40, 50), 1, 1, NodeType::EventType));
-	nodes.push_back(Node(1, "You are going to create a visual programming system", ImVec2(40, 150), 1, 1, NodeType::FunctionType));
-	nodes.push_back(Node(2, "you only have 2 options:", ImVec2(270, 80), 2, 2));
-	nodes.push_back(Node(3, "1.Cry so hard", ImVec2(290, 80), 1, 1));
-	nodes.push_back(Node(4, "2.Cry so hard ", ImVec2(330, 80), 1, 1));
-
-	links.push_back(NodeLink(0, 0, 1, 0));
-	links.push_back(NodeLink(1, 0, 2, 1));
-	links.push_back(NodeLink(2, 0, 3, 0));
-	links.push_back(NodeLink(2, 1, 4, 0));
+	//nodes.push_back(Node(0, "The teacher says: ", ImVec2(40, 50), 1, 1, NodeType::EventType));
+//	nodes.push_back(Node(1, "You are going to create a visual programming system", ImVec2(40, 150), 1, 1, NodeType::FunctionType));
+	//nodes.push_back(Node(2, "you only have 2 options:", ImVec2(270, 80), 2, 2));
+	//nodes.push_back(Node(3, "1.Cry so hard", ImVec2(290, 80), 1, 1));
+//	nodes.push_back(Node(4, "2.Cry so hard ", ImVec2(330, 80), 1, 1));
+	
+	nodes.push_back(new NodeInputKeyboard('w'));
+//	links.push_back(NodeLink(0, 0, 1, 0));
+	//links.push_back(NodeLink(1, 0, 2, 1));
+//	links.push_back(NodeLink(2, 0, 3, 0));
+	//links.push_back(NodeLink(2, 1, 4, 0));
 }
 
 void NodeGraph::DrawNodeGraph()
@@ -36,7 +37,7 @@ void NodeGraph::DrawNodeGraph()
 	for (int node_ids = 0; node_ids < nodes.size(); node_ids++) 
 	{
 		//Push her id and set if are selectable
-		Node* node = &nodes[node_ids];
+		Node* node = nodes[node_ids];
 		ImGui::PushID(node->id);
 		if (ImGui::Selectable(node->name, node->id == node_selected))
 			node_selected = node->id;
@@ -93,8 +94,8 @@ void NodeGraph::DrawNodeGraph()
 	for (int link_idex = 0; link_idex < links.size(); link_idex++)
 	{
 		NodeLink* link = &links[link_idex];
-		Node* node_inp = &nodes[link->input_index];
-		Node* node_out = &nodes[link->output_index];
+		Node* node_inp = nodes[link->input_index];
+		Node* node_out = nodes[link->output_index];
 		ImVec2 p1 = offset + node_inp->GetOutputSlotPos(link->input_slots);
 		ImVec2 p2 = offset + node_out->GetInputSlotPos(link->output_slots);
 		draw_list->AddBezierCurve(p1, p1 + ImVec2(+50, 0), p2 + ImVec2(-50, 0), p2, IM_COL32(200, 200, 100, 255), 3.0f);
@@ -107,7 +108,7 @@ void NodeGraph::DrawNodeGraph()
 	//Print Nodes--------------------------------------------------------------------------------------------
 	for (int node_ids = 0; node_ids < nodes.size(); node_ids++)
 	{
-		Node* node = &nodes[node_ids];
+		Node* node = nodes[node_ids];
 		ImGui::PushID(node->id);
 
 		ImVec2 node_rect_min = offset + node->position;
@@ -123,7 +124,7 @@ void NodeGraph::DrawNodeGraph()
 		
 		//Draw node virtual for set variables that we need
 		node->DrawNode();
-
+		
 		ImGui::EndGroup();
 
 		bool node_widgets_active = (!old_any_active && ImGui::IsAnyItemActive());
@@ -244,7 +245,7 @@ void NodeGraph::DrawNodeGraph()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
 	if (ImGui::BeginPopup("context_menu"))
 	{
-		Node* node = node_selected != -1 ? &nodes[node_selected] : NULL;
+		Node* node = node_selected != -1 ? nodes[node_selected] : nullptr;
 		ImVec2 scene_pos = ImGui::GetMousePosOnOpeningCurrentPopup() - offset;
 		if (node)
 		{
@@ -256,7 +257,7 @@ void NodeGraph::DrawNodeGraph()
 		}
 		else
 		{
-			if (ImGui::MenuItem("Add")) { nodes.push_back(Node(nodes.size(), "New node", scene_pos, 1, 1)); }
+			if (ImGui::MenuItem("Add")) { nodes.push_back(&Node(nodes.size(), "New node", scene_pos, 1, 1)); }
 			if (ImGui::MenuItem("Paste", NULL, false, false)) {}
 		}
 		ImGui::EndPopup();
@@ -310,3 +311,7 @@ void NodeGraph::SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 
 	}
 }
 
+void Node::DrawNode()
+{
+
+}

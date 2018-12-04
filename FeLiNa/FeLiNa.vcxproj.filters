@@ -224,7 +224,10 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="NodeGraph.cpp">
-      <Filter>Containers</Filter>
+      <Filter>Modules\VisualScripting</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeInputKeyboard.cpp">
+      <Filter>Modules\VisualScripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -571,7 +574,10 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="NodeGraph.h">
-      <Filter>Containers</Filter>
+      <Filter>Modules\VisualScripting</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeInputKeyboard.h">
+      <Filter>Modules\VisualScripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -625,6 +631,9 @@
     </Filter>
     <Filter Include="Tools\PCG">
       <UniqueIdentifier>{1e64f6f4-c7f4-4cf1-89fc-b593beef51c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\VisualScripting">
+      <UniqueIdentifier>{8893a313-152d-4ccd-8ec2-9384cc8e91b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

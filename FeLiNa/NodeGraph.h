@@ -41,7 +41,7 @@ public:
 	ImVec2 GetOutputSlotPos(int slot_no) const { return ImVec2(position.x + size.x, position.y + size.y * ((float)slot_no + 1) / ((float)output_counts + 1)); }
 
 
-	virtual void DrawNode() {/*This draw display the contents first.*/ };
+	virtual void DrawNode();
 
 };
 
@@ -64,7 +64,7 @@ public:
 	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
 
 public:
-	std::vector<Node> nodes;
+	std::vector<Node*> nodes;
 	std::vector<NodeLink> links;
 	//Node* last_input_node_clicked = nullptr;
 	int input_clicked = -1;
