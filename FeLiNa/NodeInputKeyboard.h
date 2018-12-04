@@ -9,6 +9,7 @@ class NodeInputKeyboard : public Node
 public:
 
 	NodeInputKeyboard(char key = '1');
+	bool Update();
 	void DrawNode();
 
 private:

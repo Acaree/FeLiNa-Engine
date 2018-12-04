@@ -13,6 +13,16 @@ ComponentScript::~ComponentScript()
 	RELEASE(graph);
 }
 
+
+void ComponentScript::Update(float dt)
+{
+	if (graph != nullptr)
+	{
+		graph->Update();
+	}
+}
+
+
 void ComponentScript::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Script"))

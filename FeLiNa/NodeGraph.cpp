@@ -17,6 +17,34 @@ void NodeGraph::AddTestNodes()
 	//links.push_back(NodeLink(2, 1, 4, 0));
 }
 
+bool NodeGraph::Update()
+{
+	bool ret = false;
+
+	for (uint i = 0; i < nodes.size(); ++i)
+	{
+		if (nodes[i]->type == EventType)
+			ret = nodes[i]->Update();
+
+		if (ret == false)
+			break;
+		/*else
+		{
+			for (uint j = 0; i < links.size(); ++j)
+			{
+				if (links[j].input_index == nodes[i]->id)
+				{
+					
+				}
+			}
+		}*/
+	}
+
+
+	return ret;
+}
+
+
 void NodeGraph::DrawNodeGraph()
 {
 	ImGui::SetNextWindowSize(ImVec2(700, 600), ImGuiSetCond_FirstUseEver);
@@ -356,4 +384,9 @@ void NodeGraph::SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 
 void Node::DrawNode()
 {
 
+}
+
+bool Node::Update()
+{
+	return true;
 }

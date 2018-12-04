@@ -78,7 +78,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	mouse_x /= SCREEN_SIZE;
 	mouse_y /= SCREEN_SIZE;
 	mouse_z = 0;
-
+	
 	for(int i = 0; i < 5; ++i)
 	{
 		if(buttons & SDL_BUTTON(i))

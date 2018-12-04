@@ -14,6 +14,7 @@ public:
 	ComponentScript(GameObject* parent);
 	~ComponentScript();
 
+	void Update(float dt);
 	void DrawInspector();
 
 private:
