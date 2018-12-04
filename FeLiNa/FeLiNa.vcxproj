@@ -97,6 +97,7 @@
     <ClInclude Include="NodeGraph.h" />
     <ClInclude Include="NodeInputKeyboard.h" />
     <ClInclude Include="NodeInputMouse.h" />
+    <ClInclude Include="NodeInstatiateGameObject.h" />
     <ClInclude Include="NodeMouseMotion.h" />
     <ClInclude Include="NodeRotateGameObject.h" />
     <ClInclude Include="NodeTranslateGameObject.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="NodeGraph.cpp" />
     <ClCompile Include="NodeInputKeyboard.cpp" />
     <ClCompile Include="NodeInputMouse.cpp" />
+    <ClCompile Include="NodeInstatiateGameObject.cpp" />
     <ClCompile Include="NodeMouseMotion.cpp" />
     <ClCompile Include="NodeRotateGameObject.cpp" />
     <ClCompile Include="NodeTranslateGameObject.cpp" />

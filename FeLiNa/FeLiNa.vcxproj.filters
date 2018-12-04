@@ -244,6 +244,9 @@
     <ClCompile Include="NodeInputMouse.cpp">
       <Filter>Modules\VisualScripting</Filter>
     </ClCompile>
+    <ClCompile Include="NodeInstatiateGameObject.cpp">
+      <Filter>Modules\VisualScripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -607,6 +610,9 @@
       <Filter>Modules\VisualScripting</Filter>
     </ClInclude>
     <ClInclude Include="NodeInputMouse.h">
+      <Filter>Modules\VisualScripting</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeInstatiateGameObject.h">
       <Filter>Modules\VisualScripting</Filter>
     </ClInclude>
   </ItemGroup>
