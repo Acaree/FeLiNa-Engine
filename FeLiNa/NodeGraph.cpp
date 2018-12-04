@@ -24,20 +24,21 @@ bool NodeGraph::Update()
 	for (uint i = 0; i < nodes.size(); ++i)
 	{
 		if (nodes[i]->type == EventType)
+		{
 			ret = nodes[i]->Update();
 
-		if (ret == false)
-			break;
-		/*else
-		{
-			for (uint j = 0; i < links.size(); ++j)
+			if (ret == false)
+				break;
+			else
 			{
-				if (links[j].input_index == nodes[i]->id)
+				for (int j = 0; j < nodes[i]->outputs_vec.size(); j++)
 				{
-					
+					if (!nodes[i]->outputs_vec[j]->Update())
+						break;
 				}
+
 			}
-		}*/
+		}
 	}
 
 
@@ -235,6 +236,30 @@ void NodeGraph::DrawNodeGraph()
 
 		if (input_node_pos != -1 && output_node_pos != -1) {
 			
+			Node* input_node = nullptr;
+			Node* output_node = nullptr;
+
+			for (uint j = 0; j < nodes.size(); ++j)
+			{
+		
+				if (nodes[j]->id == input_node_pos)
+				{
+					input_node = nodes[j];
+				}
+
+				if (nodes[j]->id == output_node_pos)
+				{
+					output_node = nodes[j];
+				}
+
+			}
+
+			if (input_node != nullptr && output_node != nullptr)
+			{
+				input_node->inputs_vec.push_back(output_node);
+				output_node->outputs_vec.push_back(input_node);
+			}
+
 			links.push_back(NodeLink(input_node_pos, input_clicked, output_node_pos, output_clicked));
 			//nodes[input_node_pos]->outputs_vec.push_back(nodes[output_node_pos]);
 			//nodes[output_node_pos]->inputs_vec.push_back(nodes[input_node_pos]);
@@ -315,13 +340,13 @@ void NodeGraph::DrawNodeGraph()
 				switch (current_type)
 				{
 				case 1:
-					nodes.push_back(new NodeInputKeyboard());
+					nodes.push_back(new NodeInputKeyboard(nodes.size()));
 					break;
 				case 2:
 					nodes.push_back(new NodeMouseMotion());
 					break;
 				case 3:
-					nodes.push_back(new NodeTranslateGameObject());
+					nodes.push_back(new NodeTranslateGameObject(nodes.size()));
 					break;
 				}
 				open_pop = false;

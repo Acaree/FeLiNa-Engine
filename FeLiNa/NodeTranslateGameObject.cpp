@@ -1,10 +1,41 @@
 #include "NodeTranslateGameObject.h"
 #include "GameObject.h"
+#include "ComponentTransform.h"
 
-NodeTranslateGameObject::NodeTranslateGameObject() : Node(3, "Game object to translate:", { 100,100 }, 1, 1, NodeType::FunctionType)
+NodeTranslateGameObject::NodeTranslateGameObject(int id) : Node(id, "Game object to translate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
 	
 }
+
+bool NodeTranslateGameObject::Update()
+{
+	bool ret = false;
+
+	if (go != nullptr)
+	{
+		if (go->transform != nullptr)
+		{
+			ret = true;
+
+			go->transform->SumPosition(translation);
+
+		}
+	}
+
+	if (ret)
+	{
+		for (uint i = 0; i < outputs_vec.size(); ++i)
+		{
+			ret = outputs_vec[i]->Update();
+
+			if (!ret)
+				break;
+		}
+	}
+
+	return ret;
+}
+
 
 void NodeTranslateGameObject::DrawNode()
 {

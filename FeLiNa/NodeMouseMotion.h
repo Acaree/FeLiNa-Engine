@@ -9,7 +9,7 @@ class NodeMouseMotion : public Node
 public:
 
 	NodeMouseMotion();
-
+	bool Update();
 
 };
 

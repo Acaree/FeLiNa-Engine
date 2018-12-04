@@ -10,7 +10,8 @@ class NodeTranslateGameObject : public Node
 {
 public:
 
-	NodeTranslateGameObject();
+	NodeTranslateGameObject(int id);
+	bool Update();
 	void DrawNode();
 
 private:
