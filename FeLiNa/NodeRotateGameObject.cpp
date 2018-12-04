@@ -4,7 +4,7 @@
 #include "ModuleInput.h"
 #include "ComponentTransform.h"
 
-NodeRotateGameObject::NodeRotateGameObject(int id) : Node(id, "Game object to translate:", { 100,100 }, 1, 1, NodeType::FunctionType)
+NodeRotateGameObject::NodeRotateGameObject(int id) : Node(id, "Game object to rotate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
 
 }
@@ -25,20 +25,20 @@ bool NodeRotateGameObject::Update()
 
 			math::float3 rot = math::float3::zero;
 
-			if (x_motion > 0)
+			if (x_motion > min_mouse_x)
 			{
-				rot += { 1, 0, 0 };
+				rot += { 0.1, 0, 0 };
 			}
-			else
+			else if(x_motion < max_mouse_x)
 			{
 				rot += { -1, 0, 0 };
 			}
 
-			if (y_motion > 0)
+			if (y_motion > min_mouse_y)
 			{
 				rot += { 0, 0, 1 };
 			}
-			else
+			else if(y_motion < max_mouse_y)
 			{
 				rot += { 0, 0, -1 };
 			}
@@ -60,6 +60,12 @@ void NodeRotateGameObject::DrawNode()
 		ImGui::Text("Not valid game object");
 	else
 		ImGui::Text(go->GetName());
+
+	ImGui::InputInt("Min angle x", &min_mouse_x);
+	ImGui::InputInt("Max angle x", &max_mouse_x);
+
+	ImGui::InputInt("Min angle y", &min_mouse_y);
+	ImGui::InputInt("Max angle y", &max_mouse_y);
 
 	ImGui::Text("GameObject:");
 	ImGui::Button("Drag Game Object Here");

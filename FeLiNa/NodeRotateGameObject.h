@@ -15,6 +15,8 @@ public:
 
 private:
 	GameObject* go = nullptr;
+	int min_mouse_x = 0, max_mouse_x = 0;
+	int min_mouse_y = 0, max_mouse_y = 0;
 };
 
 

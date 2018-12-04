@@ -114,7 +114,8 @@ void ComponentTransform::SumPosition(math::float3 pos)
 void ComponentTransform::SumRotation(math::float3 rot)
 {
 	euler_angles += rot;
-	quat_rotation = quat_rotation * math::Quat({ rot.x,rot.y,rot.z,1 });
+	
+	quat_rotation = quat_rotation * math::Quat::FromEulerXYZ(euler_angles.x, euler_angles.y, euler_angles.z);
 }
 
 void ComponentTransform::SumScale(math::float3 scale)
