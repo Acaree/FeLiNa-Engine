@@ -209,11 +209,14 @@ void ModuleScene::ShowInspector()
 		{
 			bool mesh_selectable = true;
 			bool material_selectable = true;
+			bool script_selectable = true;
 
 			if (go->mesh != nullptr)
 				mesh_selectable = false;
 			if (go->material != nullptr)
 				material_selectable = false;
+			if (go->script != nullptr)
+				script_selectable = false;
 
 			if (ImGui::MenuItem("Add Component Mesh", NULL, false,mesh_selectable))
 			{
@@ -223,6 +226,11 @@ void ModuleScene::ShowInspector()
 			if (ImGui::MenuItem("Add Component Material", NULL, false,material_selectable))
 			{
 				go->AddComponent(Component_Material);
+			}
+
+			if (ImGui::MenuItem("Add Component Script", NULL, false, script_selectable))
+			{
+				go->AddComponent(Component_Script);
 			}
 
 			ImGui::EndPopup();

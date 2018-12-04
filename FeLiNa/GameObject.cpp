@@ -12,6 +12,7 @@
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentScript.h"
 #include "ComponentCamera.h"
 #include "mmgr/mmgr.h"
 
@@ -188,6 +189,10 @@ Component* GameObject::AddComponent(const ComponentType type)
 	case Component_Camera:
 		camera = new ComponentCamera(this);
 		component = camera;
+		break;
+	case Component_Script:
+		script = new ComponentScript(this);
+		component = script;
 		break;
 
 	case Component_Default:

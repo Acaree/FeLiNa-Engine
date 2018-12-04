@@ -235,6 +235,9 @@
     <ClCompile Include="NodeMouseMotion.cpp">
       <Filter>Modules\VisualScripting</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentScript.cpp">
+      <Filter>Modules\GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -590,6 +593,9 @@
     </ClInclude>
     <ClInclude Include="NodeMouseMotion.h">
       <Filter>Modules\VisualScripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentScript.h">
+      <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

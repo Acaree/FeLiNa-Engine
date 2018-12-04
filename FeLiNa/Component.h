@@ -12,6 +12,7 @@ enum ComponentType
 	Component_Mesh,
 	Component_Material,
 	Component_Camera,
+	Component_Script,
 	Component_Default
 
 };

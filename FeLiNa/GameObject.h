@@ -13,6 +13,7 @@ class ComponentTransform;
 class ComponentMaterial;
 class ComponentMesh;
 class ComponentCamera;
+class ComponentScript;
 
 class GameObject
 {
@@ -88,6 +89,7 @@ public:
 	ComponentMaterial* material = nullptr;
 	ComponentMesh* mesh = nullptr;
 	ComponentCamera* camera = nullptr;
+	ComponentScript* script = nullptr;
 	bool to_delete = false;
 
 private:
