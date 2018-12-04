@@ -1,16 +1,16 @@
 #include "NodeGraph.h"
 #include "NodeInputKeyboard.h"
 #include "NodeTranslateGameObject.h"
+#include "NodeMouseMotion.h"
+
 void NodeGraph::AddTestNodes()
 {
-
 	//nodes.push_back(Node(0, "The teacher says: ", ImVec2(40, 50), 1, 1, NodeType::EventType));
 //	nodes.push_back(Node(1, "You are going to create a visual programming system", ImVec2(40, 150), 1, 1, NodeType::FunctionType));
 	//nodes.push_back(Node(2, "you only have 2 options:", ImVec2(270, 80), 2, 2));
 	//nodes.push_back(Node(3, "1.Cry so hard", ImVec2(290, 80), 1, 1));
 //	nodes.push_back(Node(4, "2.Cry so hard ", ImVec2(330, 80), 1, 1));
-	
-	nodes.push_back(new NodeTranslateGameObject());
+
 //	links.push_back(NodeLink(0, 0, 1, 0));
 	//links.push_back(NodeLink(1, 0, 2, 1));
 //	links.push_back(NodeLink(2, 0, 3, 0));
@@ -241,7 +241,7 @@ void NodeGraph::DrawNodeGraph()
 	}
 
 
-
+	static bool open_pop = false;
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
 	if (ImGui::BeginPopup("context_menu"))
 	{
@@ -257,11 +257,48 @@ void NodeGraph::DrawNodeGraph()
 		}
 		else
 		{
-			if (ImGui::MenuItem("Add")) { nodes.push_back(&Node(nodes.size(), "New node", scene_pos, 1, 1)); }
+			if (ImGui::MenuItem("Add")) { 
+				open_pop = true;
+				
+			}
 			if (ImGui::MenuItem("Paste", NULL, false, false)) {}
 		}
+
 		ImGui::EndPopup();
+		
 	}
+
+	if (open_pop)
+	{
+		//Try to set this in a pop up, spoiler works but not easy to close combo.
+		static const char* node_types[] = { "No type selected","InputKeyboard", "MouseMotion", "TranslateGameObject" };
+		static int current_type = 0;
+
+		if (ImGui::Combo("Select type of new node: ", &current_type, node_types, ((int)(sizeof(node_types) / sizeof(*node_types)))))
+		{
+			//TO change this go in a function
+			if (current_type != 0)
+			{
+				switch (current_type)
+				{
+				case 1:
+					nodes.push_back(new NodeInputKeyboard());
+					break;
+				case 2:
+					nodes.push_back(new NodeMouseMotion());
+					break;
+				case 3:
+					nodes.push_back(new NodeTranslateGameObject());
+					break;
+				}
+				open_pop = false;
+
+			}
+
+		}
+		
+	}
+
 	ImGui::PopStyleVar();
 
 
