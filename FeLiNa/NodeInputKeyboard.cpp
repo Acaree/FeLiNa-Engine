@@ -12,16 +12,16 @@ NodeInputKeyboard::NodeInputKeyboard(int id, char key) : Node( id, "Input Event"
 
 bool NodeInputKeyboard::Update()
 {
-	bool ret = false;
+	returned_result = false;
 
 
 	if (App->input->GetKey(key_code) == KEY_REPEAT)
 	{
-		ret = true;
+		returned_result = true;
 	}
 
 
-	return ret;
+	return returned_result;
 }
 
 void NodeInputKeyboard::DrawNode()

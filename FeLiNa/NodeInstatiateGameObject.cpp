@@ -11,7 +11,7 @@ NodeInstatiateGameObject::NodeInstatiateGameObject(int id) : Node(id, "Game obje
 
 bool NodeInstatiateGameObject::Update()
 {
-	bool ret = false;
+	returned_result = false;
 
 	if (go != nullptr)
 	{
@@ -20,18 +20,18 @@ bool NodeInstatiateGameObject::Update()
 		App->serialization_scene->LoadScene((char*)path.c_str());
 	}
 
-	if (ret)
+	if (returned_result)
 	{
 		for (uint i = 0; i < outputs_vec.size(); ++i)
 		{
-			ret = outputs_vec[i]->Update();
+			returned_result = outputs_vec[i]->Update();
 
-			if (!ret)
+			if (!returned_result)
 				break;
 		}
 	}
 
-	return ret;
+	return returned_result;
 }
 
 

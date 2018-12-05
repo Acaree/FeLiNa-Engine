@@ -10,15 +10,15 @@ NodeInputMouse::NodeInputMouse(int id) : Node(id, "Mouse click button:", { 100,1
 
 bool NodeInputMouse::Update()
 {
-	bool ret = false;
+	returned_result = false;
 
 	if (key_code > 0 && key_code <= 3)
 	{
 		if (App->input->GetMouseButton(key_code) == KEY_DOWN)
-			ret = true;
+			returned_result = true;
 	}
 
-	return ret;
+	return returned_result;
 }
 
 void NodeInputMouse::DrawNode()

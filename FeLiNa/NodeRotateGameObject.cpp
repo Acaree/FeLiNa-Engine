@@ -12,13 +12,13 @@ NodeRotateGameObject::NodeRotateGameObject(int id) : Node(id, "Game object to ro
 
 bool NodeRotateGameObject::Update()
 {
-	bool ret = false;
+	returned_result = false;
 
 	if (go != nullptr)
 	{
 		if (go->transform != nullptr)
 		{
-			ret = true;
+			returned_result = true;
 
 			int x_motion = App->input->GetMouseXMotion();
 			int y_motion = App->input->GetMouseYMotion();
@@ -49,7 +49,7 @@ bool NodeRotateGameObject::Update()
 	}
 
 
-	return ret;
+	return returned_result;
 }
 
 

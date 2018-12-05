@@ -9,31 +9,31 @@ NodeTranslateGameObject::NodeTranslateGameObject(int id) : Node(id, "Game object
 
 bool NodeTranslateGameObject::Update()
 {
-	bool ret = false;
+	returned_result = false;
 
 	if (go != nullptr)
 	{
 		if (go->transform != nullptr)
 		{
-			ret = true;
+			returned_result = true;
 
 			go->transform->SumPosition(translation);
 
 		}
 	}
 
-	if (ret)
+	if (returned_result)
 	{
 		for (uint i = 0; i < outputs_vec.size(); ++i)
 		{
-			ret = outputs_vec[i]->Update();
+			returned_result = outputs_vec[i]->Update();
 
-			if (!ret)
+			if (!returned_result)
 				break;
 		}
 	}
 
-	return ret;
+	return returned_result;
 }
 
 

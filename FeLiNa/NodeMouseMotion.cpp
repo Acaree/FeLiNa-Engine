@@ -9,17 +9,17 @@ NodeMouseMotion::NodeMouseMotion(int id): Node(id, "Mouse Motion", { 100,100 }, 
 
 bool NodeMouseMotion::Update()
 {
-	bool ret = false;
+	returned_result = false;
 
 	int x = App->input->GetMouseXMotion();
 	int y = App->input->GetMouseYMotion();
 
 	if (x != 0 || y != 0)
 	{
-		ret = true;
+		returned_result = true;
 
 	}
 
 
-	return ret;
+	return returned_result;
 }

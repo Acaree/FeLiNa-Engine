@@ -29,10 +29,8 @@ bool NodeGraph::Update()
 		if (nodes[i]->type == EventType)
 		{
 			ret = nodes[i]->Update();
-
-			if (ret == false)
-				break;
-			else
+	
+			if (ret)
 			{
 				for (int j = 0; j < nodes[i]->outputs_vec.size(); j++)
 				{
@@ -184,6 +182,12 @@ void NodeGraph::DrawNodeGraph()
 
 		ImU32 node_bg_color = (node_selected == node->id && node_hovered_in_scene == node->id) ? IM_COL32(75, 75, 75, 255) : IM_COL32(60, 60, 60, 255);
 		
+		if (node->returned_result)
+		{
+			draw_list->AddRectFilled(node_rect_min- ImVec2(5,5), node_rect_max + ImVec2(5, 5), IM_COL32(0, 240, 0, 255), 4.0f);
+			node->returned_result = false;
+		}
+
 		draw_list->AddRectFilled(node_rect_min, node_rect_max, node_bg_color, 4.0f);
 		
 		draw_list->AddRect(node_rect_min, node_rect_max, IM_COL32(100, 100, 100, 255), 4.0f);
@@ -433,5 +437,5 @@ void Node::DrawNode()
 
 bool Node::Update()
 {
-	return true;
+	return returned_result;
 }

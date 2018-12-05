@@ -45,6 +45,8 @@ public:
 	ImVec2 GetInputSlotPos(int slot_no) const { return ImVec2(position.x, position.y + size.y * ((float)slot_no + 1) / ((float)input_counts + 1)); }
 	ImVec2 GetOutputSlotPos(int slot_no) const { return ImVec2(position.x + size.x, position.y + size.y * ((float)slot_no + 1) / ((float)output_counts + 1)); }
 
+	bool returned_result = false;
+
 	virtual bool Update();
 	virtual void DrawNode();
 
