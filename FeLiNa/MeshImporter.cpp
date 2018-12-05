@@ -266,7 +266,7 @@ void MeshImporter::LoadModel(const aiScene* scene, aiNode* node, GameObject* par
 
 				uint size = sizeof(ranges) + sizeof(float) * num_vertices * 3 + sizeof(uint) * num_indices + sizeof(float)* num_uv * 2;
 
-				char* data = new char[size]; // Why if the variable is cursor physfs crashes? 
+				char* data = new char[size];
 				char* cursor = data;
 
 				// First store ranges

@@ -319,8 +319,8 @@ void NodeGraph::DrawNodeGraph()
 		else
 		{
 			if (ImGui::MenuItem("Add")) { 
+				ImGui::OpenPopup("node_creation");
 				open_pop = true;
-				
 			}
 			if (ImGui::MenuItem("Paste", NULL, false, false)) {}
 		}
@@ -330,6 +330,12 @@ void NodeGraph::DrawNodeGraph()
 	}
 
 	if (open_pop)
+	{
+		ImGui::OpenPopup("node_creation");
+		open_pop = false;
+	}
+
+	if (ImGui::BeginPopup("node_creation"))
 	{
 		//Try to set this in a pop up, spoiler works but not easy to close combo.
 		static const char* node_types[] = { "No type selected","InputKeyboard", "MouseMotion", "TranslateGameObject","NodeRotateGameObject", "NodeInputMouse","InstatiateGameObject" };
@@ -361,13 +367,15 @@ void NodeGraph::DrawNodeGraph()
 					nodes.push_back(new NodeInstatiateGameObject(nodes.size()));
 					break;
 				}
-				open_pop = false;
+				
 
 			}
 
 		}
-		
+		ImGui::EndPopup();
 	}
+		
+	
 
 	ImGui::PopStyleVar();
 
