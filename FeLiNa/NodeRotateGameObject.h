@@ -2,7 +2,7 @@
 #define _NODE_ROTATE_GAME_OBJECT_
 
 #include "NodeGraph.h"
-
+#include "MathGeoLib/MathGeoLib.h"
 
 class GameObject;
 
@@ -15,8 +15,7 @@ public:
 
 private:
 	GameObject* go = nullptr;
-	int min_mouse_x = 0, max_mouse_x = 0;
-	int min_mouse_y = 0, max_mouse_y = 0;
+	math::float3 axis = math::float3::zero;
 };
 
 
