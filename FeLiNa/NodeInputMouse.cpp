@@ -5,7 +5,7 @@
 
 NodeInputMouse::NodeInputMouse(int id) : Node(id, "Mouse click button:", { 100,100 }, 1, 1, NodeType::EventType)
 {
-
+	subtype = NodeSubType::InputMouse;
 }
 
 bool NodeInputMouse::Update()

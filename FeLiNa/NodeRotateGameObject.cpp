@@ -6,7 +6,7 @@
 
 NodeRotateGameObject::NodeRotateGameObject(int id) : Node(id, "Game object to rotate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
-
+	subtype = NodeSubType::RotateGO;
 }
 
 

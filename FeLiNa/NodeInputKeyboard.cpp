@@ -7,6 +7,7 @@ NodeInputKeyboard::NodeInputKeyboard(int id, char key) : Node( id, "Input Event"
 {
 	this->key = key;
 	this->key_code = SDL_GetScancodeFromName(&key);
+	subtype = NodeSubType::InputKeyboard;
 
 }
 

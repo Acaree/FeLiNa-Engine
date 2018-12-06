@@ -4,7 +4,7 @@
 
 NodeMouseMotion::NodeMouseMotion(int id): Node(id, "Mouse Motion", { 100,100 }, 0, 1, NodeType::EventType)
 {
-
+	subtype = NodeSubType::MouseMotion;
 }
 
 bool NodeMouseMotion::Update()

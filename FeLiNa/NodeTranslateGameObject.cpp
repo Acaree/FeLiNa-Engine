@@ -4,7 +4,7 @@
 
 NodeTranslateGameObject::NodeTranslateGameObject(int id) : Node(id, "Game object to translate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
-	
+	subtype = NodeSubType::TranslateGO;
 }
 
 bool NodeTranslateGameObject::Update()

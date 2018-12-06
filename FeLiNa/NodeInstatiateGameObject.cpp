@@ -6,7 +6,7 @@
 
 NodeInstatiateGameObject::NodeInstatiateGameObject(int id) : Node(id, "Game object to translate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
-
+	subtype = NodeSubType::InstatiateGO;
 }
 
 bool NodeInstatiateGameObject::Update()

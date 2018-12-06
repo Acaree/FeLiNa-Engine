@@ -67,9 +67,6 @@ void SceneSerialization::SaveScene(GameObject* go, const char* file_path)
 	JSON_Value* file_root = json_value_init_array();
 	JSON_Array* go_array = json_value_get_array(file_root);
 
-	//Root_Object ¿Need save this?
-
-
 	
 	RecursiveSearchChildrens(go);
 

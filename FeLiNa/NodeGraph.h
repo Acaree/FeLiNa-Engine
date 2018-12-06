@@ -24,6 +24,19 @@ enum NodeType
 	DefaultType
 };
 
+enum NodeSubType
+{
+	DefaultSubType = 0,
+	InputKeyboard,
+	InputMouse,
+	InstatiateGO,
+	MouseMotion,
+	RotateGO,
+	TranslateGO,
+};
+
+
+
 class Node
 {
 public:
@@ -34,6 +47,7 @@ public:
 	int input_counts = 0;
 	int output_counts = 0;
 	NodeType type = NodeType::DefaultType;
+	NodeSubType subtype = NodeSubType::DefaultSubType;
 	ImVec2 position, size;
 
 	//Not work for now----------------------

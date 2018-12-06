@@ -16,11 +16,13 @@ public:
 
 	void Update(float dt);
 	void DrawInspector();
+	void OnSave(JSON_Object* obj);
 
 private:
 
 	NodeGraph* graph = nullptr;
 	bool open_graph = false;
+	void SaveScript(Node* node);
 
 };
 
