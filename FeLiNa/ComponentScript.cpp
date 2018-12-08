@@ -8,25 +8,16 @@
 #include "ModuleResourceManager.h"
 #include "ResourceScript.h"
 
-#include "NodeGraph.h"
-#include "NodeInputKeyboard.h"
-#include "NodeTranslateGameObject.h"
-#include "NodeMouseMotion.h"
-#include "NodeRotateGameObject.h"
-#include "NodeInputMouse.h"
-#include "NodeInstatiateGameObject.h"
 
 ComponentScript::ComponentScript(GameObject* parent) : Component(parent)
 {
 	type = Component_Script;
-	graph = new NodeGraph();
 }
 
 ComponentScript::~ComponentScript()
 {
-	RELEASE(graph);
-}
 
+}
 
 void ComponentScript::Update(float dt)
 {
@@ -76,8 +67,13 @@ void ComponentScript::DrawInspector()
 				ImGui::EndDragDropTarget();
 			}
 
-
-		ImGui::Text(graph->name);
+		if(uid == 0)
+			ImGui::Text("Not script asociated");
+		else
+		{
+			Resource* resource = App->resource_manager->Get(uid);
+			ImGui::Text(resource->exported_file.c_str());
+		}
 
 		if (ImGui::Button("Open Graph"))
 		{
@@ -98,17 +94,22 @@ void ComponentScript::OnSave(JSON_Object* obj)
 	JSON_Value* new_value = json_value_init_array();
 	JSON_Array* new_array = json_value_get_array(new_value);
 
-	for (uint i = 0; i < graph->nodes.size(); ++i)
+	if (uid != 0)
 	{
-		JSON_Value* node_value = json_value_init_object();
-		JSON_Object* node_obj = json_value_get_object(node_value);
+		ResourceScript* resource = (ResourceScript*)App->resource_manager->Get(uid);
 
-		
-		graph->nodes[i]->SetNodeReferencesInJSON(node_obj);
+		for (uint i = 0; i < resource->graph->nodes.size(); ++i)
+		{
+			JSON_Value* node_value = json_value_init_object();
+			JSON_Object* node_obj = json_value_get_object(node_value);
 
-		json_array_append_value(new_array, node_value);
+
+			resource->graph->nodes[i]->SetNodeReferencesInJSON(node_obj);
+
+			json_array_append_value(new_array, node_value);
+		}
+
+		json_object_set_value(obj, "References", new_value);
 	}
-
-	json_object_set_value(obj,"References", new_value);
 }
 

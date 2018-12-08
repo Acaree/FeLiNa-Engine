@@ -2,7 +2,6 @@
 #define _COMPONENT_SCRIPT_
 
 #include "Globals.h"
-#include "NodeGraph.h"
 #include "Component.h"
 
 class GameObject;
@@ -21,7 +20,6 @@ public:
 private:
 
 	uint uid = 0; 
-	NodeGraph* graph = nullptr;
 	bool open_graph = false;
 	
 
