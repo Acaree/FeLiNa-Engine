@@ -1,6 +1,7 @@
 #ifndef _NODE_GRAPH_
 #define _NODE_GRAPH_
 
+#include "Application.h"
 #include "Globals.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_internal.h"
@@ -63,6 +64,7 @@ public:
 
 	virtual bool Update();
 	virtual void DrawNode();
+	virtual void SetNodeReferencesInJSON(JSON_Object* obj);
 
 };
 

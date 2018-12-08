@@ -1,3 +1,4 @@
+#include "Application.h"
 #include "NodeGraph.h"
 #include "NodeInputKeyboard.h"
 #include "NodeTranslateGameObject.h"
@@ -440,6 +441,10 @@ void NodeGraph::UpdateNodePointers() {
 		nodes[links[i].output_index]->outputs_vec.push_back(nodes[links[i].input_index]);
 
 	}
+
+}
+
+void Node::SetNodeReferencesInJSON(JSON_Object* obj) {
 
 }
 

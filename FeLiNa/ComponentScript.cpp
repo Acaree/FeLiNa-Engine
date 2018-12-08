@@ -89,6 +89,22 @@ void ComponentScript::OnSave(JSON_Object* obj)
 {
 	json_object_set_number(obj, "type", type);
 	json_object_set_number(obj, "UID", uid);
+
+	JSON_Value* new_value = json_value_init_array();
+	JSON_Array* new_array = json_value_get_array(new_value);
+
+	for (uint i = 0; i < graph->nodes.size(); ++i)
+	{
+		JSON_Value* node_value = json_value_init_object();
+		JSON_Object* node_obj = json_value_get_object(node_value);
+
+		
+		graph->nodes[i]->SetNodeReferencesInJSON(node_obj);
+
+		json_array_append_value(new_array, node_value);
+	}
+
+	json_object_set_value(obj,"References", new_value);
 }
 
 void ComponentScript::SaveScript(Node* node) {

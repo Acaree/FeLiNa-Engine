@@ -11,6 +11,7 @@ public:
 	NodeInputKeyboard(int id,char key = '1');
 	bool Update();
 	void DrawNode();
+	void SetNodeReferencesInJSON(JSON_Object* obj);
 
 private:
 
