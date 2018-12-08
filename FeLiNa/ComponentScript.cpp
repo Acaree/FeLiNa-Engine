@@ -33,9 +33,10 @@ void ComponentScript::Update(float dt)
 
 		if (open_graph)
 		{
-			if (App->scene->GetSelectedGameObject() == parent)
-				resource->graph->DrawNodeGraph();
-			else
+
+			resource->graph->DrawNodeGraph();
+			
+			if(ImGui::IsMouseClicked(1) && !ImGui::IsMouseHoveringAnyWindow())
 				open_graph = false;
 		}
 	}

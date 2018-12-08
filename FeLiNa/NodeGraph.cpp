@@ -43,12 +43,6 @@ bool NodeGraph::Update()
 		}
 	}
 
-	if (need_save)
-	{
-		SaveGraph();
-		need_save = false;
-	}
-
 
 	return ret;
 }
@@ -157,7 +151,6 @@ void NodeGraph::LoadGraph(const char* path)
 						link = json_array_get_number(outputs_array, j);
 
 						nodes[i]->outputs_vec.push_back(nodes[link]);
-						links.push_back(NodeLink(i, 0, link, 0));
 
 					}
 
@@ -548,6 +541,13 @@ void NodeGraph::DrawNodeGraph()
 	//----------------------------------------------------------------------------------------------------------
 
 	ImGui::End();
+
+	if (need_save)
+	{
+		SaveGraph();
+		need_save = false;
+	}
+
 }
 
 Node* NodeGraph::CreateNodeByType(NodeSubType current_type)
