@@ -5,6 +5,15 @@
 #include "Application.h"
 #include "ModuleInput.h"
 
+
+#include "NodeGraph.h"
+#include "NodeInputKeyboard.h"
+#include "NodeTranslateGameObject.h"
+#include "NodeMouseMotion.h"
+#include "NodeRotateGameObject.h"
+#include "NodeInputMouse.h"
+#include "NodeInstatiateGameObject.h"
+
 ComponentScript::ComponentScript(GameObject* parent) : Component(parent)
 {
 	type = Component_Script;
@@ -36,9 +45,6 @@ void ComponentScript::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Script"))
 	{
-		if (graph == nullptr)
-		{
-			ImGui::Text("Don't have any Graph asociated");
 			ImGui::Button("Drag Script Here");
 
 			if (ImGui::BeginDragDropTarget())
@@ -47,6 +53,10 @@ void ComponentScript::DrawInspector()
 				{
 					std::string payload_n = (char*)payload->Data;
 					int position = payload_n.find(".json");
+
+					//payload_n.substr(payload_n.find_first_of(".") + 5, payload_n.size());
+
+					LoadGraph("Library/test.json");
 
 					if (position != std::string::npos)
 					{
@@ -58,9 +68,7 @@ void ComponentScript::DrawInspector()
 				ImGui::EndDragDropTarget();
 			}
 
-		}
-		else
-		{
+		
 			ImGui::Text(graph->name);
 
 			if (ImGui::Button("Open Graph"))
@@ -72,7 +80,6 @@ void ComponentScript::DrawInspector()
 				graph->DrawNodeGraph();
 
 
-		}
 		ImGui::TreePop();
 	}
 
@@ -143,4 +150,81 @@ void ComponentScript::SaveScript(Node* node) {
 	App->fs->SaveBufferData(buffer, name, size);
 	RELEASE_ARRAY(buffer);
 	json_value_free(new_value);
+}
+
+
+void ComponentScript::LoadGraph(char* path) {
+
+	JSON_Value* file_root = json_parse_file(path);
+
+	JSON_Array* nodes_array = json_value_get_array(file_root);
+
+	graph = new NodeGraph();
+
+	for (uint i = 0; i < json_array_get_count(nodes_array); ++i) {
+
+		JSON_Object* object = json_array_get_object(nodes_array, i);
+
+		uint subtype_node = json_object_get_number(object, "subtype");
+
+		Node* new_node = nullptr;
+
+		switch (subtype_node) {
+
+		case InputKeyboard: {
+
+			new_node = new NodeInputKeyboard(i);
+
+			break;
+		}
+
+		case InputMouse: {
+
+			new_node = new NodeInputMouse(i);
+
+			break;
+		}
+
+		case InstatiateGO: {
+
+			new_node = new NodeInstatiateGameObject(i);
+
+			break;
+		}
+
+		case MouseMotion: {
+
+			new_node = new NodeMouseMotion(i);
+
+			break;
+		}
+
+		case RotateGO: {
+
+			new_node = new NodeRotateGameObject(i);
+
+			break;
+		}
+
+		case TranslateGO: {
+
+			new_node = new NodeTranslateGameObject(i);
+
+			break;
+		}
+
+		}
+
+		new_node->id = json_object_get_number(object, "id");
+		new_node->position.x = json_object_get_number(object, "x");
+		new_node->position.y = json_object_get_number(object, "y");
+		new_node->size.x = json_object_get_number(object, "w");
+		new_node->size.y = json_object_get_number(object, "h");
+
+		graph->nodes.push_back(new_node);
+	}
+
+	json_value_free(file_root);
+
+
 }
