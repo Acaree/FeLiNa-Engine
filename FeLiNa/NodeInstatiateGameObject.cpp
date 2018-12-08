@@ -74,7 +74,11 @@ void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 	json_object_set_number(obj, "speedx", speed.x);
 	json_object_set_number(obj, "speedy", speed.y);
 	json_object_set_number(obj, "speedz", speed.z);
-	json_object_set_number(obj, "GO uid", go->uid);
+
+	if(go != nullptr)
+		json_object_set_number(obj, "GO uid", go->uid);
+	else
+		json_object_set_number(obj, "GO uid", 0);
 
 }
 
