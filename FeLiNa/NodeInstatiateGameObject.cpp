@@ -43,8 +43,11 @@ void NodeInstatiateGameObject::DrawNode()
 		ImGui::Text(go->GetName());
 
 
-	ImGui::Text("Instatiate pos:");
-	ImGui::InputFloat("###positioninstantiate", &new_pos[0]);
+	ImGui::InputFloat3("Instance pos", &new_pos[0], 2);
+
+	
+	ImGui::InputFloat3("Speed", &speed[0], 2);
+	
 	
 
 	ImGui::Text("GameObject:");
@@ -68,6 +71,9 @@ void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 	json_object_set_number(obj, "posx", new_pos.x);
 	json_object_set_number(obj, "posy", new_pos.y);
 	json_object_set_number(obj, "posz", new_pos.z);
+	json_object_set_number(obj, "speedx", speed.x);
+	json_object_set_number(obj, "speedy", speed.y);
+	json_object_set_number(obj, "speedz", speed.z);
 	json_object_set_number(obj, "GO uid", go->uid);
 
 }
@@ -77,6 +83,9 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	new_pos.x = json_object_get_number(obj, "posx");
 	new_pos.y = json_object_get_number(obj, "posy");
 	new_pos.z = json_object_get_number(obj, "posz");
+	speed.x = json_object_get_number(obj, "speedx");
+	speed.x = json_object_get_number(obj, "speedy");
+	speed.x = json_object_get_number(obj, "speedz");
 
 	int go_uid = json_object_get_number(obj, "GO uid");
 

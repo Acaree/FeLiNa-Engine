@@ -16,10 +16,12 @@ public:
 	void SetNodeReferencesInJSON(JSON_Object* obj);
 	void GetNodeReferencesInJSON(JSON_Object* obj);
 
+
 private:
 
 	GameObject* go = nullptr;
 	math::float3 new_pos = math::float3::zero;
+	math::float3 speed = math::float3::zero;
 };
 
 
