@@ -258,5 +258,7 @@ void ComponentScript::LoadGraph(char* path) {
 
 	json_value_free(file_root);
 
+	graph->UpdateNodePointers();
+
 
 }

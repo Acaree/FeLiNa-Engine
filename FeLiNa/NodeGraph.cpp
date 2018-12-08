@@ -430,6 +430,19 @@ void NodeGraph::SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 
 	}
 }
 
+void NodeGraph::UpdateNodePointers() {
+
+	for (int i = 0; i < links.size(); i++) {
+
+		//not 100% sure this works well
+
+		nodes[links[i].input_index]->inputs_vec.push_back(nodes[links[i].output_index]);
+		nodes[links[i].output_index]->outputs_vec.push_back(nodes[links[i].input_index]);
+
+	}
+
+}
+
 void Node::DrawNode()
 {
 
@@ -439,3 +452,4 @@ bool Node::Update()
 {
 	return returned_result;
 }
+
