@@ -4,7 +4,7 @@
 #include "Application.h"
 #include "SceneSerialization.h"
 #include "ModuleScene.h"
-NodeInstatiateGameObject::NodeInstatiateGameObject(int id) : Node(id, "Game object to translate:", { 100,100 }, 1, 1, NodeType::FunctionType)
+NodeInstatiateGameObject::NodeInstatiateGameObject(int id) : Node(id, "Game object to instantiate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
 	subtype = NodeSubType::InstatiateGO;
 }
@@ -44,7 +44,8 @@ void NodeInstatiateGameObject::DrawNode()
 
 
 	ImGui::Text("Instatiate pos:");
-	ImGui::SameLine();
+	ImGui::InputFloat("###positioninstantiate", &new_pos[0]);
+	
 
 	ImGui::Text("GameObject:");
 	ImGui::Button("Drag Game Object Here");

@@ -27,13 +27,13 @@ enum NodeType
 
 enum NodeSubType
 {
-	DefaultSubType = 0,
-	InputKeyboard,
+	InputKeyboard = 1,
+	MouseMotion,
+	TranslateGO,
+	RotateGO,
 	InputMouse,
 	InstatiateGO,
-	MouseMotion,
-	RotateGO,
-	TranslateGO,
+	DefaultSubType
 };
 
 
@@ -91,7 +91,7 @@ public:
 	void UpdateNodePointers();
 	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
 
-	Node* CreateNodeByType(NodeType type);
+	Node* CreateNodeByType(NodeSubType type);
 
 	void SaveGraph();
 	void LoadGraph(const char* path);

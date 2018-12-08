@@ -123,7 +123,7 @@ void NodeGraph::LoadGraph(const char* path)
 					JSON_Object* node_object = json_object_get_object(graph_object, tmp.c_str());
 
 					uint subtype = json_object_get_number(node_object,"Subtype");
-					Node* node = CreateNodeByType((NodeType)subtype);
+					Node* node = CreateNodeByType((NodeSubType)subtype);
 
 					ImVec2 position = { (float)json_object_get_number(node_object, "Px"), (float)json_object_get_number(node_object, "Py") };
 					node->position = position;
@@ -147,7 +147,7 @@ void NodeGraph::LoadGraph(const char* path)
 						link = json_array_get_number(inputs_array,j);
 
 						nodes[i]->inputs_vec.push_back(nodes[link]);
-						links.push_back(NodeLink(i,0,j,0));
+						links.push_back(NodeLink(i,0,link,0));
 
 					}
 
@@ -503,7 +503,7 @@ void NodeGraph::DrawNodeGraph()
 
 		if (ImGui::Combo("Select type of new node: ", &current_type, node_types, ((int)(sizeof(node_types) / sizeof(*node_types)))))
 		{
-			CreateNodeByType((NodeType)current_type);
+			CreateNodeByType((NodeSubType)current_type);
 		}
 		ImGui::EndPopup();
 	}
@@ -530,7 +530,7 @@ void NodeGraph::DrawNodeGraph()
 	ImGui::End();
 }
 
-Node* NodeGraph::CreateNodeByType(NodeType current_type)
+Node* NodeGraph::CreateNodeByType(NodeSubType current_type)
 {
 	Node* node = nullptr;
 
