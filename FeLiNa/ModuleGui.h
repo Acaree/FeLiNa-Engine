@@ -7,6 +7,7 @@
 class ComponentTransform;
 class Resource;
 enum FILE_TYPE;
+class NodeGraph;
 
 class ModuleGui : public Module
 {
@@ -49,6 +50,8 @@ private:
 
 	std::string file_to_rename;
 	std::string file_dragging;
+
+	uint uid_selected_graph = 0;
 
 public:
 

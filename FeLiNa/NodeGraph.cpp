@@ -189,9 +189,7 @@ void NodeGraph::LoadReferences(JSON_Object* obj)
 		uint id = json_object_get_number(new_obj, "id");
 
 		nodes[id]->GetNodeReferencesInJSON(new_obj);
-
 	}
-
 }
 
 void NodeGraph::DrawNodeGraph()

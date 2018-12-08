@@ -16,9 +16,11 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "Resource.h"
+#include "ResourceScript.h"
 #include "ImGuizmo/ImGuizmo.h"
 #include "ModuleResourceManager.h"
 #include "ComponentCamera.h"
+#include "NodeGraph.h"
 #include "mmgr/mmgr.h"
 #endif
 
@@ -154,6 +156,20 @@ update_status ModuleGui::Update(float dt)
 		App->scene->ShowInspector();
 #endif		
 
+	if (uid_selected_graph != 0)
+	{
+		ResourceScript* res = (ResourceScript*)App->resource_manager->Get(uid_selected_graph);
+
+		if (ImGui::IsItemClicked(0) && !ImGui::IsMouseHoveringAnyWindow())
+		{
+			if (res->loaded == 1)
+				res->EraseToMemory();
+
+			uid_selected_graph = 0;
+		}
+		else
+			res->graph->DrawNodeGraph();
+	}
 	
 
 	return update_return;
@@ -622,14 +638,34 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 					if (ImGui::IsMouseDoubleClicked(0)) {
 						std::string json_path = file_focus;
+
 						int position = json_path.find(".json");
 						if (position == std::string::npos) {
-							json_path.erase(json_path.find_last_of("."), json_path.size());
 
-							App->serialization_scene->LoadScene((char*)json_path.c_str());
+							if (json_path.find(EXTENSION_SCRIPT) != std::string::npos)
+							{
+								json_path.erase(0, json_path.find_last_of("/")+1);
+								uid_selected_graph = App->resource_manager->Find(json_path.c_str());
+								if (uid_selected_graph != 0)
+								{
+									Resource* resource = App->resource_manager->Get(uid_selected_graph);
 
+									if (resource->loaded == 0)
+										resource->LoadToMemory();
+
+								}
+							}
+							else
+							{
+								json_path.erase(json_path.find_last_of("."), json_path.size());
+
+								App->serialization_scene->LoadScene((char*)json_path.c_str());
+							}
+							
 							json_path.clear();
 						}
+						
+						
 					}
 					else {
 

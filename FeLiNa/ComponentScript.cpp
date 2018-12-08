@@ -6,6 +6,8 @@
 #include "ModuleInput.h"
 #include "Resource.h"
 #include "ModuleResourceManager.h"
+#include "Application.h"
+#include "ModuleScene.h"
 #include "ResourceScript.h"
 
 
@@ -30,7 +32,10 @@ void ComponentScript::Update(float dt)
 
 		if (open_graph)
 		{
-			resource->graph->DrawNodeGraph();
+			if (App->scene->GetSelectedGameObject() == parent)
+				resource->graph->DrawNodeGraph();
+			else
+				open_graph = false;
 		}
 	}
 
