@@ -91,6 +91,7 @@ public:
 	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
 
 	void SaveGraph();
+	void LoadGraph();
 
 public:
 
@@ -107,7 +108,7 @@ public:
 	
 	//TO Revision
 	char name[DEFAULT_BUF_SIZE] = "No Name";
-
+	bool need_save = false;
 };
 
 

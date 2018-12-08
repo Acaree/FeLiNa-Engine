@@ -351,6 +351,10 @@ FILE_TYPE ModuleFileSystem::FindTypeFile(const char* file)
 	{
 		file_type = FILE_TYPE::MATERIAL_FILE;
 	}
+	else if (strcmp(file_extension.c_str(), EXTENSION_SCRIPT) == 0)
+	{
+		file_type = FILE_TYPE::SCRIPT_FILE;
+	}
 	
 	return file_type;
 }
@@ -373,6 +377,7 @@ FILE_TYPE ModuleFileSystem::FindOwnTypeFile(const char* file)
 	{
 		file_type = FILE_TYPE::MATERIAL_FILE;
 	}
+
 
 	return file_type;
 }
@@ -581,4 +586,36 @@ void ModuleFileSystem::FileDelete(const char* path)
 	}
 	else
 		LOG("ERROR: FILE NOT DELETED");
+}
+
+uint ModuleFileSystem::GetUIDFromScript(const char* name)
+{
+	uint ret = 0;
+
+	if (name != nullptr)
+	{
+		JSON_Value* root = nullptr;
+		root = json_parse_file(name);
+
+		if (root != nullptr)
+		{
+			JSON_Object* data = json_value_get_object(root);
+
+			if (data != nullptr)
+			{
+				JSON_Object* graph_object = json_object_get_object(data, "GraphNode");
+
+				if (graph_object != nullptr)
+				{
+					ret = json_object_get_number(graph_object, "UID");
+				}
+
+			}
+
+			json_value_free(root);
+		}
+
+	}
+
+	return ret;
 }

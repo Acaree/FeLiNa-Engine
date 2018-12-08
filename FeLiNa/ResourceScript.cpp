@@ -13,11 +13,12 @@ ResourceScript::~ResourceScript()
 
 bool ResourceScript::LoadInMemory()
 {
-	graph = new NodeGraph();
+	graph = new NodeGraph(uid);
+	
 	return true;
 }
 
-bool ResourceScript::EraseInMemmory()
+bool ResourceScript::EraseInMemory()
 {
 	RELEASE(graph);
 	return true;

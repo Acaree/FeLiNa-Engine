@@ -4,7 +4,7 @@
 #include "Resource.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
-
+#include "ResourceScript.h"
 #include "Importer.h"
 #include "MeshImporter.h"
 #include "MaterialImporter.h"
@@ -118,6 +118,11 @@ uint ModuleResourceManager::ImportFile(const char* assets_file, const char* meta
 				is_imported= App->importer_material->Import(assets_file, output_file,(MaterialSettings*)settings);
 				resource_type = RESOURCE_TYPE::RESOURCE_MATERIAL;
 				break;
+
+			case SCRIPT_FILE:
+				is_imported = true;
+				resource_type = RESOURCE_TYPE::RESOURCE_SCRIPT;
+				break;
 			}
 		}
 
@@ -193,6 +198,29 @@ uint ModuleResourceManager::ImportFile(const char* assets_file, const char* meta
 				
 				break;
 			}
+			case SCRIPT_FILE:
+			{
+				//TO ASK RIC
+				uint uid = App->fs->GetUIDFromScript(assets_file);
+
+				Resource* resource = Get(uid);
+				if (resource == nullptr)
+				{
+					std::string tmp_file = assets_file;
+					tmp_file.erase(0, tmp_file.find_last_of("/") + 1);
+					resource = CreateNewResource(resource_type, uid);
+					resource->file = tmp_file;
+					resource->exported_file = tmp_file;
+
+					ret = resource->uid;
+				}
+				else
+				{
+					ret = uid;
+				}
+
+				break;
+			}
 
 			}
 		}
@@ -236,10 +264,16 @@ void ModuleResourceManager::RecursiveResourceFiles(const char* dir, std::string 
 		else
 		{
 			std::string extension = *file;
-			extension.erase(0, extension.find_last_of(".")+1);
+			extension.erase(0, extension.find_last_of("."));
 			//Deprecate .meta and .json
-			if (strcmp(extension.c_str(), "meta") == 0 || strcmp(extension.c_str(), "json") == 0)
+			if (strcmp(extension.c_str(), ".meta") == 0 || strcmp(extension.c_str(), ".json") == 0)
 				continue;
+
+			/*if (strcmp(extension.c_str(), EXTENSION_SCRIPT) == 0)
+			{
+				
+				continue;
+			}*/
 
 			std::string new_file = path;
 			std::string meta_file = path;
@@ -369,6 +403,9 @@ Resource* ModuleResourceManager::CreateNewResource(RESOURCE_TYPE type, uint last
 			break;
 		case RESOURCE_MATERIAL:
 			resource = (Resource*) new ResourceMaterial(uid, RESOURCE_MATERIAL);
+			break;
+		case RESOURCE_SCRIPT:
+			resource = (Resource*) new ResourceScript(uid, RESOURCE_SCRIPT);
 			break;
 		default:
 			break;

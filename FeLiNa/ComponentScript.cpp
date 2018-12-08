@@ -4,7 +4,8 @@
 #include "ModuleFileSystem.h"
 #include "Application.h"
 #include "ModuleInput.h"
-
+#include "Resource.h"
+#include "ModuleResourceManager.h"
 
 #include "NodeGraph.h"
 #include "NodeInputKeyboard.h"
@@ -31,13 +32,9 @@ void ComponentScript::Update(float dt)
 	if (graph != nullptr)
 	{
 		graph->Update();
+		
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
-
-		graph->SaveGraph();
-
-	}
 }
 
 
@@ -52,15 +49,18 @@ void ComponentScript::DrawInspector()
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
 				{
 					std::string payload_n = (char*)payload->Data;
-					int position = payload_n.find(".json");
-
-					//payload_n.substr(payload_n.find_first_of(".") + 5, payload_n.size());
-
-					LoadGraph("Library/test.json");
+					int position = payload_n.find(EXTENSION_SCRIPT);
 
 					if (position != std::string::npos)
 					{
-						//TODO the super resource!
+						payload_n.erase(payload_n.find(EXTENSION_SCRIPT)+ strlen(EXTENSION_SCRIPT), payload_n.size());
+						uid = App->resource_manager->Find(payload_n.c_str());
+
+						if (uid != 0)
+						{
+							Resource* resource = App->resource_manager->Get(uid);
+							resource->LoadToMemory();
+						}
 					}
 					
 				}

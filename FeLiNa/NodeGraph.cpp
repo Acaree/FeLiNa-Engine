@@ -40,6 +40,12 @@ bool NodeGraph::Update()
 		}
 	}
 
+	if (need_save)
+	{
+		SaveGraph();
+		need_save = false;
+	}
+
 
 	return ret;
 }
@@ -87,6 +93,11 @@ void NodeGraph::SaveGraph()
 
 }
 
+void NodeGraph::LoadGraph()
+{
+
+}
+
 void NodeGraph::DrawNodeGraph()
 {
 	ImGui::SetNextWindowSize(ImVec2(700, 600), ImGuiSetCond_FirstUseEver);
@@ -130,7 +141,14 @@ void NodeGraph::DrawNodeGraph()
 	ImGui::SameLine();
 	ImGui::BeginGroup();
 
-	ImGui::Text("Canvas");
+	ImGui::Text("Canvas:");
+	ImGui::SameLine();
+
+	if (ImGui::Button("Compile"))
+	{
+		need_save = true;
+	}
+
 	ImGui::SameLine(ImGui::GetWindowWidth() - 220);
 	ImGui::Checkbox("Show grid", &show_grid);
 	ImGui::InputText("Graph Name", name, DEFAULT_BUF_SIZE);
@@ -529,7 +547,5 @@ void Node::SaveNodeInformation(JSON_Object* obj)
 	}
 
 	json_object_set_value(obj, "Outputs", arr_outputs);
-
-
 
 }

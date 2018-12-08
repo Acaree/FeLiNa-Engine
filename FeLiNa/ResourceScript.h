@@ -1,7 +1,7 @@
 #ifndef _RESOURCE_SCRIPT_
 #define _RESOURCE_SCRIPT_
 
-
+#include "Globals.h"
 #include "Resource.h"
 #include "NodeGraph.h"
 
@@ -13,7 +13,7 @@ public:
 	~ResourceScript();
 
 	bool LoadInMemory();
-	bool EraseInMemmory();
+	bool EraseInMemory();
 
 public:
 	NodeGraph* graph = nullptr;

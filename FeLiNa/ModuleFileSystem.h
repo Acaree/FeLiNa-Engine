@@ -8,6 +8,7 @@ enum FILE_TYPE
 {
 	MESH_FILE,
 	MATERIAL_FILE,
+	SCRIPT_FILE,
 	UKNOWN_FILE
 };
 
@@ -51,6 +52,8 @@ public:
 
 	void FileDelete(const char* path);
 	void CreateEmptyFileByName(const char* name);
+
+	uint GetUIDFromScript(const char* name);
 
 private:
 	std::list<std::string> assets_files;

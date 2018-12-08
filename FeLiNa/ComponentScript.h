@@ -20,6 +20,7 @@ public:
 
 private:
 
+	uint uid = 0; 
 	NodeGraph* graph = nullptr;
 	bool open_graph = false;
 	void LoadGraph(char* path);
