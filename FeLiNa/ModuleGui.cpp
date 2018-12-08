@@ -160,10 +160,10 @@ update_status ModuleGui::Update(float dt)
 	{
 		ResourceScript* res = (ResourceScript*)App->resource_manager->Get(uid_selected_graph);
 
-		if (ImGui::IsItemClicked(0) && !ImGui::IsMouseHoveringAnyWindow())
+		if (ImGui::IsMouseClicked(1) && !ImGui::IsMouseHoveringAnyWindow())
 		{
-			if (res->loaded == 1)
-				res->EraseToMemory();
+			
+			res->EraseToMemory();
 
 			uid_selected_graph = 0;
 		}
@@ -646,12 +646,13 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 							{
 								json_path.erase(0, json_path.find_last_of("/")+1);
 								uid_selected_graph = App->resource_manager->Find(json_path.c_str());
+
 								if (uid_selected_graph != 0)
 								{
 									Resource* resource = App->resource_manager->Get(uid_selected_graph);
 
-									if (resource->loaded == 0)
-										resource->LoadToMemory();
+									
+									resource->LoadToMemory();
 
 								}
 							}

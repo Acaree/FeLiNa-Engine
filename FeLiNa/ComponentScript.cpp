@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "ModuleResourceManager.h"
 #include "Application.h"
+#include "ModuleGui.h"
 #include "ModuleScene.h"
 #include "ResourceScript.h"
 
@@ -46,31 +47,32 @@ void ComponentScript::DrawInspector()
 {
 	if (ImGui::TreeNodeEx("Script"))
 	{
-			ImGui::Button("Drag Script Here");
 
-			if (ImGui::BeginDragDropTarget())
+		ImGui::Button("Drag Script Here");
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
 			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
+				std::string payload_n = (char*)payload->Data;
+				int position = payload_n.find(EXTENSION_SCRIPT);
+
+				if (position != std::string::npos)
 				{
-					std::string payload_n = (char*)payload->Data;
-					int position = payload_n.find(EXTENSION_SCRIPT);
+					payload_n.erase(payload_n.find(EXTENSION_SCRIPT) + strlen(EXTENSION_SCRIPT), payload_n.size());
+					uid = App->resource_manager->Find(payload_n.c_str());
 
-					if (position != std::string::npos)
+					if (uid != 0)
 					{
-						payload_n.erase(payload_n.find(EXTENSION_SCRIPT)+ strlen(EXTENSION_SCRIPT), payload_n.size());
-						uid = App->resource_manager->Find(payload_n.c_str());
-
-						if (uid != 0)
-						{
-							Resource* resource = App->resource_manager->Get(uid);
-							resource->LoadToMemory();
-						}
+						Resource* resource = App->resource_manager->Get(uid);
+						resource->LoadToMemory();
 					}
-					
 				}
 
-				ImGui::EndDragDropTarget();
 			}
+
+			ImGui::EndDragDropTarget();
+		}
 
 		if(uid == 0)
 			ImGui::Text("Not script asociated");
@@ -78,10 +80,23 @@ void ComponentScript::DrawInspector()
 		{
 			Resource* resource = App->resource_manager->Get(uid);
 			ImGui::Text(resource->exported_file.c_str());
+			ImGui::Text("Reference counting %i", resource->loaded);
 		}
 
 		if (ImGui::Button("Open Graph"))
 		{
+			uint selected_uid = App->gui->uid_selected_graph;
+			
+			if (selected_uid != 0)
+			{
+				Resource* res = App->resource_manager->Get(selected_uid);
+
+				res->EraseToMemory();
+
+				App->gui->uid_selected_graph = 0;
+			}
+			
+
 			if(uid != 0)
 				open_graph = true;
 		}

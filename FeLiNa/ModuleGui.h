@@ -47,11 +47,8 @@ private:
 	bool want_to_rename = false;
 	bool creating_folder = false;
 
-
 	std::string file_to_rename;
 	std::string file_dragging;
-
-	uint uid_selected_graph = 0;
 
 public:
 
@@ -68,6 +65,8 @@ public:
 	std::string file_focus;
 	std::string extension;
 	FILE_TYPE type;
+
+	uint uid_selected_graph = 0;
 };
 #endif
 
