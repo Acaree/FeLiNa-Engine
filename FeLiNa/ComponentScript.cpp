@@ -31,7 +31,7 @@ void ComponentScript::Update(float dt)
 
 		resource->graph->Update();
 
-		if (open_graph)
+		if (open_graph && App->gui->uid_selected_graph == 0)
 		{
 
 			resource->graph->DrawNodeGraph();
