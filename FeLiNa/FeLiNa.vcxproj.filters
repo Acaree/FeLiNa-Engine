@@ -247,6 +247,9 @@
     <ClCompile Include="NodeInstatiateGameObject.cpp">
       <Filter>Modules\VisualScripting</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceScript.cpp">
+      <Filter>Modules\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -614,6 +617,9 @@
     </ClInclude>
     <ClInclude Include="NodeInstatiateGameObject.h">
       <Filter>Modules\VisualScripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceScript.h">
+      <Filter>Modules\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

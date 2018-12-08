@@ -201,6 +201,7 @@
     <ClInclude Include="PhysFS\physfs.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="SceneSerialization.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
@@ -287,6 +288,7 @@
     <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="ResourceScript.cpp" />
     <ClCompile Include="SceneSerialization.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>

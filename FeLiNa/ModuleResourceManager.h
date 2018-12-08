@@ -50,14 +50,19 @@ inline void ModuleResourceManager::SetResourceData(DATA* data, Resource* resourc
 	{
 		ResourceMesh* resource_mesh = (ResourceMesh*)resource;
 		resource_mesh->SetMesh((Mesh*)data);
-	}
 		break;
+	}
 	case RESOURCE_MATERIAL:
 	{
 		ResourceMaterial* resource_material = (ResourceMaterial*)resource;
 		resource_material->SetTexture((Texture*)data);
-	}
 		break;
+	}
+	case RESOURCE_SCRIPT:
+	{
+		/*ResourceScript* resource_script = (ResourceScript*)resource;
+		resource_script;*/
+	}
 	case RESOURCE_DEFAULT:
 		LOG("Can't assign resource data")
 		break;
