@@ -139,7 +139,6 @@ void NodeGraph::LoadGraph(const char* path)
 					tmp = std::to_string(i);
 					JSON_Object* node_object = json_object_get_object(graph_object, tmp.c_str());
 
-					//We only load the inputs-outputs because we don't need output-inputs in node link.
 					JSON_Array* inputs_array = json_object_get_array(node_object, "Inputs");
 
 					for (uint j = 0; j < json_array_get_count(inputs_array); ++j)
@@ -150,6 +149,18 @@ void NodeGraph::LoadGraph(const char* path)
 						links.push_back(NodeLink(i,0,link,0));
 
 					}
+
+					JSON_Array* outputs_array = json_object_get_array(node_object, "Outputs");
+
+					for (uint j = 0; j < json_array_get_count(outputs_array); ++j)
+					{
+						link = json_array_get_number(outputs_array, j);
+
+						nodes[i]->outputs_vec.push_back(nodes[link]);
+						links.push_back(NodeLink(i, 0, link, 0));
+
+					}
+
 
 				}
 			}
@@ -386,9 +397,20 @@ void NodeGraph::DrawNodeGraph()
 					for (std::vector<NodeLink>::const_iterator it = links.begin(); it != links.end(); it++) {
 
 						if ((*it).output_index == node_ids && (*it).output_slots == slot_idx) {
+
+							
+							std::vector<Node*>::iterator n = nodes[(*it).input_index]->inputs_vec.begin();
+							nodes[(*it).input_index]->inputs_vec.erase(n + (*it).input_index-1);
+							nodes[(*it).input_index]->inputs_vec.shrink_to_fit();
+
+							//Not need erase in nodes outputs because don't save that
+							n = nodes[(*it).output_index]->outputs_vec.begin();
+							nodes[(*it).output_index]->outputs_vec.erase(n + (*it).output_index-1);
+
 							links.erase(it);
 							links.shrink_to_fit();
 							it = links.begin();
+							break;
 						}
 					}
 				}
@@ -633,13 +655,23 @@ void Node::SaveNodeInformation(JSON_Object* obj)
 	JSON_Value* arr_inputs = json_value_init_array();
 	JSON_Array* inputs_array = json_value_get_array(arr_inputs);
 
-	//Only need the inputs-outputs no outputs-inputs
 	for (uint i = 0; i < inputs_vec.size(); ++i)
 	{
 		json_array_append_number(inputs_array, inputs_vec[i]->id);
 	}
 
 	json_object_set_value(obj, "Inputs", arr_inputs);
+
+	JSON_Value* arr_outputs = json_value_init_array();
+	JSON_Array* outputs_array = json_value_get_array(arr_outputs);
+
+	for (uint i = 0; i < outputs_vec.size(); ++i)
+	{
+		json_array_append_number(outputs_array, outputs_vec[i]->id);
+	}
+
+	json_object_set_value(obj, "Outputs", arr_outputs);
+
 
 }
 
