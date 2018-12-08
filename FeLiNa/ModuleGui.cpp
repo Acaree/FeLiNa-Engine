@@ -127,6 +127,13 @@ update_status ModuleGui::Update(float dt)
 		CreateFolder();
 	}
 
+	if (create_graph_node)
+	{
+		ImGui::OpenPopup("Create Graph");
+		CreateGraphPopUp();
+	}
+	
+
 	if (open_configuration)
 		ShowConfigurationWindow();
 
@@ -658,6 +665,12 @@ void ModuleGui::ShowAssetsOptions(const char* file, const char* dir)
 	if (ImGui::BeginPopupContextItem(file))
 	{
 
+		if (ImGui::MenuItem("Create Graph Node", NULL, false, true))
+		{
+			create_graph_node = true;
+		}
+
+
 		if (ImGui::MenuItem("See Import Options", NULL, false, false))
 		{
 
@@ -858,6 +871,46 @@ void ModuleGui::Rename()
 		ImGui::EndPopup();
 	}
 
+
+}
+
+void ModuleGui::CreateGraphPopUp()
+{
+	if (ImGui::BeginPopupModal("Create Graph", false, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		static char new_save_name[DEFAULT_BUF_SIZE];
+
+		ImGui::Text("Graph Node name: ");
+
+		ImGui::Text("Assets/");
+		ImGui::SameLine();
+		ImGui::InputText("###graph_name", new_save_name, DEFAULT_BUF_SIZE);
+		ImGui::SameLine();
+		ImGui::Text(EXTENSION_SCRIPT);
+		if (ImGui::Button("Create", ImVec2(100, 0)))
+		{
+			std::string new_folder = "Assets/";
+
+			new_folder += new_save_name;
+			new_folder += EXTENSION_SCRIPT;
+
+			App->fs->CreateEmptyFileByName(new_folder.c_str());
+
+			create_graph_node = false;
+
+			
+		}
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			ImGui::CloseCurrentPopup();
+			create_graph_node = false;
+			
+		}
+
+		ImGui::EndPopup();
+	}
 
 }
 

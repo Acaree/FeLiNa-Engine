@@ -50,6 +50,7 @@ public:
 	void CheckAllAssetsFiles();
 
 	void FileDelete(const char* path);
+	void CreateEmptyFileByName(const char* name);
 
 private:
 	std::list<std::string> assets_files;

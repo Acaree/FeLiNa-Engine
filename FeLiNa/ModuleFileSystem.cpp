@@ -494,6 +494,14 @@ void ModuleFileSystem::CreateFolder(const char* new_folder) {
 
 }
 
+void ModuleFileSystem::CreateEmptyFileByName(const char* name)
+{
+	if (name != nullptr)
+	{
+		PHYSFS_openAppend(name);
+	}
+}
+
 void ModuleFileSystem::FreeEnumeratedFiles(const char** dir)
 {
 	PHYSFS_freeList(dir);

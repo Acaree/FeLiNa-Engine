@@ -38,6 +38,7 @@ private:
 	void Rename();
 	void CreateFolder();
 	void ShowAssetsOptions(const char* file, const char* dir);
+	void CreateGraphPopUp();
 
 private:
 
@@ -59,6 +60,7 @@ public:
 
 	bool serialization_save_scene = false;
 	bool serialization_load_scene = false;
+	bool create_graph_node = false;
 
 	std::string file_focus;
 	std::string extension;
