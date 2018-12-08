@@ -29,3 +29,10 @@ void NodeInputMouse::DrawNode()
 
 	
 }
+
+void NodeInputMouse::SetNodeReferencesInJSON(JSON_Object* obj) {
+
+	json_object_set_number(obj, "id", id);
+	json_object_set_number(obj, "key", key_code);
+
+}
