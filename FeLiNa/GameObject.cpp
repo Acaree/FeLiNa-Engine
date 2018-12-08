@@ -531,6 +531,26 @@ GameObject* GameObject::SearchParentForUID(const uint parent_uid)
 	}
 }
 
+GameObject* GameObject::SearchGOForUID(const uint uid)
+{
+	GameObject* go = nullptr;
+
+	if (this->uid = uid)
+		return this;
+	else
+	{
+		for (uint i = 0; i < childrens.size(); ++i)
+		{
+			go = childrens[i]->SearchGOForUID(uid);
+
+			if (go != nullptr)
+				break;
+		}
+	}
+
+	return go;
+}
+
 void GameObject::ShowGameObjectOptions()
 {
 

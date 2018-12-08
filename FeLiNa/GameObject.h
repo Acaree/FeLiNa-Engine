@@ -78,7 +78,7 @@ public:
 	uint uid = 0;
 
 	GameObject* SearchParentForUID(const uint parent_uid);
-	
+	GameObject* SearchGOForUID(const uint uid);
 	void SetInvalidateResource(const Resource* resource);
 
 public:

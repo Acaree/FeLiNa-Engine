@@ -1,6 +1,8 @@
 #include "NodeTranslateGameObject.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "Application.h"
+#include "ModuleScene.h"
 
 NodeTranslateGameObject::NodeTranslateGameObject(int id) : Node(id, "Game object to translate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
@@ -73,4 +75,16 @@ void NodeTranslateGameObject::SetNodeReferencesInJSON(JSON_Object* obj) {
 	json_object_set_number(obj, "transz", translation.z);
 	json_object_set_number(obj, "GO uid", go->uid);
 
+}
+
+void NodeTranslateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
+{
+	translation.x = json_object_get_number(obj, "transx");
+	translation.y = json_object_get_number(obj, "transy");
+	translation.z = json_object_get_number(obj, "transz");
+
+	int go_uid = json_object_get_number(obj, "GO uid");
+
+	if (go_uid != 0)
+		go = App->scene->root_object->SearchGOForUID(go_uid);
 }

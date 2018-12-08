@@ -128,7 +128,7 @@ bool SceneSerialization::LoadScene(char* file_name)
 				JSON_Object* object = json_array_get_object(go_array, i);
 
 				GameObject* go = new GameObject(nullptr);
-				go->OnLoad(object);
+				//go->OnLoad(object);
 
 				go_vector.push_back(go);
 
@@ -153,11 +153,16 @@ bool SceneSerialization::LoadScene(char* file_name)
 						go_vector[i]->SetParent(go_vector[j]);
 					}
 						
-
+					//go_vector[i]->OnLoad(object);
 
 				}
 			}
 
+			for (uint i = 0; i < go_vector.size(); ++i)
+			{
+				JSON_Object* object = json_array_get_object(go_array, i);
+				go_vector[i]->OnLoad(object);
+			}
 
 			CreateGameObjectHierarchy(go_vector);
 

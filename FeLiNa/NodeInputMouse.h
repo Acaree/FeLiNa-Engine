@@ -14,6 +14,7 @@ public:
 	bool Update();
 	void DrawNode();
 	void SetNodeReferencesInJSON(JSON_Object* obj);
+	void GetNodeReferencesInJSON(JSON_Object* obj);
 
 private:
 	int key_code = 0;

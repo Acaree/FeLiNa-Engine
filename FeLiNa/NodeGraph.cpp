@@ -160,6 +160,40 @@ void NodeGraph::LoadGraph(const char* path)
 
 }
 
+void NodeGraph::SaveReferences(JSON_Object* obj)
+{
+	JSON_Value* new_value = json_value_init_array();
+	JSON_Array* new_array = json_value_get_array(new_value);
+
+	for (uint i = 0; i < nodes.size();++i)
+	{
+		JSON_Value* node_value = json_value_init_object();
+		JSON_Object* node_obj = json_value_get_object(node_value);
+
+		nodes[i]->SetNodeReferencesInJSON(node_obj);
+
+		json_array_append_value(new_array, node_value);
+	}
+
+	json_object_set_value(obj, "References", new_value);
+}
+
+void NodeGraph::LoadReferences(JSON_Object* obj)
+{
+	JSON_Array* arr_references = json_object_get_array(obj, "References");
+	
+	for (uint i = 0; i < json_array_get_count(arr_references); ++i)
+	{
+		JSON_Object* new_obj = json_array_get_object(arr_references, i);
+
+		uint id = json_object_get_number(new_obj, "id");
+
+		nodes[id]->GetNodeReferencesInJSON(new_obj);
+
+	}
+
+}
+
 void NodeGraph::DrawNodeGraph()
 {
 	ImGui::SetNextWindowSize(ImVec2(700, 600), ImGuiSetCond_FirstUseEver);
@@ -608,5 +642,10 @@ void Node::SaveNodeInformation(JSON_Object* obj)
 	}
 
 	json_object_set_value(obj, "Inputs", arr_inputs);
+
+}
+
+void Node::GetNodeReferencesInJSON(JSON_Object* obj)
+{
 
 }

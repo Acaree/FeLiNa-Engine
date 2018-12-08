@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ComponentTransform.h"
+#include "ModuleScene.h"
 
 NodeRotateGameObject::NodeRotateGameObject(int id) : Node(id, "Game object to rotate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
@@ -64,4 +65,16 @@ void NodeRotateGameObject::SetNodeReferencesInJSON(JSON_Object* obj) {
 	json_object_set_number(obj, "rotz", axis.z);
 	json_object_set_number(obj, "GO uid", go->uid);
 
+}
+
+void NodeRotateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
+{
+	axis.x = json_object_get_number(obj, "rotx");
+	axis.y = json_object_get_number(obj, "roty");
+	axis.z = json_object_get_number(obj, "rotz");
+
+	int go_uid = json_object_get_number(obj, "GO uid");
+
+	if (go_uid != 0)
+		go = App->scene->root_object->SearchGOForUID(go_uid);
 }

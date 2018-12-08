@@ -16,6 +16,7 @@ public:
 	void Update(float dt);
 	void DrawInspector();
 	void OnSave(JSON_Object* obj);
+	void OnLoad(JSON_Object* obj);
 
 private:
 

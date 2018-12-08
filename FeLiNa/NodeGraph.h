@@ -67,6 +67,7 @@ public:
 
 	void SaveNodeInformation(JSON_Object* obj);
 	virtual void SetNodeReferencesInJSON(JSON_Object* obj);
+	virtual void GetNodeReferencesInJSON(JSON_Object* obj);
 
 };
 
@@ -95,6 +96,8 @@ public:
 	void SaveGraph();
 	void LoadGraph(const char* path);
 
+	void SaveReferences(JSON_Object* obj);
+	void LoadReferences(JSON_Object* obj);
 public:
 
 	uint uid = 0;

@@ -3,7 +3,7 @@
 #include "ComponentTransform.h"
 #include "Application.h"
 #include "SceneSerialization.h"
-
+#include "ModuleScene.h"
 NodeInstatiateGameObject::NodeInstatiateGameObject(int id) : Node(id, "Game object to translate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
 	subtype = NodeSubType::InstatiateGO;
@@ -61,12 +61,25 @@ void NodeInstatiateGameObject::DrawNode()
 
 }
 
-void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj) {
-
+void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
+{
 	json_object_set_number(obj, "id", id);
 	json_object_set_number(obj, "posx", new_pos.x);
 	json_object_set_number(obj, "posy", new_pos.y);
 	json_object_set_number(obj, "posz", new_pos.z);
 	json_object_set_number(obj, "GO uid", go->uid);
+
+}
+
+void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
+{
+	new_pos.x = json_object_get_number(obj, "posx");
+	new_pos.y = json_object_get_number(obj, "posy");
+	new_pos.z = json_object_get_number(obj, "posz");
+
+	int go_uid = json_object_get_number(obj, "GO uid");
+
+	if(go_uid != 0)
+		go = App->scene->root_object->SearchGOForUID(go_uid);
 
 }

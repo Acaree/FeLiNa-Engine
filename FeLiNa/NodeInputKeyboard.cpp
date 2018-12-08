@@ -35,9 +35,15 @@ void NodeInputKeyboard::DrawNode()
 
 }
 
-void NodeInputKeyboard::SetNodeReferencesInJSON(JSON_Object* obj) {
-
+void NodeInputKeyboard::SetNodeReferencesInJSON(JSON_Object* obj)
+{
 	json_object_set_number(obj, "id", id);
 	json_object_set_number(obj, "key", key_code);
+}
 
+void NodeInputKeyboard::GetNodeReferencesInJSON(JSON_Object* obj)
+{
+	key = json_object_get_number(obj, "key");
+
+	key_code = SDL_GetScancodeFromName(&key);
 }
