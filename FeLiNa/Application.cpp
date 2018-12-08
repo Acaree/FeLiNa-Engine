@@ -163,21 +163,12 @@ void Application::PrepareUpdate()
 	{
 	case ENGINE_STATE_EDITOR_MODE:
 
-		switch (game_states)
-		{
-		case ENGINE_STATE_PLAY:
-
+		if (game_states == ENGINE_STATE_PLAY && auto_save_done == false) {
+			
 			engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
-			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
+			scene->serialization_scene = new SceneSerialization();
 			scene->serialization_scene->save_name_scene = "auto";
 			scene->serialization_scene->SaveScene(App->scene->root_object);
-			break;
-		case ENGINE_STATE_PAUSE:
-			break;
-		case ENGINE_STATE_TICK:
-			break;
-		default:
-			break;
 		}
 
 		break;
@@ -185,35 +176,14 @@ void Application::PrepareUpdate()
 	case ENGINE_STATE_GAME_MODE:
 
 
-		switch (game_states)
-		{
-		case ENGINE_STATE_PLAY:
-
-			game_states = GAME_STATES::ENGINE_STATE_DEFAULT;
-
-			break;
-
-		case ENGINE_STATE_STOP:
+		if (game_states == ENGINE_STATE_STOP) {
 			engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 			camera->current_camera = camera->camera_editor;
 
 			scene->serialization_scene->save_name_scene = "auto";
 			scene->serialization_scene->ClearActualScene();
 			scene->serialization_scene->LoadScene(scene->serialization_scene->save_name_scene);
-			break;
-		case ENGINE_STATE_PAUSE:
-
-
-			break;
-		case ENGINE_STATE_TICK:
-			game_states = ENGINE_STATE_PAUSE;
-			break;
-		default:
-			break;
 		}
-
-		break;
-	default:
 		break;
 	}
 }

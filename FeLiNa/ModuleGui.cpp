@@ -482,10 +482,10 @@ void ModuleGui::ShowEditorMenu()
 	if (ImGui::Button("Play", { 50,30 })) {
 		App->time_management->PlayGameTime();
 		App->game_states = GAME_STATES::ENGINE_STATE_PLAY;
-		App->engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
 		App->serialization_scene->save_name_scene = "Autosave";
 		App->serialization_scene->SaveScene(App->scene->root_object);
 		App->camera->current_camera = App->scene->game_camera;
+		//serializate
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Pause", { 50,30 })) {

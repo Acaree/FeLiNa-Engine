@@ -85,6 +85,8 @@ private:
 	bool need_load = false;
 
 	bool pause_diagram = false;
+
+	bool auto_save_done = false;
 public:
 
 	Application();
