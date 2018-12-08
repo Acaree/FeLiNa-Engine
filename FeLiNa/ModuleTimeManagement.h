@@ -33,6 +33,8 @@ public:
 
 	bool tick_selected = false;
 
+	bool tick_done = true;
+
 	float time_multiplier = 1.0f;
 
 private:

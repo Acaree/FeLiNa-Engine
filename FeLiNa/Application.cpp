@@ -184,6 +184,7 @@ void Application::PrepareUpdate()
 			scene->serialization_scene->ClearActualScene();
 			scene->serialization_scene->LoadScene(scene->serialization_scene->save_name_scene);
 		}
+
 		break;
 	}
 }

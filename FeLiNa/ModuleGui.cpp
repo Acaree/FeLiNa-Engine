@@ -514,6 +514,7 @@ void ModuleGui::ShowEditorMenu()
 	ImGui::SameLine();
 	if (ImGui::Button("Tick", { 50,30 })) {
 		App->time_management->tick_selected = true;
+		App->time_management->tick_done = false;
 		App->time_management->PlayGameTime();
 		App->game_states = GAME_STATES::ENGINE_STATE_TICK;
 	}

@@ -44,10 +44,20 @@ void ModuleTimeManagement::FinishUpdate() {
 
 	if (game_clock_active) {
 		game_time += App->ms_timer.ReadMs() * time_multiplier;
-		if (tick_selected) {
+		
+		if (!tick_done && !tick_selected) {
+
 			game_clock_active = false;
+			tick_done = true;
+			App->game_states = GAME_STATES::ENGINE_STATE_PAUSE;
+
+		}
+		
+		if (tick_selected) {
 			tick_selected = false;
 		}
+
+		
 	}
 	
 }
