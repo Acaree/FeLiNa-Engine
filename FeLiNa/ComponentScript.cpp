@@ -240,6 +240,20 @@ void ComponentScript::LoadGraph(char* path) {
 
 			graph->links.push_back(*link);
 		}
+
+		for (uint i = 0; i < json_array_get_count(outputs); ++i)
+		{
+			JSON_Object* output_object = json_array_get_object(outputs, i);
+
+			NodeLink* link = new NodeLink(0, 0, 0, 0);
+
+			link->input_index = json_object_get_number(output_object, "output id");
+			link->input_slots = 0;
+			link->output_index = new_node->id;
+			link->output_slots = 0;
+
+			graph->links.push_back(*link);
+		}
 	}
 
 	json_value_free(file_root);
