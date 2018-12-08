@@ -14,6 +14,7 @@ class ComponentMaterial;
 class ComponentMesh;
 class ComponentCamera;
 class ComponentScript;
+class ComponentSpeed;
 
 class GameObject
 {
@@ -90,6 +91,7 @@ public:
 	ComponentMesh* mesh = nullptr;
 	ComponentCamera* camera = nullptr;
 	ComponentScript* script = nullptr;
+	ComponentSpeed* speed = nullptr;
 	bool to_delete = false;
 
 private:

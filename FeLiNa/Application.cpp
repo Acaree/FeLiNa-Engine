@@ -206,6 +206,7 @@ void Application::PrepareUpdate()
 
 			break;
 		case ENGINE_STATE_TICK:
+			game_states = ENGINE_STATE_PAUSE;
 			break;
 		default:
 			break;

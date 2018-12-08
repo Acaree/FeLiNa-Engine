@@ -14,6 +14,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentScript.h"
 #include "ComponentCamera.h"
+#include "ComponentSpeed.h"
 #include "mmgr/mmgr.h"
 
 GameObject::GameObject(GameObject* parent)
@@ -52,6 +53,8 @@ GameObject::~GameObject()
 		RELEASE(material);
 	if (camera != nullptr)
 		RELEASE(camera);
+	if (speed != nullptr)
+		RELEASE(speed);
 
 	parent = nullptr;
 }
@@ -84,6 +87,8 @@ bool GameObject::CleanUp()
 		RELEASE(material);
 	if (camera != nullptr)
 		RELEASE(camera);
+	if (speed != nullptr)
+		RELEASE(speed);
 
 	components.clear();
 
@@ -107,6 +112,8 @@ void GameObject::CleanData()
 		RELEASE(material);
 	if (camera != nullptr)
 		RELEASE(camera);
+	if (speed != nullptr)
+		RELEASE(speed);
 
 	components.clear();
 
@@ -115,7 +122,6 @@ void GameObject::CleanData()
 
 void GameObject::SetName(const char* name)
 {
-	//this->name = new char[100];
 	strcpy_s(this->name, 100, name);
 }
 
@@ -193,6 +199,10 @@ Component* GameObject::AddComponent(const ComponentType type)
 	case Component_Script:
 		script = new ComponentScript(this);
 		component = script;
+		break;
+	case Component_Speed:
+		speed = new ComponentSpeed(this);
+		component = speed;
 		break;
 
 	case Component_Default:

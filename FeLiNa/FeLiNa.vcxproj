@@ -86,6 +86,7 @@
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentScript.h" />
+    <ClInclude Include="ComponentSpeed.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gif\gif.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentScript.cpp" />
+    <ClCompile Include="ComponentSpeed.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Globals.cpp" />

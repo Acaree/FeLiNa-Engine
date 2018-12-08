@@ -250,6 +250,9 @@
     <ClCompile Include="ResourceScript.cpp">
       <Filter>Modules\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentSpeed.cpp">
+      <Filter>Modules\GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -620,6 +623,9 @@
     </ClInclude>
     <ClInclude Include="ResourceScript.h">
       <Filter>Modules\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentSpeed.h">
+      <Filter>Modules\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
