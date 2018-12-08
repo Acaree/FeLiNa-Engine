@@ -110,6 +110,7 @@ void ComponentScript::SaveScript(Node* node) {
 		json_object_set_number(node_obj, "w", graph->nodes[i]->size.x);
 		json_object_set_number(node_obj, "h", graph->nodes[i]->size.y);
 
+
 		JSON_Value* inputs_value = json_value_init_array();
 		JSON_Array* inputs_array = json_value_get_array(inputs_value);
 		for (uint j = 0; j < graph->nodes[i]->inputs_vec.size(); j++) {
@@ -124,16 +125,16 @@ void ComponentScript::SaveScript(Node* node) {
 
 
 		JSON_Value* outputs_value = json_value_init_array();
-		JSON_Array* outputs_array = json_value_get_array(inputs_value);
+		JSON_Array* outputs_array = json_value_get_array(outputs_value);
 		for (uint j = 0; j < graph->nodes[i]->outputs_vec.size(); j++) {
 			JSON_Value* single_value = json_value_init_object();
 			JSON_Object* single_obj = json_value_get_object(single_value);
 			json_object_set_number(single_obj, "output id", graph->nodes[i]->outputs_vec[j]->id);
-			json_array_append_value(inputs_array, single_value);
+			json_array_append_value(outputs_array, single_value);
 
 		}
 
-		json_object_set_value(node_obj, "Outputs", inputs_value);
+		json_object_set_value(node_obj, "Outputs", outputs_value);
 
 		json_array_append_value(new_array, node_value);
 	}
@@ -222,6 +223,23 @@ void ComponentScript::LoadGraph(char* path) {
 		new_node->size.y = json_object_get_number(object, "h");
 
 		graph->nodes.push_back(new_node);
+
+		JSON_Array* inputs = json_object_get_array(object, "Inputs");
+		JSON_Array* outputs = json_object_get_array(object, "Outputs");
+
+		for (uint i = 0; i < json_array_get_count(inputs); ++i)
+		{
+			JSON_Object* input_object = json_array_get_object(inputs, i);
+
+			NodeLink* link = new NodeLink(0,0,0,0);
+
+			link->output_index = json_object_get_number(input_object, "input id");
+			link->input_slots = 0;
+			link->input_index = new_node->id;
+			link->output_slots = 0;
+
+			graph->links.push_back(*link);
+		}
 	}
 
 	json_value_free(file_root);
