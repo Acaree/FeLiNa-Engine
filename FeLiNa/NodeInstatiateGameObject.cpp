@@ -60,3 +60,13 @@ void NodeInstatiateGameObject::DrawNode()
 
 
 }
+
+void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj) {
+
+	json_object_set_number(obj, "id", id);
+	json_object_set_number(obj, "posx", new_pos.x);
+	json_object_set_number(obj, "posy", new_pos.y);
+	json_object_set_number(obj, "posz", new_pos.z);
+	json_object_set_number(obj, "GO uid", go->uid);
+
+}

@@ -13,6 +13,7 @@ public:
 	NodeInstatiateGameObject(int id);
 	bool Update();
 	void DrawNode();
+	void SetNodeReferencesInJSON(JSON_Object* obj);
 
 private:
 

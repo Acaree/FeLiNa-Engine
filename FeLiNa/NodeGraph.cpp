@@ -446,6 +446,8 @@ void NodeGraph::UpdateNodePointers() {
 
 void Node::SetNodeReferencesInJSON(JSON_Object* obj) {
 
+	json_object_set_number(obj, "id", id);
+	
 }
 
 void Node::DrawNode()

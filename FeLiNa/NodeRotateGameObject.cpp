@@ -55,3 +55,13 @@ void NodeRotateGameObject::DrawNode()
 
 
 }
+
+void NodeRotateGameObject::SetNodeReferencesInJSON(JSON_Object* obj) {
+
+	json_object_set_number(obj, "id", id);
+	json_object_set_number(obj, "rotx", axis.x);
+	json_object_set_number(obj, "roty", axis.y);
+	json_object_set_number(obj, "rotz", axis.z);
+	json_object_set_number(obj, "GO uid", go->uid);
+
+}
