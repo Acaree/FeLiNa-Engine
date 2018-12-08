@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "ModuleFileSystem.h"
 #include "NodeGraph.h"
 #include "NodeInputKeyboard.h"
 #include "NodeTranslateGameObject.h"
@@ -7,19 +8,15 @@
 #include "NodeInputMouse.h"
 #include "NodeInstatiateGameObject.h"
 
-void NodeGraph::AddTestNodes()
-{
-	//nodes.push_back(Node(0, "The teacher says: ", ImVec2(40, 50), 1, 1, NodeType::EventType));
-//	nodes.push_back(Node(1, "You are going to create a visual programming system", ImVec2(40, 150), 1, 1, NodeType::FunctionType));
-	//nodes.push_back(Node(2, "you only have 2 options:", ImVec2(270, 80), 2, 2));
-	//nodes.push_back(Node(3, "1.Cry so hard", ImVec2(290, 80), 1, 1));
-//	nodes.push_back(Node(4, "2.Cry so hard ", ImVec2(330, 80), 1, 1));
 
-//	links.push_back(NodeLink(0, 0, 1, 0));
-	//links.push_back(NodeLink(1, 0, 2, 1));
-//	links.push_back(NodeLink(2, 0, 3, 0));
-	//links.push_back(NodeLink(2, 1, 4, 0));
+NodeGraph::NodeGraph(uint uid)
+{
+	if (uid == 0)
+		this->uid = App->GenerateRandomNumber();
+	else
+		this->uid = uid;
 }
+
 
 bool NodeGraph::Update()
 {
@@ -47,6 +44,48 @@ bool NodeGraph::Update()
 	return ret;
 }
 
+
+void NodeGraph::SaveGraph()
+{
+	JSON_Value* root = json_value_init_object();
+	JSON_Object* root_object = json_value_get_object(root);
+
+	JSON_Value* new_value = json_value_init_object();
+	JSON_Object* new_object = json_value_get_object(new_value);
+	json_object_set_value(root_object, "GraphNode", new_value);
+
+	json_object_set_number(new_object, "UID", uid);
+	json_object_set_number(new_object, "Size", nodes.size());
+
+	JSON_Value* array_value = json_value_init_array();
+	JSON_Array* new_array = json_value_get_array(array_value);
+
+	for (uint i = 0; i < nodes.size(); ++i)
+	{
+		JSON_Value* node_value = json_value_init_object();
+		JSON_Object* node_obj = json_value_get_object(node_value);
+
+		json_object_set_value(new_object, std::to_string(nodes[i]->id).c_str() , node_value);
+
+		nodes[i]->SaveNodeInformation(node_obj);
+	}
+
+
+	uint size = json_serialization_size_pretty(root);
+	char* buffer = new char[size];
+	json_serialize_to_buffer_pretty(root, buffer, size);
+
+
+	std::string path = "Assets/";
+	path += name;
+	path += EXTENSION_SCRIPT;
+	App->fs->SaveBufferData(buffer, path.c_str(), size);
+
+	json_value_free(root);
+
+	RELEASE_ARRAY(buffer);
+
+}
 
 void NodeGraph::DrawNodeGraph()
 {
@@ -94,6 +133,8 @@ void NodeGraph::DrawNodeGraph()
 	ImGui::Text("Canvas");
 	ImGui::SameLine(ImGui::GetWindowWidth() - 220);
 	ImGui::Checkbox("Show grid", &show_grid);
+	ImGui::InputText("Graph Name", name, DEFAULT_BUF_SIZE);
+
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1, 1));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, IM_COL32(60, 60, 70, 200));
@@ -460,3 +501,35 @@ bool Node::Update()
 	return returned_result;
 }
 
+void Node::SaveNodeInformation(JSON_Object* obj)
+{
+	json_object_set_number(obj,"Type",type);
+	json_object_set_number(obj, "Subtype", subtype);
+
+	json_object_set_number(obj, "Px", position.x);
+	json_object_set_number(obj, "Py", position.y);
+
+	JSON_Value* arr_inputs = json_value_init_array();
+	JSON_Array* inputs_array = json_value_get_array(arr_inputs);
+
+	for (uint i = 0; i < inputs_vec.size(); ++i)
+	{
+		json_array_append_number(inputs_array, inputs_vec[i]->id);
+	}
+
+	json_object_set_value(obj, "Inputs", arr_inputs);
+
+
+	JSON_Value* arr_outputs = json_value_init_array();
+	JSON_Array* outputs_array = json_value_get_array(arr_outputs);
+
+	for (uint i = 0; i < outputs_vec.size(); ++i)
+	{
+		json_array_append_number(outputs_array, outputs_vec[i]->id);
+	}
+
+	json_object_set_value(obj, "Outputs", arr_outputs);
+
+
+
+}

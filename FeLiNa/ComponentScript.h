@@ -22,7 +22,6 @@ private:
 
 	NodeGraph* graph = nullptr;
 	bool open_graph = false;
-	void SaveScript(Node* node);
 	void LoadGraph(char* path);
 
 };

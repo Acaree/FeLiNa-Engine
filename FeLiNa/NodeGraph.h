@@ -64,6 +64,8 @@ public:
 
 	virtual bool Update();
 	virtual void DrawNode();
+
+	void SaveNodeInformation(JSON_Object* obj);
 	virtual void SetNodeReferencesInJSON(JSON_Object* obj);
 
 };
@@ -81,13 +83,19 @@ class NodeGraph
 {
 public:
 
-	void AddTestNodes();
+	NodeGraph(uint uid = 0);
+
 	bool Update();
 	void DrawNodeGraph();
 	void UpdateNodePointers();
 	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
 
+	void SaveGraph();
+
 public:
+
+	uint uid = 0;
+
 	std::vector<Node*> nodes;
 	std::vector<NodeLink> links;
 	//Node* last_input_node_clicked = nullptr;
