@@ -209,7 +209,7 @@ uint ModuleResourceManager::ImportFile(const char* assets_file, const char* meta
 					std::string tmp_file = assets_file;
 					tmp_file.erase(0, tmp_file.find_last_of("/") + 1);
 					resource = CreateNewResource(resource_type, uid);
-					resource->file = tmp_file;
+					resource->file = assets_file;
 					resource->exported_file = tmp_file;
 
 					ret = resource->uid;

@@ -83,15 +83,17 @@ class NodeGraph
 {
 public:
 
-	NodeGraph(uint uid = 0);
+	NodeGraph(uint uid = 0, const char* name = "No Name");
 
 	bool Update();
 	void DrawNodeGraph();
 	void UpdateNodePointers();
 	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
 
+	Node* CreateNodeByType(NodeType type);
+
 	void SaveGraph();
-	void LoadGraph();
+	void LoadGraph(const char* path);
 
 public:
 

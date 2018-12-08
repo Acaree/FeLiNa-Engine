@@ -9,8 +9,11 @@
 #include "NodeInstatiateGameObject.h"
 
 
-NodeGraph::NodeGraph(uint uid)
+NodeGraph::NodeGraph(uint uid, const char* name)
 {
+
+	strcpy(this->name, name);
+
 	if (uid == 0)
 		this->uid = App->GenerateRandomNumber();
 	else
@@ -93,8 +96,67 @@ void NodeGraph::SaveGraph()
 
 }
 
-void NodeGraph::LoadGraph()
+void NodeGraph::LoadGraph(const char* path)
 {
+	JSON_Value* root = nullptr;
+	root = json_parse_file(path);
+
+	if (root != nullptr)
+	{
+		JSON_Object* data = json_value_get_object(root);
+		
+		if (data != nullptr)
+		{
+			JSON_Object* graph_object = json_object_get_object(data, "GraphNode");
+
+			if (graph_object != nullptr)
+			{
+				uint size = json_object_get_number(graph_object, "Size");
+
+				std::string tmp;
+
+				//First create all nodes 
+				for (uint i = 0; i < size; ++i)
+				{
+					tmp = std::to_string(i);
+					
+					JSON_Object* node_object = json_object_get_object(graph_object, tmp.c_str());
+
+					uint subtype = json_object_get_number(node_object,"Subtype");
+					Node* node = CreateNodeByType((NodeType)subtype);
+
+					ImVec2 position = { (float)json_object_get_number(node_object, "Px"), (float)json_object_get_number(node_object, "Py") };
+					node->position = position;
+				}
+
+				//Now create the links 
+
+				int link = -1;
+
+
+				for (uint i = 0; i < size; ++i)
+				{
+					tmp = std::to_string(i);
+					JSON_Object* node_object = json_object_get_object(graph_object, tmp.c_str());
+
+					//We only load the inputs-outputs because we don't need output-inputs in node link.
+					JSON_Array* inputs_array = json_object_get_array(node_object, "Inputs");
+
+					for (uint j = 0; j < json_array_get_count(inputs_array); ++j)
+					{
+						link = json_array_get_number(inputs_array,j);
+
+						nodes[i]->inputs_vec.push_back(nodes[link]);
+						links.push_back(NodeLink(i,0,j,0));
+
+					}
+
+				}
+			}
+		}
+
+		json_value_free(root);
+	}
 
 }
 
@@ -407,34 +469,7 @@ void NodeGraph::DrawNodeGraph()
 
 		if (ImGui::Combo("Select type of new node: ", &current_type, node_types, ((int)(sizeof(node_types) / sizeof(*node_types)))))
 		{
-			//TO change this go in a function
-			if (current_type != 0)
-			{
-				switch (current_type)
-				{
-				case 1:
-					nodes.push_back(new NodeInputKeyboard(nodes.size()));
-					break;
-				case 2:
-					nodes.push_back(new NodeMouseMotion(nodes.size()));
-					break;
-				case 3:
-					nodes.push_back(new NodeTranslateGameObject(nodes.size()));
-					break;
-				case 4:
-					nodes.push_back(new NodeRotateGameObject(nodes.size()));
-					break;
-				case 5:
-					nodes.push_back(new NodeInputMouse(nodes.size()));
-					break;
-				case 6:
-					nodes.push_back(new NodeInstatiateGameObject(nodes.size()));
-					break;
-				}
-				
-
-			}
-
+			CreateNodeByType((NodeType)current_type);
 		}
 		ImGui::EndPopup();
 	}
@@ -459,6 +494,42 @@ void NodeGraph::DrawNodeGraph()
 	//----------------------------------------------------------------------------------------------------------
 
 	ImGui::End();
+}
+
+Node* NodeGraph::CreateNodeByType(NodeType current_type)
+{
+	Node* node = nullptr;
+
+	if (current_type != 0)
+	{
+		switch (current_type)
+		{
+		case 1:
+			node = (Node*)new NodeInputKeyboard(nodes.size());
+			break;
+		case 2:
+			node = (Node*)new NodeMouseMotion(nodes.size());
+			break;
+		case 3:
+			node = (Node*)new NodeTranslateGameObject(nodes.size());
+			break;
+		case 4:
+			node = (Node*)new NodeRotateGameObject(nodes.size());
+			break;
+		case 5:
+			node = (Node*)new NodeInputMouse(nodes.size());
+			break;
+		case 6:
+			node = (Node*)new NodeInstatiateGameObject(nodes.size());
+			break;
+		}
+
+		if (node != nullptr)
+			nodes.push_back(node);
+	}
+
+
+	return node;
 }
 
 void NodeGraph::SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max)
@@ -530,22 +601,12 @@ void Node::SaveNodeInformation(JSON_Object* obj)
 	JSON_Value* arr_inputs = json_value_init_array();
 	JSON_Array* inputs_array = json_value_get_array(arr_inputs);
 
+	//Only need the inputs-outputs no outputs-inputs
 	for (uint i = 0; i < inputs_vec.size(); ++i)
 	{
 		json_array_append_number(inputs_array, inputs_vec[i]->id);
 	}
 
 	json_object_set_value(obj, "Inputs", arr_inputs);
-
-
-	JSON_Value* arr_outputs = json_value_init_array();
-	JSON_Array* outputs_array = json_value_get_array(arr_outputs);
-
-	for (uint i = 0; i < outputs_vec.size(); ++i)
-	{
-		json_array_append_number(outputs_array, outputs_vec[i]->id);
-	}
-
-	json_object_set_value(obj, "Outputs", arr_outputs);
 
 }
