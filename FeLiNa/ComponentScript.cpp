@@ -19,7 +19,11 @@ ComponentScript::ComponentScript(GameObject* parent) : Component(parent)
 
 ComponentScript::~ComponentScript()
 {
-
+	if (uid != 0)
+	{
+		Resource* res = App->resource_manager->Get(uid);
+		res->EraseToMemory();
+	}
 }
 
 void ComponentScript::Update(float dt)

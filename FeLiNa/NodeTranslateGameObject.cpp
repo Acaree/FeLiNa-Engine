@@ -73,6 +73,7 @@ void NodeTranslateGameObject::SetNodeReferencesInJSON(JSON_Object* obj) {
 	json_object_set_number(obj, "transx", translation.x);
 	json_object_set_number(obj, "transy", translation.y);
 	json_object_set_number(obj, "transz", translation.z);
+
 	if (go != nullptr)
 		json_object_set_number(obj, "GO uid", go->uid);
 	else

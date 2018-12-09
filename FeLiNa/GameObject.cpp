@@ -112,6 +112,8 @@ void GameObject::CleanData()
 		RELEASE(material);
 	if (camera != nullptr)
 		RELEASE(camera);
+	if (script != nullptr)
+		RELEASE(script);
 	if (speed != nullptr)
 		RELEASE(speed);
 
@@ -545,7 +547,7 @@ GameObject* GameObject::SearchGOForUID(const uint uid)
 {
 	GameObject* go = nullptr;
 
-	if (this->uid = uid)
+	if (this->uid == uid)
 		return this;
 	else
 	{

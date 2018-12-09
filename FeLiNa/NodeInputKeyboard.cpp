@@ -43,7 +43,9 @@ void NodeInputKeyboard::SetNodeReferencesInJSON(JSON_Object* obj)
 
 void NodeInputKeyboard::GetNodeReferencesInJSON(JSON_Object* obj)
 {
-	key = json_object_get_number(obj, "key");
+	key_code = json_object_get_number(obj, "key");
 
-	key_code = SDL_GetScancodeFromName(&key);
+	const char* c = SDL_GetKeyName(key_code);
+
+	strcpy(&key, SDL_GetKeyName(key_code));
 }
