@@ -225,7 +225,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 			App->scene->root_object->GetChild(i)->DrawBoundingBox();
 		}
 
-		App->scene->root_object->GetChild(0)->camera->DebugDraw(); //always child 0 is camera.
+
+		GameObject* camera = App->scene->root_object->SearchMainCamera(App->scene->root_object);
+		if (camera != nullptr)
+			camera->camera->DebugDraw();
+		//App->scene->root_object->GetChild(0)->camera->DebugDraw(); //always child 0 is camera.
 		App->scene->quadtree->DebugDraw();
 		
 	}

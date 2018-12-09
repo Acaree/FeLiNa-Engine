@@ -44,9 +44,10 @@ void ComponentCamera::Update(float dt)
 
 		if (transform != nullptr) {
 			matrix = transform->GetTransformMatrix();
+			frustum.pos = matrix.TranslatePart();
+			frustum.front = matrix.WorldZ().Normalized();
 		}
-		frustum.pos = matrix.TranslatePart();
-		frustum.front = matrix.WorldZ().Normalized();
+
 		frustum.up = frustum.front.Cross(-frustum.WorldRight()).Normalized();
 	}
 

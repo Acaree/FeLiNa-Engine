@@ -667,4 +667,28 @@ void GameObject::SetInvalidateResource(const Resource* resource)
 
 }
 
+GameObject* GameObject::SearchMainCamera(GameObject* go)
+{
+	GameObject* main_camera = nullptr;
+
+	if (go->camera != nullptr)
+	{
+		main_camera = go;
+	}
+	else
+	{
+		for (uint i = 0; i < childrens.size(); ++i)
+		{
+			main_camera = childrens[i]->SearchMainCamera(childrens[i]);
+
+			if (main_camera != nullptr)
+				break;
+		}
+
+	}
+
+	return main_camera;
+
+
+}
 

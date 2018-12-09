@@ -129,7 +129,7 @@ bool SceneSerialization::LoadScene(char* file_name)
 
 				GameObject* go = new GameObject(nullptr);
 				//go->OnLoad(object);
-
+				go->uid = json_object_get_number(object, "uid");
 				go_vector.push_back(go);
 
 				if (go->camera != nullptr)
@@ -138,6 +138,7 @@ bool SceneSerialization::LoadScene(char* file_name)
 				}
 
 			}
+
 
 			for (uint i = 0; i < json_array_get_count(go_array); ++i)
 			{
@@ -158,13 +159,19 @@ bool SceneSerialization::LoadScene(char* file_name)
 				}
 			}
 
+			CreateGameObjectHierarchy(go_vector);
+
 			for (uint i = 0; i < go_vector.size(); ++i)
 			{
 				JSON_Object* object = json_array_get_object(go_array, i);
 				go_vector[i]->OnLoad(object);
 			}
 
-			CreateGameObjectHierarchy(go_vector);
+			if (App->scene->game_camera == nullptr)
+			{
+				App->scene->game_camera = App->scene->root_object->SearchMainCamera(App->scene->root_object)->camera;
+			}
+
 
 		}
 

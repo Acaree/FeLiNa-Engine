@@ -75,7 +75,7 @@ public:
 	void OnLoad(JSON_Object* obj);
 
 	void ShowGameObjectOptions();
-
+	GameObject* SearchMainCamera(GameObject* go);
 	uint uid = 0;
 
 	GameObject* SearchParentForUID(const uint parent_uid);

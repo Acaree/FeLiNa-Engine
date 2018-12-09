@@ -30,11 +30,10 @@ void ComponentScript::Update(float dt)
 		ResourceScript* resource = (ResourceScript*)App->resource_manager->Get(uid);
 
 		if (App->engine_states == ENGINE_STATE_GAME_MODE && App->game_states != GAME_STATES::ENGINE_STATE_PAUSE) 
-		resource->graph->Update();
+			resource->graph->Update();
 
 		if (open_graph && App->gui->uid_selected_graph == 0)
 		{
-
 			resource->graph->DrawNodeGraph();
 			
 			if(ImGui::IsMouseClicked(1) && !ImGui::IsMouseHoveringAnyWindow())

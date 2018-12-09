@@ -484,7 +484,7 @@ void ModuleGui::ShowEditorMenu()
 		App->game_states = GAME_STATES::ENGINE_STATE_PLAY;
 		App->serialization_scene->save_name_scene = "Autosave";
 		App->serialization_scene->SaveScene(App->scene->root_object);
-		App->camera->current_camera = App->scene->game_camera;
+		App->camera->current_camera = App->scene->game_camera = App->scene->root_object->SearchMainCamera(App->scene->root_object)->camera;
 		//serializate
 	}
 	ImGui::SameLine();
