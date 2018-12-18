@@ -73,11 +73,11 @@ public:
 
 };
 
-struct NodeLink
+struct NodeGraphicalLink
 {
 	int input_index = 0, input_slots = 0, output_index = 0, output_slots = 0;
 
-	NodeLink(int Input_index, int Input_slots, int Output_index, int Output_slots) { input_index = Input_index; input_slots = Input_slots; output_index = Output_index; output_slots = Output_slots; };
+	NodeGraphicalLink(int Input_index, int Input_slots, int Output_index, int Output_slots) { input_index = Input_index; input_slots = Input_slots; output_index = Output_index; output_slots = Output_slots; };
 
 };
 
@@ -105,7 +105,7 @@ public:
 	uint uid = 0;
 
 	std::vector<Node*> nodes;
-	std::vector<NodeLink> links;
+	std::vector<NodeGraphicalLink> links;
 	//Node* last_input_node_clicked = nullptr;
 	int input_clicked = -1;
 	int input_node_pos = -1;

@@ -140,7 +140,7 @@ void NodeGraph::LoadGraph(const char* path)
 						link = json_array_get_number(inputs_array,j);
 
 						nodes[i]->inputs_vec.push_back(nodes[link]);
-						links.push_back(NodeLink(i,0,link,0));
+						links.push_back(NodeGraphicalLink(i,0,link,0));
 
 					}
 
@@ -281,7 +281,7 @@ void NodeGraph::DrawNodeGraph()
 	//Link Nodes------------------------------------------------------------------------------------------ 
 	for (int link_idex = 0; link_idex < links.size(); link_idex++)
 	{
-		NodeLink* link = &links[link_idex];
+		NodeGraphicalLink* link = &links[link_idex];
 		Node* node_inp = nodes[link->input_index];
 		Node* node_out = nodes[link->output_index];
 		ImVec2 p1 = offset + node_out->GetOutputSlotPos(link->output_slots);
@@ -362,7 +362,7 @@ void NodeGraph::DrawNodeGraph()
 				}
 				if (ImGui::IsMouseClicked(1)) {
 					
-					for (std::vector<NodeLink>::const_iterator it = links.begin(); it != links.end(); it++) {
+					for (std::vector<NodeGraphicalLink>::const_iterator it = links.begin(); it != links.end(); it++) {
 						
 						if ((*it).input_index == node_ids && (*it).input_slots == slot_idx) {
 							links.erase(it);
@@ -387,7 +387,7 @@ void NodeGraph::DrawNodeGraph()
 
 				if (ImGui::IsMouseClicked(1)) {
 
-					for (std::vector<NodeLink>::const_iterator it = links.begin(); it != links.end(); it++) {
+					for (std::vector<NodeGraphicalLink>::const_iterator it = links.begin(); it != links.end(); it++) {
 
 						if ((*it).output_index == node_ids && (*it).output_slots == slot_idx) {
 
@@ -436,7 +436,7 @@ void NodeGraph::DrawNodeGraph()
 				output_node->outputs_vec.push_back(input_node);
 			}
 
-			links.push_back(NodeLink(input_node_pos, input_clicked, output_node_pos, output_clicked));
+			links.push_back(NodeGraphicalLink(input_node_pos, input_clicked, output_node_pos, output_clicked));
 			//nodes[input_node_pos]->outputs_vec.push_back(nodes[output_node_pos]);
 			//nodes[output_node_pos]->inputs_vec.push_back(nodes[input_node_pos]);
 
@@ -692,7 +692,7 @@ void NodeGraph::DeleteNode(Node& node)
 	{
 		if (links[i].input_index == id_erased)
 		{
-			std::vector<NodeLink>::iterator link_erase = links.begin() + i;
+			std::vector<NodeGraphicalLink>::iterator link_erase = links.begin() + i;
 			links.erase(link_erase);
 			links.shrink_to_fit();
 
@@ -704,7 +704,7 @@ void NodeGraph::DeleteNode(Node& node)
 		
 		if (links[i].output_index == id_erased)
 		{
-			std::vector<NodeLink>::iterator link_erase = links.begin() + i;
+			std::vector<NodeGraphicalLink>::iterator link_erase = links.begin() + i;
 			links.erase(link_erase);
 			links.shrink_to_fit();
 			i = 0;
