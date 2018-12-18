@@ -8,7 +8,7 @@
 #include "NodeInputMouse.h"
 #include "NodeInstatiateGameObject.h"
 
-
+//NodeGraph-------------------------------------------------------------------------------------------------------------------------------------------
 NodeGraph::NodeGraph(uint uid, const char* name)
 {
 
@@ -616,20 +616,51 @@ void NodeGraph::SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 
 		break;
 	}
 }
+void NodeGraph::DeleteNode(Node& node)
+{
+	std::vector<Node*>::iterator it = nodes.begin() + node.id;
 
-void NodeGraph::UpdateNodePointers() {
+	uint id_erased = node.id;
 
-	for (int i = 0; i < links.size(); i++) {
+	for (int i = 0; i < links.size(); i++)
+	{
+		if (links[i].input_index == id_erased)
+		{
+			std::vector<NodeGraphicalLink>::iterator link_erase = links.begin() + i;
+			links.erase(link_erase);
+			links.shrink_to_fit();
 
-		//not 100% sure this works well
+			if (links.size() > 0)
+				i = 0;
+			else
+				break;
+		}
 
-		nodes[links[i].input_index]->inputs_vec.push_back(nodes[links[i].output_index]);
-		nodes[links[i].output_index]->outputs_vec.push_back(nodes[links[i].input_index]);
+		if (links[i].output_index == id_erased)
+		{
+			std::vector<NodeGraphicalLink>::iterator link_erase = links.begin() + i;
+			links.erase(link_erase);
+			links.shrink_to_fit();
+			i = 0;
+		}
 
+
+	}
+
+	nodes.erase(it);
+	nodes.shrink_to_fit();
+
+
+	for (int i = 0; i < nodes.size(); ++i)
+	{
+		nodes[i]->id = i;
 	}
 
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Node----------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Node::SetNodeReferencesInJSON(JSON_Object* obj) {
 
 	json_object_set_number(obj, "id", id);
@@ -682,44 +713,4 @@ void Node::GetNodeReferencesInJSON(JSON_Object* obj)
 
 }
 
-void NodeGraph::DeleteNode(Node& node)
-{
-	std::vector<Node*>::iterator it = nodes.begin() + node.id;
-
-	uint id_erased = node.id;
-
-	for (int i = 0; i < links.size(); i++)
-	{
-		if (links[i].input_index == id_erased)
-		{
-			std::vector<NodeGraphicalLink>::iterator link_erase = links.begin() + i;
-			links.erase(link_erase);
-			links.shrink_to_fit();
-
-			if (links.size() > 0)
-				i = 0;
-			else
-				break;
-		}
-		
-		if (links[i].output_index == id_erased)
-		{
-			std::vector<NodeGraphicalLink>::iterator link_erase = links.begin() + i;
-			links.erase(link_erase);
-			links.shrink_to_fit();
-			i = 0;
-		}
-		
-
-	}
-
-	nodes.erase(it);
-	nodes.shrink_to_fit();
-
-
-	for (int i = 0; i < nodes.size(); ++i)
-	{
-		nodes[i]->id = i;
-	}
-
-}
+//-----------------------------------------------------------------------------------------------------------------------------------------

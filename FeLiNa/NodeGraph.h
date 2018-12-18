@@ -90,7 +90,6 @@ public:
 
 	bool Update();
 	void DrawNodeGraph();
-	void UpdateNodePointers();
 	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
 	void DeleteNode(Node& node);
 	Node* CreateNodeByType(NodeSubType type);
