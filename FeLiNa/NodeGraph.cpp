@@ -654,6 +654,28 @@ void NodeGraph::DeleteNode(Node& node)
 	for (int i = 0; i < nodes.size(); ++i)
 	{
 		nodes[i]->id = i;
+		
+		for (int j = 0; j < nodes[i]->outputs_vec.size(); j++)
+		{
+			if (nodes[i]->outputs_vec[j] == &node)
+			{
+				it = nodes[i]->outputs_vec.begin() + j;
+				nodes[i]->outputs_vec.erase(it);
+				nodes[i]->outputs_vec.shrink_to_fit();
+
+			}
+		}
+
+		for (int j = 0; j < nodes[i]->inputs_vec.size(); j++)
+		{
+			if (nodes[i]->inputs_vec[j] == &node)
+			{
+				it = nodes[i]->inputs_vec.begin() + j;
+				nodes[i]->inputs_vec.erase(it);
+				nodes[i]->inputs_vec.shrink_to_fit();
+			}
+		}
+
 	}
 
 }
