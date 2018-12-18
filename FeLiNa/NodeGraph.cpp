@@ -485,9 +485,11 @@ void NodeGraph::DrawNodeGraph()
 		{
 			ImGui::Text("Node '%s'", node->name);
 			ImGui::Separator();
-			if (ImGui::MenuItem("Rename..", NULL, false, false)) {}
-			if (ImGui::MenuItem("Delete", NULL, false, false)) {}
-			if (ImGui::MenuItem("Copy", NULL, false, false)) {}
+			if (ImGui::MenuItem("Delete", NULL, false, true))
+			{
+				DeleteNode(*node);
+			}
+			
 		}
 		else
 		{
@@ -677,5 +679,47 @@ void Node::SaveNodeInformation(JSON_Object* obj)
 
 void Node::GetNodeReferencesInJSON(JSON_Object* obj)
 {
+
+}
+
+void NodeGraph::DeleteNode(Node& node)
+{
+	std::vector<Node*>::iterator it = nodes.begin() + node.id;
+
+	uint id_erased = node.id;
+
+	for (int i = 0; i < links.size(); i++)
+	{
+		if (links[i].input_index == id_erased)
+		{
+			std::vector<NodeLink>::iterator link_erase = links.begin() + i;
+			links.erase(link_erase);
+			links.shrink_to_fit();
+
+			if (links.size() > 0)
+				i = 0;
+			else
+				break;
+		}
+		
+		if (links[i].output_index == id_erased)
+		{
+			std::vector<NodeLink>::iterator link_erase = links.begin() + i;
+			links.erase(link_erase);
+			links.shrink_to_fit();
+			i = 0;
+		}
+		
+
+	}
+
+	nodes.erase(it);
+	nodes.shrink_to_fit();
+
+
+	for (int i = 0; i < nodes.size(); ++i)
+	{
+		nodes[i]->id = i;
+	}
 
 }
