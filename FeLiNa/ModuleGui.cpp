@@ -162,10 +162,11 @@ update_status ModuleGui::Update(float dt)
 
 		if (ImGui::IsMouseClicked(1) && !ImGui::IsMouseHoveringAnyWindow())
 		{
-			
-			res->EraseToMemory();
-
-			uid_selected_graph = 0;
+			if (ImGui::IsItemClicked()) {
+				
+				res->EraseToMemory();
+				uid_selected_graph = 0;
+			}
 		}
 		else
 			res->graph->DrawNodeGraph();
