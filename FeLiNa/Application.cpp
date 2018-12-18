@@ -163,12 +163,10 @@ void Application::PrepareUpdate()
 	{
 	case ENGINE_STATE_EDITOR_MODE:
 
-		if (game_states == ENGINE_STATE_PLAY && auto_save_done == false) {
+		if (game_states == ENGINE_STATE_PLAY) {
 			
 			engine_states = ENGINE_STATES::ENGINE_STATE_GAME_MODE;
-			scene->serialization_scene = new SceneSerialization();
-			scene->serialization_scene->save_name_scene = "auto";
-			scene->serialization_scene->SaveScene(App->scene->root_object);
+
 		}
 
 		break;
