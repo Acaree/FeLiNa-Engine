@@ -28,7 +28,7 @@ bool NodeInputKeyboard::Update()
 void NodeInputKeyboard::DrawNode()
 {
 
-	if (ImGui::InputText("Key react:", &key, 2))
+	if (ImGui::InputText("Key react:", (char*)&key, 2))
 	{
 		key_code = SDL_GetScancodeFromName(&key);
 	}
