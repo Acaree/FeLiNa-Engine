@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "ModuleInput.h"
 #include "ModuleFileSystem.h"
 #include "NodeGraph.h"
 #include "NodeInputKeyboard.h"
@@ -308,7 +309,7 @@ void NodeGraph::DrawNodeGraph()
 
 		//Here set the the content first that all nodes are equals.
 		ImGui::Text("\n");// only aesthetic purpose
-		ImGui::Text("%s", node->name);
+		ImGui::Text("%s", node->name, node->id);
 		
 		//Draw node virtual for set variables that we need
 		node->DrawNode();
@@ -523,7 +524,14 @@ void NodeGraph::DrawNodeGraph()
 		ImGui::EndPopup();
 	}
 		
-	
+	if (node_selected != -1)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		{
+			DuplicateNode(*nodes[node_selected]);
+			node_selected = -1;
+		}
+	}
 
 	ImGui::PopStyleVar();
 
@@ -550,42 +558,6 @@ void NodeGraph::DrawNodeGraph()
 		need_save = false;
 	}
 
-}
-
-Node* NodeGraph::CreateNodeByType(NodeSubType current_type)
-{
-	Node* node = nullptr;
-
-	if (current_type != 0)
-	{
-		switch (current_type)
-		{
-		case 1:
-			node = (Node*)new NodeInputKeyboard(nodes.size());
-			break;
-		case 2:
-			node = (Node*)new NodeMouseMotion(nodes.size());
-			break;
-		case 3:
-			node = (Node*)new NodeTranslateGameObject(nodes.size());
-			break;
-		case 4:
-			node = (Node*)new NodeRotateGameObject(nodes.size());
-			break;
-		case 5:
-			node = (Node*)new NodeInputMouse(nodes.size());
-			break;
-		case 6:
-			node = (Node*)new NodeInstatiateGameObject(nodes.size());
-			break;
-		}
-
-		if (node != nullptr)
-			nodes.push_back(node);
-	}
-
-
-	return node;
 }
 
 void NodeGraph::SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max)
@@ -683,6 +655,85 @@ void NodeGraph::DeleteNode(Node& node)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //Node----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Node* NodeGraph::CreateNodeByType(NodeSubType current_type)
+{
+	Node* node = nullptr;
+
+	if (current_type != 0)
+	{
+		switch (current_type)
+		{
+		case InputKeyboard:
+			node = (Node*)new NodeInputKeyboard(nodes.size());
+			break;
+		case MouseMotion:
+			node = (Node*)new NodeMouseMotion(nodes.size());
+			break;
+		case TranslateGO:
+			node = (Node*)new NodeTranslateGameObject(nodes.size());
+			break;
+		case RotateGO:
+			node = (Node*)new NodeRotateGameObject(nodes.size());
+			break;
+		case InputMouse:
+			node = (Node*)new NodeInputMouse(nodes.size());
+			break;
+		case InstatiateGO:
+			node = (Node*)new NodeInstatiateGameObject(nodes.size());
+			break;
+		}
+
+		if (node != nullptr)
+			nodes.push_back(node);
+	}
+
+
+	return node;
+}
+
+
+void NodeGraph::DuplicateNode(Node& node)
+{
+	Node* new_node = CreateNodeByType(node.subtype);
+	
+	/*if (node.subtype != 0)
+	{
+		switch (node.subtype)
+		{
+		case InputKeyboard:
+			new_node = (Node*)new NodeInputKeyboard(nodes.size());
+			break;
+		case MouseMotion:
+			new_node = (Node*)new NodeMouseMotion(nodes.size());
+			break;
+		case TranslateGO:
+			new_node = (Node*)new NodeTranslateGameObject(nodes.size());
+			break;
+		case RotateGO:
+			new_node = (Node*)new NodeRotateGameObject(nodes.size());
+			break;
+		case InputMouse:
+			new_node = (Node*)new NodeInputMouse(nodes.size());
+			break;
+		case InstatiateGO:
+			new_node = (Node*)new NodeInstatiateGameObject(nodes.size());
+			break;
+		}*/
+	
+	if(new_node != nullptr)
+		new_node->SetReferencesNodeDuplicated(node);
+
+	//}
+
+}
+
+void Node::SetReferencesNodeDuplicated(Node& node)
+{
+
+}
+
 void Node::SetNodeReferencesInJSON(JSON_Object* obj) {
 
 	json_object_set_number(obj, "id", id);

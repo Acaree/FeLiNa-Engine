@@ -40,3 +40,8 @@ void NodeInputMouse::GetNodeReferencesInJSON(JSON_Object* obj)
 {
 	key_code = json_object_get_number(obj, "key");
 }
+
+void NodeInputMouse::SetReferencesNodeDuplicated(Node& node)
+{
+	key_code = ((NodeInputMouse*)&node)->key_code;
+}

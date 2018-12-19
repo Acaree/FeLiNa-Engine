@@ -92,3 +92,9 @@ void NodeTranslateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	if (go_uid != 0)
 		go = App->scene->root_object->SearchGOForUID(go_uid);
 }
+
+void NodeTranslateGameObject::SetReferencesNodeDuplicated(Node& node)
+{
+	translation = ((NodeTranslateGameObject*)&node)->translation;
+	go = ((NodeTranslateGameObject*)&node)->go;
+}

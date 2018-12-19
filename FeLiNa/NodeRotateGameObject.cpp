@@ -81,3 +81,9 @@ void NodeRotateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	if (go_uid != 0)
 		go = App->scene->root_object->SearchGOForUID(go_uid);
 }
+
+void NodeRotateGameObject::SetReferencesNodeDuplicated(Node& node)
+{
+	axis = ((NodeRotateGameObject*)&node)->axis;
+	go = ((NodeRotateGameObject*)&node)->go;
+}

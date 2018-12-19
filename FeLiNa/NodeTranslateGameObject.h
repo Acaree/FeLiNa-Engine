@@ -15,6 +15,7 @@ public:
 	void DrawNode();
 	void SetNodeReferencesInJSON(JSON_Object* obj);
 	void GetNodeReferencesInJSON(JSON_Object* obj);
+	void SetReferencesNodeDuplicated(Node& node);
 private:
 
 	GameObject* go = nullptr;

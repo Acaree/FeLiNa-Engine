@@ -49,3 +49,9 @@ void NodeInputKeyboard::GetNodeReferencesInJSON(JSON_Object* obj)
 
 	strcpy(&key, c);
 }
+
+void NodeInputKeyboard::SetReferencesNodeDuplicated(Node& node)
+{
+	key = ((NodeInputKeyboard*)&node)->key;
+	key_code = ((NodeInputKeyboard*)&node)->key_code;
+}

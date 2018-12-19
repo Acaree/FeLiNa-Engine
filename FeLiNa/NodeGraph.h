@@ -68,6 +68,7 @@ public:
 	virtual void DrawNode();
 
 	void SaveNodeInformation(JSON_Object* obj);
+	virtual void SetReferencesNodeDuplicated(Node& node);
 	virtual void SetNodeReferencesInJSON(JSON_Object* obj);
 	virtual void GetNodeReferencesInJSON(JSON_Object* obj);
 
@@ -93,7 +94,7 @@ public:
 	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
 	void DeleteNode(Node& node);
 	Node* CreateNodeByType(NodeSubType type);
-
+	void DuplicateNode(Node& node);
 	void SaveGraph();
 	void LoadGraph(const char* path);
 

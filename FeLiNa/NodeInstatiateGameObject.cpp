@@ -97,3 +97,10 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 		go = App->scene->root_object->SearchGOForUID(go_uid);
 
 }
+
+void NodeInstatiateGameObject::SetReferencesNodeDuplicated(Node& node)
+{
+	new_pos = ((NodeInstatiateGameObject*)&node)->new_pos;
+	speed = ((NodeInstatiateGameObject*)&node)->speed;
+	go = ((NodeInstatiateGameObject*)&node)->go;
+}
