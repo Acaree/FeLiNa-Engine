@@ -73,6 +73,7 @@ void ComponentMesh::DrawInspector()
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
 			{
 				std::string payload_n = (char*)payload->Data;
+				payload_n.erase(0, payload_n.find_last_of("/") + 1);
 				payload_n.erase(payload_n.find_first_of("."), payload_n.size());
 				uint s = std::stoi(payload_n.c_str());
 				Resource* res = App->resource_manager->Get(s);

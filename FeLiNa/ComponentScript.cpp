@@ -64,6 +64,7 @@ void ComponentScript::DrawInspector()
 
 				if (position != std::string::npos)
 				{
+					payload_n.erase(0, payload_n.find_last_of("/")+1);
 					payload_n.erase(payload_n.find(EXTENSION_SCRIPT) + strlen(EXTENSION_SCRIPT), payload_n.size());
 					uid = App->resource_manager->Find(payload_n.c_str());
 

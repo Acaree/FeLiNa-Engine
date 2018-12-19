@@ -2,6 +2,8 @@
 #include "ModuleInput.h"
 #include "ModuleFileSystem.h"
 #include "NodeGraph.h"
+#include "ModuleResourceManager.h"
+#include "Resource.h"
 #include "NodeInputKeyboard.h"
 #include "NodeTranslateGameObject.h"
 #include "NodeMouseMotion.h"
@@ -79,10 +81,19 @@ void NodeGraph::SaveGraph()
 	char* buffer = new char[size];
 	json_serialize_to_buffer_pretty(root, buffer, size);
 
+	Resource* res = App->resource_manager->Get(uid);
+	std::string path;
 
-	std::string path = "Assets/";
-	path += name;
-	path += EXTENSION_SCRIPT;
+	if (res != nullptr)
+	{
+		path = res->file;
+	}
+	else
+	{
+		std::string path = "Assets/";
+		path += name;
+		path += EXTENSION_SCRIPT;
+	}
 	App->fs->SaveBufferData(buffer, path.c_str(), size);
 
 	json_value_free(root);

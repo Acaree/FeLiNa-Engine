@@ -682,7 +682,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 			{
-				ImGui::SetDragDropPayload("Assets_Nodes", *file, strlen(*file));
+				ImGui::SetDragDropPayload("Assets_Nodes", file_dragging.c_str(), strlen(file_dragging.c_str()));
 				ImGui::EndDragDropSource();
 			}
 	
