@@ -22,6 +22,10 @@ private:
 	math::float3 new_pos = math::float3::zero;
 	math::float3 speed = math::float3::zero;
 	std::string instance_fbx_path;
+	
+	bool get_position_from_GO = false;
+	std::string position_GO_name = "Game Object Invalid";
+	GameObject* GO_position = nullptr;
 };
 
 

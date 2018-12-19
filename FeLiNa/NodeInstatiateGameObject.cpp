@@ -16,19 +16,24 @@ bool NodeInstatiateGameObject::Update()
 
 	if (instance_fbx_path.size() != 0)
 	{
-		std::string path = "Assets/";
-		path += instance_fbx_path;
+		std::string path = instance_fbx_path;
 		GameObject* instance = App->serialization_scene->LoadGOFromJson((char*)path.c_str());
 
 		instance->SetParent(App->scene->root_object);
+
 
 		if (instance->transform == nullptr) {
 			instance->AddComponent(Component_Transform);
 		}
 
-		instance->transform->SetPosition(new_pos);
+		if (get_position_from_GO) {
+			instance->transform->SetPosition(GO_position->transform->GetPosition());
+		}
 
-		instance->transform->SetPosition(new_pos);
+		else {
+			instance->transform->SetPosition(new_pos);
+		}
+
 		if (instance->speed == nullptr) {
 			instance->AddComponent(Component_Speed);
 		}
@@ -59,9 +64,29 @@ void NodeInstatiateGameObject::DrawNode()
 	else
 		ImGui::Text(instance_fbx_path.c_str());
 
+	ImGui::Checkbox("Get position from Game Object", &get_position_from_GO);
 
+	if(!get_position_from_GO)
 	ImGui::InputFloat3("Instance pos", &new_pos[0], 2);
 
+	else {
+		
+		ImGui::Text(position_GO_name.c_str());
+		ImGui::Button("Drag Game Object Here");
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Hierarchy_nodes"))
+			{
+				GO_position = *(GameObject**)payload->Data;
+				if (GO_position->transform != nullptr) { 
+					position_GO_name.clear();
+					position_GO_name = GO_position->GetName();
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+	}
 	
 	ImGui::InputFloat3("Speed", &speed[0], 2);
 	
