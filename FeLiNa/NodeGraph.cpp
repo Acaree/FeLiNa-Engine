@@ -122,7 +122,7 @@ void NodeGraph::LoadGraph(const char* path)
 
 					ImVec2 position = { (float)json_object_get_number(node_object, "Px"), (float)json_object_get_number(node_object, "Py") };
 					node->position = position;
-					node->active = json_object_get_number(node_object, "Active");
+					node->active = json_object_get_boolean(node_object, "Active");
 				}
 
 				

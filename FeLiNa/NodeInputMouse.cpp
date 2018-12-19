@@ -3,7 +3,7 @@
 #include "ModuleInput.h"
 
 
-NodeInputMouse::NodeInputMouse(int id) : Node(id, "Mouse click button:", { 100,100 }, 1, 1, NodeType::EventType)
+NodeInputMouse::NodeInputMouse(int id) : Node(id, "Mouse click button:", { 100,100 }, 0, 1, NodeType::EventType)
 {
 	subtype = NodeSubType::InputMouse;
 }
