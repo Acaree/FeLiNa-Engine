@@ -61,7 +61,7 @@ public:
 	ImVec2 GetOutputSlotPos(int slot_no) const { return ImVec2(position.x + size.x, position.y + size.y * ((float)slot_no + 1) / ((float)output_counts + 1)); }
 
 	bool returned_result = false;
-
+	bool active = true;
 	
 
 	virtual bool Update();

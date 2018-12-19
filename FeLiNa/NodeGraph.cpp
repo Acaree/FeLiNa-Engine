@@ -28,7 +28,7 @@ bool NodeGraph::Update()
 
 	for (uint i = 0; i < nodes.size(); ++i)
 	{
-		if (nodes[i]->type == EventType)
+		if (nodes[i]->type == EventType && nodes[i]->active)
 		{
 			ret = nodes[i]->Update();
 	
@@ -36,7 +36,7 @@ bool NodeGraph::Update()
 			{
 				for (int j = 0; j < nodes[i]->outputs_vec.size(); j++)
 				{
-					if (!nodes[i]->outputs_vec[j]->Update())
+					if (!nodes[i]->active || !nodes[i]->outputs_vec[j]->Update())
 						break;
 				}
 
@@ -122,9 +122,10 @@ void NodeGraph::LoadGraph(const char* path)
 
 					ImVec2 position = { (float)json_object_get_number(node_object, "Px"), (float)json_object_get_number(node_object, "Py") };
 					node->position = position;
+					node->active = json_object_get_number(node_object, "Active");
 				}
 
-				//Now create the links 
+				
 
 				int link = -1;
 
@@ -263,7 +264,7 @@ void NodeGraph::DrawNodeGraph()
 	ImVec2 offset = ImGui::GetCursorScreenPos() - scrolling;
 
 	//Show Grid---------------------------------------------------------------------------------------------
-	if (show_grid)// Not work
+	if (show_grid)
 	{
 		float grid_size = 64.0f;
 
@@ -309,9 +310,11 @@ void NodeGraph::DrawNodeGraph()
 
 		//Here set the the content first that all nodes are equals.
 		ImGui::Text("\n");// only aesthetic purpose
+		ImGui::Checkbox("Active", &node->active);
 		ImGui::Text("%s", node->name, node->id);
 		
 		//Draw node virtual for set variables that we need
+		
 		node->DrawNode();
 		
 		ImGui::EndGroup();
@@ -757,7 +760,7 @@ void Node::SaveNodeInformation(JSON_Object* obj)
 
 	json_object_set_number(obj, "Px", position.x);
 	json_object_set_number(obj, "Py", position.y);
-
+	json_object_set_boolean(obj, "active", active);
 	JSON_Value* arr_inputs = json_value_init_array();
 	JSON_Array* inputs_array = json_value_get_array(arr_inputs);
 
