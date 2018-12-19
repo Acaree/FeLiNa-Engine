@@ -58,3 +58,9 @@ void ComponentSpeed::OnLoad(JSON_Object* obj)
 	speed.z = json_object_get_number(obj, "z");
 
 }
+
+void ComponentSpeed::SetSpeed(math::float3 new_speed) {
+
+	this->speed = new_speed;
+
+}

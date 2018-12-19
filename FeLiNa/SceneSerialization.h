@@ -17,6 +17,7 @@ public:
 	void SaveScene(GameObject* go, const char* file_path = nullptr);
 
 	bool LoadScene(char* file_name = "Assets/Autosave");
+	GameObject* LoadGOFromJson(char* file_name);
 
 	void RecursiveSearchChildrens(GameObject* parent);
 

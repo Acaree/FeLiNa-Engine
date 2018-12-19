@@ -1,6 +1,7 @@
 #include "NodeInstatiateGameObject.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentSpeed.h"
 #include "Application.h"
 #include "SceneSerialization.h"
 #include "ModuleScene.h"
@@ -17,7 +18,25 @@ bool NodeInstatiateGameObject::Update()
 	{
 		std::string path = "Assets/";
 		path += go->GetName();
-		App->serialization_scene->LoadScene((char*)path.c_str());
+		GameObject* instance = App->serialization_scene->LoadGOFromJson((char*)path.c_str());
+
+		//App->serialization_scene->LoadScene((char*)path.c_str());
+
+		instance->SetParent(App->scene->root_object);
+
+		if (instance->transform == nullptr) {
+			instance->AddComponent(Component_Transform);
+		}
+
+		instance->transform->SetPosition(new_pos);
+
+		instance->transform->SetPosition(new_pos);
+		if (instance->speed == nullptr) {
+			instance->AddComponent(Component_Speed);
+		}
+
+		instance->speed->SetSpeed(speed);
+		
 	}
 
 	if (returned_result)

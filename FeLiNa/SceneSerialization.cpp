@@ -182,6 +182,81 @@ bool SceneSerialization::LoadScene(char* file_name)
 	return ret;
 }
 
+GameObject* SceneSerialization::LoadGOFromJson(char* file_name)
+{
+	std::vector<GameObject*> go_vector;
+
+	char file[DEFAULT_BUF_SIZE];
+
+	strcpy_s(file, DEFAULT_BUF_SIZE, file_name);
+	strcat(file, ".json");
+
+	JSON_Value* file_root = json_parse_file(file);
+
+	if (file_root != nullptr)
+	{
+		JSON_Array* go_array = json_value_get_array(file_root);
+		if (go_array != nullptr)
+		{
+			go_vector.reserve(json_array_get_count(go_array));
+
+
+			for (uint i = 0; i < json_array_get_count(go_array); ++i)
+			{
+				JSON_Object* object = json_array_get_object(go_array, i);
+
+				GameObject* go = new GameObject(nullptr);
+				//go->OnLoad(object);
+				go->uid = json_object_get_number(object, "uid");
+				go_vector.push_back(go);
+
+				if (go->camera != nullptr)
+				{
+					App->scene->game_camera = go->camera;
+				}
+
+			}
+
+
+			for (uint i = 0; i < json_array_get_count(go_array); ++i)
+			{
+				JSON_Object* object = json_array_get_object(go_array, i);
+
+				uint parent_uid = json_object_get_number(object, "uid parent");
+
+				for (uint j = 0; j < go_vector.size(); ++j)
+				{
+
+					if (go_vector[j]->uid == parent_uid)
+					{
+						go_vector[i]->SetParent(go_vector[j]);
+					}
+
+					//go_vector[i]->OnLoad(object);
+
+				}
+			}
+
+			CreateGameObjectHierarchy(go_vector);
+
+			for (uint i = 0; i < go_vector.size(); ++i)
+			{
+				JSON_Object* object = json_array_get_object(go_array, i);
+				go_vector[i]->OnLoad(object);
+			}
+
+
+
+		}
+
+
+	}
+
+	//json_value_free(file_root);
+	save_name_scene = "";
+	return go_vector[0];
+}
+
 void SceneSerialization::RecursiveSearchChildrens(GameObject* parent)
 {
 
