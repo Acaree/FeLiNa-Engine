@@ -14,13 +14,11 @@ bool NodeInstatiateGameObject::Update()
 {
 	returned_result = false;
 
-	if (go != nullptr)
+	if (instance_fbx_path.size() != 0)
 	{
 		std::string path = "Assets/";
-		path += go->GetName();
+		path += instance_fbx_path;
 		GameObject* instance = App->serialization_scene->LoadGOFromJson((char*)path.c_str());
-
-		//App->serialization_scene->LoadScene((char*)path.c_str());
 
 		instance->SetParent(App->scene->root_object);
 
@@ -56,10 +54,10 @@ bool NodeInstatiateGameObject::Update()
 
 void NodeInstatiateGameObject::DrawNode()
 {
-	if (go == nullptr)
+	if (instance_fbx_path.size() == 0)
 		ImGui::Text("Not valid game object");
 	else
-		ImGui::Text(go->GetName());
+		ImGui::Text(instance_fbx_path.c_str());
 
 
 	ImGui::InputFloat3("Instance pos", &new_pos[0], 2);
@@ -70,13 +68,14 @@ void NodeInstatiateGameObject::DrawNode()
 	
 
 	ImGui::Text("GameObject:");
-	ImGui::Button("Drag Game Object Here");
+	ImGui::Button("Drag FBX Here");
 
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Hierarchy_nodes"))
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
 		{
-			go = *(GameObject**)payload->Data;
+			instance_fbx_path = (char*)payload->Data;
+			instance_fbx_path.erase(instance_fbx_path.find_last_of("."), instance_fbx_path.size());
 		}
 		ImGui::EndDragDropTarget();
 	}
@@ -94,10 +93,9 @@ void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 	json_object_set_number(obj, "speedy", speed.y);
 	json_object_set_number(obj, "speedz", speed.z);
 
-	if(go != nullptr)
-		json_object_set_number(obj, "GO uid", go->uid);
-	else
-		json_object_set_number(obj, "GO uid", 0);
+	if(instance_fbx_path.size() != 0)
+		json_object_set_string(obj, "FBX path", instance_fbx_path.c_str());
+	
 
 }
 
@@ -110,10 +108,7 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	speed.x = json_object_get_number(obj, "speedy");
 	speed.x = json_object_get_number(obj, "speedz");
 
-	int go_uid = json_object_get_number(obj, "GO uid");
-
-	if(go_uid != 0)
-		go = App->scene->root_object->SearchGOForUID(go_uid);
+	instance_fbx_path = json_object_get_string(obj, "FBX path");
 
 }
 
@@ -121,5 +116,5 @@ void NodeInstatiateGameObject::SetReferencesNodeDuplicated(Node& node)
 {
 	new_pos = ((NodeInstatiateGameObject*)&node)->new_pos;
 	speed = ((NodeInstatiateGameObject*)&node)->speed;
-	go = ((NodeInstatiateGameObject*)&node)->go;
+	instance_fbx_path = ((NodeInstatiateGameObject*)&node)->instance_fbx_path;
 }

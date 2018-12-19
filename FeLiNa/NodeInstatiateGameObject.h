@@ -19,9 +19,9 @@ public:
 
 private:
 
-	GameObject* go = nullptr;
 	math::float3 new_pos = math::float3::zero;
 	math::float3 speed = math::float3::zero;
+	std::string instance_fbx_path;
 };
 
 
