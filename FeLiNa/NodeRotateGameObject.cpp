@@ -23,7 +23,7 @@ bool NodeRotateGameObject::Update()
 
 			if (rotate_with_mouse) {
 
-				float mouse_motion = -App->input->GetMouseXMotion() / 10;
+				float mouse_motion = -App->input->GetMouseXMotion();
 
 				math::float3 rot = axis * (mouse_motion);
 				go->transform->SumRotation(rot);

@@ -122,6 +122,7 @@ void ComponentScript::OnSave(JSON_Object* obj)
 	{
 		ResourceScript* resource = (ResourceScript*)App->resource_manager->Get(uid);
 
+		resource->graph->SaveGraph();
 		resource->graph->SaveReferences(obj);
 	}
 }
