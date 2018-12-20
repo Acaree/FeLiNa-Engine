@@ -21,9 +21,17 @@ bool NodeRotateGameObject::Update()
 		{
 			returned_result = true;
 
+			if (rotate_with_mouse) {
 
-			go->transform->SumRotation(axis);
+				float mouse_motion = -App->input->GetMouseXMotion() / 10;
 
+				math::float3 rot = axis * (mouse_motion);
+				go->transform->SumRotation(rot);
+			}
+
+			else {
+				go->transform->SumRotation(axis);
+			}
 		}
 	}
 
@@ -39,6 +47,8 @@ void NodeRotateGameObject::DrawNode()
 		ImGui::Text("Not valid game object");
 	else
 		ImGui::Text(go->GetName());
+	
+	ImGui::Checkbox("Rotate with mouse motion X", &rotate_with_mouse);
 
 	ImGui::InputFloat3("Axis to rotate", &axis[0], 2);
 
@@ -63,6 +73,7 @@ void NodeRotateGameObject::SetNodeReferencesInJSON(JSON_Object* obj) {
 	json_object_set_number(obj, "rotx", axis.x);
 	json_object_set_number(obj, "roty", axis.y);
 	json_object_set_number(obj, "rotz", axis.z);
+	json_object_set_number(obj, "rot with mouse", rotate_with_mouse);
 	if (go != nullptr)
 		json_object_set_number(obj, "GO uid", go->uid);
 	else
@@ -75,6 +86,8 @@ void NodeRotateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	axis.x = json_object_get_number(obj, "rotx");
 	axis.y = json_object_get_number(obj, "roty");
 	axis.z = json_object_get_number(obj, "rotz");
+
+	rotate_with_mouse = json_object_get_number(obj, "rot with mouse");
 
 	int go_uid = json_object_get_number(obj, "GO uid");
 

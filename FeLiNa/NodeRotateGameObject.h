@@ -19,6 +19,7 @@ public:
 private:
 	GameObject* go = nullptr;
 	math::float3 axis = math::float3::zero;
+	bool rotate_with_mouse = false;
 };
 
 
