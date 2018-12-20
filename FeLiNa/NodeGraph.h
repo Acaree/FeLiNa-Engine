@@ -91,9 +91,11 @@ public:
 
 	bool Update();
 	void DrawNodeGraph();
-	void SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max);
+	void SetBackgroundNodeType(Node& node, ImDrawList& draw_list, ImVec2& node_rect_min, ImVec2& node_rect_max);
 	void DeleteNode(Node& node);
 	Node* CreateNodeByType(NodeSubType type);
+	void CreateNewLink(int& input_node_pos, int& output_node_pos);
+	void DeleteLink(int& node_ids, int& slot_idx);
 	void DuplicateNode(Node& node);
 	void SaveGraph();
 	void LoadGraph(const char* path);

@@ -136,10 +136,7 @@ void NodeGraph::LoadGraph(const char* path)
 					node->active = json_object_get_boolean(node_object, "Active");
 				}
 
-				
-
 				int link = -1;
-
 
 				for (uint i = 0; i < size; ++i)
 				{
@@ -211,43 +208,14 @@ void NodeGraph::LoadReferences(JSON_Object* obj)
 
 void NodeGraph::DrawNodeGraph()
 {
-	ImGui::SetNextWindowSize(ImVec2(700, 600), ImGuiSetCond_FirstUseEver);
-	ImGui::Begin("NodeGraph");
-
-	// LIST OF ALL NODES IN THE LEFT SIZE :/---------------------------------------------------------------------
 
 	static bool open_context_menu = false;
-	static int node_hovered_in_list = -1;
 	static int node_hovered_in_scene = -1;
 	static int node_selected = -1;
-
-	ImGui::BeginChild("All nodes:", ImVec2(100, 0));
-	ImGui::Text("All Nodes");
-	ImGui::Separator();
-
-	//Iterate all nodes in vector node 
-	for (int node_ids = 0; node_ids < nodes.size(); node_ids++) 
-	{
-		//Push her id and set if are selectable
-		Node* node = nodes[node_ids];
-		ImGui::PushID(node->id);
-		if (ImGui::Selectable(node->name, node->id == node_selected))
-			node_selected = node->id;
-		if (ImGui::IsItemHovered())
-		{
-			node_hovered_in_list = node->id;
-			open_context_menu |= ImGui::IsMouseClicked(1);
-		}
-		ImGui::PopID();
-	}
-	ImGui::EndChild();
-
-	//--------------------------------------------------------------------------------------------------------
-
-
-	//Create Canvas-------------------------------------------------------------------------------------------
-
 	static bool show_grid = false;
+
+	ImGui::SetNextWindowSize(ImVec2(700, 600), ImGuiSetCond_FirstUseEver);
+	ImGui::Begin("NodeGraph");
 
 	ImGui::SameLine();
 	ImGui::BeginGroup();
@@ -260,9 +228,11 @@ void NodeGraph::DrawNodeGraph()
 		need_save = true;
 	}
 
-	ImGui::SameLine(ImGui::GetWindowWidth() - 220);
+	ImGui::SameLine(ImGui::GetWindowWidth() - 120);
 	ImGui::Checkbox("Show grid", &show_grid);
-	ImGui::InputText("Graph Name", name, DEFAULT_BUF_SIZE);
+	ImGui::Text("Graph Name:");
+	ImGui::SameLine();
+	ImGui::InputText("###GraphName", name, DEFAULT_BUF_SIZE);
 
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1, 1));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
@@ -300,11 +270,8 @@ void NodeGraph::DrawNodeGraph()
 		ImVec2 p1 = offset + node_out->GetOutputSlotPos(link->output_slots);
 		ImVec2 p2 = offset + node_inp->GetInputSlotPos(link->input_slots);
 		draw_list->AddBezierCurve(p1, p1 + ImVec2(+50, 0), p2 + ImVec2(-50, 0), p2, IM_COL32(200, 200, 100, 255), 3.0f);
-
-
 	}
 	//----------------------------------------------------------------------------------------------------
-
 
 	//Print Nodes--------------------------------------------------------------------------------------------
 	for (int node_ids = 0; node_ids < nodes.size(); node_ids++)
@@ -348,6 +315,7 @@ void NodeGraph::DrawNodeGraph()
 		}
 
 		bool node_moving_active = ImGui::IsItemActive();
+
 		if (node_widgets_active || node_moving_active)
 			node_selected = node->id;
 		if (node_moving_active && ImGui::IsMouseDragging(0))
@@ -365,8 +333,10 @@ void NodeGraph::DrawNodeGraph()
 		
 		draw_list->AddRect(node_rect_min, node_rect_max, IM_COL32(100, 100, 100, 255), 4.0f);
 
-		for (int slot_idx = 0; slot_idx < node->input_counts; slot_idx++) {
+		for (int slot_idx = 0; slot_idx < node->input_counts; slot_idx++)
+		{
 			draw_list->AddCircleFilled(offset + node->GetInputSlotPos(slot_idx), NODE_SLOT_RADIUS, IM_COL32(150, 150, 150, 150));
+
 			ImVec2 mouse_pos = ImGui::GetMousePos();
 			ImVec2 input_pos = node->GetInputSlotPos(slot_idx) + offset;
 			
@@ -375,20 +345,12 @@ void NodeGraph::DrawNodeGraph()
 					input_node_pos = node_ids;
 					input_clicked = slot_idx;
 				}
-				if (ImGui::IsMouseClicked(1)) {
-					
-					for (std::vector<NodeGraphicalLink>::const_iterator it = links.begin(); it != links.end(); it++) {
-						
-						if ((*it).input_index == node_ids && (*it).input_slots == slot_idx) {
-							links.erase(it);
-							links.shrink_to_fit();
-							it = links.begin();
-						}
-					}
-				}
+				if (ImGui::IsMouseClicked(1)) 
+					DeleteLink(node_ids, slot_idx);
 			}
 		}
 		for (int slot_idx = 0; slot_idx < node->output_counts; slot_idx++) {
+
 			draw_list->AddCircleFilled(offset + node->GetOutputSlotPos(slot_idx), NODE_SLOT_RADIUS, IM_COL32(150, 150, 150, 150));
 
 			ImVec2 mouse_pos = ImGui::GetMousePos();
@@ -400,69 +362,17 @@ void NodeGraph::DrawNodeGraph()
 					output_clicked = slot_idx;
 				}
 
-				if (ImGui::IsMouseClicked(1)) {
-
-					for (std::vector<NodeGraphicalLink>::const_iterator it = links.begin(); it != links.end(); it++) {
-
-						if ((*it).output_index == node_ids && (*it).output_slots == slot_idx) {
-
-							
-							std::vector<Node*>::iterator n = nodes[(*it).input_index]->inputs_vec.begin();
-							nodes[(*it).input_index]->inputs_vec.erase(n + (*it).input_index-1);
-							nodes[(*it).input_index]->inputs_vec.shrink_to_fit();
-
-							//Not need erase in nodes outputs because don't save that
-							n = nodes[(*it).output_index]->outputs_vec.begin();
-							nodes[(*it).output_index]->outputs_vec.erase(n + (*it).output_index-1);
-
-							links.erase(it);
-							links.shrink_to_fit();
-							it = links.begin();
-							break;
-						}
-					}
-				}
+				if (ImGui::IsMouseClicked(1))
+					DeleteLink(node_ids, slot_idx);
 			}
 		}
 
-		if (input_node_pos != -1 && output_node_pos != -1) {
-			
-			Node* input_node = nullptr;
-			Node* output_node = nullptr;
-
-			for (uint j = 0; j < nodes.size(); ++j)
-			{
-		
-				if (nodes[j]->id == input_node_pos)
-				{
-					input_node = nodes[j];
-				}
-
-				if (nodes[j]->id == output_node_pos)
-				{
-					output_node = nodes[j];
-				}
-
-			}
-
-			if (input_node != nullptr && output_node != nullptr)
-			{
-				input_node->inputs_vec.push_back(output_node);
-				output_node->outputs_vec.push_back(input_node);
-			}
-
-			links.push_back(NodeGraphicalLink(input_node_pos, input_clicked, output_node_pos, output_clicked));
-			//nodes[input_node_pos]->outputs_vec.push_back(nodes[output_node_pos]);
-			//nodes[output_node_pos]->inputs_vec.push_back(nodes[input_node_pos]);
-
-
-
-			input_node_pos = -1;
-			output_node_pos = -1;
+		if (input_node_pos != -1 && output_node_pos != -1)
+		{
+			CreateNewLink(input_node_pos, output_node_pos);
 		}
 		
-
-		SetBackgroundNodeType(node, draw_list, node_rect_min, node_rect_max);
+		SetBackgroundNodeType(*node, *draw_list, node_rect_min, node_rect_max);
 
 		ImGui::PopID();
 	}
@@ -470,11 +380,11 @@ void NodeGraph::DrawNodeGraph()
 	draw_list->ChannelsMerge();
 	//-------------------------------------------------------------------------------------------------------
 
-	//Create New Node----------------------------------------------------------------------------------------
+	//Create New Node And Open PopUp----------------------------------------------------------------------------------------
 
 	if (!ImGui::IsAnyItemHovered() && ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(1))
 	{
-		node_selected = node_hovered_in_list = node_hovered_in_scene = -1;
+		node_selected = node_hovered_in_scene = -1;
 		open_context_menu = true;
 	}
 	if (open_context_menu)
@@ -482,8 +392,7 @@ void NodeGraph::DrawNodeGraph()
 		if (ImGui::IsMouseClicked(1))
 		{
 			ImGui::OpenPopup("context_menu");
-			if (node_hovered_in_list != -1)
-				node_selected = node_hovered_in_list;
+
 			if (node_hovered_in_scene != -1)
 				node_selected = node_hovered_in_scene;
 		}
@@ -504,19 +413,16 @@ void NodeGraph::DrawNodeGraph()
 			{
 				DeleteNode(*node);
 			}
-			
 		}
 		else
 		{
-			if (ImGui::MenuItem("Add")) { 
-				ImGui::OpenPopup("node_creation");
+			if (ImGui::MenuItem("Add"))
+			{ 
 				open_pop = true;
 			}
-			if (ImGui::MenuItem("Paste", NULL, false, false)) {}
 		}
 
 		ImGui::EndPopup();
-		
 	}
 
 	if (open_pop)
@@ -527,7 +433,6 @@ void NodeGraph::DrawNodeGraph()
 
 	if (ImGui::BeginPopup("node_creation"))
 	{
-		//Try to set this in a pop up, spoiler works but not easy to close combo.
 		static const char* node_types[] = { "No type selected","InputKeyboard", "MouseMotion", "TranslateGameObject","NodeRotateGameObject", "NodeInputMouse","InstatiateGameObject" };
 		static int current_type = 0;
 
@@ -548,8 +453,6 @@ void NodeGraph::DrawNodeGraph()
 	}
 
 	ImGui::PopStyleVar();
-
-
 	//-------------------------------------------------------------------------------------------------------
 
 	//Scroll Canvas------------------------------------------------------------------------------------------
@@ -574,45 +477,102 @@ void NodeGraph::DrawNodeGraph()
 
 }
 
-void NodeGraph::SetBackgroundNodeType(Node* node, ImDrawList* draw_list, ImVec2 node_rect_min, ImVec2 node_rect_max)
+void NodeGraph::DeleteLink(int& node_ids, int& slot_idx)
+{
+
+	for (std::vector<NodeGraphicalLink>::const_iterator it = links.begin(); it != links.end(); it++) {
+
+		if ((*it).output_index == node_ids && (*it).output_slots == slot_idx || (*it).input_index == node_ids && (*it).input_slots == slot_idx)
+		{
+			std::vector<Node*>::iterator n = nodes[(*it).input_index]->inputs_vec.begin();
+
+			nodes[(*it).input_index]->inputs_vec.erase(n);
+			nodes[(*it).input_index]->inputs_vec.shrink_to_fit();
+
+			n = nodes[(*it).output_index]->outputs_vec.begin();
+
+			nodes[(*it).output_index]->outputs_vec.erase(n);
+			nodes[(*it).output_index]->outputs_vec.shrink_to_fit();
+
+			links.erase(it);
+			links.shrink_to_fit();
+			it = links.begin();
+			break;
+		}
+	}
+}
+
+void NodeGraph::CreateNewLink(int& input_node_pos, int& output_node_pos)
+{
+	Node* input_node = nullptr;
+	Node* output_node = nullptr;
+
+	for (uint j = 0; j < nodes.size(); ++j)
+	{
+
+		if (nodes[j]->id == input_node_pos)
+		{
+			input_node = nodes[j];
+		}
+
+		if (nodes[j]->id == output_node_pos)
+		{
+			output_node = nodes[j];
+		}
+
+	}
+
+	if (input_node != nullptr && output_node != nullptr)
+	{
+		input_node->inputs_vec.push_back(output_node);
+		output_node->outputs_vec.push_back(input_node);
+	}
+
+	links.push_back(NodeGraphicalLink(input_node_pos, input_clicked, output_node_pos, output_clicked));
+
+	input_node_pos = -1;
+	output_node_pos = -1;
+}
+
+void NodeGraph::SetBackgroundNodeType(Node& node, ImDrawList& draw_list, ImVec2& node_rect_min, ImVec2& node_rect_max)
 {
 	int flags = 0;
 	flags |= ImDrawCornerFlags_TopLeft;
 	flags |= ImDrawCornerFlags_TopRight;
 
-
-	switch (node->type)
+	switch (node.type)
 	{
 	case NodeType::EventType:
 
-		draw_list->AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(255, 0, 0, 60), 4.0f, flags);
-		draw_list->AddText(ImVec2((node_rect_min.x + (node_rect_max.x - node_rect_min.x) / 4), node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Event: ");
-
+		draw_list.AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(255, 0, 0, 60), 4.0f, flags);
+		draw_list.AddText(ImVec2((node_rect_min.x + (node_rect_max.x - node_rect_min.x) / 4), node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Event: ");
 		break;
+
 	case NodeType::FunctionType:
 
-		draw_list->AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(0, 255, 0, 60), 4.0f, flags);
-		draw_list->AddText(ImVec2((node_rect_min.x + (node_rect_max.x - node_rect_min.x) / 4), node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Function: ");
-
+		draw_list.AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(0, 255, 0, 60), 4.0f, flags);
+		draw_list.AddText(ImVec2((node_rect_min.x + (node_rect_max.x - node_rect_min.x) / 4), node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Function: ");
 		break;
-	case NodeType::DefaultType:
-		draw_list->AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(0, 0, 255, 60), 4.0f, flags);
-		draw_list->AddText(ImVec2(( node_rect_min.x + (node_rect_max.x-node_rect_min.x)/4) , node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Default: ");
 
+	case NodeType::DefaultType:
+
+		draw_list.AddRectFilled(node_rect_min, ImVec2(node_rect_max.x, node_rect_min.y + 20), IM_COL32(0, 0, 255, 60), 4.0f, flags);
+		draw_list.AddText(ImVec2(( node_rect_min.x + (node_rect_max.x-node_rect_min.x)/4) , node_rect_min.y + 5), IM_COL32(255, 255, 255, 255), "Default: ");
 		break;
 	}
 }
+
 void NodeGraph::DeleteNode(Node& node)
 {
 	std::vector<Node*>::iterator it = nodes.begin() + node.id;
-
+	std::vector<NodeGraphicalLink>::iterator link_erase = links.begin();
 	uint id_erased = node.id;
 
 	for (int i = 0; i < links.size(); i++)
 	{
 		if (links[i].input_index == id_erased)
 		{
-			std::vector<NodeGraphicalLink>::iterator link_erase = links.begin() + i;
+			link_erase = links.begin() + i;
 			links.erase(link_erase);
 			links.shrink_to_fit();
 
@@ -624,18 +584,15 @@ void NodeGraph::DeleteNode(Node& node)
 
 		if (links[i].output_index == id_erased)
 		{
-			std::vector<NodeGraphicalLink>::iterator link_erase = links.begin() + i;
+			link_erase = links.begin() + i;
 			links.erase(link_erase);
 			links.shrink_to_fit();
 			i = 0;
 		}
-
-
 	}
 
 	nodes.erase(it);
 	nodes.shrink_to_fit();
-
 
 	for (int i = 0; i < nodes.size(); ++i)
 	{
@@ -648,7 +605,6 @@ void NodeGraph::DeleteNode(Node& node)
 				it = nodes[i]->outputs_vec.begin() + j;
 				nodes[i]->outputs_vec.erase(it);
 				nodes[i]->outputs_vec.shrink_to_fit();
-
 			}
 		}
 
@@ -661,15 +617,12 @@ void NodeGraph::DeleteNode(Node& node)
 				nodes[i]->inputs_vec.shrink_to_fit();
 			}
 		}
-
 	}
-
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //Node----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 Node* NodeGraph::CreateNodeByType(NodeSubType current_type)
 {
@@ -703,7 +656,6 @@ Node* NodeGraph::CreateNodeByType(NodeSubType current_type)
 			nodes.push_back(node);
 	}
 
-
 	return node;
 }
 
@@ -711,41 +663,13 @@ Node* NodeGraph::CreateNodeByType(NodeSubType current_type)
 void NodeGraph::DuplicateNode(Node& node)
 {
 	Node* new_node = CreateNodeByType(node.subtype);
-	
-	/*if (node.subtype != 0)
-	{
-		switch (node.subtype)
-		{
-		case InputKeyboard:
-			new_node = (Node*)new NodeInputKeyboard(nodes.size());
-			break;
-		case MouseMotion:
-			new_node = (Node*)new NodeMouseMotion(nodes.size());
-			break;
-		case TranslateGO:
-			new_node = (Node*)new NodeTranslateGameObject(nodes.size());
-			break;
-		case RotateGO:
-			new_node = (Node*)new NodeRotateGameObject(nodes.size());
-			break;
-		case InputMouse:
-			new_node = (Node*)new NodeInputMouse(nodes.size());
-			break;
-		case InstatiateGO:
-			new_node = (Node*)new NodeInstatiateGameObject(nodes.size());
-			break;
-		}*/
-	
+
 	if(new_node != nullptr)
 		new_node->SetReferencesNodeDuplicated(node);
-
-	//}
-
 }
 
 void Node::SetReferencesNodeDuplicated(Node& node)
 {
-
 }
 
 void Node::SetNodeReferencesInJSON(JSON_Object* obj) {
@@ -756,7 +680,6 @@ void Node::SetNodeReferencesInJSON(JSON_Object* obj) {
 
 void Node::DrawNode()
 {
-
 }
 
 bool Node::Update()
@@ -797,7 +720,6 @@ void Node::SaveNodeInformation(JSON_Object* obj)
 
 void Node::GetNodeReferencesInJSON(JSON_Object* obj)
 {
-
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
