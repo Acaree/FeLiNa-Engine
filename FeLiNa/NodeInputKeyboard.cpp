@@ -1,7 +1,7 @@
 #include "NodeInputKeyboard.h"
 #include "Application.h"
 #include "ModuleInput.h"
-
+#include <string>
 
 NodeInputKeyboard::NodeInputKeyboard(int id, char key) : Node( id, "Input Event", {100,100}, 0, 1, NodeType::EventType)
 {
@@ -27,9 +27,12 @@ bool NodeInputKeyboard::Update()
 
 void NodeInputKeyboard::DrawNode()
 {
+	static std::string string_input;
+	string_input = key;
 
-	if (ImGui::InputText("Key react:", (char*)&key, 2))
+	if (ImGui::InputText("Key react:", (char*)string_input.c_str(), 2))
 	{
+		key = string_input[0];
 		key_code = SDL_GetScancodeFromName(&key);
 	}
 
