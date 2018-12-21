@@ -53,7 +53,7 @@ bool NodeInstatiateGameObject::Update()
 		}
 		else {
 
-			instance->speed->SetSpeed(speed);
+			instance->speed->SetSpeed(direction);
 			instance->speed->SetVelocity(velocity);
 		}
 	}
@@ -154,7 +154,7 @@ void NodeInstatiateGameObject::DrawNode()
 	}
 	else
 	{
-		ImGui::DragFloat3("Direction", &speed[0], 0.01f, 0.0F, 1.0F);
+		ImGui::DragFloat3("Direction", &direction[0], 0.01f, 0.0F, 1.0F);
 		ImGui::InputFloat("Velocity", &velocity);
 	}
 
@@ -175,9 +175,9 @@ void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 	else
 		json_object_set_number(obj, "position uid", 0);
 
-	json_object_set_number(obj, "speedx", speed.x);
-	json_object_set_number(obj, "speedy", speed.y);
-	json_object_set_number(obj, "speedz", speed.z);
+	json_object_set_number(obj, "dirx", direction.x);
+	json_object_set_number(obj, "diry", direction.y);
+	json_object_set_number(obj, "dirz", direction.z);
 
 	if(get_speed_dir_from_GO)
 		json_object_set_number(obj, "speed dir uid", GO_speed_dir->uid);
@@ -195,9 +195,9 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	new_pos.x = json_object_get_number(obj, "posx");
 	new_pos.y = json_object_get_number(obj, "posy");
 	new_pos.z = json_object_get_number(obj, "posz");
-	speed.x = json_object_get_number(obj, "speedx");
-	speed.x = json_object_get_number(obj, "speedy");
-	speed.x = json_object_get_number(obj, "speedz");
+	direction.x = json_object_get_number(obj, "dirx");
+	direction.y = json_object_get_number(obj, "diry");
+	direction.z = json_object_get_number(obj, "dirz");
 
 	instance_fbx_path = json_object_get_string(obj, "FBX path");
 
@@ -228,6 +228,6 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 void NodeInstatiateGameObject::SetReferencesNodeDuplicated(Node& node)
 {
 	new_pos = ((NodeInstatiateGameObject*)&node)->new_pos;
-	speed = ((NodeInstatiateGameObject*)&node)->speed;
+	direction = ((NodeInstatiateGameObject*)&node)->direction;
 	instance_fbx_path = ((NodeInstatiateGameObject*)&node)->instance_fbx_path;
 }

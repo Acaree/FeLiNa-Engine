@@ -20,7 +20,9 @@ public:
 private:
 
 	math::float3 new_pos = math::float3::zero;
-	math::float3 speed = math::float3::zero;
+	math::float3 direction = math::float3::zero;
+	float velocity = 0.0f;
+
 	std::string instance_fbx_path;
 	
 	bool get_position_from_GO = false;
@@ -30,7 +32,6 @@ private:
 	bool get_speed_dir_from_GO = false;
 	std::string speed_dir_GO_name = "Game Object Invalid";
 	GameObject* GO_speed_dir = nullptr;
-	float velocity = 0.0f;
 	bool rectificate_x = false, rectificate_y = false, rectificate_z = false;
 };
 
