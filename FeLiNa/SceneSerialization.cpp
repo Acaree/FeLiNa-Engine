@@ -171,13 +171,11 @@ bool SceneSerialization::LoadScene(char* file_name)
 			{
 				App->scene->game_camera = App->scene->root_object->SearchMainCamera(App->scene->root_object)->camera;
 			}
-
-
 		}
 
 
 	}
-	//json_value_free(file_root);
+	json_value_free(file_root);
 	save_name_scene = "";
 	return ret;
 }
@@ -252,6 +250,7 @@ GameObject* SceneSerialization::LoadGOFromJson(char* file_name)
 
 	}
 
+	json_value_free(file_root);
 	//json_value_free(file_root);
 	save_name_scene = "";
 	return go_vector[0];

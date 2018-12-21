@@ -88,7 +88,7 @@ class NodeGraph
 public:
 
 	NodeGraph(uint uid = 0, const char* name = "No Name");
-
+	~NodeGraph();
 	bool Update(float dt);
 	void DrawNodeGraph();
 	void SetBackgroundNodeType(Node& node, ImDrawList& draw_list, ImVec2& node_rect_min, ImVec2& node_rect_max);

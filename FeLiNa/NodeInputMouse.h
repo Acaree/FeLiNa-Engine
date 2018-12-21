@@ -10,7 +10,7 @@ class NodeInputMouse : public Node
 public:
 
 	NodeInputMouse(int id);
-
+	~NodeInputMouse();
 	bool Update(float dt);
 	void DrawNode();
 	void SetNodeReferencesInJSON(JSON_Object* obj);

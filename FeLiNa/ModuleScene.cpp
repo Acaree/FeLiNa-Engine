@@ -28,6 +28,7 @@ ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, sta
 ModuleScene::~ModuleScene()
 {
 	RELEASE(root_object);
+	
 }
 
 // Load assets

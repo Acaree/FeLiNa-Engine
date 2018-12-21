@@ -5,9 +5,15 @@
 #include "Application.h"
 #include "SceneSerialization.h"
 #include "ModuleScene.h"
+#include "mmgr/mmgr.h"
 NodeInstatiateGameObject::NodeInstatiateGameObject(int id) : Node(id, "Game object to instantiate:", { 100,100 }, 1, 1, NodeType::FunctionType)
 {
 	subtype = NodeSubType::InstatiateGO;
+}
+
+NodeInstatiateGameObject::~NodeInstatiateGameObject()
+{
+
 }
 
 bool NodeInstatiateGameObject::Update(float dt)

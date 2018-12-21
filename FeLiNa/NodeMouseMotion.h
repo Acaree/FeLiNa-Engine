@@ -9,6 +9,7 @@ class NodeMouseMotion : public Node
 public:
 
 	NodeMouseMotion(int id);
+	~NodeMouseMotion();
 	bool Update(float dt);
 
 };

@@ -8,7 +8,7 @@ ResourceScript::ResourceScript(uint uid, RESOURCE_TYPE type) : Resource(uid, typ
 
 ResourceScript::~ResourceScript()
 {
-
+	RELEASE(graph);
 }
 
 bool ResourceScript::LoadInMemory()

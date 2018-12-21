@@ -13,6 +13,11 @@ NodeInputKeyboard::NodeInputKeyboard(int id, char key) : Node( id, "Input Event"
 
 }
 
+NodeInputKeyboard::~NodeInputKeyboard()
+{
+
+}
+
 bool NodeInputKeyboard::Update(float dt)
 {
 	returned_result = false;

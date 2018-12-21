@@ -10,7 +10,7 @@
 #include "NodeRotateGameObject.h"
 #include "NodeInputMouse.h"
 #include "NodeInstatiateGameObject.h"
-
+#include "mmgr/mmgr.h"
 
 //NodeGraph-------------------------------------------------------------------------------------------------------------------------------------------
 NodeGraph::NodeGraph(uint uid, const char* name)
@@ -24,6 +24,17 @@ NodeGraph::NodeGraph(uint uid, const char* name)
 		this->uid = uid;
 }
 
+NodeGraph::~NodeGraph()
+{
+	for (uint i = 0; i < nodes.size(); ++i)
+	{
+		RELEASE(nodes[i]);
+	}
+
+
+	nodes.clear();
+	links.clear();
+}
 
 bool NodeGraph::Update(float dt)
 {

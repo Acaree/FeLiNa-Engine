@@ -56,8 +56,6 @@ public:
 
 	ComponentCamera* game_camera = nullptr;
 
-	SceneSerialization* serialization_scene = nullptr;
-
 };
 
 #endif

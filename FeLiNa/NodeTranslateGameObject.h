@@ -11,6 +11,8 @@ class NodeTranslateGameObject : public Node
 public:
 
 	NodeTranslateGameObject(int id);
+	~NodeTranslateGameObject();
+
 	bool Update(float dt);
 	void DrawNode();
 	void SetNodeReferencesInJSON(JSON_Object* obj);

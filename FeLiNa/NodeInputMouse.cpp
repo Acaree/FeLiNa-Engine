@@ -8,6 +8,11 @@ NodeInputMouse::NodeInputMouse(int id) : Node(id, "Mouse click button:", { 100,1
 	subtype = NodeSubType::InputMouse;
 }
 
+NodeInputMouse::~NodeInputMouse()
+{
+
+}
+
 bool NodeInputMouse::Update(float dt)
 {
 	returned_result = false;

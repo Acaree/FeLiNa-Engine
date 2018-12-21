@@ -78,7 +78,7 @@ Application::~Application()
 	RELEASE(importer_material);
 #endif // !GAME_MODE
 
-	RELEASE(serialization_scene);
+
 	RELEASE_ARRAY(name);
 	RELEASE_ARRAY(app_name);
 	RELEASE_ARRAY(organization);
@@ -178,9 +178,9 @@ void Application::PrepareUpdate()
 			engine_states = ENGINE_STATES::ENGINE_STATE_EDITOR_MODE;
 			camera->current_camera = camera->camera_editor;
 
-			scene->serialization_scene->save_name_scene = "auto";
-			scene->serialization_scene->ClearActualScene();
-			scene->serialization_scene->LoadScene(scene->serialization_scene->save_name_scene);
+			serialization_scene->save_name_scene = "auto";
+			serialization_scene->ClearActualScene();
+			serialization_scene->LoadScene(serialization_scene->save_name_scene);
 		}
 
 		break;

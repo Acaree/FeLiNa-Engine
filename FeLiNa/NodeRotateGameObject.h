@@ -10,6 +10,8 @@ class NodeRotateGameObject : public Node
 {
 public:
 	NodeRotateGameObject(int id);
+	~NodeRotateGameObject();
+
 	bool Update(float dt);
 	void DrawNode();
 	void SetNodeReferencesInJSON(JSON_Object* obj);

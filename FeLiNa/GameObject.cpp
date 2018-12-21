@@ -55,6 +55,8 @@ GameObject::~GameObject()
 		RELEASE(camera);
 	if (speed != nullptr)
 		RELEASE(speed);
+	if (script != nullptr)
+		RELEASE(script);
 
 	parent = nullptr;
 }
@@ -89,6 +91,8 @@ bool GameObject::CleanUp()
 		RELEASE(camera);
 	if (speed != nullptr)
 		RELEASE(speed);
+	if (script != nullptr)
+		RELEASE(script);
 
 	components.clear();
 

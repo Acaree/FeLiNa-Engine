@@ -9,6 +9,11 @@ NodeTranslateGameObject::NodeTranslateGameObject(int id) : Node(id, "Game object
 	subtype = NodeSubType::TranslateGO;
 }
 
+NodeTranslateGameObject::~NodeTranslateGameObject()
+{
+
+}
+
 bool NodeTranslateGameObject::Update(float dt)
 {
 	returned_result = false;

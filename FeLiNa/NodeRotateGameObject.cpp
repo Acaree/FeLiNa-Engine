@@ -10,6 +10,10 @@ NodeRotateGameObject::NodeRotateGameObject(int id) : Node(id, "Game object to ro
 	subtype = NodeSubType::RotateGO;
 }
 
+NodeRotateGameObject::~NodeRotateGameObject()
+{
+
+}
 
 bool NodeRotateGameObject::Update(float dt)
 {
