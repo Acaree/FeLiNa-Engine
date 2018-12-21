@@ -170,7 +170,7 @@ void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 	json_object_set_number(obj, "posy", new_pos.y);
 	json_object_set_number(obj, "posz", new_pos.z);
 
-	if (get_position_from_GO)
+	if (GO_position != nullptr)
 		json_object_set_number(obj, "position uid", GO_position->uid);
 	else
 		json_object_set_number(obj, "position uid", 0);
@@ -179,13 +179,13 @@ void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 	json_object_set_number(obj, "diry", direction.y);
 	json_object_set_number(obj, "dirz", direction.z);
 
-	if(get_speed_dir_from_GO)
+	if(GO_speed_dir != nullptr)
 		json_object_set_number(obj, "speed dir uid", GO_speed_dir->uid);
 	else
 		json_object_set_number(obj, "speed dir uid", 0);
 
-	if(instance_fbx_path.size() != 0)
-		json_object_set_string(obj, "FBX path", instance_fbx_path.c_str());
+	
+	json_object_set_string(obj, "FBX path", instance_fbx_path.c_str());
 	
 
 }
@@ -201,7 +201,7 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 
 	instance_fbx_path = json_object_get_string(obj, "FBX path");
 
-	int GO_speed_dir_uid = json_object_get_number(obj, "speed dir uid");
+    int GO_speed_dir_uid = json_object_get_number(obj, "speed dir uid");
 	if (GO_speed_dir_uid != 0) {
 		GO_speed_dir = App->scene->root_object->SearchGOForUID(GO_speed_dir_uid);
 		get_speed_dir_from_GO = true;
