@@ -112,5 +112,7 @@ void ComponentMesh::OnLoad(JSON_Object* obj)
 
 		if(resource != nullptr)
 			resource->LoadToMemory();
+
+		parent->RecalculateBoundingBox();
 	}
 }
