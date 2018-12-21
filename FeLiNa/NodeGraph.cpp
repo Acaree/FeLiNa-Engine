@@ -605,6 +605,8 @@ void NodeGraph::DeleteNode(Node& node)
 
 	}
 
+	links_to_delete.clear();
+
 	nodes.erase(it);
 	nodes.shrink_to_fit();
 
