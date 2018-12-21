@@ -159,9 +159,12 @@ void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 	json_object_set_number(obj, "posx", new_pos.x);
 	json_object_set_number(obj, "posy", new_pos.y);
 	json_object_set_number(obj, "posz", new_pos.z);
+
 	json_object_set_boolean(obj, "rectificate x", rectificate_x);
 	json_object_set_boolean(obj, "rectificate y", rectificate_y);
 	json_object_set_boolean(obj, "rectificate z", rectificate_z);
+
+	json_object_set_number(obj, "velocity", velocity);
 
 	if (GO_position != nullptr)
 		json_object_set_number(obj, "position uid", GO_position->uid);
@@ -188,12 +191,16 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	new_pos.x = json_object_get_number(obj, "posx");
 	new_pos.y = json_object_get_number(obj, "posy");
 	new_pos.z = json_object_get_number(obj, "posz");
+
 	direction.x = json_object_get_number(obj, "dirx");
 	direction.y = json_object_get_number(obj, "diry");
 	direction.z = json_object_get_number(obj, "dirz");
+
 	rectificate_x = json_object_get_boolean(obj, "rectificate x");
 	rectificate_y = json_object_get_boolean(obj, "rectificate y");
 	rectificate_z = json_object_get_boolean(obj, "rectificate z");
+
+	velocity = json_object_get_number(obj, "velocity");
 
 	instance_fbx_path = json_object_get_string(obj, "FBX path");
 

@@ -1,0 +1,308 @@
+[
+    {
+        "name": "Main Camera",
+        "uid": 1069943125,
+        "uid parent": 1397443035,
+        "Components": [
+            {
+                "type": 0,
+                "px": 20,
+                "py": 8.360931396484375,
+                "pz": 0,
+                "qx": 0.048945024609565735,
+                "qy": -0.70528805255889893,
+                "qz": 0.048962093889713287,
+                "qw": 0.70553231239318848,
+                "sx": 1,
+                "sy": 0.99999898672103882,
+                "sz": 0.9999995231628418
+            },
+            {
+                "type": 3,
+                "near": 1,
+                "far": 100,
+                "vFov": 1.0471975803375244,
+                "hFov": 1.0471975803375244
+            }
+        ]
+    },
+    {
+        "name": "tank",
+        "uid": 343316426,
+        "uid parent": 1397443035,
+        "Components": [
+            {
+                "type": 0,
+                "px": 0,
+                "py": 0,
+                "pz": 0,
+                "qx": 0,
+                "qy": 0,
+                "qz": 0,
+                "qw": 1,
+                "sx": 1,
+                "sy": 1,
+                "sz": 1
+            },
+            {
+                "type": 5,
+                "UID": 1727779405,
+                "References": [
+                    {
+                        "id": 0,
+                        "key": 12
+                    },
+                    {
+                        "id": 1,
+                        "key": 14
+                    },
+                    {
+                        "id": 2,
+                        "key": 13
+                    },
+                    {
+                        "id": 3,
+                        "key": 15
+                    },
+                    {
+                        "id": 4,
+                        "transx": 0,
+                        "transy": 0,
+                        "transz": -5,
+                        "GO uid": 343316426
+                    },
+                    {
+                        "id": 5,
+                        "transx": 0,
+                        "transy": 0,
+                        "transz": 5,
+                        "GO uid": 343316426
+                    },
+                    {
+                        "id": 6,
+                        "transx": 5,
+                        "transy": 0,
+                        "transz": 0,
+                        "GO uid": 343316426
+                    },
+                    {
+                        "id": 7,
+                        "transx": -5,
+                        "transy": 0,
+                        "transz": 0,
+                        "GO uid": 343316426
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Tank",
+        "uid": 1793597018,
+        "uid parent": 343316426,
+        "Components": [
+            {
+                "type": 0,
+                "px": 0,
+                "py": 0,
+                "pz": 0,
+                "qx": 2.080594585507356e-09,
+                "qy": 0,
+                "qz": 0,
+                "qw": 1,
+                "sx": 0.019999999552965164,
+                "sy": 0.019999999552965164,
+                "sz": 0.019999999552965164
+            }
+        ]
+    },
+    {
+        "name": "TankRenderers",
+        "uid": 1822499760,
+        "uid parent": 1793597018,
+        "Components": [
+            {
+                "type": 0,
+                "px": 0,
+                "py": 0,
+                "pz": 0,
+                "qx": 0,
+                "qy": 0,
+                "qz": 0,
+                "qw": 1,
+                "sx": 1,
+                "sy": 1,
+                "sz": 1
+            }
+        ]
+    },
+    {
+        "name": "TankTurret",
+        "uid": 1534707656,
+        "uid parent": 1822499760,
+        "Components": [
+            {
+                "type": 0,
+                "px": 1.6880221664905548e-08,
+                "py": 0,
+                "pz": -5.0921988759000669e-07,
+                "qx": 0,
+                "qy": 0,
+                "qz": 0,
+                "qw": 1,
+                "sx": 1,
+                "sy": 1,
+                "sz": 1
+            },
+            {
+                "type": 1,
+                "UID": 2000509970
+            },
+            {
+                "type": 2,
+                "UID": 1513220308
+            },
+            {
+                "type": 5,
+                "UID": 42033719,
+                "References": [
+                    {
+                        "id": 0
+                    },
+                    {
+                        "id": 1,
+                        "rotx": 0,
+                        "roty": 30,
+                        "rotz": 0,
+                        "rot with mouse": 1,
+                        "GO uid": 1534707656
+                    },
+                    {
+                        "id": 2,
+                        "key": 2
+                    },
+                    {
+                        "id": 3,
+                        "posx": 0,
+                        "posy": 0,
+                        "posz": 0,
+                        "rectificate x": false,
+                        "rectificate y": true,
+                        "rectificate z": false,
+                        "velocity": 25,
+                        "position uid": 465171703,
+                        "dirx": 0,
+                        "diry": 0,
+                        "dirz": 0,
+                        "speed dir uid": 465171703,
+                        "FBX path": "Assets\/ball"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "PointToShot",
+        "uid": 465171703,
+        "uid parent": 1534707656,
+        "Components": [
+            {
+                "type": 0,
+                "px": -1.1519014835357666,
+                "py": 171.61911010742188,
+                "pz": 85.366691589355469,
+                "qx": 0,
+                "qy": 0,
+                "qz": 0,
+                "qw": 1,
+                "sx": 1,
+                "sy": 1,
+                "sz": 1
+            }
+        ]
+    },
+    {
+        "name": "TankTracksLeft",
+        "uid": 1688803519,
+        "uid parent": 1822499760,
+        "Components": [
+            {
+                "type": 0,
+                "px": 0,
+                "py": 0,
+                "pz": 0,
+                "qx": 0,
+                "qy": 0,
+                "qz": 0,
+                "qw": 1,
+                "sx": 1,
+                "sy": 1,
+                "sz": 1
+            },
+            {
+                "type": 1,
+                "UID": 1193072101
+            },
+            {
+                "type": 2,
+                "UID": 1513220308
+            }
+        ]
+    },
+    {
+        "name": "TankTracksRight",
+        "uid": 381079500,
+        "uid parent": 1822499760,
+        "Components": [
+            {
+                "type": 0,
+                "px": 0,
+                "py": 0,
+                "pz": 0,
+                "qx": 0,
+                "qy": 0,
+                "qz": 0,
+                "qw": 1,
+                "sx": 1,
+                "sy": 1,
+                "sz": 1
+            },
+            {
+                "type": 1,
+                "UID": 825581157
+            },
+            {
+                "type": 2,
+                "UID": 1513220308
+            }
+        ]
+    },
+    {
+        "name": "TankChassis",
+        "uid": 334646854,
+        "uid parent": 1822499760,
+        "Components": [
+            {
+                "type": 0,
+                "px": -1.7146703612525016e-08,
+                "py": 2.2737367544323206e-13,
+                "pz": 4.76837158203125e-07,
+                "qx": 0,
+                "qy": 0,
+                "qz": 0,
+                "qw": 1,
+                "sx": 1,
+                "sy": 1,
+                "sz": 1
+            },
+            {
+                "type": 1,
+                "UID": 1856132793
+            },
+            {
+                "type": 2,
+                "UID": 1513220308
+            }
+        ]
+    }
+] 
