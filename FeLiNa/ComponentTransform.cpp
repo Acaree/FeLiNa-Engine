@@ -280,11 +280,7 @@ void ComponentTransform::ShowGuizmos()
 
 math::float3 ComponentTransform::GetGlobalPosition() {
 
-	math::float4x4 tempmatrix = parent->transform->GetTransformMatrix();
-
-	global_matrix = tempmatrix * local_matrix;
 	return global_matrix.TranslatePart();
-	
 }
 
 math::Quat ComponentTransform::GetGlobalRotation()const {
