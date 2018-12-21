@@ -14,7 +14,7 @@ public:
 	void OnSave(JSON_Object* obj);
 	void OnLoad(JSON_Object* obj);
 	void Update(float dt);
-	void SetSpeed(math::float3 new_speed);
+	void SetDirection(math::float3 new_direction);
 	void SetVelocity(float velocity);
 private:
 

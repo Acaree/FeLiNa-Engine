@@ -60,7 +60,7 @@ void ComponentSpeed::OnLoad(JSON_Object* obj)
 
 }
 
-void ComponentSpeed::SetSpeed(math::float3 new_speed) {
+void ComponentSpeed::SetDirection(math::float3 new_speed) {
 
 	this->direction = new_speed;
 

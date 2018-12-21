@@ -26,12 +26,6 @@ bool NodeInstatiateGameObject::Update(float dt)
 		std::string path = instance_fbx_path;
 		GameObject* instance = App->serialization_scene->LoadGOFromJson((char*)path.c_str());
 
-		instance->SetParent(App->scene->root_object);
-
-
-		if (instance->transform == nullptr) {
-			instance->AddComponent(Component_Transform);
-		}
 
 		if (get_position_from_GO) {
 			instance->transform->SetPosition(GO_position->transform->GetGlobalPosition());
@@ -40,14 +34,22 @@ bool NodeInstatiateGameObject::Update(float dt)
 			instance->transform->SetPosition(new_pos);
 		}
 
+
+		instance->SetParent(App->scene->root_object);
+
+
+		if (instance->transform == nullptr) {
+			instance->AddComponent(Component_Transform);
+		}
+
 		if (instance->speed == nullptr) {
 			instance->AddComponent(Component_Speed);
 		}
 
 		if (get_speed_dir_from_GO) {
 
-			math::float3 rotated_speed = GO_speed_dir->transform->GetGlobalPosition();
-		
+			math::float3 rotated_speed = GO_position->transform->GetTransformMatrix().WorldZ();
+
 			if (rectificate_x)
 				rotated_speed.x = 0;
 			if (rectificate_y)
@@ -55,12 +57,12 @@ bool NodeInstatiateGameObject::Update(float dt)
 			if (rectificate_z)
 				rotated_speed.z = 0;
 
-			instance->speed->SetSpeed(rotated_speed.Normalized());
+			instance->speed->SetDirection(rotated_speed.Normalized());
 			instance->speed->SetVelocity(velocity);
 		}
 		else {
 
-			instance->speed->SetSpeed(direction);
+			instance->speed->SetDirection(direction);
 			instance->speed->SetVelocity(velocity);
 		}
 	}
