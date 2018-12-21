@@ -166,6 +166,7 @@ void NodeInstatiateGameObject::DrawNode()
 void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 {
 	json_object_set_number(obj, "id", id);
+	
 	json_object_set_number(obj, "posx", new_pos.x);
 	json_object_set_number(obj, "posy", new_pos.y);
 	json_object_set_number(obj, "posz", new_pos.z);
@@ -175,9 +176,19 @@ void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 	else
 		json_object_set_number(obj, "position uid", 0);
 
+
 	json_object_set_number(obj, "dirx", direction.x);
 	json_object_set_number(obj, "diry", direction.y);
 	json_object_set_number(obj, "dirz", direction.z);
+
+	json_object_set_number(obj, "dirx to zero", rectificate_x);
+	json_object_set_number(obj, "diry to zero", rectificate_y);
+	json_object_set_number(obj, "dirz to zero", rectificate_z);
+
+	json_object_set_number(obj, "velocity", velocity);
+
+
+
 
 	if(GO_speed_dir != nullptr)
 		json_object_set_number(obj, "speed dir uid", GO_speed_dir->uid);
@@ -195,9 +206,16 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	new_pos.x = json_object_get_number(obj, "posx");
 	new_pos.y = json_object_get_number(obj, "posy");
 	new_pos.z = json_object_get_number(obj, "posz");
+
 	direction.x = json_object_get_number(obj, "dirx");
 	direction.y = json_object_get_number(obj, "diry");
 	direction.z = json_object_get_number(obj, "dirz");
+
+	rectificate_x = json_object_get_number(obj, "dirx to zero");
+	rectificate_y = json_object_get_number(obj, "diry to zero");
+	rectificate_z = json_object_get_number(obj, "dirz to zero");
+
+	velocity = json_object_get_number(obj, "velocity");
 
 	instance_fbx_path = json_object_get_string(obj, "FBX path");
 
