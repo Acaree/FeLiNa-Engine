@@ -30,6 +30,8 @@ private:
 	bool get_speed_dir_from_GO = false;
 	std::string speed_dir_GO_name = "Game Object Invalid";
 	GameObject* GO_speed_dir = nullptr;
+	float velocity = 0.0f;
+	bool rectificate_x = false, rectificate_y = false, rectificate_z = false;
 };
 
 

@@ -29,7 +29,6 @@ bool NodeInstatiateGameObject::Update()
 		if (get_position_from_GO) {
 			instance->transform->SetPosition(GO_position->transform->GetGlobalPosition());
 		}
-
 		else {
 			instance->transform->SetPosition(new_pos);
 		}
@@ -40,14 +39,22 @@ bool NodeInstatiateGameObject::Update()
 
 		if (get_speed_dir_from_GO) {
 
-			math::float3 rotated_speed = GO_speed_dir->transform->GetGlobalRotation().ToFloat3x3() * speed;
-			instance->speed->SetSpeed(rotated_speed);
+			math::float3 rotated_speed = GO_speed_dir->transform->GetGlobalPosition();
+		
+			if (rectificate_x)
+				rotated_speed.x = 0;
+			if (rectificate_y)
+				rotated_speed.y = 0;
+			if (rectificate_z)
+				rotated_speed.z = 0;
 
+			instance->speed->SetSpeed(rotated_speed.Normalized());
+			instance->speed->SetVelocity(velocity);
 		}
-
 		else {
 
 			instance->speed->SetSpeed(speed);
+			instance->speed->SetVelocity(velocity);
 		}
 	}
 
@@ -72,15 +79,27 @@ void NodeInstatiateGameObject::DrawNode()
 		ImGui::Text("Not valid game object");
 	else
 		ImGui::Text(instance_fbx_path.c_str());
+	ImGui::SameLine();
+	ImGui::Button("Drag FBX Here");
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
+		{
+			instance_fbx_path = (char*)payload->Data;
+			instance_fbx_path.erase(instance_fbx_path.find_last_of("."), instance_fbx_path.size());
+		}
+		ImGui::EndDragDropTarget();
+	}
+
 
 	ImGui::Checkbox("Get position from Game Object", &get_position_from_GO);
 
 	if(!get_position_from_GO)
 	ImGui::InputFloat3("Instance pos", &new_pos[0], 2);
-
 	else {
-		
 		ImGui::Text(position_GO_name.c_str());
+		ImGui::SameLine();
 		ImGui::Button("Drag Game Object Here");
 
 		if (ImGui::BeginDragDropTarget())
@@ -97,13 +116,16 @@ void NodeInstatiateGameObject::DrawNode()
 		}
 	}
 	
-	ImGui::InputFloat3("Speed", &speed[0], 2);
+	
 
 	ImGui::Checkbox("Get speed axis rotation from Game Object ", &get_speed_dir_from_GO);
 	
+
+
 	if (get_speed_dir_from_GO) {
 
 		ImGui::Text(speed_dir_GO_name.c_str());
+		ImGui::SameLine();
 		ImGui::Button("Drag Game Object Here");
 
 		if (ImGui::BeginDragDropTarget())
@@ -119,21 +141,24 @@ void NodeInstatiateGameObject::DrawNode()
 			}
 			ImGui::EndDragDropTarget();
 		}
+
+		ImGui::Text("Set any axis to 0?");
+		ImGui::SameLine();
+		ImGui::Checkbox("X", &rectificate_x);
+		ImGui::SameLine();
+		ImGui::Checkbox("Y", &rectificate_y);
+		ImGui::SameLine();
+		ImGui::Checkbox("Z", &rectificate_z);
+
+		ImGui::InputFloat("Velocity", &velocity);
 	}
-	
-
-	ImGui::Text("GameObject:");
-	ImGui::Button("Drag FBX Here");
-
-	if (ImGui::BeginDragDropTarget())
+	else
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Assets_Nodes"))
-		{
-			instance_fbx_path = (char*)payload->Data;
-			instance_fbx_path.erase(instance_fbx_path.find_last_of("."), instance_fbx_path.size());
-		}
-		ImGui::EndDragDropTarget();
+		ImGui::DragFloat3("Direction", &speed[0], 0.01f, 0.0F, 1.0F);
+		ImGui::InputFloat("Velocity", &velocity);
 	}
+
+	
 
 
 }

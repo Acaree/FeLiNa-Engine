@@ -11,7 +11,7 @@ ComponentSpeed::ComponentSpeed(GameObject* parent, math::float3 speed) : Compone
 {
 	type = Component_Speed;
 
-	this->speed = speed;
+	this->direction = speed;
 }
 
 
@@ -24,10 +24,9 @@ void ComponentSpeed::DrawInspector()
 		ImGui::SameLine();
 
 
-		if (ImGui::DragFloat3("##speed", &speed[0], 1.0F))
-		{
-			int i = 0;
-		}
+		ImGui::DragFloat3("Direction", &direction[0], 0.01f,0.0F,1.0F ) ;
+		ImGui::InputFloat("###velocity", &velocity);
+		
 
 		ImGui::TreePop();
 	}
@@ -36,7 +35,8 @@ void ComponentSpeed::DrawInspector()
 void ComponentSpeed:: Update(float dt) {
 	
 	if (App->engine_states == ENGINE_STATE_GAME_MODE && App->game_states != GAME_STATES::ENGINE_STATE_PAUSE) {
-		parent->transform->SumPosition(speed);
+		;
+		parent->transform->SumPosition((direction.Normalized() * (velocity*dt)));
 	}
 }
 
@@ -45,22 +45,28 @@ void ComponentSpeed::OnSave(JSON_Object* obj)
 {
 	json_object_set_number(obj, "type", type);
 
-	json_object_set_number(obj, "x", speed.x);
-	json_object_set_number(obj, "y", speed.y);
-	json_object_set_number(obj, "z", speed.z);
-
+	json_object_set_number(obj, "x", direction.x);
+	json_object_set_number(obj, "y", direction.y);
+	json_object_set_number(obj, "z", direction.z);
+	json_object_set_number(obj, "vel", velocity);
 }
 
 void ComponentSpeed::OnLoad(JSON_Object* obj)
 {
-	speed.x = json_object_get_number(obj, "x");
-	speed.y = json_object_get_number(obj, "y");
-	speed.z = json_object_get_number(obj, "z");
+	direction.x = json_object_get_number(obj, "x");
+	direction.y = json_object_get_number(obj, "y");
+	direction.z = json_object_get_number(obj, "z");
+	velocity = json_object_get_number(obj, "vel");
 
 }
 
 void ComponentSpeed::SetSpeed(math::float3 new_speed) {
 
-	this->speed = new_speed;
+	this->direction = new_speed;
 
+}
+
+void ComponentSpeed::SetVelocity(float velocity)
+{
+	this->velocity = velocity;
 }

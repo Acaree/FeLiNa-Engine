@@ -15,11 +15,11 @@ public:
 	void OnLoad(JSON_Object* obj);
 	void Update(float dt);
 	void SetSpeed(math::float3 new_speed);
-
+	void SetVelocity(float velocity);
 private:
 
-	math::float3 speed = math::float3::zero;
-
+	math::float3 direction = math::float3::zero;
+	float velocity = 0.0f;
 
 };
 
