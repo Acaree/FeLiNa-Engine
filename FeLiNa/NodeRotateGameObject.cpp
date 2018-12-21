@@ -11,7 +11,7 @@ NodeRotateGameObject::NodeRotateGameObject(int id) : Node(id, "Game object to ro
 }
 
 
-bool NodeRotateGameObject::Update()
+bool NodeRotateGameObject::Update(float dt)
 {
 	returned_result = false;
 
@@ -25,7 +25,7 @@ bool NodeRotateGameObject::Update()
 
 				float mouse_motion = -App->input->GetMouseXMotion();
 
-				math::float3 rot = axis * (mouse_motion/100);
+				math::float3 rot = (axis * (mouse_motion/100))*dt;
 				go->transform->SumRotation(rot);
 			}
 

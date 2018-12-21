@@ -25,7 +25,7 @@ NodeGraph::NodeGraph(uint uid, const char* name)
 }
 
 
-bool NodeGraph::Update()
+bool NodeGraph::Update(float dt)
 {
 	bool ret = false;
 
@@ -33,13 +33,13 @@ bool NodeGraph::Update()
 	{
 		if (nodes[i]->type == EventType && nodes[i]->active)
 		{
-			ret = nodes[i]->Update();
+			ret = nodes[i]->Update(dt);
 	
 			if (ret)
 			{
 				for (int j = 0; j < nodes[i]->outputs_vec.size(); j++)
 				{
-					if (!nodes[i]->active || !nodes[i]->outputs_vec[j]->Update())
+					if (!nodes[i]->active || !nodes[i]->outputs_vec[j]->Update(dt))
 						break;
 				}
 
@@ -698,7 +698,7 @@ void Node::DrawNode()
 {
 }
 
-bool Node::Update()
+bool Node::Update(float dt)
 {
 	return returned_result;
 }

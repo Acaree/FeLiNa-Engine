@@ -11,7 +11,7 @@ class NodeInstatiateGameObject : public Node
 public:
 
 	NodeInstatiateGameObject(int id);
-	bool Update();
+	bool Update(float dt);
 	void DrawNode();
 	void SetNodeReferencesInJSON(JSON_Object* obj);
 	void GetNodeReferencesInJSON(JSON_Object* obj);

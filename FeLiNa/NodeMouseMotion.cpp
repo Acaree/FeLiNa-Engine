@@ -7,7 +7,7 @@ NodeMouseMotion::NodeMouseMotion(int id): Node(id, "Mouse Motion", { 100,100 }, 
 	subtype = NodeSubType::MouseMotion;
 }
 
-bool NodeMouseMotion::Update()
+bool NodeMouseMotion::Update(float dt)
 {
 	returned_result = false;
 

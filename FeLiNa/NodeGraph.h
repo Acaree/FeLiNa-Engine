@@ -64,7 +64,7 @@ public:
 	bool active = true;
 	
 
-	virtual bool Update();
+	virtual bool Update(float dt);
 	virtual void DrawNode();
 
 	void SaveNodeInformation(JSON_Object* obj);
@@ -89,7 +89,7 @@ public:
 
 	NodeGraph(uint uid = 0, const char* name = "No Name");
 
-	bool Update();
+	bool Update(float dt);
 	void DrawNodeGraph();
 	void SetBackgroundNodeType(Node& node, ImDrawList& draw_list, ImVec2& node_rect_min, ImVec2& node_rect_max);
 	void DeleteNode(Node& node);

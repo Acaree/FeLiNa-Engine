@@ -10,12 +10,13 @@ NodeInstatiateGameObject::NodeInstatiateGameObject(int id) : Node(id, "Game obje
 	subtype = NodeSubType::InstatiateGO;
 }
 
-bool NodeInstatiateGameObject::Update()
+bool NodeInstatiateGameObject::Update(float dt)
 {
 	returned_result = false;
 
 	if (instance_fbx_path.size() != 0)
 	{
+		returned_result = true;
 		std::string path = instance_fbx_path;
 		GameObject* instance = App->serialization_scene->LoadGOFromJson((char*)path.c_str());
 
@@ -55,17 +56,6 @@ bool NodeInstatiateGameObject::Update()
 
 			instance->speed->SetSpeed(direction);
 			instance->speed->SetVelocity(velocity);
-		}
-	}
-
-	if (returned_result)
-	{
-		for (uint i = 0; i < outputs_vec.size(); ++i)
-		{
-			returned_result = outputs_vec[i]->Update();
-
-			if (!returned_result)
-				break;
 		}
 	}
 
@@ -166,29 +156,21 @@ void NodeInstatiateGameObject::DrawNode()
 void NodeInstatiateGameObject::SetNodeReferencesInJSON(JSON_Object* obj)
 {
 	json_object_set_number(obj, "id", id);
-	
 	json_object_set_number(obj, "posx", new_pos.x);
 	json_object_set_number(obj, "posy", new_pos.y);
 	json_object_set_number(obj, "posz", new_pos.z);
+	json_object_set_boolean(obj, "rectificate x", rectificate_x);
+	json_object_set_boolean(obj, "rectificate y", rectificate_y);
+	json_object_set_boolean(obj, "rectificate z", rectificate_z);
 
 	if (GO_position != nullptr)
 		json_object_set_number(obj, "position uid", GO_position->uid);
 	else
 		json_object_set_number(obj, "position uid", 0);
 
-
 	json_object_set_number(obj, "dirx", direction.x);
 	json_object_set_number(obj, "diry", direction.y);
 	json_object_set_number(obj, "dirz", direction.z);
-
-	json_object_set_number(obj, "dirx to zero", rectificate_x);
-	json_object_set_number(obj, "diry to zero", rectificate_y);
-	json_object_set_number(obj, "dirz to zero", rectificate_z);
-
-	json_object_set_number(obj, "velocity", velocity);
-
-
-
 
 	if(GO_speed_dir != nullptr)
 		json_object_set_number(obj, "speed dir uid", GO_speed_dir->uid);
@@ -206,16 +188,12 @@ void NodeInstatiateGameObject::GetNodeReferencesInJSON(JSON_Object* obj)
 	new_pos.x = json_object_get_number(obj, "posx");
 	new_pos.y = json_object_get_number(obj, "posy");
 	new_pos.z = json_object_get_number(obj, "posz");
-
 	direction.x = json_object_get_number(obj, "dirx");
 	direction.y = json_object_get_number(obj, "diry");
 	direction.z = json_object_get_number(obj, "dirz");
-
-	rectificate_x = json_object_get_number(obj, "dirx to zero");
-	rectificate_y = json_object_get_number(obj, "diry to zero");
-	rectificate_z = json_object_get_number(obj, "dirz to zero");
-
-	velocity = json_object_get_number(obj, "velocity");
+	rectificate_x = json_object_get_boolean(obj, "rectificate x");
+	rectificate_y = json_object_get_boolean(obj, "rectificate y");
+	rectificate_z = json_object_get_boolean(obj, "rectificate z");
 
 	instance_fbx_path = json_object_get_string(obj, "FBX path");
 

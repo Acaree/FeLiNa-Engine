@@ -9,7 +9,7 @@ NodeTranslateGameObject::NodeTranslateGameObject(int id) : Node(id, "Game object
 	subtype = NodeSubType::TranslateGO;
 }
 
-bool NodeTranslateGameObject::Update()
+bool NodeTranslateGameObject::Update(float dt)
 {
 	returned_result = false;
 
@@ -18,20 +18,9 @@ bool NodeTranslateGameObject::Update()
 		if (go->transform != nullptr)
 		{
 			returned_result = true;
+			
+			go->transform->SumPosition(translation*dt);
 
-			go->transform->SumPosition(translation);
-
-		}
-	}
-
-	if (returned_result)
-	{
-		for (uint i = 0; i < outputs_vec.size(); ++i)
-		{
-			returned_result = outputs_vec[i]->Update();
-
-			if (!returned_result)
-				break;
 		}
 	}
 
