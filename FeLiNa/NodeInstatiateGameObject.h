@@ -26,6 +26,10 @@ private:
 	bool get_position_from_GO = false;
 	std::string position_GO_name = "Game Object Invalid";
 	GameObject* GO_position = nullptr;
+
+	bool get_speed_dir_from_GO = false;
+	std::string speed_dir_GO_name = "Game Object Invalid";
+	GameObject* GO_speed_dir = nullptr;
 };
 
 

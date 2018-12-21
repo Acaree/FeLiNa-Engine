@@ -23,9 +23,11 @@ public:
 	void SumScale(math::float3 new_scale);
 
 	math::float3 GetPosition()const;
+	math::float3 GetGlobalPosition();
 	math::float3 GetRotation()const;
 	math::float3 GetScale()const;
 	math::Quat GetQuaternion()const;
+	math::Quat GetGlobalRotation()const;
 
 	void UpdateMatrix();
 

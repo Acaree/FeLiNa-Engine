@@ -27,7 +27,7 @@ bool NodeInstatiateGameObject::Update()
 		}
 
 		if (get_position_from_GO) {
-			instance->transform->SetPosition(GO_position->transform->GetPosition());
+			instance->transform->SetPosition(GO_position->transform->GetGlobalPosition());
 		}
 
 		else {
@@ -38,8 +38,17 @@ bool NodeInstatiateGameObject::Update()
 			instance->AddComponent(Component_Speed);
 		}
 
-		instance->speed->SetSpeed(speed);
-		
+		if (get_speed_dir_from_GO) {
+
+			math::float3 rotated_speed = GO_speed_dir->transform->GetGlobalRotation().ToFloat3x3() * speed;
+			instance->speed->SetSpeed(rotated_speed);
+
+		}
+
+		else {
+
+			instance->speed->SetSpeed(speed);
+		}
 	}
 
 	if (returned_result)
@@ -89,7 +98,28 @@ void NodeInstatiateGameObject::DrawNode()
 	}
 	
 	ImGui::InputFloat3("Speed", &speed[0], 2);
+
+	ImGui::Checkbox("Get speed axis rotation from Game Object ", &get_speed_dir_from_GO);
 	
+	if (get_speed_dir_from_GO) {
+
+		ImGui::Text(speed_dir_GO_name.c_str());
+		ImGui::Button("Drag Game Object Here");
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Hierarchy_nodes"))
+			{
+				GO_speed_dir = *(GameObject**)payload->Data;
+				if (GO_speed_dir->transform != nullptr) {
+				
+					speed_dir_GO_name = GO_speed_dir->GetName();
+
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+	}
 	
 
 	ImGui::Text("GameObject:");

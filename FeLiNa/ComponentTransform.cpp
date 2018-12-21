@@ -68,7 +68,6 @@ void ComponentTransform :: UpdateMatrix() {
 	
 	local_matrix = math::float4x4::FromTRS(position,quat_rotation, scale);
 
-
 	if ( parent  != nullptr && parent->GetParent() != nullptr) {
 		ComponentTransform* parent_trans = (ComponentTransform*)parent->GetParent()->GetComponent(Component_Transform);
 
@@ -278,3 +277,20 @@ void ComponentTransform::ShowGuizmos()
 
 }
 
+
+math::float3 ComponentTransform::GetGlobalPosition() {
+
+	math::float4x4 tempmatrix = parent->transform->GetTransformMatrix();
+
+	global_matrix = tempmatrix * local_matrix;
+	return global_matrix.TranslatePart();
+	
+}
+
+math::Quat ComponentTransform::GetGlobalRotation()const {
+
+	math::float3 euler_rot = global_matrix.Transposed().ToEulerXYZ();
+	
+	return math::Quat::FromEulerXYZ(euler_rot.x, euler_rot.y, euler_rot.z);
+
+}
