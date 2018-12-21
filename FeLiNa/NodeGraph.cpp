@@ -11,6 +11,7 @@
 #include "NodeInputMouse.h"
 #include "NodeInstatiateGameObject.h"
 
+
 //NodeGraph-------------------------------------------------------------------------------------------------------------------------------------------
 NodeGraph::NodeGraph(uint uid, const char* name)
 {
@@ -566,29 +567,42 @@ void NodeGraph::DeleteNode(Node& node)
 {
 	std::vector<Node*>::iterator it = nodes.begin() + node.id;
 	std::vector<NodeGraphicalLink>::iterator link_erase = links.begin();
+	std::vector<int> links_to_delete;
 	uint id_erased = node.id;
 
 	for (int i = 0; i < links.size(); i++)
 	{
 		if (links[i].input_index == id_erased)
 		{
-			link_erase = links.begin() + i;
-			links.erase(link_erase);
-			links.shrink_to_fit();
+			links_to_delete.push_back(i);
+		}
 
-			if (links.size() > 0)
-				i = 0;
-			else
-				break;
+		else if (links[i].input_index > id_erased) {
+
+			links[i].input_index -= 1;
+
 		}
 
 		if (links[i].output_index == id_erased)
 		{
-			link_erase = links.begin() + i;
-			links.erase(link_erase);
-			links.shrink_to_fit();
-			i = 0;
+			links_to_delete.push_back(i);
+
 		}
+
+		else if (links[i].output_index > id_erased) {
+
+			links[i].output_index -= 1;
+
+		}
+	}
+
+
+	for (int i = links_to_delete.size() - 1; i >= 0 ; i--) {
+
+		link_erase = links.begin() + links_to_delete[i];
+		links.erase(link_erase);
+		links.shrink_to_fit();
+
 	}
 
 	nodes.erase(it);
