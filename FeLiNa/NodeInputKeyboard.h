@@ -17,7 +17,7 @@ public:
 private:
 
 	int key_code = -1;
-	char key;
+	char key[2];
 
 
 };

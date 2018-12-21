@@ -5,7 +5,9 @@
 
 NodeInputKeyboard::NodeInputKeyboard(int id, char key) : Node( id, "Input Event", {100,100}, 0, 1, NodeType::EventType)
 {
-	this->key = key;
+	this->key[0] = key;
+	this->key[1] = '\n';
+
 	this->key_code = SDL_GetScancodeFromName(&key);
 	subtype = NodeSubType::InputKeyboard;
 
@@ -27,13 +29,11 @@ bool NodeInputKeyboard::Update()
 
 void NodeInputKeyboard::DrawNode()
 {
-	static std::string string_input;
-	string_input = key;
 
-	if (ImGui::InputText("Key react:", (char*)string_input.c_str(), 2))
+	if (ImGui::InputText("Key react:", &key[0], 2))
 	{
-		key = string_input[0];
-		key_code = SDL_GetScancodeFromName(&key);
+	
+		key_code = SDL_GetScancodeFromName(&key[0]);
 	}
 
 }
@@ -50,11 +50,11 @@ void NodeInputKeyboard::GetNodeReferencesInJSON(JSON_Object* obj)
 
 	const char* c = SDL_GetScancodeName((SDL_Scancode)key_code);
 
-	strcpy(&key, c);
+	strcpy(key, c);
 }
 
 void NodeInputKeyboard::SetReferencesNodeDuplicated(Node& node)
 {
-	key = ((NodeInputKeyboard*)&node)->key;
+	strcpy(key, ((NodeInputKeyboard*)&node)->key);
 	key_code = ((NodeInputKeyboard*)&node)->key_code;
 }
