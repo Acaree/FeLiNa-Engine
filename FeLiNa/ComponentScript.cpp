@@ -96,16 +96,35 @@ void ComponentScript::DrawInspector()
 			if (selected_uid != 0)
 			{
 				Resource* res = App->resource_manager->Get(selected_uid);
-
+				((ResourceScript*)res)->graph->interactable = true;
 				res->EraseToMemory();
-
+				
 				App->gui->uid_selected_graph = 0;
 			}
 			
 
-			if(uid != 0)
+			if (uid != 0)
+			{
+				Resource* res = App->resource_manager->Get(uid);
+				((ResourceScript*)res)->graph->interactable = false;
 				open_graph = true;
+			}
 		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Remove graph"))
+		{
+			if (uid != 0)
+			{
+				Resource* res = App->resource_manager->Get(uid);
+				((ResourceScript*)res)->graph->interactable = true;
+				res->EraseToMemory();
+				uid = 0;
+				open_graph = false;
+			}
+		}
+
 
 		ImGui::TreePop();
 	}

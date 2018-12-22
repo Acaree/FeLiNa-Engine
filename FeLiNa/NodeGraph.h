@@ -118,6 +118,7 @@ public:
 	//TO Revision
 	char name[DEFAULT_BUF_SIZE] = "No Name";
 	bool need_save = false;
+	bool interactable = true;
 };
 
 

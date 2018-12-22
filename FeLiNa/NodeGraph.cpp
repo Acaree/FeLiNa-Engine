@@ -235,9 +235,19 @@ void NodeGraph::DrawNodeGraph()
 	ImGui::Text("Canvas:");
 	ImGui::SameLine();
 
-	if (ImGui::Button("Compile"))
+	if (ImGui::Button("Compile") && interactable)
 	{
 		need_save = true;
+	}
+	ImGui::SameLine();
+
+	if (interactable)
+	{
+		ImGui::Text("Editor mode: in this mode you can manage nodes.");
+	}
+	else
+	{
+		ImGui::Text("Component Mode: in this mode you can only set references for nodes.");
 	}
 
 	ImGui::SameLine(ImGui::GetWindowWidth() - 120);
@@ -357,7 +367,7 @@ void NodeGraph::DrawNodeGraph()
 					input_node_pos = node_ids;
 					input_clicked = slot_idx;
 				}
-				if (ImGui::IsMouseClicked(1)) 
+				if (ImGui::IsMouseClicked(1) && interactable) 
 					DeleteLink(node_ids, slot_idx);
 			}
 		}
@@ -374,7 +384,7 @@ void NodeGraph::DrawNodeGraph()
 					output_clicked = slot_idx;
 				}
 
-				if (ImGui::IsMouseClicked(1))
+				if (ImGui::IsMouseClicked(1) && interactable)
 					DeleteLink(node_ids, slot_idx);
 			}
 		}
@@ -421,14 +431,14 @@ void NodeGraph::DrawNodeGraph()
 		{
 			ImGui::Text("Node '%s'", node->name);
 			ImGui::Separator();
-			if (ImGui::MenuItem("Delete", NULL, false, true))
+			if (ImGui::MenuItem("Delete", NULL, false, interactable))
 			{
 				DeleteNode(*node);
 			}
 		}
 		else
 		{
-			if (ImGui::MenuItem("Add"))
+			if (ImGui::MenuItem("Add", NULL,false,interactable))
 			{ 
 				open_pop = true;
 			}
