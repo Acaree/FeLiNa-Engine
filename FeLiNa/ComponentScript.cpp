@@ -97,6 +97,7 @@ void ComponentScript::DrawInspector()
 			{
 				Resource* res = App->resource_manager->Get(selected_uid);
 				((ResourceScript*)res)->graph->interactable = true;
+				((ResourceScript*)res)->graph->node_selected = -1;
 				res->EraseToMemory();
 				
 				App->gui->uid_selected_graph = 0;
@@ -107,6 +108,7 @@ void ComponentScript::DrawInspector()
 			{
 				Resource* res = App->resource_manager->Get(uid);
 				((ResourceScript*)res)->graph->interactable = false;
+				((ResourceScript*)res)->graph->node_selected = -1;
 				open_graph = true;
 			}
 		}

@@ -223,7 +223,6 @@ void NodeGraph::DrawNodeGraph()
 
 	static bool open_context_menu = false;
 	static int node_hovered_in_scene = -1;
-	static int node_selected = -1;
 	static bool show_grid = false;
 
 	ImGui::SetNextWindowSize(ImVec2(700, 600), ImGuiSetCond_FirstUseEver);
@@ -425,6 +424,8 @@ void NodeGraph::DrawNodeGraph()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
 	if (ImGui::BeginPopup("context_menu"))
 	{
+		if (nodes.size() == 0)
+			node_selected = -1;
 		Node* node = node_selected != -1 ? nodes[node_selected] : nullptr;
 		ImVec2 scene_pos = ImGui::GetMousePosOnOpeningCurrentPopup() - offset;
 		if (node)
@@ -434,6 +435,7 @@ void NodeGraph::DrawNodeGraph()
 			if (ImGui::MenuItem("Delete", NULL, false, interactable))
 			{
 				DeleteNode(*node);
+				node_selected = -1;
 			}
 		}
 		else

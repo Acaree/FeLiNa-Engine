@@ -653,6 +653,7 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 									
 									resource->LoadToMemory();
 									((ResourceScript*)resource)->graph->interactable = true;
+									((ResourceScript*)resource)->graph->node_selected = -1;
 
 								}
 							}
