@@ -64,13 +64,34 @@ Link to repository: [FeLiNa Engine](https://github.com/Acaree/FeLiNa-Engine).
 	-Add component: Add a new component to the selected game object.
 	-Inside a empty component, there is a place to drag a new material/mesh. The file dragged must be one of library (in assets window from the engine), others will be despreciated. 		 
 
+- Scripts:
+	- Create an script inside assets folder. Refresh assets and double click to open the node graph window.
+	- Right click: 	- In node graph, the add node option will be shown.
+			- In a node, the delete option will be shown.
+	- CTRL+V: Duplicate the selected node.
+	- With left click you can create links between nodes (left anchors are for inputs and right anchors are for outputs. You can only link inputs to outputs). Left click over a node select-it.
+	- To close the node graph window, right click outside the node graph window.  
+	- In the website, you can find gifs and a video showing how to use it -> https://acaree.github.io/FeLiNa-Engine/		
+	- Add all nodes there (Right click->add and select the node type). Only event nodes can react to scene, so functions will never activate if there's no an event node before.
+	  A function node activated by other event node, can activate another function node. After putting all nodes, click compile button to save it.
+	- After that, drag the script to a game object script component (if the game object don't have it, you can create one script component in inspector). Open the graph from inspector
+	  and set all values and references.
+	- Nodes need to be edited in assets folder. After editing it, remove the script from all gameobjects that contains it and drag it again.
+	- Press play to execute scripts. If you open from inspector a game object graph, you can see the graph with the debug draw.
+	
+
 ## Innovation
 
-- Physfs added to read files and acces to folders
+- Delete nodes (open it from assets in engine)
+- Debug draw in node graph (open node graph in inspector while game mode is activated)
+- Ctrl+V duplicate the selected node (graph must be opened from assets)
+- Nodes have a checkbox active. If it's not marked, the node won't be executed.
 
 ## Warning
 - If a mesh have some triangle of his faces incomplete (with less of 3 vertices) whole mesh will be discarded.
 - In inspector components only our own format files (files from library) can be dragged. We don't take responsibility if another type of file is dragged.
+- Follow the instructions above to use and manage scripts. Before editing an script in assets, all references in game objects component script must be removed and dragged again.
+  If a script is modified, save again the scene with the new script. If it's not saved, the scene will be corrupted.
 
 ## License
 
