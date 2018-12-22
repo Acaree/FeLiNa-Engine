@@ -148,6 +148,7 @@ void NodeGraph::LoadGraph(const char* path)
 					node->active = json_object_get_boolean(node_object, "Active");
 				}
 
+				nodes.shrink_to_fit();
 				int link = -1;
 
 				for (uint i = 0; i < size; ++i)
@@ -182,6 +183,7 @@ void NodeGraph::LoadGraph(const char* path)
 		}
 
 		json_value_free(root);
+		nodes.shrink_to_fit();
 	}
 
 }
