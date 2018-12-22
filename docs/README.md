@@ -26,8 +26,19 @@ The code is written in c++
 - Own files format
 - OpenGL drawing implementation
 - Guizmos implementation
+- Profiling
+- Game mode
+- Visual scripting
 
 [Alfonso Sánchez-Cortés Puerta](https://github.com/Siitoo)
+
+- Scene serialization
+- Game objects & components
+- Frustrum & camera culling
+- Mouse picking
+- Resource Manager
+- Visual scripting
+
 
 ## Main sub-systems
 
@@ -49,17 +60,27 @@ The scene can be saved in menu->save scene. The scene will be serialized also in
 
 ### Frustum camera & culling
 
-The engine have 2 cameras: the game camera (main camera in hierarchy) and the engine camera. This cameras work with a frustrum editable. The game camera can be edited in inspector, editing his camera component. To edit the engine camera, go to Window->configuration->Camera. Here you can choose the near and far plane from frustrum position, the FOV and activate or desactivate frustrum culling **(Need explanation)** .
+The engine have 2 cameras: the game camera (main camera in hierarchy) and the engine camera. This cameras work with a frustrum editable. The game camera can be edited in inspector, editing his camera component. To edit the engine camera, go to Window->configuration->Camera. Here you can choose the near and far plane from frustrum position, the FOV and activate or desactivate frustrum culling.
 
-### Own formate files
+Camera culling is used to discard some geometry draw. Every mesh have an AABB and if it's outside camera frustum is not drew. Static objects are accelerated using a queadtree. If a static object is outside quadtree is not tested against camera culling.
+
+### Own format files
 
 When a file is imported (dragging it into the engine or assets folder & opening engine or clicking refresh assets) our own format files for that files will be generated in library folder. This files can be dragged into a component mesh or component material. A .meta file is also generated for every FBX or texture to link it with his files in our own format.
+
+### Mouse picking
+
+When screen is clicked, a ray is casted from mouse to the far plane of camera frustrum. All objects that intersect with that ray are tested and the nearest to near plane for frustrum is picked. When an object is picked, it's selected in inspector and his guizmos appear.
 
 ### Game mode
 
 The engine have a game mode. This game is activated when Play button is pressed and stop button back to engine mode. When game mode is on, camera will be changed to Main Camera, all scripts will be executed and every change on scene will be reseted when stop is clicked. Pause button pauses the game mode. Time scale modify the time multiplier for game mode. 
 
-### Visual scripting system
+### Resource manager
+
+Resource manager is used to optimize the memory consumption. It's used for component mesh, texture and script. It's used to save only one time all data from this component (for example, in mesh, save the triangles position, the normals...). Components only save the UID from this resource. You can see how many things use a resource in inspector. Open a component and see his reference counting.
+
+## Visual scripting system
 
 We implement a visual scripting system based on Unreal engine blueprints. Our system have two types of node:
 
