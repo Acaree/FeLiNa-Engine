@@ -65,6 +65,8 @@ Link to repository: [FeLiNa Engine](https://github.com/Acaree/FeLiNa-Engine).
 	-Inside a empty component, there is a place to drag a new material/mesh. The file dragged must be one of library (in assets window from the engine), others will be despreciated. 		 
 
 - Scripts:
+	- In assets folder, you can find a demo scene named "Assignment3.json". This scene contains a tank with a script to move it with i,j,k & l, rotate the turret with mouse motion in X-axis 
+	  and shoot a ball (instance) with the mouse middle button.
 	- Create an script inside assets folder. Refresh assets and double click to open the node graph window.
 	- Right click: 	- In node graph, the add node option will be shown.
 			- In a node, the delete option will be shown.
@@ -76,7 +78,7 @@ Link to repository: [FeLiNa Engine](https://github.com/Acaree/FeLiNa-Engine).
 	  A function node activated by other event node, can activate another function node. After putting all nodes, click compile button to save it.
 	- After that, drag the script to a game object script component (if the game object don't have it, you can create one script component in inspector). Open the graph from inspector
 	  and set all values and references.
-	- Nodes need to be edited in assets folder. After editing it, remove the script from all gameobjects that contains it and drag it again.
+	- Nodes need to be edited in assets folder. After editing it, remove the script from all gameobjects that contains it and drag it again. You need to set all references & values again.
 	- Press play to execute scripts. If you open from inspector a game object graph, you can see the graph with the debug draw.
 	
 
