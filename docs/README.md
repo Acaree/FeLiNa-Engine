@@ -57,5 +57,15 @@ Currently, there are 3 types: translate, rotate and instatiate.
 - **Rotate:** This node rotate a game object a quantity specified. It also can follow the mouse motion in x to rotate.
 - **Instatiate** This node create an instance of one FBX in a spicified position. This position can be copied from a game object dragging it into the node. Also add a component speed to the instance. This component is calculated with an axis and a velocity. The axis can rotate following a game object rotation dragging it into the node. When axis is calculated depending on the game object rotation, any axis (x, y and z) can be ignored.
 
+At top of screen you'll se three things. Compile button save the script. If show grid is marked, grid will appear. The input box change the name of the script in assets folder. 
+
+Nodes also have an **active button**. If active is not marked, the node will be disable, like if game mode is off.
+
+If **ctrl + V** is pressed while a node is hovered, this node will be duplicate.
+
+**Right click** when mouse is over a node to open a new pop up menu. This menu only have one option to delete nodes.
+
+if **right click** is not over a node, another pop up will appear, now whith "add" button. This open a menu to select the typw of node you want and create it.
+
 
 
