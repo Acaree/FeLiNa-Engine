@@ -35,8 +35,29 @@ Our engine contain the next sub-systems:
 
 ### Game objects & components
 
-A game objects system with his components. There are 5 avaliable components: trnasform, mesh, material, script & speed. Game objects also have hierarchy implemented
+A game objects system with his components. There are 6 avaliable components: transform, mesh, material, script, speed and camera. Game objects also have hierarchy implemented
 
+Double click on fbx in assets folder to add to scene the game object and his hierarchy. An empty game object can also be created right-clicking in hierarchy. If a game object is selected with left click or clicking it in the world, his inspector will be opened. In inspector you can find a button to add components to the selected a game object. All components can be edited opening his own menu in inspector.
+
+### Profiling
+
+In configuration window (to open it, use shift+M or go to window->configuration) you can find a lot of editable things and some modules update time in a graphic with the ms it take per frame. This graphics can be stopped (they will stop filling with new frames).
+
+### Scene serialization 
+
+The scene can be saved in menu->save scene. The scene will be serialized also in menu->load scene. Scene is also saved when game is played. When a scene is loaded, the current hierarchy it's lost and the one saved is setted.
+
+### Frustum camera & culling
+
+The engine have 2 cameras: the game camera (main camera in hierarchy) and the engine camera. This cameras work with a frustrum editable. The game camera can be edited in inspector, editing his camera component. To edit the engine camera, go to Window->configuration->Camera. Here you can choose the near and far plane from frustrum position, the FOV and activate or desactivate frustrum culling **(Need explanation)** .
+
+### Own formate files
+
+When a file is imported (dragging it into the engine or assets folder & opening engine or clicking refresh assets) our own format files for that files will be generated in library folder. This files can be dragged into a component mesh or component material. A .meta file is also generated for every FBX or texture to link it with his files in our own format.
+
+### Game mode
+
+The engine have a game mode. This game is activated when Play button is pressed and stop button back to engine mode. When game mode is on, camera will be changed to Main Camera, all scripts will be executed and every change on scene will be reseted when stop is clicked. Pause button pauses the game mode. Time scale modify the time multiplier for game mode. 
 
 ### Visual scripting system
 
@@ -61,7 +82,7 @@ At top of screen you'll se three things. Compile button save the script. If show
 
 Nodes also have an **active button**. If active is not marked, the node will be disable, like if game mode is off.
 
-If **ctrl + V** is pressed while a node is hovered, this node will be duplicate.
+If **CTRL + V** is pressed while a node is hovered, this node will be duplicate.
 
 **Right click** when mouse is over a node to open a new pop up menu. This menu only have one option to delete nodes.
 
