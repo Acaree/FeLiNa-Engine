@@ -162,6 +162,7 @@ update_status ModuleGui::Update(float dt)
 
 		if (ImGui::IsMouseClicked(1) && !ImGui::IsMouseHoveringAnyWindow())
 		{
+			res->graph->interactable = true;
 			res->EraseToMemory();
 			uid_selected_graph = 0;	
 		}
@@ -649,9 +650,9 @@ void ModuleGui::RecurssiveShowAssets(const char* dir)
 								if (uid_selected_graph != 0)
 								{
 									Resource* resource = App->resource_manager->Get(uid_selected_graph);
-
 									
 									resource->LoadToMemory();
+									((ResourceScript*)resource)->graph->interactable = true;
 
 								}
 							}
