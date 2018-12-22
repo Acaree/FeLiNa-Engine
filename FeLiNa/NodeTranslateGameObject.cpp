@@ -28,6 +28,14 @@ bool NodeTranslateGameObject::Update(float dt)
 
 		}
 	}
+	
+	if (returned_result) {
+		for (int j = 0; j < outputs_vec.size(); j++)
+		{
+			if (!outputs_vec[j]->active || outputs_vec[j]->Update(dt))
+				break;
+		}
+	}
 
 	return returned_result;
 }
