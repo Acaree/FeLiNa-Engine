@@ -1,8 +1,9 @@
-# FeLiNa Engine
 
 This engine have been developed in the design & development grade of CITM (Terrasa).
 
-The objective is to develop a engine to use it in the next game we'll create. 
+The objective is to develop a engine to use it in the next game we'll create and lear how work the main systems of game engines like unity, unreal... 
+
+Our engine can be used to create your own videogame. The engine can load geometry (only support FBX files) and textures. Also have a visual scripting system.
 
 The code is written in c++ 
 
@@ -55,15 +56,15 @@ Our engine contain the next sub-systems:
 
 A game objects system with his components. There are 6 avaliable components: transform, mesh, material, script, speed and camera. Game objects also have hierarchy implemented
 
-Double click on fbx in assets folder to add to scene the game object and his hierarchy. An empty game object can also be created right-clicking in hierarchy. If a game object is selected with left click or clicking it in the world, his inspector will be opened. In inspector you can find a button to add components to the selected a game object. All components can be edited opening his own menu in inspector.
+Double click on fbx in assets folder to add to scene the game object and his hierarchy. An empty game object can also be created right-clicking in hierarchy. If a game object is selected with left click or clicking it in the world, his inspector will be opened. In inspector you can find a button to add components to the selected game object. All components can be edited opening his own menu in inspector.
 
 ### Profiling
 
-In configuration window (to open it, use shift+M or go to window->configuration) you can find a lot of editable things and some modules update time in a graphic with the ms it take per frame. This graphics can be stopped (they will stop filling with new frames).
+In configuration window (to open it, use shift+M or go to window->configuration) you can find a lot of editable things and some modules update time in a graphic with the miliseconds it take per frame. This graphics can be stopped (they will stop filling with new frames).
 
 ### Scene serialization 
 
-The scene can be saved in menu->save scene. The scene will be serialized also in menu->load scene. Scene is also saved when game is played. When a scene is loaded, the current hierarchy it's lost and the one saved is setted.
+The scene can be saved in menu->save scene. The scene will be serialized and can be charged in menu->load scene. Scene is also saved when game is played. When a scene is loaded, the current hierarchy it's lost and the one saved is setted.
 
 ### Frustum camera & culling
 
@@ -109,7 +110,7 @@ Currently, there are 3 types: translate, rotate and instatiate.
 - **Rotate:** This node rotate a game object a quantity specified. It also can follow the mouse motion in x to rotate.
 - **Instatiate** This node create an instance of one FBX in a spicified position. This position can be copied from a game object dragging it into the node. Also add a component speed to the instance. This component is calculated with an axis and a velocity. The axis can rotate following a game object rotation dragging it into the node. When axis is calculated depending on the game object rotation, any axis (x, y and z) can be ignored.
 
-At top of screen you'll se three things. Compile button save the script. If show grid is marked, grid will appear. The input box change the name of the script in assets folder. 
+At top of screen you'll see three things. Compile button save the script. If show grid is marked, grid will appear. The input box change the name of the script in assets folder. 
 
 Nodes also have an **active button**. If active is not marked, the node will be disable, like if game mode is off.
 
@@ -118,6 +119,12 @@ If **CTRL + V** is pressed while a node is hovered, this node will be duplicate.
 **Right click** when mouse is over a node to open a new pop up menu. This menu only have one option to delete nodes.
 
 if **right click** is not over a node, another pop up will appear, now whith "add" button. This open a menu to select the typw of node you want and create it.
+
+To close the node graph window, right click outside the node graph window.
+
+### Links
+
+With left click you can create links between nodes (left anchors are for inputs and right anchors are for outputs. You can only link inputs to outputs). Right click in an anchor with a link deletes it.
 
 ![](scripting.gif)
 
