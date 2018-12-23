@@ -129,7 +129,7 @@ With left click you can create links between nodes (left anchors are for inputs 
 ![](scripting.gif)
 
 ## Video
-<iframe width="1105" height="829" src="https://www.youtube.com/embed/88vKE41czsU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="1105" height="829" src="https://www.youtube.com/embed/qoE-dIgSVXM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Link to the [repository](https://github.com/Acaree/FeLiNa-Engine)
 ### Download the last release [here](https://github.com/Acaree/FeLiNa-Engine/releases/tag/3.0)
