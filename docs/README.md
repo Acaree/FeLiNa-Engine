@@ -83,6 +83,8 @@ When a file is imported (dragging it into the engine or assets folder & opening 
 
 ## Visual scripting system
 
+![](in_game.gif)
+
 We implement a visual scripting system based on Unreal engine blueprints. Our system have two types of node:
 
 ### Event nodes
@@ -109,6 +111,33 @@ If **CTRL + V** is pressed while a node is hovered, this node will be duplicate.
 **Right click** when mouse is over a node to open a new pop up menu. This menu only have one option to delete nodes.
 
 if **right click** is not over a node, another pop up will appear, now whith "add" button. This open a menu to select the typw of node you want and create it.
+
+![](scripting.gif)
+
+## Video
+<iframe width="1105" height="829" src="https://www.youtube.com/embed/88vKE41czsU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+### Link to the [repository](https://github.com/Acaree/FeLiNa-Engine)
+### Download the last release [here](https://github.com/Acaree/FeLiNa-Engine/releases/tag/3.0)
+
+## License 
+
+Copyright 2018 MIT Alex Campamar & Alfonso Sánchez-Cortés
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
+FeLiNa, to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE 
+OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+
 
 
 
