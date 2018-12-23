@@ -21,6 +21,11 @@ The code is written in c++
 
 ## Team members
 
+![](team_photo.jpg)
+
+
+![](alex.jpg)
+
 [Alex Campamar Redol](https://github.com/Acaree)
 
 - Own files format
@@ -29,6 +34,8 @@ The code is written in c++
 - Profiling
 - Game mode
 - Visual scripting
+
+![](sito.jpg)
 
 [Alfonso Sánchez-Cortés Puerta](https://github.com/Siitoo)
 
